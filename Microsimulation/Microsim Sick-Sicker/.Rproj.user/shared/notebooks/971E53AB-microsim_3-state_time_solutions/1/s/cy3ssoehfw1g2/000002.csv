@@ -1,0 +1,6 @@
+"0","# make an PSA object using dampack"
+"0","out_psa  <- make_psa_obj(df_c, df_e, df_psa_input, strategies = NULL, ""$"")"
+"0","# Total cost and effectiveness"
+"0","results  <- data.frame(""Total Cost"" = mean(out_psa$cost[, 1]), "
+"0","                       ""Total QALYs"" = mean(out_psa$effectiveness[, 1]))"
+"0","results"

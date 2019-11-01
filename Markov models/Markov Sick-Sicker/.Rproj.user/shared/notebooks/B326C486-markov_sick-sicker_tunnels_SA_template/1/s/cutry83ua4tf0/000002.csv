@@ -1,0 +1,8 @@
+"0","# Compute expected costs and effects for each strategy from the PSA"
+"0","df_out_ce_psa <- summary(l_psa)"
+"0",""
+"0","# Calculate incremental cost-effectiveness ratios (ICERs)"
+"0","df_cea_psa <- calculate_icers(cost       = df_out_ce_psa$meanCost, "
+"0","                              effect     = df_out_ce_psa$meanEffect,"
+"0","                              strategies = df_out_ce_psa$Strategy)"
+"0","df_cea_psa"

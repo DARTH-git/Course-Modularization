@@ -1,0 +1,4 @@
+"0","options(scipen = 999)"
+"0",""
+"0","# No treatment"
+"0","plot(density(outcomes_no_trt$tc), main = paste(""Total cost per person""), xlab = ""Cost ($)"")"

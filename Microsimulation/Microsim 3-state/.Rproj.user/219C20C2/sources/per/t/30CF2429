@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572615936674.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1968214673",
+    "id" : "30CF2429",
+    "lastKnownWriteTime" : 1572615968,
+    "last_content_update" : 1572616000682,
+    "path" : "C:/Users/Alan Yang/Desktop/course_materials_central_repo/Microsimulation/Microsim 3-state/microsim_3-state_time_solutions.Rmd",
+    "project_path" : "microsim_3-state_time_solutions.Rmd",
+    "properties" : {
+        "cursorPosition" : "282,0",
+        "scrollLine" : "259"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

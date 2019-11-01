@@ -1,0 +1,176 @@
+---
+title: 'Cost-Effectiveness and Decision Modeling in R'
+subtitle: 'Markov Model Variants Exercise'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+   Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+# Exercise I: Variations on the Sick-Sicker Markov Model
+
+Previously, you built a Markov of the Sick-Sicker model where transition probabilities were assumed to be constant over time. In this exercise, you will expand on that model to incorporate age-dependence (time-varying probabilities).
+
+**Age-dependence**
+
+Healthy individuals are no longer assumed to have a fixed mortality rate. Their mortality rate depends on their age. The Human Mortality Database (HMD) (www.mortality.org) provides these age specific mortality rates (Mx1x1). You can load this data in R using different packages, for example the HMDHFplus, demography or data.table package. Registration (free) on the HMD website is required in order to use the data. For this exercise, we provide you with this mortality rate for the US in the file “HMD_USA_Mx_2015.csv”.
+
+Remember: individuals in S1 and S2 still have an increased mortality relative to healthy individuals, as described in the original exercise. The same hazard ratios are used to calculate the probabilities of dying from S1 and S2 in this exercise. 
+
+*Before you start coding this exercise, please create a copy of your code from the original (time-homogeneous) Markov model.*
+
+```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+if (!require(here)) install.packages('here')
+if (!require(knitr)) install.packages('knitr')
+knitr::include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+```
+
+## Tasks
+
+1. Use the `R` function “Functions_markov_sick-sicker.R” and create a copy to then adapt the model to account for age-dependency.
+
+2. Import the mortality rate data the “HMD_USA_Mx_2015.csv” file and store this data in a variable called `v_r_HD`. You could use the following code with dplyr syntax:
+
+```
+lt_usa_2005 <- read.csv("HMD_USA_Mx_2015.csv")
+v_r_HD <- lt_usa_2005 %>%
+  filter(Age >= age & Age <= (max_age-1)) %>%
+  select(Total) %>%
+  as.matrix()
+```
+
+3. Create probability to die when healthy as a function of age: `p_HD <- 1 - exp(- v_r_HD)`  
+
+4. Incorporate the age dependent mortality rate in the model.
+
+5. Create a survival curve of the cohort under no treatment.
+Extra challenge: plot the survival curves with and without age-dependent probabilities of death in one graph so you can compare.
+
+
+|           **Parameter**            |  **R name** |   **Value**   |
+|:-----------------------------------|:------------|:-------------:|
+| Time horizon                       | `n_t`       | 30 years      |
+| Cycle length                       |             | 1 year        |
+| Names of health states             | `v_n`       | H, S1, S2, D  |
+| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Annual transition probabilities    |             |               |
+| - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
+| - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
+| - Disease progression (S1 to S2) in the time-homogeneous model | `p_S1S2` | 0.105 |
+| Annual mortality                   |             |               |
+| - All-cause mortality (H to D)     | `p_HD`      | `1 - exp(-v_r_HD)` |
+| - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |
+| - Hazard ratio of death in S2 vs H | `hr_S2`     |  10           |
+| Annual costs                       |             |               |
+| - Healthy individuals              | `c_H`       |  $2,000       |
+| - Sick individuals in S1           | `c_S1`      |  $4,000       |
+| - Sick individuals in S2           | `c_S2`      |  $15,000      |
+| - Dead individuals                 | `c_D`       |  $0           |
+| - Additional costs of sick individuals treated in S1 or S2       | `c_trt` | $12,000 |
+| Utility weights                    |             |               |
+| - Healthy individuals              | `u_H`       |  1.00         |
+| - Sick individuals in S1           | `u_S1`      |  0.75         |
+| - Sick individuals in S2           | `u_S2`      |  0.50         |
+| - Dead individuals                 | `u_D`       |  0.00         |
+| Intervention effect                |             |               |
+| - Utility for treated individuals in S1 | `u_trt` |  0.95        |
+
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy,`p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$
+
+# Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
+
+This exercise continues based on the age-dependent deterministic Markov model of the Sick-Sicker model from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
+
+**Table II: Input parameters for probabilistic analysis**
+
+|           **Parameter**            |  **Distribution** |            **Distribution values**            |
+|:-----------------------------------|------------------:|----------------------------------------------:|
+| Number of simulation               | `n_sim`           | 1000                                          |
+| Annual transition probabilities    |                   |                                               |
+| - Disease onset (H to S1)          | Beta              |  $\alpha=30, \ \beta=170$                     |
+| - Recovery (S1 to H)               | Beta              | $\alpha=60, \ \beta=60$                       |
+| - Disease progression (S1 to S2) in the time-homogeneous model | Beta | $\alpha=84, \ \beta=716$       |
+| Annual mortality                   |                   |                                               |
+| - All-cause mortality (H to D)     | Beta              |  $\alpha=10, \ \beta=1990$                    |
+| - Hazard ratio of death in S1 vs H | Lognormal         |  $\mu = log(3), \ \sigma = 0.01$              |
+| - Hazard ratio of death in S2 vs H | Lognormal         |  $\mu = log(10), \ \sigma = 0.02$             |
+| Annual costs                       |                   |                                               |
+| - Healthy individuals              | Gamma             |  shape = 100.0, scale = 20.0                  |
+| - Sick individuals in S1           | Gamma             |  shape = 177.8, scale = 22.5                  |
+| - Sick individuals in S2           | Gamma             |  shape = 225.0, scale = 66.7                  |
+| - Additional costs of sick individuals treated in S1 or S2 | Gamma | shape = 73.5, scale = 163.3       |
+| Utility weights                    |                   |                                               |
+| - Healthy individuals              | Tr. Normal        | $\mu = 1.00, \ \sigma = 0.01, \ b = 1$        |
+| - Sick individuals in S1           | Tr. Normal        | $\mu = 0.75, \ \sigma = 0.02, \ b = 1$        |
+| - Sick individuals in S2           | Tr. Normal        | $\mu = 0.50, \ \sigma = 0.03, \ b = 1$        |
+| Intervention effect                |                   |                                               |
+| - Utility for treated individuals in S1 | Tr. Normal   | $\mu = 0.95, \ \sigma = 0.02, \ b = 1$        |
+
+## Tasks
+
+5. Create the `calculate_ce_out` `R` function of the Sick-Sicker Markov model in the file “Functions_markov_sick-sicker_time.R”.
+
+6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
+Hint: package `truncnorm` deals with truncated normal distributions.
+
+7. Open the file “markov_sick-sicker_time_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
+
+8. Create histograms of model inputs.
+
+9. Create a cost-effectiveness plane to present discounted costs and QALYs.
+
+10. Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$.
+
+11. Create the expected loss curves (ELCs) plot
+
+12. Create an expected value of perfect information (EVPI) plot. 
+ 

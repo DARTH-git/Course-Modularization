@@ -1,0 +1,7 @@
+"0","# create the transition probability matrix for NO treatment"
+"0","decision_tree_ondansetron_cea  <- "
+"0","  calculate_icers(cost = decision_tree_ondansetron_output$Cost,"
+"0","                  effect     = decision_tree_ondansetron_output$Effect,"
+"0","                  strategies = decision_tree_ondansetron_output$Strategy) #,"
+"0","                # ref_strat  = 'Tx All')"
+"0","decision_tree_ondansetron_cea"

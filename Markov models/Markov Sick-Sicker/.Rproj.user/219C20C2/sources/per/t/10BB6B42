@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572443754396.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "660655229",
+    "id" : "10BB6B42",
+    "lastKnownWriteTime" : 1568126009,
+    "last_content_update" : 1568126009,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/DARTH-CEA-BOOK/04-cohort-stm.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "113,68",
+        "scrollLine" : "101"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

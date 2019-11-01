@@ -1,0 +1,7 @@
+"0","# per cycle"
+"0","# calculate expected costs by multiplying m_M with the cost vector for the different "
+"0","# health states   "
+"0","v_tc <- m_M_td %*% c(c_H, c_S, c_D)  "
+"0","# calculate expected QALYs by multiplying m_M with the utilities for the different "
+"0","# health states   "
+"0","v_tu <- m_M_td %*% c(u_H, u_S, u_D)  "

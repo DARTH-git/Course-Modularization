@@ -1,0 +1,5 @@
+"0","results <- data.frame( ""Total Discounted Cost"" = v_tc_d, "
+"0","                       ""Life Expectancy"" = v_le, "
+"0","                       ""Total Discounted QALYs"" = v_te_d, "
+"0","                       check.names = F)"
+"0","results"

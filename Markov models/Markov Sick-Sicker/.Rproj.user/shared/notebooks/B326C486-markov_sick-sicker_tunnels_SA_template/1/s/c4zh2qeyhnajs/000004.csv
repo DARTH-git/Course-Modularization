@@ -1,0 +1,3 @@
+"0","# add grid "
+"0","grid(nx = n_t, ny = 10, col = ""lightgray"", lty = ""dotted"", lwd = par(""lwd""), "
+"0","     equilogs = TRUE) "

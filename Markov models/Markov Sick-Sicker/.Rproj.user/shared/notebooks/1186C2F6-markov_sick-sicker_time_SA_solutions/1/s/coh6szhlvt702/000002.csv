@@ -1,0 +1,3 @@
+"0","ceac_obj <- ceac(wtp = v_wtp, psa = l_psa)"
+"0","# Regions of highest probability of cost-effectiveness for each strategy"
+"0","summary(ceac_obj)"

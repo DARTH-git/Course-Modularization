@@ -1,0 +1,148 @@
+---
+title: 'Cost-Effectiveness and Decision Modeling in R'
+subtitle: 'Decision Tree Exercise - Ondansetron'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+   Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+# Exercise I: Antiemetic prophylaxis during chemotherapy – A Decision Tree
+
+You are tasked to evaluate the cost-effectiveness of ondansetron compared to metoclopramide for antiemetic prophylaxis in cancer patients undergoing chemotherapy (Buxton and O’Brien, 1992). Patients undergoing either of the two prophylactic treatments can experience significant emesis, as well as adverse drug effects (ADEs). Patients can receive treatment for the ADEs which is expected to affect the probability of an ADE being resolved. The two treatments differ with respect to the probability of emesis, and presence and resolution of ADEs. The economic outcome of interest is the total cost associated with a patient undergoing treatment on each strategy. The clinical outcome of interest is the probability of successful treatment, defined as absence of significant emesis or ADEs. The probabilities and costs associated with each event are presented in Table 1.
+
+## Tasks
+
+1. Sketch out the decision tree, with a particular focus on the outcome values (costs and probability of successful treatment) at terminal nodes.
+
+2. The code template contains calculations for the “Ondansetron” strategy. Write code that calculates the expected outcomes for the “Metoclopramide” strategy.
+
+3. Use the `calculate_icers(`) function from the ‘dampack’ package to calculate the incremental costs, Effectiveness, and ICERs of each strategy. Type “`?calculate_icers()`” to see function documentation.
+
+
+**Table I: Input parameters**
+
+|           **Parameter**             |  **R name**       |   **Value**       |
+|:------------------------------------|:------------------|:-----------------:|
+| Probabilities                       |                   |                   |  
+| - Significant emesis, Ondansetron | `p_sem_on` | 0.25 |
+| - Significant emesis, significant ADE, Ondansetron | `p_sem_ade_on` | 0.26 |
+| - Significant emesis, significant ADE, treatment, Ondansetron| `p_sem_ade_trt_on` | 0.60 |
+| - Significant emesis, significant ADE, treatment, resolution, Ondansetron |`p_sem_ade_trt_res_on` | 0.66 |
+| - Significant emesis, significant ADE, no treatment, resolution, Ondansetron|`p_sem_ade_no_trt_res_on`| 1|
+| - No significant emesis, significant ADE, Ondansetron | `p_no_sem_ade_on` | 0.11 |
+| - No significant emesis, significant ADE, treatment, Ondansetron| `p_no_sem_ade_trt_on` | 0.17 |
+| - No significant emesis, significant ADE, treatment, resolution, Ondansetron|`p_no_sem_ade_trt_res_on`| 1|
+| - No significant emesis, significant ADE, no treatment, resolution, Ondansetron |`p_no_sem_ade_no_trt_res_on` | 1 |
+| - Significant emesis, Metoclopramide | `p_sem_met` | 0.58 |
+| - Significant emesis, significant ADE, Metoclopramide| `p_sem_ade_met` | 0.34 |
+| - Significant emesis, significant ADE, treatment, Metoclopramide | `p_sem_ade_trt_met` | 0.60 |
+| - Significant emesis, significant ADE, treatment, resolution, Metoclopramide |`p_sem_ade_trt_res_met`| 0.78|
+| - Significant emesis, significant ADE, no treatment, resolution, Metoclopramide | `p_sem_ade_no_trt_res_met` | 1 |
+| - No significant emesis, significant ADE, Metoclopramide|`p_no_sem_ade_met` | 0.12 |
+| - No significant emesis, significant ADE, treatment, Metoclopramide |`p_no_sem_ade_trt_met` | 0.50 |
+| - No significant emesis, significant ADE, treatment, resolution, Metoclopramide | `p_no_sem_ade_trt_res_met` | 1 |
+| - No significant emesis, significant ADE, no treatment, resolution, Metoclopramide | `p_no_sem_ade_no_trt_res_met`| 1 |
+| Total healthcare costs |  |  |
+| - Treatment                     | `c_trt_met`     | $10 |
+| - Episode of significant emesis | `c_sem_met`     | $30 |
+| - ADE                           | `c_ade_met`     | $20 |
+| - Treatment of ADE              | `c_ade_trt_met` | $5  |
+
+# Exercise II: Probabilistic version Antiemetic prophylaxis during chemotherapy – A Decision Tree
+
+This exercise continues based on the Ondansetron decision tree from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
+
+## Tasks
+
+4. Change some input values and to see if/how the expected outcomes under each strategy change (One-way and two-way sensitivity analyses).
+
+5. Create the `calculate_ce_out` `R` model function in the file “Functions_decision_tree_ondansetron.R”.
+
+6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
+Hint: package `truncnorm` deals with truncated normal distributions.
+
+7. Open the file “decision_tree_ondansetron_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
+
+8. Create histograms of model inputs.
+
+9. Create a cost-effectiveness plane to present discounted costs and QALYs.
+
+10. Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$300,000$.
+
+11. Create the expected loss curves (ELCs) plot
+
+12. Create an expected value of perfect information (EVPI) plot. 
+
+
+**Table II: Input parameters for probabilistic analysis**
+
+|           **Parameter**             |  **R name**       |   **Value**       |
+|:------------------------------------|:------------------|:-----------------:|
+| Probabilities                       |                   |                   |  
+| - Significant emesis, Ondansetron | Beta | $\alpha=19, \ \beta=56$ |
+| - Significant emesis, significant ADE, Ondansetron | Beta | $\alpha=19, \ \beta=57$ |
+| - Significant emesis, significant ADE, treatment, Ondansetron| Beta | $\alpha=14, \ \beta=9$ |
+| - Significant emesis, significant ADE, treatment, resolution, Ondansetron |Beta | $\alpha=14, \ \beta=7$ |
+| - Significant emesis, significant ADE, no treatment, resolution, Ondansetron| Beta | $\alpha=0.99, \ \beta=0.03$|
+| - No significant emesis, significant ADE, Ondansetron | Beta | $\alpha=4, \ \beta=34$ |
+| - No significant emesis, significant ADE, treatment, Ondansetron| Beta | $\alpha=26, \ \beta=130$ |
+| - Significant emesis, Metoclopramide | Beta | $\alpha=6, \ \beta=4$ |
+| - Significant emesis, significant ADE, Metoclopramide| Beta | $\alpha=3, \ \beta=1$ |
+| - Significant emesis, significant ADE, no treatment, resolution, Metoclopramide | Beta | $\alpha=0.99, \ \beta=0.03$ |
+| - No significant emesis, significant ADE, Metoclopramide| Beta | $\alpha=4, \ \beta=25$ |
+| - No significant emesis, significant ADE, treatment, Metoclopramide | Beta | $\alpha=12, \ \beta=12$ |
+| Total healthcare costs |  |  |
+| - Treatment                     | gamma     | shape = 25, scale = 0.4  |
+| - Episode of significant emesis | gamma     | shape = 56, scale = 0.5  |
+| - ADE                           | gamma     | shape = 45, scale = 0.45 |
+| - Treatment of ADE              | gamma     | shape = 25, scale = 0.2  |

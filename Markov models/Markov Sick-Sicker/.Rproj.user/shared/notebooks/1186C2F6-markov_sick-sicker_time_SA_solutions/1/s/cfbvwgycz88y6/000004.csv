@@ -1,0 +1,2 @@
+"0","# add a legend to the graph "
+"0","legend(""topright"", v_n, col = 1:n_s,lty = 1:n_s, bty = ""n"")  "

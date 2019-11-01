@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"plot(df_cea, effect_units = \"Quality of Life\", xlim = c(17, 18))","line_number":0}],"message":"Error in plot(df_cea, effect_units = \"Quality of Life\", xlim = c(17, 18)) : \n  object 'df_cea' not found\n"}

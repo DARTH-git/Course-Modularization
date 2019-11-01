@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571191071482.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "196185411",
+    "id" : "CC71BB8D",
+    "lastKnownWriteTime" : 1571251275,
+    "last_content_update" : 1571251275143,
+    "path" : "~/Google Drive/Projects/DARTH/Course Modularization/Markov-models/Markov 3-state/Markov_3state_time.R",
+    "project_path" : "Markov 3-state/Markov_3state_time.R",
+    "properties" : {
+        "cursorPosition" : "192,0",
+        "scrollLine" : "184"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

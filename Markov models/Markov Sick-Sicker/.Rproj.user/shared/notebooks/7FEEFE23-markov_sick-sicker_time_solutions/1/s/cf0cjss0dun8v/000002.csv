@@ -1,0 +1,6 @@
+"0","v_ratio_S1S2_td <- m_M_notrt[, ""S1""] / m_M_notrt[, ""S2""]"
+"0","plot(0:n_t, v_ratio_S1S2_td,"
+"0","     xlab = ""Cycle"", "
+"0","     ylab = ""Ratio S1 vs S2"", "
+"0","     main = ""Ratio of sick and sicker"", "
+"0","     col = ""black"", type = ""l"")"

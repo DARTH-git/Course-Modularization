@@ -1,0 +1,4 @@
+"0","df_cea <- calculate_icers(cost       = df_ce$Cost,"
+"0","                          effect     = df_ce$Effect,"
+"0","                          strategies = df_ce$Strategy)"
+"0","df_cea"

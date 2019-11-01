@@ -1,0 +1,5 @@
+"0","# create a plot of the data"
+"0","matplot(m_M_td_notrt, type = 'l', "
+"0","        ylab = ""Probability of state occupancy"","
+"0","        xlab = ""Cycle"","
+"0","        main = ""Cohort Trace"")                 "

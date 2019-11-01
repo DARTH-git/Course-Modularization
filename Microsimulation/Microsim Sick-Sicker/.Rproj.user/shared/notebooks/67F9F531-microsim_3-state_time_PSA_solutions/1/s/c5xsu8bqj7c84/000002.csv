@@ -1,0 +1,3 @@
+"0","source(""Function_Microsim_3-state_time.R"")"
+"0","# Test microsimulation function"
+"0","calculate_ce_out(df_psa_input[1, ], n_wtp = 10000)"

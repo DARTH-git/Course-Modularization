@@ -1,0 +1,2 @@
+"0","fit_SD <- fit.fun(time = ""time"", status = ""status"", data = data_SD, times = times, "
+"0","                  extrapolate = T)"

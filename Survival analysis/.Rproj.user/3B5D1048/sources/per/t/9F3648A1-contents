@@ -1,0 +1,382 @@
+## Code developed for:
+## Approximate posterior distribution using copulas
+## SMDM, Pittsburgh 2017 
+library(matrixStats)
+
+####################################################### 
+################### LOAD WORKSPACE #################### 
+####################################################### 
+rm(list = ls())
+
+############################################## 
+################### MODEL #################### 
+############################################## 
+# This function estimates outcomes describing epidemiology of a hypothetical disease # as well as outcomes (life-years, costs) for estimating cost-effectiveness of a policy # to expand treatment access to individual's with early stage disease.
+mod <- function(par_vector, project_future=FALSE) { 
+  # par_vector: a vector of model parameters 
+  # project_future: TRUE/FALSE, whether to project outcomes for policy comparison 
+  pop_size <- 1e6 # population size hard-coded as 1 million
+  mu_b <- 0.015 # background mortality rate hard-coded as 0.015
+  mu_e <- par_vector[1] # cause-specific mortality with early-stage disease
+  mu_l <- par_vector[2] # cause-specific mortality with late-stage disease
+  mu_t <- par_vector[3] # cause-specific mortality on treatment
+  p    <- par_vector[4] # transition rate from early to late-stage disease
+  r_l  <- r_e <- par_vector[5] # rate of treatment uptake
+  rho  <- par_vector[6] # effective contact rate
+  b    <- par_vector[7] # fraction of population in at-risk group
+  c    <- par_vector[8] # annual cost of treatment
+  
+  ######## Prepare to run model ################### 
+  n_yrs <- if(project_future) { 51 } else { 30 } 
+  # no. years to simulate (30 to present, 51 for 20 year analytic horizon)
+  sim   <- if(project_future) { 1:2 } else { 1 } 
+  # which scenarios to simulate: 1=base case, 2=expanded treatment access
+  v_mu <- c(0, 0, mu_e, mu_l, mu_t) + mu_b 
+  # vector of mortality rates
+  births <- pop_size*mu_b*c(1-b, b) 
+  # calculate birth rate for equilibrium population before epidemic
+  init_pop <- pop_size*c(1-b, b-0.001, 0.001, 0, 0, 0) 
+  names(init_pop) <- c("N","S","E","L","T","D") 
+  # creates starting vector for population
+  trace <- matrix(NA, 12*n_yrs, 6) 
+  # creates a table to store simulation trace
+  colnames(trace) <- c("N","S","E","L","T","D") 
+  results <- list() 
+  # creates a list to store results
+  
+  ######## Run model ################### 
+  for(s in sim) { 
+    P0 <- P1 <- init_pop 
+    for(m in 1:(12*n_yrs)) { #m=1
+      lambda <- rho*sum(P0[3:4])/sum(P0[2:5]) # calculates force of infection
+      P1[1:2] <- P1[1:2]+births/12            # births
+      P1[-6]  <- P1[-6]-P0[-6]*v_mu/12        # deaths: N, S, E, L, T, to D
+      P1[6]   <- P1[6]+sum(P0[-6]*v_mu/12)    # deaths: N, S, E, L, T, to D
+      P1[2]   <- P1[2]-P0[2]*lambda/12        # infection: S to E
+      P1[3]   <- P1[3]+P0[2]*lambda/12        # infection: S to E
+      P1[3]   <- P1[3]-P0[3]*p/12             # progression: E to L
+      P1[4]   <- P1[4]+P0[3]*p/12             # progression: E to L
+      P1[4]   <- P1[4]-P0[4]*r_l/12           # treatment uptake: L to T
+      P1[5]   <- P1[5]+P0[4]*r_l/12           # treatment uptake: L to T
+      if(s==2 & m>(12*30)) { 
+        P1[3] <- P1[3]-P0[3]*r_e/12           # treatment uptake: E to T (scen. 2)
+        P1[5] <- P1[5]+P0[3]*r_e/12           # treatment uptake: E to T (scen. 2)
+      }
+      trace[m, ] <- P0 <- P1                   # fill trace, reset pop vectors
+    }
+    results[[s]] <- trace                     # save results for each scenario
+  }
+  ######## Report results ################### 
+  if(project_future==FALSE) { 
+    ## Return calibration metrics, if project_future = FALSE 
+    return(list(prev = (rowSums(trace[,3:5])/rowSums(trace[,1:5]))[c(10,20,30)*12], 
+                # Prevalence at 10,20,30 years 
+                surv = 1/(v_mu[3]+p)+ p/(v_mu[3]+p)*(1/v_mu[4]),
+                # HIV survival without treatment 
+                tx = trace[30*12, 5]# Treatment volume at 30 years 
+    ) 
+    )
+  } else { 
+    ## Policy projections for CE analysis, if project_future = TRUE 
+    return(list(trace0 = results[[1]],
+                # Trace without expanded treatment access 
+                trace1 = results[[2]],
+                # Trace with expanded treatment access 
+                inc_LY = sum(results[[2]][(30*12+1):(51*12),-6]- 
+                               results[[1]][(30*12+1):(51*12),-6])/12, 
+                # incr. LY lived with expanded tx 
+                inc_cost = sum(results[[2]][(30*12+1):(51*12),5]- 
+                                 results[[1]][(30*12+1):(51*12),5])*c/12 
+                # incr. cost with expanded tx 
+    ) 
+    )
+  }
+}
+
+## Test it
+mod(rep(0.5, 8), project_future=F) # works 
+mod(rep(0.5, 8), project_future=T) # works
+
+################################################### 
+############### SAMPLE FROM PRIOR ################# 
+################################################### 
+# This function returns a sample from the prior parameter distribution, 
+# with each column a different parameter and each row a different parameter set.
+
+# sample.prior.srs: this uses a simple random sample of the parameter space. 
+# sample.prior.lhs: this uses a latin-hypercube sample of the parameter space.
+
+## Simple random sample 
+sample.prior.srs <- function(n) { 
+  # n: the number of samples desired 
+  draws <- data.frame(mu_e = rlnorm(n, log(0.05)-1/2*0.5^2, 0.5), 
+                      mu_l = rlnorm(n, log(0.25)-1/2*0.5^2, 0.5), 
+                      mu_t = rlnorm(n, log(0.025)-1/2*0.5^2, 0.5), 
+                      p    = rlnorm(n, log(0.1)-1/2*0.5^2, 0.5),
+                      r_l  = rlnorm(n, log(0.5)-1/2*0.5^2, 0.5),
+                      rho  = rlnorm(n, log(0.5)-1/2*0.5^2, 0.5),
+                      b    = rbeta(n, 2, 8), 
+                      c    = rlnorm(n, log(1000)-1/2*0.2^2, 0.2)
+  )
+  return(as.matrix(draws)) 
+}
+
+## Latin hypercube sample 
+# install.packages("lhs") 
+require(lhs)
+sample.prior.lhs <- function(n) { 
+  # n: the number of samples desired 
+  draws0 <- randomLHS(n=n, k=8) 
+  draws <- data.frame(mu_e = qlnorm(draws0[,1], log(0.05)-1/2*0.5^2, 0.5), 
+                      mu_l = qlnorm(draws0[,2], log(0.25)-1/2*0.5^2, 0.5), 
+                      mu_t = qlnorm(draws0[,3], log(0.025)-1/2*0.5^2, 0.5), 
+                      p    = qlnorm(draws0[,4], log(0.1)-1/2*0.5^2, 0.5),
+                      r_l  = qlnorm(draws0[,5], log(0.5)-1/2*0.5^2, 0.5),
+                      rho  = qlnorm(draws0[,6], log(0.5)-1/2*0.5^2, 0.5),
+                      b    = qbeta(draws0[,7], 2, 8),
+                      c    = qlnorm(draws0[,8], log(1000)-1/2*0.2^2, 0.2)
+  )
+  return(as.matrix(draws)) 
+}
+
+sample.prior <- sample.prior.lhs # use the lhs version as this is more efficient 
+
+# Test it 
+sample.prior(3) # works.
+
+################################################### 
+################### LIKELIHOOD #################### 
+################################################### 
+# This function calculates the log-likelihood for a parameter set or matrix of parameter sets 
+# excluding c, the parameter for treatment cost. c is fixed at an arbitrary value (1) 
+# as it has no role in the calibration.
+l_likelihood <- function(par_vector) { 
+  # par_vector: a vector (or matrix) of model parameters 
+  if(is.null(dim(par_vector))) { # If vector, change to matrix
+    par_vector <- t(par_vector) 
+  }
+  llik <- rep(0, nrow(par_vector)) 
+  for(j in 1:nrow(par_vector)) { # j=1
+    jj <- tryCatch( { 
+      res_j   <- mod(c(as.numeric(par_vector[j,]),1))
+      # Obtain model outputs from a set of parameters
+      llik[j] <- llik[j] + sum(dbinom(c(25,75,50), 500, res_j[["prev"]], log = TRUE)) 
+      # prevalence likelihood
+      llik[j] <- llik[j] + dnorm(10, res_j[["surv"]], 2/1.96, log = TRUE) 
+      # survival likelihood
+      llik[j] <- llik[j] + dnorm(75000, res_j[["tx"]], 5000/1.96, log = TRUE) 
+      # treatment volume likelihood
+    }, error = function(e) NA) 
+    if(is.na(jj)) { llik[j] <- -Inf }
+  } 
+  return(llik) 
+}
+
+# Test it 
+l_likelihood(rbind(rep(0.5,7), rep(0.6,7))) # works
+
+################################################### 
+##################### PRIOR ####################### 
+################################################### 
+# This function calculates the log-prior for a parameter set or matrix of 
+# parameter sets excluding c, the parameter for treatment cost. c is fixed at an 
+# arbitrary value (1) as it has no role in the calibration.
+l_prior <- function(par_vector) { 
+  # par_vector: a vector (or matrix) of model parameters (omits c) 
+  if(is.null(dim(par_vector))) { # If vector, change to matrix
+    par_vector <- t(par_vector) 
+  }
+  lprior <- rep(0,nrow(par_vector)) 
+  lprior <- lprior + dlnorm(par_vector[, 1], log(0.05 )-1/2*0.5^2, 0.5, log = TRUE) # mu_e  
+  lprior <- lprior + dlnorm(par_vector[, 2], log(0.25 )-1/2*0.5^2, 0.5, log = TRUE) # mu_l 
+  lprior <- lprior + dlnorm(par_vector[, 3], log(0.025)-1/2*0.5^2, 0.5, log = TRUE) # mu_t 
+  lprior <- lprior + dlnorm(par_vector[, 4], log(0.1  )-1/2*0.5^2, 0.5, log = TRUE) # p
+  lprior <- lprior + dlnorm(par_vector[, 5], log(0.5  )-1/2*0.5^2, 0.5, log = TRUE) # r_l
+  lprior <- lprior + dlnorm(par_vector[, 6], log(0.5  )-1/2*0.5^2, 0.5, log = TRUE) # rho 
+  lprior <- lprior + dbeta( par_vector[, 7], 2, 8, log = TRUE)                      # b
+  return(lprior)
+} 
+# Test it 
+l_prior(rbind(rep(0.5,7),rep(0.6,7))) # works
+
+################################################### 
+################## MAP ESTIMATION ################# 
+################################################### 
+# This section obtains a single best-fitting parameter set via maximum a posteriori 
+# estimation. To do so, an optimization algorithm is used to identify the parameter set 
+# that maximizes the sum of log-prior plus log-likelihood, which is equal to the log-
+# posterior (plus a constant which can be ignored). 
+# Different optimization routines are tried, BFGS works best for this example.
+
+# Function for log-posterior 
+l_post <- function(par_vector) { 
+  return( l_prior(par_vector) + l_likelihood(par_vector) ) 
+}
+
+# Optimize with various methods in optim tool-box 
+# optOut_nm   <- optim(rep(.5, 7), l_post, 
+#                      control = list(fnscale = -1))
+# optOut_nm    # est max(l_post) = -43.5
+# optOut_cg   <- optim(rep(.5, 7), l_post, method="CG", 
+#                      control = list(fnscale = -1))
+# optOut_cg    # est max(l_post) = -12.0
+optOut_bfgs <- optim(rep(.5, 7), l_post, method = "BFGS", 
+                     hessian = T,
+                     control = list(fnscale = -1, maxit = 1000)) 
+optOut_bfgs  # est max(l_post) = -6.94
+
+optOut_bfgs <- optim(rep(.1, 7), l_post, method = "BFGS", 
+                     hessian = T,
+                     control = list(fnscale = -1)) 
+optOut_bfgs  # est max(l_post) = -6.94
+
+## Vector of MAP
+v.map <- optOut_bfgs$par
+
+## Covariance matrix from Hessian using BFGS
+library(MHadaptive)
+## Is Positive Definite?
+isPositiveDefinite(-optOut_bfgs$hessian)
+# Covariance matrix
+m.cov <- solve(-optOut_bfgs$hessian)
+# Correlation matrix
+m.cor <- cov2cor(m.cov)
+colnames(m.cor) <- rownames(m.cor) <- paste("par", 1:7, sep = "")
+ggcorrplot::ggcorrplot(m.cor)
+ggsave(filename = "/Users/FAE/Google Drive/SMDM/2017/Abstracts/Copula/Cor_copula.pdf")
+
+# Standard error
+v.se <- sqrt(diag(m.cov))
+
+sample.post.copulas <- function(n, v.map, v.se, m.cor) { 
+  library(dampack)
+  # n: the number of samples desired 
+  # v.map: vector of map estimates
+  # v.se:  vector of SD from map estimates
+  # m.cor: matrix of correlations
+  ### Moment matching
+  v.params.lnorm <- lnorm_params(m = v.map[-7], v = v.se[-7]^2)
+  v.params.beta  <- beta_params(mean = v.map[7], sigma = v.se[7])
+  # draws <- data.frame(mu_e = rlnorm(n, meanlog = v.params.lnorm$mu[1], sdlog = v.params.lnorm$sigma[1]), 
+  #                     mu_l = rlnorm(n, meanlog = v.params.lnorm$mu[2], sdlog = v.params.lnorm$sigma[2]), 
+  #                     mu_t = rlnorm(n, meanlog = v.params.lnorm$mu[3], sdlog = v.params.lnorm$sigma[3]), 
+  #                     p    = rlnorm(n, meanlog = v.params.lnorm$mu[4], sdlog = v.params.lnorm$sigma[4]),
+  #                     r_l  = rlnorm(n, meanlog = v.params.lnorm$mu[5], sdlog = v.params.lnorm$sigma[5]),
+  #                     rho  = rlnorm(n, meanlog = v.params.lnorm$mu[6], sdlog = v.params.lnorm$sigma[6]),
+  #                     b    = rbeta(n, shape1 = v.params.beta$alpha, shape2 = v.params.beta$beta)
+  # )
+  # m.draws <- as.matrix(draws)
+  #### Induce correlation using Copulas ####
+  ### Sample from MVN for copula
+  z <- mvrnorm(n, mu = rep(0, length(v.map)), 
+               Sigma = m.cor, empirical=T)
+  
+  ### Inverse CDF to obtain uniform distributions
+  u <- pnorm(z)
+  ### Posterior samples
+  samp_post <- matrix(NA, ncol = length(v.map), nrow = n)
+  colnames(samp_post) <- c("mu_e", "mu_l", "mu_t", "p", "r_l", "rho", "b")
+  for(i in 1:6){
+    samp_post[, i] <- qlnorm(p = u[, i], 
+                             meanlog = v.params.lnorm$mu[i], 
+                             sdlog = v.params.lnorm$sigma[i])
+  }
+  samp_post[, 7] <- qbeta(p = u[, 7], 
+                          shape1 = v.params.beta$alpha, 
+                          shape2 = v.params.beta$beta)
+  return(samp_post) 
+}
+# Test it 
+post.copulas <- sample.post.copulas(n = 10000, v.map = v.map, v.se = v.se, m.cor = m.cor) # works
+
+v.copulas.means <- colMeans(post.copulas)
+v.copulas.sd    <- colSds(post.copulas)
+
+################################################### 
+###################### IMIS ####################### 
+################################################### 
+# This section obtains a sample from the posterior parameter distribution via IMIS 
+# install.packages("IMIS") 
+require(IMIS)
+# IMIS needs three functions to be defined: 
+# sample.prior -- draws samples, and we have already created this
+# prior -- evaluates prior density of a parameter set or sets
+prior <- function(par_vector) { 
+  exp(l_prior(par_vector)) 
+}
+
+# likelihood -- evaluates likelihood of a parameter set or sets
+likelihood <- function(par_vector) { 
+  exp(l_likelihood(par_vector)) 
+}
+
+# Run IMIS
+set.seed(1234) 
+imis_res <- IMIS(B=100, B.re = 1e4, number_k = 400, D=1)
+str(imis_res)
+post.imis <- imis_res$resample[, -8]
+## Correlation
+m.imis.cor <- cor(post.imis)
+colnames(m.imis.cor) <- rownames(m.imis.cor) <- paste("par", 1:7, sep = "")
+ggcorrplot::ggcorrplot(m.imis.cor)
+ggsave(filename = "/Users/FAE/Google Drive/SMDM/2017/Abstracts/Copula/Cor_imis.pdf")
+
+## Means & SD
+v.imis.means <- colMeans(post.imis)
+v.imis.sd    <- colSds(post.imis)
+cbind(v.map, v.imis.means, v.copulas.means)
+cbind(v.se, v.imis.sd, v.copulas.sd)
+
+############################################### 
+################## Plot PDFs ################## 
+###############################################
+library(ggplot2)
+library(reshape2)
+# samp.prior.df <- melt(cbind(PDF = "Prior", as.data.frame(samp_i[1:1e4, ])), variable.name = "Parameter")
+samp.post.imis.df  <- melt(cbind(PDF = "Posterior IMIS", as.data.frame(post.imis)), variable.name = "Parameter")
+samp.post.map.df  <- melt(cbind(PDF = "Posterior MAP-Copula", as.data.frame(post.copulas)), variable.name = "Parameter")
+samp.prior.post.df <- rbind(samp.post.imis.df, samp.post.map.df)
+# samp.prior.post.df$PDF <- ordered(samp.prior.post.df$PDF, 
+#                                   levels = c("Posterior SIR", "Posterior IMIS"))
+ggplot(samp.prior.post.df, 
+       aes(x = value, y = ..density.., fill = PDF)) +
+  facet_wrap(~Parameter, scales = "free", ncol = 4) +
+  geom_density(alpha=0.5) +
+  theme_bw(base_size = 14)
+
+############################################## 
+################## K-S Test ################## 
+##############################################
+### Test for differences:
+# MAP vs IMIS
+2*pnorm(-abs(v.map-v.imis.means)/(v.se + v.imis.sd))
+# Copulas vs IMIS
+2*pnorm(-abs(v.copulas.means-v.imis.means)/(v.copulas.sd + v.imis.sd))
+# Variance test
+var.test(post.imis[, 1], post.copulas[, 1])
+        
+# Kolmogorov-Statistic
+ks.test(post.imis[, 5], post.copulas[, 5],
+        alternative = c("two.sided", "less", "greater"),
+        exact = NULL)
+
+cramer.test(post.imis[1:1000, ], post.copulas[1:1000, ])
+
+x <- post.imis
+y <- post.copulas
+dcor.t(x, y)
+dcor.ttest(x, y)
+
+dx <- dist(x)
+dy <- dist(y)
+dcor.t(dx, dy, distance = T)
+dcor.ttest(dx, dy, distance = T)
+
+#################################################### 
+################## SAVE WORKSPACE ################## 
+####################################################
+save.image("/Users/FAE/Google Drive/SMDM/2017/Abstracts/Copula/Bayesian_Calibration_Copula.RData")
+
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# 
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# The end.  #-#-#-#-#-#-#-#-#-#-#-#-#-#-# 
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

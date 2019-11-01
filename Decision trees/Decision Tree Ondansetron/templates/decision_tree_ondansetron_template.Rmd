@@ -57,11 +57,11 @@ exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
+\newpage
+
 ```{r}
 rm(list = ls())    # clear memory (removes all the variables from the workspace)
 ```
-
-\newpage
 
 # 01 Load packages
 

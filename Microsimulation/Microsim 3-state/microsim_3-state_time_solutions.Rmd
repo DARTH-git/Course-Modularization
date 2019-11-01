@@ -56,11 +56,11 @@ exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
+\newpage
+
 ```{r}
 rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
-
-\newpage
 
 # 01 Load packages
 
@@ -114,7 +114,7 @@ u_S  <- 0.85      # utility when sick
 u_D  <- 0         # utility when dead 
 ```
 
-# 04 Sample individual level characteristicS
+# 04 Sample individual level characteristics
 
 ## 04.1 Static characteristics
 

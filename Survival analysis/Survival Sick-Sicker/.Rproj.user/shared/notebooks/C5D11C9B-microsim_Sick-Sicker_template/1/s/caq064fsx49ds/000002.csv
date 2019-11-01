@@ -1,0 +1,4 @@
+"0","v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline "
+"0","# sample from age distribution an initial age for every individual"
+"0","v_age0  <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) "
+"0","df_X    <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0)"

@@ -1,0 +1,3 @@
+"0","# Construct a DES model out of the simultaneously fitted multistate model"
+"0","DES_data <- sim.fmsm(best.fit, start = 1, t = n_years, trans = tmat, M = n_i)"
+"0","m_M_DES  <- trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat)"

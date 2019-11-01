@@ -1,0 +1,4 @@
+"0","tmat <- matrix(NA, n_s, n_s, dimnames = list(v_n,v_n))"
+"0","tmat[""healthy"", ""sick""]  <- 1"
+"0","tmat[""healthy"", ""dead""]  <- 2"
+"0","tmat[""sick""   , ""dead""]  <- 3"

@@ -1,0 +1,2 @@
+"0","legend(""right"", c(""True Data"", ""DES"",""Microsim"",  ""PSM""),"
+"0","        col = 1:4, lty = rep(1,4), bty= ""n"")"

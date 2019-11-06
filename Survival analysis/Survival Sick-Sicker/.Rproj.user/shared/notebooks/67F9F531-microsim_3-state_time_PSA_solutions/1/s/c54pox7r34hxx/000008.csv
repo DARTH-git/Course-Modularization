@@ -1,7 +1,0 @@
-"0","# Initialize dataframes with PSA output "
-"0","# Dataframe of costs and effectiveness "
-"0","df_c <- df_e <- as.data.frame(matrix(0, "
-"0","                             nrow = n_sim,"
-"0","                             ncol = 1))"
-"0","colnames(df_c) <- ""Cost"""
-"0","colnames(df_e) <- ""Effectiveness"""

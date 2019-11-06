@@ -1,0 +1,5 @@
+"0",""
+"0","# Net Monetary Benefit (NMB) "
+"0","# Create NMB matrix"
+"0","nmb <- toy[, 5:7]"
+"0","head(nmb)"

@@ -1,0 +1,8 @@
+"0","names_params <- c(""Mean No. Visits (A)"", "
+"0","                   ""Mean No. Visits (B)"","
+"0","                   ""Prob. Failing (A)"", "
+"0","                   ""Prob. Failing (B)"")"
+"0","# Matrix with parameters"
+"0","x <- toy[, 1:4]"
+"0","colnames(x) <- names_params"
+"0","head(x)"

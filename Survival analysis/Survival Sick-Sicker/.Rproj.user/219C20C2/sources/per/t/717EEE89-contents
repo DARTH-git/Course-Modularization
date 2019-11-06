@@ -1,0 +1,133 @@
+---
+title: "Cost-Effectiveness and Decision Modeling in R"
+author: "The DARTH workgroup"
+subtitle: Exercises – Survival analysis in Decision modeling   
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+   Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+# Exercise: A Microsimulation model – The Sick-Sicker model
+
+In this exercise, we will model a hypothetical disease that affects individuals with an average age of 25 years and results in increased mortality, increased healthcare costs, and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: a no-treatment and a treatment strategy. Under the treatment strategy, individuals in the sick and sicker states are treated until they recover (only if sick; individuals in the sicker state cannot recover) or die. The cost of the treatment is additive to the baseline healthcare costs of being sick or sicker. The treatment improves quality of life for those individuals who are sick but has no impact on the quality of life of those who are sicker. Unfortunately, it is not possible to reliably differentiate between people in the sick and sicker states, so treatment cannot be targeted to only those in the sick state. You are asked to evaluate the cost-effectiveness of the treatment.
+
+To model this disease, we will rely on a microsimulation model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
+
+You were given access to individual-level data of patients with the hypothetical disease. From the data you are asked to inform the transition probabilities for the transitions from S1 to H, from S1 to S2 and from S1 to D directly from the data through the use  of parametric survival functions. A snapshot of the data is presented below:
+
+```{r}
+data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
+head(data_long)
+```
+
+## Tasks
+
+**Part 1**
+
+1. Use the `R` script “Surv_Sick_Sicker_template.R” as a starting point to code the survival analysis solution to the Sick-Sicker model.
+
+2. Load the individual level data in long form from the `data_long_Sicker.csv` file.
+
+3. Subset the data by transition so that you can fit separate models for each transition.
+
+4. Draw Kaplan Meier plots for each transition.
+
+5. Estimate parametric distributions to the patient level survival data for all data-informed  transitions. 
+
+6. Select the one with the most plausible fit (both clinically and statistically).
+
+**OPTIONAL**
+
+1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation.HINT: Depending on the distribution you choose you will need to track more time-in-state variables.
+
+2.	Run the microsimulation model and draw output from it.
+
+
+**Table 1: Input parameters for the time dependent Sick-Sicker Microsimulation **
+
+|           **Parameter**            |  **R name** |   **Value**   |
+|:-----------------------------------|:------------|:-------------:|
+| Time horizon                       | `n_t`       | 30 years      |
+| Cycle length                       |             | 1 year        |
+| Names of simulated individuals     | `n_i`       | 1000          |
+| Names of health states             | `v_n`       | H, S1, S2, D  |
+| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Population characteristics         |             |               |
+| - Agedistribution                  |  --         | Range:25-55 distributed as in `MyPopulation-AgeDistribution.csv`|
+| Annual transition probabilities    |             |               |
+| - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
+| Annual mortality                   |             |               |
+| - All-cause mortality (H to D)     | `p_HD`      | Human Mortality Database: age dependent from 2015|
+| Annual costs                       |             |               |
+| - Healthy individuals              | `c_H`       |  $2,000       |
+| - Sick individuals in S1           | `c_S1`      |  $4,000       |
+| - Sick individuals in S2           | `c_S2`      |  $15,000      |
+| - Dead individuals                 | `c_D`       |  $0           |
+| - Additional costs of sick individuals treated in S1 or S2       | `c_trt` | $12,000 |
+| Utility weights                    |             |               |
+| - Healthy individuals              | `u_H`       |  1.00         |
+| - Sick individuals in S1           | `u_S1`      |  0.75         |
+| - Sick individuals in S2           | `u_S2`      |  0.50         |
+| - Dead individuals                 | `u_D`       |  0.00         |
+| Intervention effect                |             |               |
+| - Utility for treated individuals in S1 | `u_trt` |  0.95        |
+| Time varying extension of Sick-Sicker model |     |              |
+| - Treatment effect modifier at baseline     | `v_x` | Uniform(0.95, 1.05) |
+
+
+```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+if (!require(here)) install.packages('here')
+if (!require(knitr)) install.packages('knitr')
+knitr::include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+```
+

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572885873383.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3586685911",
+    "id" : "DC5457ED",
+    "lastKnownWriteTime" : 1571221282,
+    "last_content_update" : 1571221282,
+    "path" : "C:/Users/Alan Yang/Google Drive/DARTH/Courses/2019 Washington - Choice/VOI_instructors/VOI_Sick-Sicker.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "33,29",
+        "scrollLine" : "19"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

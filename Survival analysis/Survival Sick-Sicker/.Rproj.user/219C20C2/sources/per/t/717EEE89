@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572882530959.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2781052448",
+    "id" : "717EEE89",
+    "lastKnownWriteTime" : 1572882834,
+    "last_content_update" : 1572882834786,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Survival analysis/Survival Sick-Sicker/exercise worksheets/survival_sick-sickers_exercise.Rmd",
+    "project_path" : "exercise worksheets/survival_sick-sickers_exercise.Rmd",
+    "properties" : {
+        "cursorPosition" : "107,68",
+        "scrollLine" : "91"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

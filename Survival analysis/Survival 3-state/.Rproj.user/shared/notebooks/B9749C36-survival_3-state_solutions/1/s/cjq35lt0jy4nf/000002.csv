@@ -1,0 +1,7 @@
+"0","v_n       <- c(""healthy"", ""sick"", ""dead"")  # state names"
+"0","n_s       <- length(v_n)                   # No of states "
+"0","n_i       <- 5000                          # number of simulations "
+"0","c_l       <- 1 / 12                        # cycle length (a month)"
+"0","n_t       <- 20                            # number of years (20 years)"
+"0","times     <- seq(0, n_t, c_l)              # the cycles in years"
+"0","set.seed(2009)                             # set the seed"

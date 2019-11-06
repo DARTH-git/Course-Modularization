@@ -1,0 +1,249 @@
+# title: "Value of Information Analysis using Regression Metamodeling"
+# subtitle: ESMDM 2018 Short Course, June 10th, Leiden, The Netherlands.
+# author: "Hawre Jalal & Fernando Alarid-Escudero"
+
+## Clean everythng from workspace
+rm(list=ls())
+
+## Install Packages (If you haven't done so yet!)
+# install.packages("gdata")
+# install.packages("xlsx")
+# install.packages("ggplot2")
+# install.packages("reshape2")
+# install.packages("scales")
+# install.packages("grid")
+# install.packages("gridExtra")
+# install.packages("dplyr")
+# install.packages("matrixStats")
+library(matrixStats)
+library(ggplot2)
+library(scales)  # For dollar labels
+library(grid)
+library(reshape2)
+library(mgcv) # For fitting splines
+
+## Set working space
+#Define work directory
+# #Mac OS X
+#setwd("/Users/") 
+#Windows 
+#setwd("c:\\VOI_Course") 
+
+#### Load VOI Functions ####
+source("R_code/ESMDM2018_VOI_Functions.R")
+source("R_code/GA_functions.R")
+
+#### Simple Example: WTP = $50,000/QALY ####
+## Load simulation file
+# Read the `.csv` simulation file into `R`.
+toy <- read.csv("data/psa_sick_sicker.csv", header = TRUE)[, -1]
+
+n.sim <- nrow(toy)
+
+#Display first five observations of the data fram using the command `head`
+head(toy)
+
+### Net Monetary Benefit (NMB) ####
+# Create NMB matrix
+wtp <- 120000
+toy$NMB_NoTrt <- wtp * toy$QALY_NoTrt - toy$Cost_NoTrt
+toy$NMB_Trt <- wtp * toy$QALY_Trt - toy$Cost_Trt
+
+nmb <- toy[, c("NMB_NoTrt", "NMB_Trt")]
+head(nmb)
+
+# Number of Strategies
+n.strategies <- ncol(nmb)
+n.strategies
+
+# Assign name of strategies
+strategies <- c("No Trt", "Trt")
+colnames(nmb) <- strategies
+head(nmb)
+
+## Format data frame suitably for plotting
+nmb.gg <- melt(nmb,  
+               variable.name = "Strategy", 
+               value.name = "NMB")
+
+## Plot NMB for different strategies
+# Faceted plot by Strategy
+ggplot(nmb.gg, aes(x = NMB/1000)) +
+  geom_histogram(aes(y =..density..), col="black", fill = "gray") +
+  geom_density(color = "red") +
+  facet_wrap(~ Strategy, scales = "free_y") +
+  xlab("Net Monetary Benefit (NMB) x10^3") +
+  scale_x_continuous(breaks = number_ticks(5), labels = dollar) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw()
+
+#### Incremental NMB (INMB) ####
+# Calculate INMB of NoTrt vs Trt
+# Only B vs A but we could have plotted all combinations
+inmb <- data.frame(Simulation = 1:n.sim,
+                   `Trt vs. No Trt` = nmb$Trt - nmb$`No Trt`) 
+
+## Format data frame suitably for plotting
+inmb.gg <- melt(inmb, id.vars = "Simulation", 
+                variable.name = "Comparison", 
+                value.name = "INMB")
+txtsize<-16
+## Plot INMB
+ggplot(inmb.gg, aes(x = INMB/1000)) +
+  geom_histogram(aes(y =..density..), col="black", fill = "gray") +
+  geom_density(color = "red") +
+  geom_vline(xintercept = 0, col = 4, size = 1.5, linetype = "dashed") +
+  facet_wrap(~ Comparison, scales = "free_y") +
+  xlab("Incremental Net Monetary Benefit (INMB) in thousand $") +
+  scale_x_continuous(breaks = number_ticks(5), limits = c(-100, 100)) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw(base_size = txtsize)
+
+#### Loss Matrix ####  
+# Find optimal strategy (d*) based on the highest expected NMB
+d.star <- which.max(colMeans(nmb))
+d.star
+
+## Compute Loss matrix iterating over all strategies
+loss <- as.matrix(nmb - nmb[, d.star])
+head(loss)
+
+#### EVPI ####
+## Find maximum loss overall strategies at each state of the world 
+## (i.e., PSA sample)
+max.loss.i <- rowMaxs(loss)
+head(max.loss.i)
+## Average across all states of the world
+evpi <- mean(max.loss.i)
+evpi
+
+#### EVPPI ####
+# Matrix with parameters
+x <- toy[, c(1:14)]
+head(x)
+
+# Number and names of parameters
+n.params <- ncol(x)
+n.params
+names.params <- colnames(x) 
+names.params
+
+### Histogram of parameters
+# Format data suitably for plotting
+params <- melt(x, variable.name = "Parameter")
+head(params)
+# Make parameter names as factors (helps with plotting formatting)
+params$Parameter <- factor(params$Parameter, 
+                           levels = names.params, 
+                           labels = names.params)
+# Facet plot of parameter distributions
+ggplot(params, aes(x = value)) + 
+  geom_histogram(aes(y =..density..), col="black", fill = "gray") +
+  geom_density(color = "red") +
+  facet_wrap(~ Parameter, scales = "free") +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw(base_size = 14)
+
+### Construct Spline metamodel
+### Splines
+## Initialize EVPPI vector 
+evppi.splines <- matrix(0, n.params)
+lmm1 <- vector("list", n.params)
+lmm2 <- vector("list", n.params)
+for (p in 1:n.params){ # p <- 1
+  print(paste("Computing EVPPI of parameter", names.params[p]))
+  # Estimate Splines
+  lmm1[[p]] <- gam(loss[, 1] ~ s(x[, p]))
+  lmm2[[p]] <- gam(loss[, 2] ~ s(x[, p]))
+  
+  # Predict Loss using Splines
+  Lhat.splines <- cbind(lmm1[[p]]$fitted, lmm2[[p]]$fitted)
+  
+  # Compute EVPPI
+  evppi.splines[p] <- mean(rowMaxs(Lhat.splines))
+}
+### Ploting EVPPI using of order polynomial
+evppi.splines.gg <- data.frame(Parameter = names.params, EVPPI = evppi.splines)
+evppi.splines.gg$Parameter <- factor((evppi.splines.gg$Parameter), 
+                                     levels = names.params[order(evppi.splines.gg$EVPPI, decreasing = TRUE)])
+
+# Plot EVPPI using ggplot2 package
+ggplot(data = evppi.splines.gg, aes(x = Parameter, y = EVPPI)) +
+  geom_bar(stat = "identity") +
+  ylab("EVPPI ($)") +
+  scale_y_continuous(breaks = number_ticks(6), labels = comma) +
+  theme_bw(base_size = 14)
+
+#### EVSI ####
+## Select parameters with positive EVPPI
+sel.params <- c(3, 4, 10, 12, 14)
+n.params <- length(sel.params)
+# Effective (prior) Sample size
+n0 <- numeric(length(sel.params))
+n0[1] <- 84+800 # p.S1S2 ~ Beta(84, 800)
+n0[2] <- 10+2000 # p.HD ~ Beta(10,2000)
+n0[3] <- 73.5 # cTrt ~ Gamma(73.5, 163.3) -> likelihood ~ Exponential
+n0[4] <- 50 # u.S1 ~ N(.75, .02 / sqrt(50) = )
+n0[5] <- 20 # u.Trt ~ N(.95, 0.02)
+
+n <- c(0, 100, seq(200, 2000, by = 200))
+n.samples <- length(n)
+
+### Each parameter individually (only assuming linear relationship)
+# Initialize EVSI matrix for each parameters
+evsi <- data.frame(N = n, matrix(0, nrow = n.samples, ncol = n.params))
+
+# Name columns of EVPSI matrix with parameter names
+colnames(evsi)[-1] <- names.params[sel.params]
+
+# Compute EVSI for all parameters separately
+for (p in 1:n.params){ # p <- 1
+  print(paste("Computing EVSI of parameter", names.params[p]))
+  # Update loss based on gaussian approximation for each sample of interest
+  for (nSamp in 1:n.samples){ # nSamp <- 10
+    Ltilde1 <- predict.ga(lmm1[[sel.params[p]]], n = n[nSamp], n0 = n0[p])
+    Ltilde2 <- predict.ga(lmm2[[sel.params[p]]], n = n[nSamp], n0 = n0[p])
+    ## Combine losses into one matrix
+    Ltilde <- cbind(Ltilde1, Ltilde2)
+    ### Apply EVSI equation
+    evsi[nSamp, p+1] <- mean(rowMaxs(Ltilde))
+  }
+}
+
+### Plotting EVSI
+# Create EVSI data frame for plotting in decreasing order of EVPPI
+evsi.gg <- melt(evsi, id.vars = "N", 
+                variable.name = "Parameter", 
+                value.name = "evsi")
+evsi.gg$Parameter <- factor((evsi.gg$Parameter), 
+                            levels = names.params[order(evppi.splines.gg$EVPPI, decreasing = TRUE)])
+
+# Plot evsi using ggplot2 package
+ggplot(evsi.gg, aes(x = N, y = evsi)) +  # colour = Parameter
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Parameter) +  # scales = "free_y"
+  ggtitle("Expected Value of Sample Information (EVSI)") +
+  xlab("Sample size (n)") +
+  ylab("$") +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
+  theme_bw(base_size = 14)
+
+# Adding EVPPI 
+ggplot(evsi.gg, aes(x = N, y = evsi)) +  # colour = Parameter
+  geom_line(aes(linetype = "EVSI")) +
+  geom_point() +
+  facet_wrap(~ Parameter) +  # scales = "free_y"
+  geom_hline(aes(yintercept = EVPPI, linetype = "EVPPI"), data = evppi.splines.gg[sel.params, ]) +
+  scale_linetype_manual(name="", 
+                        values = c("EVSI" = "solid", "EVPPI" = "dashed")) +
+  xlab("Sample size (n)") +
+  ylab("$") +
+  #ggtitle("Expected Value of Sample Information (EVSI)") +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
+  theme_bw(base_size = 14)
+
+

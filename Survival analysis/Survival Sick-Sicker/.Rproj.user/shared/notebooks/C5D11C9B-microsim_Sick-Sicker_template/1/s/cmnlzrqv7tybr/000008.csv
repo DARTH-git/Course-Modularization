@@ -1,3 +1,0 @@
-"0",""
-"0","# Treatment"
-"0","plot(density(outcomes_trt$tc), main = paste(""Total cost per person""), xlab = ""Cost ($)"")"

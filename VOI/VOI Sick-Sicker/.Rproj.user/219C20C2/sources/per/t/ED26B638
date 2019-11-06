@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572899338681.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1588230507",
+    "id" : "ED26B638",
+    "lastKnownWriteTime" : 1572901214,
+    "last_content_update" : 1572901539832,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/VOI/VOI toy/VOI_toy.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "194,20",
+        "scrollLine" : "181"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

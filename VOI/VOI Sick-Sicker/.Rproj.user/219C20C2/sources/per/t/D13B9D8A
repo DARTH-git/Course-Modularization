@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572899235038.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2937012674",
+    "id" : "D13B9D8A",
+    "lastKnownWriteTime" : 1572900803,
+    "last_content_update" : 1572900803797,
+    "path" : "C:/Users/Alan Yang/Google Drive/DARTH/Courses/2019 Washington - Choice/VOI_students/R_code/VOI_R.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "223,0",
+        "scrollLine" : "206"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

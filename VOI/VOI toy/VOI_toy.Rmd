@@ -138,7 +138,7 @@ inmb <- data.frame(Simulation = 1:n_sim,
 inmb_gg <- melt(inmb, id.vars = "Simulation", 
                 variable.name = "Comparison", 
                 value.name = "INMB")
-txtsize<-16
+txtsize <- 16
 ## Plot INMB
 ggplot(inmb_gg, aes(x = INMB/1000)) +
   geom_histogram(aes(y =..density..), col="black", fill = "gray") +
@@ -199,7 +199,7 @@ head(x)
 n_params <- ncol(x)
 n_params
 
-### Histogram of parameters
+# Histogram of parameters
 # Format data suitably for plotting
 params <- melt(x, variable.name = "Parameter")
 head(params)
@@ -239,7 +239,7 @@ for (p in 1:n_params){ # p <- 1
   # Compute EVPPI
   evppi_splines[p] <- mean(rowMaxs(Lhat_splines))
 }
-### Ploting EVPPI using of order polynomial
+# Ploting EVPPI using of order polynomial
 evppi_splines_gg <- data.frame(Parameter = names_params, EVPPI = evppi_splines)
 evppi_splines_gg$Parameter <- factor((evppi_splines_gg$Parameter), 
                               levels = names_params[order(evppi_splines_gg$EVPPI, decreasing = TRUE)])
@@ -255,6 +255,22 @@ ggplot(data = evppi_splines_gg, aes(x = Parameter, y = EVPPI)) +
 # 08 EVSI
 
 ```{r}
+# Effective (prior) Sample size
+n0 <- c(10, # MeanNumVisitsA
+        10, # MeanNumVisitsB
+        10, # ProbFailA
+        10) # ProbFailB
+n <- c(0, 1, 5, 10, seq(20, 200, by = 20))
+n_samples <- length(n)
+
+# Each parameter individually (only assuming linear relationship)
+# Initialize EVSI matrix for each parameters
+evsi <- data.frame(N = n, matrix(0, nrow = n_samples, ncol = n_params))
+
+# Name columns of EVPSI matrix with parameter names
+colnames(evsi)[-1] <- names_params
+
+# Compute EVSI for all parameters separately
 for (p in 1:n_params){ # p <- 1
   print(paste("Computing EVSI of parameter", names_params[p]))
     # Update loss based on gaussian approximation for each sample of interest
@@ -303,9 +319,6 @@ ggplot(evsi_gg, aes(x = N, y = evsi)) +  # colour = Parameter
   scale_x_continuous(breaks = number_ticks(5)) + 
   scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
   theme_bw(base_size = 14)
-# ggsave("Figs/Toy_EVPSI_EVPPI.pdf", width = 8, height = 6)
-# ggsave("Figs/Toy_EVPSI_EVPPI.png", width = 8, height = 6)
-
 ```
 
 # 09 Combination of parameters
@@ -322,7 +335,7 @@ evsi_obs <- data.frame(Study = "Observational",
                         N = n_obs, 
                         EVSI = matrix(0, nrow = n_obs_samples, ncol = 1))
 
-### Estimate linear metamodel of two parameters
+# Estimate linear metamodel of two parameters
 lmm1_obs <- gam(loss[, 1] ~ s(x[, sel_params_obs[1]]) + 
               s(x[, sel_params_obs[2]]) + 
               ti(x[, sel_params_obs[1]], x[, sel_params_obs[2]]))
@@ -343,9 +356,9 @@ for (nSamp in 1:n_obs_samples){
   Ltilde1_obs <- predict.ga(lmm1_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
   Ltilde2_obs <- predict.ga(lmm2_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
   Ltilde3_obs <- predict.ga(lmm3_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
-  ## Combine losses into one matrix
+  # Combine losses into one matrix
   Ltilde_obs <- cbind(Ltilde1_obs, Ltilde2_obs, Ltilde3_obs)
-  ### Apply EVSI equation
+  # Apply EVSI equation
   evsi_obs$EVSI[nSamp] <- mean(rowMaxs(Ltilde_obs))
 }
 ```
@@ -362,7 +375,7 @@ evsi_rct <- data.frame(Study = "RCT",
                         N = n_rct, 
                         EVSI = matrix(0, nrow = n_rct_samples, ncol = 1))
 
-### Estimate linear metamodel of two parameters
+# Estimate linear metamodel of two parameters
 lmm1_rct <- gam(loss[, 1] ~ s(x[, sel_params_rct[1]]) + 
                   s(x[, sel_params_rct[2]]) + 
                   ti(x[, sel_params_rct[1]], x[, sel_params_rct[2]]))
@@ -379,14 +392,14 @@ Lhat_rct_splines <- cbind(lmm1_rct$fitted, lmm2_rct$fitted, lmm3_rct$fitted)
 evppi_rct <- mean(rowMaxs(Lhat_rct_splines))
 evppi_rct          
 
-## Compute EVSI over different sample sizes
+# Compute EVSI over different sample sizes
 for (nSamp in 1:n_rct_samples){
   Ltilde1_rct <- predict.ga(lmm1_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
   Ltilde2_rct <- predict.ga(lmm2_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
   Ltilde3_rct <- predict.ga(lmm3_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
-  ## Combine losses into one matrix
+  # Combine losses into one matrix
   Ltilde_rct <- cbind(Ltilde1_rct, Ltilde2_rct, Ltilde3_rct)
-  ### Apply EVSI equation
+  # Apply EVSI equation
   evsi_rct$EVSI[nSamp] <- mean(rowMaxs(Ltilde_rct))
 }
 ```
@@ -431,7 +444,7 @@ time <- seq(0, LT)
 prev <- 0.010 # In millions(1e6)
 # Annual Incidence
 incid <- 147*1e-6 # In millions: 0.005*29.376e-3
-## Total population afectd by technology calculated with `TotPop` function in Millions
+# Total population afectd by technology calculated with `TotPop` function in Millions
 tot_pop <- TotPop(time,    # Function
                   prev, 
                   incid, 
@@ -461,7 +474,7 @@ cost_res_rct <- CostRes(fixed.cost = 8000000e-6,
                         INMB = 0,
                         clin.trial = TRUE) 
 # Data frame with cost of trial in Millions
-cost_rct <- data_frame(N = n_rct, CS = cost_res_rct)
+cost_rct <- data.frame(N = n_rct, CS = cost_res_rct)
 
 # Create ENBS data frame
 enbs_obs <- merge(pop_evsi_obs, cost_obs, by = "N")
@@ -492,7 +505,7 @@ levels(enbs_all_gg$Study) <- c(paste("Observational; n* = ", comma(oss$Nstar[1])
 
 ggplot(enbs_all_gg, aes(x = N, y = Million, colour = variable, group = variable)) + 
   facet_wrap(~ Study, scales = "free_x") +
-  #geom_segment(data = oss, aes(x = Nstar, y = 0, xend = Nstar, yend = MaxENBS)) + 
+  # geom_segment(data = oss, aes(x = Nstar, y = 0, xend = Nstar, yend = MaxENBS)) + 
   geom_hline(aes(yintercept=0), size = 0.7, linetype = 2, colour = "gray") + 
   geom_vline(aes(xintercept = nstar), size = 0.7, linetype = 2, colour = "gray") + 
   geom_point() +
@@ -505,5 +518,7 @@ ggplot(enbs_all_gg, aes(x = N, y = Million, colour = variable, group = variable)
   ylab("Value (Million $)") + 
   theme_bw(base_size = 14) +
   theme(legend.position = "bottom",
-        panel.margin = unit(2, "lines"))
+        panel.spacing = unit(2, "lines"))
 ```
+
+

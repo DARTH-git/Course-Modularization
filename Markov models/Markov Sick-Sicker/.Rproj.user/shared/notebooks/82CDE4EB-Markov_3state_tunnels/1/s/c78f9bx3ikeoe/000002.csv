@@ -1,4 +1,0 @@
-"0","# Discount costs  by multiplying the cost vector with discount weights (v_dw) "
-"0","v_tc_d <-  t(v_tc) %*% v_dwc"
-"0","# Discount QALYS  by multiplying the QALYs vector with discount weights (v_dw)"
-"0","v_te_d <-  t(v_tu) %*% v_dwe"

@@ -1,0 +1,8 @@
+"0","# Plot the 1000 draws from the posterior"
+"0","v_post_color <- scales::rescale(m_calib_res[,""Posterior_prob""])"
+"0","s3d <- scatterplot3d(x = m_calib_res[, 1],"
+"0","                     y = m_calib_res[, 2],"
+"0","                     z = m_calib_res[, 3],"
+"0","                     color = scales::alpha(""black"", v_post_color),"
+"0","                     xlim = c(lb[1],ub[1]), ylim = c(lb[2],ub[2]), zlim = c(lb[3],ub[3]),"
+"0","                     xlab = v_param_names[1], ylab = v_param_names[2], zlab = v_param_names[3])"

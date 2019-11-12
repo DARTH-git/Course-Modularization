@@ -1,3 +1,0 @@
-"0","plot(owsa_nmb, txtsize = 16, n_x_ticks = 5, "
-"0","     facet_scales = ""free"") +"
-"0","     theme(legend.position = ""bottom"")"

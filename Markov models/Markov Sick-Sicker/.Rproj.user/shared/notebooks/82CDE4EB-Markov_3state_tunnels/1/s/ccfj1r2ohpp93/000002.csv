@@ -1,6 +1,0 @@
-"0","v_prev <- m_M_td[, ""Sick""]/v_os"
-"0","plot(v_prev,"
-"0","     ylim = c(0, 1),"
-"0","     ylab = ""Prevalence"","
-"0","     xlab = ""Cycle"","
-"0","     main = ""Disease prevalence"")"

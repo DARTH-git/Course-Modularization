@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1573502987430.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3893892502",
+    "id" : "BE09AC8",
+    "lastKnownWriteTime" : 1573244721,
+    "last_content_update" : 1573244721,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Calibration/Calibration Sick-Sicker/templates/SickSicker_CalibTemplate.Rmd",
+    "project_path" : "templates/SickSicker_CalibTemplate.Rmd",
+    "properties" : {
+        "cursorPosition" : "14,33",
+        "scrollLine" : "104"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

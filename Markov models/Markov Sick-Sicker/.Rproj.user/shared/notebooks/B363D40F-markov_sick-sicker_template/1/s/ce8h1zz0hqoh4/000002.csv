@@ -1,5 +1,0 @@
-"0","v_tu_no_trt <- m_M_td_no_trt  %*%  v_u_no_trt"
-"0","v_tu_trt    <- m_M_td_trt     %*%  v_u_trt"
-"0",""
-"0","v_tc_no_trt <- m_M_td_no_trt  %*%  v_c_no_trt"
-"0","v_tc_trt    <- m_M_td_trt     %*%  v_c_trt"

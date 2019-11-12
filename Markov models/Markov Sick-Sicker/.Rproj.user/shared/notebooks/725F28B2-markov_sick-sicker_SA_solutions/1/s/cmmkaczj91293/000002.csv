@@ -1,6 +1,0 @@
-"0","v_prev <- rowSums(m_M_no_trt[, c(""S1"", ""S2"")]) / v_os_no_trt"
-"0","plot(v_prev,"
-"0","     ylim = c(0, 1),"
-"0","     ylab = ""Prevalence"","
-"0","     xlab = ""Cycle"","
-"0","     main = ""Disease prevalence"")"

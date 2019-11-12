@@ -1,8 +1,0 @@
-"0",""
-"0","# Number of simulations"
-"0","n_sim <- 1000"
-"0",""
-"0","# Generate PSA input dataset"
-"0","df_psa_input <- generate_psa_params(n_sim = n_sim)"
-"0","# First six observations"
-"0","head(df_psa_input)"

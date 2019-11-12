@@ -1,0 +1,7 @@
+"0",""
+"0","# TARGET 3: Proportion who are Sick (""PropSick""), among all those afflicted (Sick+Sicker)"
+"0","plotrix::plotCI(x = lst_targets$PropSick$time, y = lst_targets$PropSick$value,"
+"0","                ui = lst_targets$PropSick$ub,"
+"0","                li = lst_targets$PropSick$lb,"
+"0","                ylim = c(0, 1),"
+"0","                xlab = ""Time"", ylab = ""PropSick"")"

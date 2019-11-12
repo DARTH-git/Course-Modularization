@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1573232686756.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2630901025",
+    "id" : "7EAE7DE1",
+    "lastKnownWriteTime" : 1573232790,
+    "last_content_update" : 1573232902203,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Calibration/Calibration CRS/CRS_Calib_NelderMead.Rmd",
+    "project_path" : "CRS_Calib_NelderMead.Rmd",
+    "properties" : {
+        "cursorPosition" : "273,0",
+        "scrollLine" : "231"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,6 +1,0 @@
-"0","v_prop_S1 <- m_M_no_trt[, ""S1""] / v_prev"
-"0","plot(0:n_t, v_prop_S1,"
-"0","     xlab = ""Cycle"", "
-"0","     ylab = ""Proportion"", "
-"0","     main = ""Proportion of sick in S1 state"", "
-"0","     col  = ""black"", type = ""l"")"

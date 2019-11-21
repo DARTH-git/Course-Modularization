@@ -1,0 +1,5 @@
+"0","# Specify the initial health state of the individuals "
+"0","# everyone begins in the healthy state (in this example)"
+"0","v_M_init   <- rep(""H"", n_i) # a vector with the initial health state for all individuals "
+"0","v_Ts1_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model "
+"0","v_Ts2_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model   "

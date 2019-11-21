@@ -66,25 +66,20 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# Uncomment if you don't have all required packages installed
-# source("app0_packages_setup.R", echo = TRUE) 
-library(dplyr)     # For data manipulation
-library(dectree)   # To plot tree
-library(lazyeval)
-library(igraph)
-library(ggplot2)
-library(ggraph)
-library(stringr)
-library(ellipse)
-library(reshape2)
-library(truncnorm)
-library(dampack)   # for CEA
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")   
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here('functions','Functions.R'))
+source(here('functions','Functions.R'))
 ```
 
 # 03 Define parameter input values
@@ -117,6 +112,9 @@ q_loss_biopsy <- -0.01  # one-time QALY loss due to brain biopsy
 l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
                                    c_VE, c_VE_comp, c_tx, c_biopsy, 
                                    q_VE, q_VE_comp, q_loss_biopsy))
+# store the names of the parameters into a vector
+v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_comp', 
+                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
 ```
 
 # 04 Create and run decision tree model

@@ -1,3 +1,0 @@
-"0","# randomly sample the sex of an individual (50% female)"
-"0","v_sex <- sample(x = c(""Female"", ""Male""), prob = c(0.5, 0.5), size = n_i, replace = TRUE) "
-"0","df_X  <- data.frame(ID = 1:n_i, Sex = v_sex)"

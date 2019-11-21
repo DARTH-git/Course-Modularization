@@ -125,6 +125,6 @@ There are quite some steps you need to take in order to create a microsimulation
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
-knitr::include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
 

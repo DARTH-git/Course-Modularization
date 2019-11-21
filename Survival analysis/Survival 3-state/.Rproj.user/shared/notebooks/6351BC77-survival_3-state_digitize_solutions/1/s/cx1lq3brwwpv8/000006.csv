@@ -1,0 +1,7 @@
+"0",""
+"0","best_PFS <- fit_PFS[[""Weibull""]]  "
+"0","best_OS  <- fit_OS [[""Weibull""]]"
+"0",""
+"0","# construct a partitioned survival model out of the fitted models"
+"0","m_M_PSM <- partsurv(best_PFS,best_OS, time = times)$trace"
+"0","matplot(m_M_PSM, type=""l"")"

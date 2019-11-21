@@ -1,2 +1,0 @@
-"0","data_long <- read.csv(here::here(""data"", ""data_long_Sicker.csv""), row.names = 1)"
-"0","head(data_long)"

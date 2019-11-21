@@ -1,6 +1,0 @@
-"0","evsi_gg$Parameter <- factor((evsi_gg$Parameter), 
-                             levels = names_params[order(evppi_splines_gg$EVPPI, decreasing = TRUE)])
-"
-"2","Error in factor((evsi_gg$Parameter), levels = names_params[order(evppi_splines_gg$EVPPI,  : 
-  object 'names_params' not found
-"

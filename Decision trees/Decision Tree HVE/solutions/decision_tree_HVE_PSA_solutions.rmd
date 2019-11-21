@@ -66,25 +66,20 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# Uncomment if you don't have all required packages installed
-# source("app0_packages_setup.R", echo = TRUE) 
-library(dplyr)     # For data manipulation
-library(dectree)   # To plot tree
-library(lazyeval)
-library(igraph)
-library(ggplot2)
-library(ggraph)
-library(stringr)
-library(ellipse)
-library(reshape2)
-library(truncnorm)
-library(dampack)   # for CEA
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here('functions','Functions.R'))
+source(here('functions','Functions.R'))
 ```
 
 # 03 Define parameter input values
@@ -117,6 +112,9 @@ q_loss_biopsy <- -0.01  # one-time QALY loss due to brain biopsy
 l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
                                    c_VE, c_VE_comp, c_tx, c_biopsy, 
                                    q_VE, q_VE_comp, q_loss_biopsy))
+# store the names of the parameters into a vector
+v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_comp', 
+                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
 ```
 
 # 04 Create and run decision tree model
@@ -226,9 +224,9 @@ decision_tree_HVE_output
 ## 04.1 Plot the decision tree
 
 ```{r, out.width='100%'}
-branches <- read.csv(here::here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
+branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
 tree     <- create_tree(branches)
-plot_tree(tree, font.size = 5)
+# plot_tree(tree, font.size = 5)
 ```
 
 ## 05 Cost-Effectiveness Analysis
@@ -237,8 +235,7 @@ plot_tree(tree, font.size = 5)
 # create the transition probability matrix for NO treatment
 decision_tree_HVE_cea  <- calculate_icers(cost       = decision_tree_HVE_output$Cost,
                                           effect     = decision_tree_HVE_output$Effect,
-                                          strategies = decision_tree_HVE_output$Strategy) #,
-                                        # ref_strat  = 'Tx All')
+                                          strategies = decision_tree_HVE_output$Strategy)
 decision_tree_HVE_cea
 ```
 
@@ -259,26 +256,27 @@ l_params_all
 ## 06.2 Load decision tree model function
 
 ```{r}
-source(here::here("functions", "Functions_decision_tree_HVE.R"))
+source(here("functions", "Functions_decision_tree_HVE.R"))
 # Test function
 calculate_ce_out(l_params_all)
 ```
 
 ## 06.3 One-way sensitivity analysis (OWSA)
 
-```{r}
-owsa_nmb <- owsa_det(parms = c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy"), 
-                     ranges = list("p_HVE"         = c(0.01, 0.99),
-                                   "p_biopsy_comp" = c(0.01, 0.50),
-                                   "c_tx"          = c(1000, 15000),
-                                   "c_biopsy"      = c(10000, 40000)),
-                     nsamps = 100, # number of values  
-                     FUN = calculate_ce_out, # Function to compute outputs 
-                     params_basecase = l_params_all, # List with base-case parameters
-                     outcome = "NMB",   #"Effect"   # Output to do the OWSA on
-                     strategies = v_names_str, # Names of strategies
-                     n_wtp = 450000        # Extra argument to pass to FUN
-)
+```{r, warning=F}
+params_owsa      <- c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy") # parameters of interest for OWSA
+# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
+params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
+                               max  = rep(NA, length(v_names_params))) 
+params_all_owsa$min[params_all_owsa$pars %in% params_owsa] <- c(0.01, 0.01,  1000, 10000)  # min parameter values
+params_all_owsa$max[params_all_owsa$pars %in% params_owsa] <- c(0.99, 0.50, 15000, 40000)  # max parameter values
+owsa_nmb         <- run_owsa_det(params     = params_owsa,      # parameters of interest
+                                 params_all = params_all_owsa,  # dataframe containing relevant parameter values
+                                 nsamp      = 100,              # number of parameter values
+                                 FUN        = calculate_ce_out, # function to compute outputs
+                                 outcomes   = c("NMB"),         # output to do the OWSA on
+                                 strategies = v_names_str,      # names of the strategies
+                                 n_wtp      = 450000)           # extra argument to pass to FUN
 ```
 
 ## 06.3.1 Plot OWSA
@@ -286,7 +284,7 @@ owsa_nmb <- owsa_det(parms = c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy"),
 ```{r}
 plot(owsa_nmb, txtsize = 16, n_x_ticks = 5, 
      facet_scales = "free") +
-  theme(legend.position = "bottom")
+     theme(legend.position = "bottom")
 ```
 
 ## 06.3.2 Optimal strategy with OWSA
@@ -298,23 +296,26 @@ owsa_opt_strat(owsa = owsa_nmb)
 ## 06.3.3 Tornado plot
 
 ```{r}
-owsa_tornado(owsa = owsa_nmb, strategy = c("Biopsy"))
+owsa_tornado(owsa = owsa_nmb)
 ```
 
 ## 06.4 Two-way sensitivity analysis (TWSA)
 
-```{r}
-twsa_nmb <- twsa_det(parm1  = "p_HVE", # parameter 1 name
-                     parm2  = "c_tx",  # parameter 2 name
-                     ranges = list("p_HVE" = c(0.01, 0.99),
-                                   "c_tx"  = c(10000, 40000)),
-                     nsamps = 40, # number of values  
-                     FUN = calculate_ce_out, # Function to compute outputs 
-                     params_basecase = l_params_all, # Vector with base-case parameters
-                     outcome = "NMB",      # Output to do the OWSA on
-                     strategies = v_names_str, # Names of strategies
-                     n_wtp = 450000        # Extra argument to pass to FUN
-)
+```{r, warning=F}
+params_twsa     <- c("p_HVE", "c_tx") # parameters of interest for TWSA
+# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
+params_all_twsa <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
+                              max  = rep(NA, length(v_names_params))) 
+params_all_twsa$min[params_all_twsa$pars %in% params_twsa] <- c(0.01, 2000)   # min parameter values
+params_all_twsa$max[params_all_twsa$pars %in% params_twsa] <- c(0.99, 40000)  # max parameter values
+twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameters of interest
+                                param2     = params_twsa[2],   # second parameters of interest 
+                                params_all = params_all_twsa,  # dataframe containing relevant parameter values
+                                nsamp      = 40,               # number of parameter values
+                                FUN        = calculate_ce_out, # function to compute outputs
+                                outcomes   = c("NMB"),         # output to do the twsa on
+                                strategies = v_names_str,      # names of the strategies
+                                n_wtp      = 450000)           # extra argument to pass to FUN
 ```
 
 ## 06.4.1 Plot TWSA
@@ -327,7 +328,7 @@ plot(twsa_nmb) +
 
 # 07 Probabilistic Sensitivity Analysis (PSA)
 
-```{r}
+```{r, warning=F, message=F}
 # Function to generate PSA input dataset
 generate_psa_params <- function(n_sim = 1000, seed = 071518){
   set.seed(seed)
@@ -402,7 +403,7 @@ for(i in 1:n_sim){
 
 ## 07.2 Create PSA object for dampack
 
-```{r}
+```{r, warning=F}
 l_psa <- make_psa_obj(cost          = df_c, 
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 
@@ -414,13 +415,13 @@ l_psa <- make_psa_obj(cost          = df_c,
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str,
      l_psa,
-     file = here::here("output", "decision_tree_HVE_PSA_dataset.RData"))
+     file = here("output", "decision_tree_HVE_PSA_dataset.RData"))
 ```
 
 ## 07.3 Create probabilistic analysis graphs
 
 ```{r}
-load(file = here::here("output", "decision_tree_HVE_PSA_dataset.RData"))
+load(file = here("output", "decision_tree_HVE_PSA_dataset.RData"))
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.
@@ -451,10 +452,10 @@ df_cea_psa
 # Save CEA table with ICERs
 # As .RData
 save(df_cea_psa, 
-     file = here::here("tables", "decision_tree_HVE_probabilistic_CEA_results.RData"))
+     file = here("tables", "decision_tree_HVE_probabilistic_CEA_results.RData"))
 # As .csv
 write.csv(df_cea_psa, 
-          file = here::here("tables", "decision_tree_HVE_probabilistic_CEA_results.csv"))
+          file = here("tables", "decision_tree_HVE_probabilistic_CEA_results.csv"))
 ```
 
 ## 07.4.1 Plot cost-effectiveness frontier

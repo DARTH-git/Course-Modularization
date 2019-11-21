@@ -1,5 +1,5 @@
 ---
-title: 'Three-strategy decision tree in R - HVE'
+title: 'PSA: Three-strategy decision tree in R - HVE'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -66,25 +66,19 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# Uncomment if you don't have all required packages installed
-# source("app0_packages_setup.R", echo = TRUE) 
-library(dplyr)     # For data manipulation
-library(dectree)   # To plot tree
-library(lazyeval)
-library(igraph)
-library(ggplot2)
-library(ggraph)
-library(stringr)
-library(ellipse)
-library(reshape2)
-library(truncnorm)
-library(dampack)   # for CEA
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here('functions','Functions.R'))
+source(here('functions','Functions.R'))
 ```
 
 # 03 Define parameter input values
@@ -117,6 +111,9 @@ q_loss_biopsy <- -0.01  # one-time QALY loss due to brain biopsy
 l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
                                    c_VE, c_VE_comp, c_tx, c_biopsy, 
                                    q_VE, q_VE_comp, q_loss_biopsy))
+# store the names of the parameters into a vector
+v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_comp', 
+                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
 ```
 
 # 04 Create and run decision tree model
@@ -124,7 +121,7 @@ l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx,
 ```{r}
 decision_tree_HVE_output <- with(as.list(l_params_all), {
   
-  #### Create vector of weights for each strategy ####
+  # Create vector of weights for each strategy 
   
   v_w_no_tx  <- c(  p_HVE  *    p_HVE_comp  ,  # HVE, complications
                     p_HVE  * (1-p_HVE_comp) ,  # HVE, no complications
@@ -148,7 +145,7 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                  # no biopsy comp., OVE, no complications
                  (1-p_biopsy_comp) * (1-p_HVE) * (1-p_OVE_comp))      
   
-  #### Create vector of outcomes (QALYs) for each strategy ####
+  # Create vector of outcomes (QALYs) for each strategy 
   
   v_qaly_no_tx  <- c(q_VE_comp ,  # HVE, complications
                      q_VE      ,  # HVE, no complications
@@ -169,7 +166,7 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                      q_VE_comp      ,  # no biopsy comp., OVE, complications
                      q_VE)             # no biopsy comp., OVE, no complications
   
-  #### Create vector of costs for each strategy ####
+  # Create vector of costs for each strategy 
   
   v_cost_no_tx  <- c(c_VE_comp ,  # HVE, complications
                      c_VE      ,  # HVE, no complications
@@ -190,12 +187,12 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                      c_VE_comp        ,  # no biopsy comp., OVE, complications
                      c_VE)               # no biopsy comp., OVE, no complications
   
-  #### Calculate total utilities for each strategy ####
+  # Calculate total utilities for each strategy 
   total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      
   total_qaly_tx     <- v_w_tx     %*%  v_qaly_tx
   total_qaly_biopsy <- v_w_biopsy %*%  v_qaly_biopsy
   
-  #### Calculate total costs for each strategy ####
+  # Calculate total costs for each strategy 
   total_cost_no_tx  <- v_w_no_tx  %*%  v_cost_no_tx    
   total_cost_tx     <- v_w_tx     %*%  v_cost_tx
   total_cost_biopsy <- v_w_biopsy %*%  v_cost_biopsy
@@ -207,7 +204,7 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
   # calculate vector of nmb
   v_nmb        <- v_total_qaly * wtp - v_total_cost                      
   
-  ### Name outcomes
+  # Name outcomes
   names(v_total_qaly) <- v_names_str  # names for the elements of the total QALYs vector
   names(v_total_cost) <- v_names_str  # names for the elements of the total cost vector
   names(v_nmb)        <- v_names_str  # names for the elements of the nmb vector
@@ -226,9 +223,9 @@ decision_tree_HVE_output
 ## 04.1 Plot the decision tree
 
 ```{r, out.width='100%'}
-branches <- read.csv(here::here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
+branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
 tree     <- create_tree(branches)
-plot_tree(tree, font.size = 5)
+# plot_tree(tree, font.size = 5)
 ```
 
 ## 05 Cost-Effectiveness Analysis
@@ -237,8 +234,7 @@ plot_tree(tree, font.size = 5)
 # create the transition probability matrix for NO treatment
 decision_tree_HVE_cea  <- calculate_icers(cost       = decision_tree_HVE_output$Cost,
                                           effect     = decision_tree_HVE_output$Effect,
-                                          strategies = decision_tree_HVE_output$Strategy) #,
-                                        # ref_strat  = 'Tx All')
+                                          strategies = decision_tree_HVE_output$Strategy)
 decision_tree_HVE_cea
 ```
 
@@ -247,3 +243,4 @@ decision_tree_HVE_cea
 ```{r}
 plot(decision_tree_HVE_cea, effect_units = "QALYs")
 ```
+

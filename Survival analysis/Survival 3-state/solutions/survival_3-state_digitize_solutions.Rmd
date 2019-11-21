@@ -64,18 +64,16 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('here')) install.packages('here'); library(gems)
-if (!require('gems')) install.packages('gems'); library(gems)
-if (!require('msm')) install.packages('msm'); library(msm)
-if (!require('flexsurv')) install.packages('flexsurv'); library(flexsurv)
-if (!require('dplyr')) install.packages('dplyr'); library(dplyr)
-if (!require('mstate')) install.packages('mstate'); library(mstate)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate",
+        "reshape2", "knitr")   
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here("functions", "functions.R"))
+source(here("functions", "functions.R"))
 ```
 
 # 03 Input model parameters
@@ -108,23 +106,21 @@ Use the function `digitise()` to translate the digitised OS and PFS data into pa
 
 ```{r, results="hide"}
 # Create IPD and KM data for the OS curves
-digitise(here::here("data","OS_Examp.txt"), 
-         here::here("data", "OS_Examp_AtRisk.txt"), 
-         nevent_inp = 52, 
-         km_output  = here::here("output", "KMdata_OS.txt"), 
-         ipd_output = here::here("output", "IPDdata_OS.txt"))
+digitise(here("data", "OS_Examp.txt"), 
+         here("data", "OS_Examp_AtRisk.txt"), 
+         km_output  = here("output", "KMdata_OS.txt"), 
+         ipd_output = here("output", "IPDdata_OS.txt"))
 
 # Create IPD and KM data for the PFS curves (there have been 99 events in the cohort)
-digitise(here::here("data", "PFS_Examp.txt"), 
-         here::here("data", "PFS_Examp_AtRisk.txt"), 
-         nevent_inp = 99,
-         km_output  = here::here("output", "KMdata_PFS.txt"), 
-        ipd_output  = here::here("output", "IPDdata_PFS.txt"))
+digitise(here("data", "PFS_Examp.txt"), 
+         here("data", "PFS_Examp_AtRisk.txt"), 
+         km_output  = here("output", "KMdata_PFS.txt"), 
+         ipd_output  = here("output", "IPDdata_PFS.txt"))
 
 # Link the IPD files across the two arms of the trial for OS and PFS
-IPD_OS  <- make.ipd(ipd_files = c(here::here("output", "IPDdata_OS.txt")), ctr = 1, 
+IPD_OS  <- make.ipd(ipd_files = c(here("output", "IPDdata_OS.txt")), ctr = 1, 
                     var.labs  = c("time","event","arm"))
-IPD_PFS <- make.ipd(ipd_files = c(here::here("output", "IPDdata_PFS.txt")), ctr = 1,
+IPD_PFS <- make.ipd(ipd_files = c(here("output", "IPDdata_PFS.txt")), ctr = 1,
                     var.labs  = c("time","event","arm"))
 ```
 

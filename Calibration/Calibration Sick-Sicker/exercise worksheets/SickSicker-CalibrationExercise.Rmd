@@ -66,7 +66,6 @@ Unfortunately, while we can identify those who are afflicted with the illness th
 There are three calibration targets to be used in this example: (1) observed survival of a cohort over time; (2) disease prevalence in a cohort over time; and (3) among sick patients (S1+S2), the proportion who are in the S1 state at three points in time. The first two targets came from an observational study of a typical cohort of individuals. The third target was obtained by subjecting ill patients to an invasive procedure which can determine disease stage but can’t be used routinely due to its invasiveness. The calibration target values are provided in the data file “SickSicker_CalibTargets.RData”, which contains a list with three data frames: Surv, Prev, and PropSick.
 
 
-
 ## Tasks
 
 1. Use the `R` script “SickSicker_CalibTemplate.R” as a starting point to code the calibration of the Sick-Sicker.
@@ -127,6 +126,6 @@ There are three calibration targets to be used in this example: (1) observed sur
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
-knitr::include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
 

@@ -1,0 +1,6 @@
+"0","# create the transition probability matrix for NO treatment"
+"0","decision_tree_HVE_cea  <- calculate_icers(cost       = decision_tree_HVE_output$Cost,"
+"0","                                          effect     = decision_tree_HVE_output$Effect,"
+"0","                                          strategies = decision_tree_HVE_output$Strategy) #,"
+"0","                                        # ref_strat  = 'Tx All')"
+"0","decision_tree_HVE_cea"

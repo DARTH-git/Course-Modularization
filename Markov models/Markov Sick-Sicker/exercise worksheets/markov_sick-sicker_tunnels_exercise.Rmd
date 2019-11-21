@@ -74,13 +74,13 @@ We will now expand the age-dependent model to include this history dependence by
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
-knitr::include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
 
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model with tunnels states for S1', fig.align='center'}
 if (!require(here)) install.packages('knitr')
 if (!require(knitr)) install.packages('knitr')
-knitr::include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
+include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 ```
 
 ## Tasks

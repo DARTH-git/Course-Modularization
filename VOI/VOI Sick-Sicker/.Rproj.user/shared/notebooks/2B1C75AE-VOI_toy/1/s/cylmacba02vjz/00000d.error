@@ -1,1 +1,0 @@
-{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"factor((evsi_gg$Parameter), levels = names_params[order(evppi_splines_gg$EVPPI, \n    decreasing = TRUE)])","line_number":0}],"message":"Error in factor((evsi_gg$Parameter), levels = names_params[order(evppi_splines_gg$EVPPI,  : \n  object 'names_params' not found\n"}

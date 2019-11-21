@@ -66,19 +66,14 @@ rm(list = ls())    # clear memory (removes all the variables from the workspace)
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# Uncomment if you don't have all required packages installed
-# source("app0_packages_setup.R", echo = TRUE) 
-library(dplyr)     # For data manipulation
-library(dectree)   # To plot tree
-library(lazyeval)
-library(igraph)
-library(ggplot2)
-library(ggraph)
-library(stringr)
-library(ellipse)
-library(reshape2)
-library(truncnorm)
-library(dampack)   # for CEA
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
@@ -128,6 +123,18 @@ l_params_all <- as.list(data.frame(p_sem_on, p_sem_ade_on, p_sem_ade_trt_on,
                                    p_no_sem_ade_met, p_no_sem_ade_trt_met, 
                                    p_no_sem_ade_trt_res_met, p_no_sem_ade_no_trt_res_met,
                                    c_trt_met, c_sem_met, c_ade_met, c_ade_trt_met))
+# store the names of the parameters into a vector
+v_names_params <- c(               'p_sem_on', 'p_sem_ade_on', 'p_sem_ade_trt_on', 
+                                   'p_sem_ade_trt_res_on', 'p_sem_ade_no_trt_res_on', 
+                                   'p_no_sem_ade_on', 'p_no_sem_ade_trt_on', 
+                                   'p_no_sem_ade_trt_res_on', 'p_no_sem_ade_no_trt_res_on',
+                                   'c_trt_on', 'c_sem_on', 'c_ade_on', 'c_ade_trt_on',
+                                   
+                                   'p_sem_met', 'p_sem_ade_met', 'p_sem_ade_trt_met', 
+                                   'p_sem_ade_trt_res_met', 'p_sem_ade_no_trt_res_met',
+                                   'p_no_sem_ade_met', 'p_no_sem_ade_trt_met', 
+                                   'p_no_sem_ade_trt_res_met', 'p_no_sem_ade_no_trt_res_met',
+                                   'c_trt_met', 'c_sem_met', 'c_ade_met', 'c_ade_trt_met')
 ```
 
 # 04 Create and run decision tree model

@@ -64,18 +64,19 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('devtools')) install.packages('devtools');        library(devtools)
-if (!require('dampack'))  install_github('DARTH-git/dampack'); library(dampack)
-if (!require('msm'))      install.packages('msm');             library(msm)
-if (!require('flexsurv')) install.packages('flexsurv');        library(flexsurv)
-if (!require('dplyr'))    install.packages('dplyr');           library(dplyr)
-if (!require('mstate'))   install.packages('mstate');          library(mstate)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate",
+        "reshape2", "knitr")  
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here("functions", "functions.R"))
+source(here("functions", "functions.R"))
 ```
 
 # 03 Input model parameters
@@ -99,9 +100,9 @@ p_HS1   <- 0.15                    # probability of becoming sick when healthy
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv(here::here("data", "mortProb_age.csv"))                 
+p_mort   <- read.csv(here("data", "mortProb_age.csv"))                 
 # load age distribution
-dist_Age <- read.csv(here::here("data", "MyPopulation-AgeDistribution.csv")) 
+dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
@@ -139,7 +140,7 @@ Survival analysis component
 
 ```{r}
 # load the Sicker data 
-data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
+data_long <- read.csv(here("data", "data_long_Sicker.csv"), row.names = 1)
 head(data_long)
 
 # Multistate models can be fitted independently for each transition. This is more flexible!
@@ -160,10 +161,10 @@ fit_S1D  <- fit.fun(time ="time", status = "status", data = data_S1D, times = ti
 fit_S2D  <- fit.fun(time ="time", status = "status", data = data_S2D, times = times, 
                     extrapolate = F)
 
-best.fit_S1H <-  fit_S1H [[which.min(fit_S1H$AIC)]]
+best.fit_S1H  <-  fit_S1H [[which.min(fit_S1H$AIC)]]
 best.fit_S1S2 <- fit_S1S2[[which.min(fit_S1S2$AIC)]]
-best.fit_S1D <-  fit_S1D [[which.min(fit_S1D$AIC)]]
-best.fit_S2D <-  fit_S2D [["Weibull"]]
+best.fit_S1D  <-  fit_S1D [[which.min(fit_S1D$AIC)]]
+best.fit_S2D  <-  fit_S2D [["Weibull"]]
 
 # Extract transition probabilities from the best fitting models
 p_S1H  <- flexsurvreg_prob(object = best.fit_S1H, t = times)
@@ -177,9 +178,9 @@ p_S2D  <- flexsurvreg_prob(object = best.fit_S2D, t = times)
 ```{r}
 # Specify the initial health state of the individuals 
 # everyone begins in the healthy state (in this example)
-v_M_init  <- rep("H", n_i) # a vector with the initial health state for all individuals 
-v_Ts1_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model 
-v_Ts2_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model   
+v_M_init   <- rep("H", n_i) # a vector with the initial health state for all individuals 
+v_Ts1_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model 
+v_Ts2_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model   
 ```
 
 # 05 Define Simulation Functions
@@ -275,7 +276,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
     # Trt:     is this the individual receiving treatment? (default is FALSE)
     # seed:    default is 1
   
-  set.seed(seed) # set the seed
+  set.seed(seed)     # set the seed
   
   n_s <- length(v_n) # the number of health states
   

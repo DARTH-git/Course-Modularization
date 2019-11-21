@@ -1,0 +1,6 @@
+"0","branches <- read.csv(here::here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)"
+"0","tree     <- create_tree(branches)"
+"0","plot_tree(tree, font.size = 5)"
+"2","Error in `[.data.frame`(data, , ""node1.ggraph.orig_index"") : 
+  undefined columns selected
+"

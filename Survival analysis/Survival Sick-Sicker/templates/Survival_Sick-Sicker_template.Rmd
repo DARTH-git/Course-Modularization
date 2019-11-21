@@ -64,12 +64,13 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('devtools')) install.packages('devtools');        library(devtools)
-if (!require('dampack'))  install_github('DARTH-git/dampack'); library(dampack)
-if (!require('msm'))      install.packages('msm');             library(msm)
-if (!require('flexsurv')) install.packages('flexsurv');        library(flexsurv)
-if (!require('dplyr'))    install.packages('dplyr');           library(dplyr)
-if (!require('mstate'))   install.packages('mstate');          library(mstate)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate",
+        "reshape2", "knitr")  
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack")
 ```
 
 # 02 Load functions

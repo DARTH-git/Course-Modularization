@@ -1,0 +1,4 @@
+"0","# create the transition probability array for NO treatment"
+"0","a_P_notrt <- array(0,                                          # Create 3-D array"
+"0","                   dim = c(n_s_td, n_s_td, n_t),"
+"0","                   dimnames = list(v_n_td, v_n_td, 0:(n_t-1))) # name dimensions"

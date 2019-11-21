@@ -66,25 +66,20 @@ rm(list = ls())    # clear memory (removes all the variables from the workspace)
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# Uncomment if you don't have all required packages installed
-# source("app0_packages_setup.R", echo = TRUE) 
-library(dplyr)     # For data manipulation
-library(dectree)   # To plot tree
-library(lazyeval)
-library(igraph)
-library(ggplot2)
-library(ggraph)
-library(stringr)
-library(ellipse)
-library(reshape2)
-library(truncnorm)
-library(dampack)   # for CEA
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here('functions','Functions.R'))
+source(here('functions','Functions.R'))
 ```
 
 # 03 Define parameter input values
@@ -144,6 +139,18 @@ l_params_all <- as.list(data.frame(p_sem_on, p_sem_ade_on, p_sem_ade_trt_on,
                                    p_no_sem_ade_met, p_no_sem_ade_trt_met, 
                                    p_no_sem_ade_trt_res_met, p_no_sem_ade_no_trt_res_met,
                                    c_trt_met, c_sem_met, c_ade_met, c_ade_trt_met))
+# store the names of the parameters into a vector
+v_names_params <- c(               'p_sem_on', 'p_sem_ade_on', 'p_sem_ade_trt_on', 
+                                   'p_sem_ade_trt_res_on', 'p_sem_ade_no_trt_res_on', 
+                                   'p_no_sem_ade_on', 'p_no_sem_ade_trt_on', 
+                                   'p_no_sem_ade_trt_res_on', 'p_no_sem_ade_no_trt_res_on',
+                                   'c_trt_on', 'c_sem_on', 'c_ade_on', 'c_ade_trt_on',
+                                   
+                                   'p_sem_met', 'p_sem_ade_met', 'p_sem_ade_trt_met', 
+                                   'p_sem_ade_trt_res_met', 'p_sem_ade_no_trt_res_met',
+                                   'p_no_sem_ade_met', 'p_no_sem_ade_trt_met', 
+                                   'p_no_sem_ade_trt_res_met', 'p_no_sem_ade_no_trt_res_met',
+                                   'c_trt_met', 'c_sem_met', 'c_ade_met', 'c_ade_trt_met')
 ```
 
 # 04 Create and run decision tree model
@@ -274,20 +281,18 @@ decision_tree_ondansetron_output
 ## 04.1 Plot the decision tree
 
 ```{r, out.width='100%'}
-branches <- read.csv(here::here('data','decision_tree_ondansetron_branches.csv'), stringsAsFactors = F, header = T)
+branches <- read.csv(here('data','decision_tree_ondansetron_branches.csv'), stringsAsFactors = F, header = T)
 tree     <- create_tree(branches)
-plot_tree(tree, font.size = 5)
+# plot_tree(tree, font.size = 5)
 ```
 
 ## 05 Cost-Effectiveness Analysis
 
 ```{r}
 # create the transition probability matrix for NO treatment
-decision_tree_ondansetron_cea  <- 
-  calculate_icers(cost = decision_tree_ondansetron_output$Cost,
-                  effect     = decision_tree_ondansetron_output$Effect,
-                  strategies = decision_tree_ondansetron_output$Strategy) #,
-                # ref_strat  = 'Tx All')
+decision_tree_ondansetron_cea  <- calculate_icers(cost       = decision_tree_ondansetron_output$Cost,
+                                                  effect     = decision_tree_ondansetron_output$Effect,
+                                                  strategies = decision_tree_ondansetron_output$Strategy)
 decision_tree_ondansetron_cea
 ```
 
@@ -308,26 +313,26 @@ l_params_all
 ## 06.2 Load decision tree model function
 
 ```{r}
-source(here::here("functions", "Functions_decision_tree_ondansetron.R"))
+source(here("functions", "Functions_decision_tree_ondansetron.R"))
 # Test function
 calculate_ce_out(l_params_all)
 ```
 
 ## 06.3 One-way sensitivity analysis (OWSA)
 
-```{r}
-owsa_nmb <- owsa_det(parms = c("p_sem_on", "p_no_sem_ade_on", "p_sem_met", 
-                               "p_no_sem_ade_met"), 
-                     ranges = list("p_sem_on"         = c(0, 1),
-                                   "p_no_sem_ade_on"  = c(0, 1),
-                                   "p_sem_met"        = c(0, 1),
-                                   "p_no_sem_ade_met" = c(0, 1)),
-                     nsamps = 100,  # number of values  
-                     FUN = calculate_ce_out,  # Function to compute outputs 
-                     params_basecase = l_params_all,  # List with base-case parameters
-                     outcome = "NMB",  # Output to do the OWSA on
-                     strategies = v_names_str  # Names of strategies
-)
+```{r, warning=F}
+params_owsa      <- c("p_sem_on", "p_no_sem_ade_on", "p_sem_met", "p_no_sem_ade_met") # parameters of interest for OWSA
+# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
+params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
+                               max  = rep(NA, length(v_names_params))) 
+params_all_owsa$min[params_all_owsa$pars %in% params_owsa] <- c(0, 0, 0, 0)  # min parameter values
+params_all_owsa$max[params_all_owsa$pars %in% params_owsa] <- c(1, 1, 1, 1)  # max parameter values
+owsa_nmb         <- run_owsa_det(params     = params_owsa,      # parameters of interest
+                                 params_all = params_all_owsa,  # dataframe containing relevant parameter values
+                                 nsamp      = 100,              # number of parameter values
+                                 FUN        = calculate_ce_out, # function to compute outputs
+                                 outcomes   = c("NMB"),         # output to do the OWSA on
+                                 strategies = v_names_str)      # names of the strategies
 ```
 
 ## 06.3.1 Plot OWSA
@@ -347,35 +352,38 @@ owsa_opt_strat(owsa = owsa_nmb)
 ## 06.3.3 Tornado plot
 
 ```{r}
-owsa_tornado(owsa = owsa_nmb, strategy = c("Metoclopramide"))
+owsa_tornado(owsa = owsa_nmb)
 ```
 
 ## 06.4 Two-way sensitivity analysis (TWSA)
 
-```{r}
-twsa_nmb <- twsa_det(parm1  = "p_sem_on",  # parameter 1 name
-                     parm2  = "p_no_sem_ade_met", # parameter 2 name
-                     ranges = list("p_sem_on"  = c(0, 1),
-                                   "p_no_sem_ade_met" = c(0, 1)),
-                     nsamps = 40, # number of values  
-                     FUN = calculate_ce_out, # Function to compute outputs 
-                     params_basecase = l_params_all, # Vector with base-case parameters
-                     outcome = "NMB",      # Output to do the OWSA on
-                     strategies = v_names_str # Names of strategies
-)
+```{r, warning=F}
+params_twsa     <- c("p_sem_on", "p_no_sem_ade_met") # parameters of interest for TWSA
+# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
+params_all_twsa <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
+                              max  = rep(NA, length(v_names_params))) 
+params_all_twsa$min[params_all_twsa$pars %in% params_twsa] <- c(0, 0)  # min parameter values
+params_all_twsa$max[params_all_twsa$pars %in% params_twsa] <- c(1, 1)  # max parameter values
+twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameters of interest
+                                param2     = params_twsa[2],   # second parameters of interest 
+                                params_all = params_all_twsa,  # dataframe containing relevant parameter values
+                                nsamp      = 40,               # number of parameter values
+                                FUN        = calculate_ce_out, # function to compute outputs
+                                outcomes   = c("NMB"),         # output to do the twsa on
+                                strategies = v_names_str)      # names of the strategies
 ```
 
 ## 06.4.1 Plot TWSA
 
 ```{r}
 plot(twsa_nmb) + 
-  ggtitle(label = "Two-way sensitivity analysis",subtitle = "Net monetary benefit") +
+  ggtitle(label = "Two-way sensitivity analysis", subtitle = "Net monetary benefit") +
   theme(legend.position = "bottom")
 ```
 
 # 07 Probabilistic Sensitivity Analysis (PSA)
 
-```{r}
+```{r, warning=F}
 # Function to generate PSA input dataset
 generate_psa_params <- function(n_sim = 1000, seed = 071518){
   set.seed(seed)
@@ -473,13 +481,13 @@ l_psa <- make_psa_obj(cost          = df_c,
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str,
      l_psa,
-     file = here::here("output", "decision_tree_ondansetron_PSA_dataset.RData"))
+     file = here("output", "decision_tree_ondansetron_PSA_dataset.RData"))
 ```
 
 ## 07.3 Create probabilistic analysis graphs
 
 ```{r}
-load(file = here::here("output", "decision_tree_ondansetron_PSA_dataset.RData"))
+load(file = here("output", "decision_tree_ondansetron_PSA_dataset.RData"))
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.
@@ -510,12 +518,12 @@ df_cea_psa
 # Save CEA table with ICERs
 # As .RData
 save(df_cea_psa, 
-     file = here::here("tables", 
-                       "decision_tree_ondansetron_probabilistic_CEA_results.RData"))
+     file = here("tables", 
+                 "decision_tree_ondansetron_probabilistic_CEA_results.RData"))
 # As .csv
 write.csv(df_cea_psa, 
-          file = here::here("tables", 
-                            "decision_tree_ondansetron_probabilistic_CEA_results.csv"))
+          file = here("tables", 
+                      "decision_tree_ondansetron_probabilistic_CEA_results.csv"))
 ```
 
 ## 07.4.1 Plot cost-effectiveness frontier

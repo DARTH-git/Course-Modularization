@@ -64,25 +64,20 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('here'))        install.packages('here');        library(here)
-if (!require('matrixStats')) install.packages('matrixStats'); library(matrixStats)
-if (!require('ggplot2'))     install_github('ggplot2');       library(ggplot2)
-if (!require('scales'))      install.packages('scales');      library(scales)
-if (!require('grid'))        install.packages('grid');        library(grid)
-if (!require('dplyr'))       install.packages('dplyr');       library(dplyr)
-if (!require('reshape2'))    install.packages('reshape2');    library(reshape2)
-if (!require('mgcv'))        install.packages('mgcv');        library(mgcv)
-if (!require('gridExtra'))   install.packages('gridExtra');   library(gridExtra)
-if (!require('gdata'))       install.packages('gdata');       library(gdata)
-if (!require('devtools'))    install.packages('devtools');    library(devtools)
-if (!require('dampack'))     install_github('DARTH-git/dampack'); library(dampack)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "matrixStats", "scales", "ggplot2", "grid", "mgcv", "gridExtra", "gdata", 
+       "reshape2", "knitr")       
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack") 
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here("functions", "VOI_Functions.R"))
-source(here::here("functions", "GA_functions.R"))
+source(here("functions", "VOI_Functions.R"))
+source(here("functions", "GA_functions.R"))
 ```
 
 # 03 Input model parameters
@@ -90,7 +85,7 @@ source(here::here("functions", "GA_functions.R"))
 ```{r}
 # Load simulation file
 # Read the `.csv` simulation file into `R`.
-toy <- read.csv(here::here("data", "psa_sick_sicker.csv"), header = TRUE)[, -1]
+toy <- read.csv(here("data", "psa_sick_sicker.csv"), header = TRUE)[, -1]
 n_sim <- nrow(toy)
 
 # Display first five observations of the data fram using the command `head`

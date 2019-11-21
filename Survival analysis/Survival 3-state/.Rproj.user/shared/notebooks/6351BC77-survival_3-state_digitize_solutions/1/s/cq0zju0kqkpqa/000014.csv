@@ -1,0 +1,2 @@
+"0","fit_OS   <- fit.fun(time = ""time"", status = ""event"" , data = IPD_OS, times = times,"
+"0","                    extrapolate = T) "

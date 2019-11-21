@@ -1,0 +1,8 @@
+"0","if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages"
+"0","# load (install if required) packages from CRAN"
+"0","v_packages <- c(""here"", ""dplyr"", ""devtools"", ""scales"", ""ellipse"", ""ggplot2"", ""lazyeval"", ""igraph"", ""truncnorm"", ""ggraph"","
+"0","                ""reshape2"", ""knitr"")                                              "
+"0","p_load(v_packages)                                               "
+"0","# load (install if required) packages from GitHub"
+"0","v_packages_gh <- c(""DARTH-git/dampack"")      "
+"0","p_load_gh(v_packages_gh) "

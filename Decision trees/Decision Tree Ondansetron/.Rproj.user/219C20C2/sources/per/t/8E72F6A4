@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1574193084868.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3146072259",
+    "id" : "8E72F6A4",
+    "lastKnownWriteTime" : 1549489682,
+    "last_content_update" : 1549489682,
+    "path" : "C:/Users/Alan Yang/Google Drive/DARTH/Courses/2019 CE16/Assignments/Day 1/Day1_Decision_tree_Ondansetron solution.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "175,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

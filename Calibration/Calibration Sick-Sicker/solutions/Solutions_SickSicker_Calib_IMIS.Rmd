@@ -78,14 +78,14 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 # package used to call files from different folders within the project folder
 if (!require('here')) install.packages('here'); library(here)
 # calibration functionality
-if (!require('lhs')) install.packages('lhs'); library(lhs)
+if (!require('lhs'))  install.packages('lhs') ; library(lhs)
 if (!require('IMIS')) install.packages('IMIS'); library(IMIS)
 # package used for sumamry statistics
 if (!require('matrixStats')) install.packages('matrixStats'); library(matrixStats) 
 
 # visualization
-if (!require('plotrix')) install.packages('plotrix'); library(plotrix)
-if (!require('psych')) install.packages('psych'); library(psych)
+if (!require('plotrix')) install.packages('plotrix') ; library(plotrix)
+if (!require('psych'))   install.packages('psych')   ; library(psych)
 # now that we have three inputs to estimate, we'll need higher dimension visualization
 if (!require('scatterplot3d')) install.packages('scatterplot3d'); library(scatterplot3d)
 ```
@@ -93,7 +93,7 @@ if (!require('scatterplot3d')) install.packages('scatterplot3d'); library(scatte
 # 02 Load target data
 
 ```{r}
-load(here::here("data", "SickSicker_CalibTargets.RData"))
+load(here("data", "SickSicker_CalibTargets.RData"))
 lst_targets <- SickSicker_targets
 
 # Plot the targets
@@ -127,7 +127,7 @@ plotrix::plotCI(x = lst_targets$PropSick$time, y = lst_targets$PropSick$value,
 # - outputs correspond to the target data
 
 # creates the function run_sick_sicker_markov()
-source(here::here("functions", "SickSicker_MarkovModel_Function.R")) 
+source(here("functions", "SickSicker_MarkovModel_Function.R")) 
 
 # Check that it works
 v_params_test <- c(p_S1S2 = 0.105, hr_S1 = 3, hr_S2 = 10)

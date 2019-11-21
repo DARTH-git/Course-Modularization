@@ -76,14 +76,14 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 
 ```{r, warning=F, message=F}
 # calibration functionality
-if (!require('lhs')) install.packages('lhs'); library(lhs)
+if (!require('lhs'))  install.packages('lhs') ; library(lhs)
 if (!require('IMIS')) install.packages('IMIS'); library(IMIS)
 # package used for sumamry statistics
 if (!require('matrixStats')) install.packages('matrixStats'); library(matrixStats) 
 
 # visualization
-if (!require('plotrix')) install.packages('plotrix'); library(plotrix)
-if (!require('psych')) install.packages('psych'); library(psych)
+if (!require('plotrix')) install.packages('plotrix') ; library(plotrix)
+if (!require('psych'))   nstall.packages('psych')    ; library(psych)
 ```
 
 # 02 Load target data

@@ -33,9 +33,9 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                   dimnames = list(v_n, v_n))
     # fill in the transition probability array
     ### From Healthy
-    m_P["H", "H"]  <- 1 - (p_HS1 + p_HD)
-    m_P["H", "S1"] <- p_HS1
-    m_P["H", "D"]  <- p_HD
+    m_P["H", "H"]   <- 1 - (p_HS1 + p_HD)
+    m_P["H", "S1"]  <- p_HS1
+    m_P["H", "D"]   <- p_HD
     ### From Sick
     m_P["S1", "H"]  <- p_S1H
     m_P["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
@@ -45,7 +45,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     m_P["S2", "S2"] <- 1 - p_S2D
     m_P["S2", "D"]  <- p_S2D
     ### From Dead
-    m_P["D", "D"] <- 1
+    m_P["D", "D"]   <- 1
     
     # check rows add up to 1
     if (!isTRUE(all.equal(as.numeric(rowSums(m_P)), as.numeric(rep(1, n_s))))) {
@@ -54,25 +54,25 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ############# PROCESS ###########################################
     
-    for (t in 1:n_t){                              # throughout the number of cycles
-      m_M[t + 1, ] <- m_M[t, ] %*% m_P           # estimate the Markov trace for cycle the next cycle (t + 1)
+    for (t in 1:n_t){                     # throughout the number of cycles
+      m_M[t + 1, ] <- m_M[t, ] %*% m_P    # estimate the Markov trace for cycle the next cycle (t + 1)
     }
     
     ####### EPIDEMIOLOGICAL OUTPUT  ###########################################
     #### Overall Survival (OS) ####
-    v_os <- 1 - m_M[, "D"]                # calculate the overall survival (OS) probability for no treatment
+    v_os      <- 1 - m_M[, "D"]           # calculate the overall survival (OS) probability for no treatment
     
     #### Disease prevalence #####
-    v_prev <- rowSums(m_M[, c("S1", "S2")])/v_os
+    v_prev    <- rowSums(m_M[, c("S1", "S2")])/v_os
     
     #### Proportion of sick in S1 state #####
     v_prop_S1 <- m_M[, "S1"] / v_prev
     
     ####### RETURN OUTPUT  ###########################################
-    out <- list(m_M = m_M,
-                m_P = m_P,
-                Surv = v_os[-1],
-                Prev = v_prev[-1],
+    out <- list(m_M      = m_M,
+                m_P      = m_P,
+                Surv     = v_os[-1],
+                Prev     = v_prev[-1],
                 PropSick = v_prop_S1[c(11, 21, 31)])
     
     return(out)

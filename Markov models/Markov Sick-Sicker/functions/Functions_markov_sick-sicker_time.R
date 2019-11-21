@@ -29,7 +29,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     #### Transition probability ARRAY ####
     # create transition probability array for NO treatment
-    a_P_no_trt <- array(0,                                    # Create 3-D array
+    a_P_no_trt <- array(0,                                   # Create 3-D array
                        dim      = c(n_s, n_s, n_t),
                        dimnames = list(v_n, v_n, 0:(n_t-1))) # name dimensions of the transition probability array
     
@@ -68,20 +68,20 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ########################################## PROCESS ##########################################
     
-    for (t in 1:n_t){                                                # loop through the number of cycles
+    for (t in 1:n_t){                                                 # loop through the number of cycles
       m_M_no_trt[t + 1, ] <- t(m_M_no_trt[t, ]) %*% a_P_no_trt[,, t]  # estimate the Markov trace for cycle the next cycle (t + 1)
-      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[,, t]    # estimate the Markov trace for cycle the next cycle (t + 1)
+      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[,, t]     # estimate the Markov trace for cycle the next cycle (t + 1)
     } # close the loop
     
     ########################################## EPIDEMIOLOGICAL OUTPUT  ##########################################
     #### Overall Survival (OS) ####
-    v_os_no_trt_td <- 1 - m_M_no_trt[, "D"]       # calculate the overall survival (OS) probability for no treatment
-    v_os_no_trt_td <- rowSums(m_M_no_trt[, 1:3])  # alternative way of calculating the OS probability   
+    v_os_no_trt_td  <- 1 - m_M_no_trt[, "D"]       # calculate the overall survival (OS) probability for no treatment
+    v_os_no_trt_td  <- rowSums(m_M_no_trt[, 1:3])  # alternative way of calculating the OS probability   
     
     #### Life Expectancy (LE) #####
     
     #### Disease prevalence #####
-    v_prev_td   <- rowSums(m_M_no_trt[, c("S1", "S2")])/v_os_no_trt_td
+    v_prev_td       <- rowSums(m_M_no_trt[, c("S1", "S2")]) / v_os_no_trt_td
     
     #### ratio of sick(S1) vs sicker(S2) #####
     v_ratio_S1S2_td <- m_M_no_trt[, "S1"] / m_M_no_trt[, "S2"]

@@ -12,12 +12,12 @@ fit.fun <- function(time, status, data = data , add = FALSE, extrapolate = FALSE
   }
   
   # Progression free survival  
-  KM.fit     <-     survfit(Surv(time, status) ~ 1, data = data)                   # fit Kaplan-Meier curve 
-  fit.llogis <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "llogis" ) # fit model with loglogistic distribution
-  fit.weib   <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "weibull") # fit model with Weibull distribution
-  fit.lnorm  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "lnorm"  ) # fit model with lognormal distribution
-  fit.gamma  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "gamma"  ) # fit model with gamma distribution 
-  fit.exp    <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "exp"    ) # fit model with exponential distribution
+  KM.fit     <-     survfit(Surv(time, status) ~ 1, data = data)                         # fit Kaplan-Meier curve 
+  fit.llogis <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "llogis" )       # fit model with loglogistic distribution
+  fit.weib   <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "weibull")       # fit model with Weibull distribution
+  fit.lnorm  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "lnorm"  )       # fit model with lognormal distribution
+  fit.gamma  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "gamma"  )       # fit model with gamma distribution 
+  fit.exp    <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "exp"    )       # fit model with exponential distribution
   fit.gengamma  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "gengamma"  ) # fit model with gamma distribution  
   
   
@@ -75,7 +75,7 @@ fit.mstate <- function(time, status, trans,  data = data , add = FALSE, extrapol
   }
   
   # Progression free survival  
-  KM.fit     <-     survfit(Surv(time, status) ~ trans , data = data)                   # fit Kaplan-Meier curve 
+  KM.fit     <-     survfit(Surv(time, status) ~ trans , data = data)                                 # fit Kaplan-Meier curve 
   fit.llogis <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "llogis" ) # fit model with loglogistic distribution
   fit.weib   <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "weibull") # fit model with Weibull distribution
   fit.lnorm  <- flexsurvreg(Surv(time, status) ~ trans + sdlog(trans), data = data, dist = "lnorm"  ) # fit model with lognormal distribution
@@ -161,7 +161,7 @@ partsurv <- function(fit.pfs, fit.os, time = times){
   os.surv  <- summary(fit.os,  t = time, ci = F)[[1]]$est
   sick                 <- os.surv - pfs.surv      # estimate the probability of remaining in the progressed state
   sick[sick < 0]       <- 0                       # in cases where the probability is negative replace with zero
-  healthy               <- pfs.surv                # probability of remaining stable
+  healthy              <- pfs.surv                # probability of remaining stable
   dead                 <- 1 - os.surv             # probability of being dead
   trace <- cbind(healthy, sick, dead)
   res   <- list(trace = trace)
@@ -223,9 +223,9 @@ gen_data <- function(n_pat, n_years)
   rownames(mu@list.matrix) <- 
     colnames(mu@list.matrix) <- v_n
   
-  mu[["healthy", "sick"]] <- list(1.5, 6)   #  the Weibull parameters for H -> S
+  mu[["healthy", "sick"]] <- list(1.5, 6)      #  the Weibull parameters for H -> S
   mu[["healthy", "dead"]] <- list(0.25, 0.08)  # the Gompertz params for H -> D
-  mu[["sick",    "dead"]] <- list(0.5,4)     #  the Weibull parameters for S -> D
+  mu[["sick",    "dead"]] <- list(0.5,4)       #  the Weibull parameters for S -> D
   
   
   

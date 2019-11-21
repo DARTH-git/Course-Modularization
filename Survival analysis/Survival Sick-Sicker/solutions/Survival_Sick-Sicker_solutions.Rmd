@@ -258,8 +258,8 @@ Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
   u_t[M_t == "S1" & Trt == FALSE] <- u_S1  # update the utility if sick
   # update the utility if sick but on treatment (adjust for individual effect modifier) 
   u_t[M_t == "S1" & Trt == TRUE]  <- u_Trt * df_X$x[M_t == "S1"]  
-  u_t[M_t == "S2"] <- u_S2                       # update the utility if sicker
-  u_t[M_t == "D"]  <- u_D                        # update the utility if dead
+  u_t[M_t == "S2"] <- u_S2                 # update the utility if sicker
+  u_t[M_t == "D"]  <- u_D                  # update the utility if dead
   
   QALYs <-  u_t * cl            # calculate the QALYs during cycle t
   return(QALYs)                 # return the QALYs

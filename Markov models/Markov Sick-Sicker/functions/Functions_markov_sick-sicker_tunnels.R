@@ -32,7 +32,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     ### create transition probability array for NO treatment
     a_P_no_trt <- array(0,                                          # Create 3-D array
                        dim = c(n_s_td, n_s_td, n_t),
-                       dimnames = list(v_n_td, v_n_td, 0:(n_t-1))) # name dimensions of the transition probability array
+                       dimnames = list(v_n_td, v_n_td, 0:(n_t-1)))  # name dimensions of the transition probability array
     
     ### fill in the transition probability array
     # From Healthy
@@ -50,14 +50,14 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     a_P_no_trt[Sick_tunnel[tunnel_size], "H", ]  <- p_S1H
     a_P_no_trt[Sick_tunnel[tunnel_size], Sick_tunnel[tunnel_size], ] <- 1 - (p_S1H + p_S1S2[tunnel_size] + p_S1D)
     a_P_no_trt[Sick_tunnel[tunnel_size], "S2", ] <- p_S1S2[tunnel_size]
-    a_P_no_trt[Sick_tunnel[tunnel_size], "D", ] <- p_S1D
+    a_P_no_trt[Sick_tunnel[tunnel_size], "D", ]  <- p_S1D
     
     # From Sicker
     a_P_no_trt["S2", "S2", ] <- 1 - p_S2D
     a_P_no_trt["S2", "D", ]  <- p_S2D
     
     # From Dead
-    a_P_no_trt["D", "D", ] <- 1
+    a_P_no_trt["D", "D", ]   <- 1
     
     ### Check if transition matrix is valid (i_e_, each row should add up to 1)
     valid <- apply(a_P_no_trt, 3, function(x) sum(rowSums(x))==n_s_td)
@@ -70,21 +70,21 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ########################################## PROCESS ##########################################
     
-    for (t in 1:n_t){                                                  # loop through the number of cycles
+    for (t in 1:n_t){                                                   # loop through the number of cycles
       m_M_no_trt[t + 1, ] <- t(m_M_no_trt[t, ]) %*% a_P_no_trt[ , , t]  # estimate the Markov trace for cycle the next cycle (t + 1)
-      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[, , t]     # estimate the Markov trace for cycle the next cycle (t + 1)
+      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[, , t]      # estimate the Markov trace for cycle the next cycle (t + 1)
     } # lose the loop
     
     ### create aggregated traces
-    m_M_td_no_trt <- cbind(H = m_M_no_trt[, "H"], 
+    m_M_td_no_trt <- cbind(H  = m_M_no_trt[, "H"], 
                            S1 = rowSums(m_M_no_trt[, 2:(tunnel_size +1)]), 
                            S2 = m_M_no_trt[, "S2"],
-                           D = m_M_no_trt[, "D"])
+                           D  = m_M_no_trt[, "D"])
     head(m_M_td_no_trt)
-    m_M_td_trt    <- cbind(H = m_M_trt[, "H"], 
+    m_M_td_trt    <- cbind(H  = m_M_trt[, "H"], 
                            S1 = rowSums(m_M_trt[, 2:(tunnel_size +1)]), 
                            S2 = m_M_trt[, "S2"],
-                           D = m_M_trt[, "D"])
+                           D  = m_M_trt[, "D"])
     
     ########################################## EPIDEMIOLOGICAL OUTPUT  ##########################################
     #### Overall Survival (OS) ####
@@ -102,12 +102,12 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ########################################## RETURN OUTPUT  ##########################################
     out <- list(m_M_td_no_trt = m_M_td_no_trt,
-                m_M_td_trt = m_M_td_trt,
-                a_P_no_trt = a_P_no_trt,
-                a_P_trt = a_P_trt,
-                Surv =  v_os_no_trt_tunnels[-1],
-                Prev = v_prev_tunnels[-1],
-                Ratio_S1S2 = v_ratio_S1S2_tunnels)
+                m_M_td_trt    = m_M_td_trt,
+                a_P_no_trt    = a_P_no_trt,
+                a_P_trt       = a_P_trt,
+                Surv          = v_os_no_trt_tunnels[-1],
+                Prev          = v_prev_tunnels[-1],
+                Ratio_S1S2    = v_ratio_S1S2_tunnels)
     
     return(out)
   }

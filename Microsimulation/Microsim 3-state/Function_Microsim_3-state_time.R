@@ -19,8 +19,6 @@
 # 6 The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
 
 
-
-
 # used for sensitivity analysis
 
 calculate_ce_out <- function (l_params_all, n_wtp = 100000) {

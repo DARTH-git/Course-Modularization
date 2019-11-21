@@ -48,10 +48,10 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       p_HD     <- p_HD_all[M_t == "H","p_HD"]
       
       # update the v_p with the appropriate probabilities   
-      m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)      # transition probabilities when healthy
-      m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[v_Ts], p_S1S2, p_S1D[v_Ts])  # transition probabilities when sick
-      m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D, p_S2D)                                            # transition probabilities when sicker
-      m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                        # transition probabilities when dead   
+      m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)                             # transition probabilities when healthy
+      m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[v_Ts], p_S1S2, p_S1D[v_Ts]) # transition probabilities when sick
+      m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D, p_S2D)                                       # transition probabilities when sicker
+      m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                   # transition probabilities when dead   
       return(t(m_p_t))
     }       
     
@@ -62,7 +62,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # M_t: health state occupied by individual i at cycle t (character variable)
       # Trt:  is the individual being treated? (default is FALSE) 
       
-      c_t <- 0                                  # by default the cost for everyone is zero 
+      c_t <- 0                                 # by default the cost for everyone is zero 
       c_t[M_t == "H"]  <- c_H                  # update the cost if healthy
       c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt   # update the cost if sick conditional on treatment
       c_t[M_t == "S2"] <- c_S2 + c_Trt * Trt   # update the cost if sicker conditional on treatment
@@ -80,7 +80,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # Trt:  is the individual treated? (default is FALSE) 
       # cl:   cycle length (default is 1)
       
-      u_t <- 0                                        # by default the utility for everyone is zero
+      u_t <- 0                                       # by default the utility for everyone is zero
       u_t[M_t == "H"]  <- u_H                        # update the utility if healthy
       u_t[M_t == "S1" & Trt == FALSE] <- u_S1        # update the utility if sick
       u_t[M_t == "S1" & Trt == TRUE]  <- u_Trt * df_X$x[M_t == "S1"]  # update the utility if sick but on treatment (adjust for individual effect modifier) 
@@ -88,7 +88,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       u_t[M_t == "D"]  <- u_D                        # update the utility if dead
       
       QALYs <-  u_t * cl            # calculate the QALYs during cycle t
-      return(QALYs)                  # return the QALYs
+      return(QALYs)                 # return the QALYs
     }
     
     #### 06 Run Microsimulation ####

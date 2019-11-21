@@ -151,7 +151,7 @@ Probs <- function(M_t, df_X) {
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, m_p_HD, by = c("Sex"))
-  p_HD     <- p_HD_all[M_t == "healthy","p_HD"]
+  p_HD     <- p_HD_all[M_t == "healthy", "p_HD"]
   
   # update m_p_t with the appropriate probabilities   
   # transition probabilities when healthy 

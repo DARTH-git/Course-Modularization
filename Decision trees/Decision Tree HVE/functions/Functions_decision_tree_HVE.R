@@ -5,10 +5,10 @@ calculate_ce_out <- function(l_params_all, n_wtp = 100000){
     {
       #### Create vector of weights for each strategy ####
       
-      v_w_no_tx  <- c(  p_HVE  *    p_HVE_comp  ,  # HVE, complications
-                        p_HVE  * (1-p_HVE_comp) ,  # HVE, no complications
-                     (1-p_HVE) *    p_OVE_comp  ,  # OVE, complications
-                     (1-p_HVE) * (1-p_OVE_comp))   # OVE, no complications
+      v_w_no_tx  <- c(  p_HVE  *    p_HVE_comp     ,  # HVE, complications
+                        p_HVE  * (1-p_HVE_comp)    ,  # HVE, no complications
+                     (1-p_HVE) *    p_OVE_comp     ,  # OVE, complications
+                     (1-p_HVE) * (1-p_OVE_comp))      # OVE, no complications
       
       v_w_tx     <- c(  1                          ,  # On treatment
                         p_HVE  *    p_HVE_comp_tx  ,  # HVE w/tx, complications
@@ -30,7 +30,7 @@ calculate_ce_out <- function(l_params_all, n_wtp = 100000){
                          q_VE_comp ,  # OVE, complications
                          q_VE)        # OVE, no complications
       
-      v_qaly_tx     <- c(0      ,     # treatment does not directly add any QALYs 
+      v_qaly_tx     <- c(0         ,  # treatment does not directly add any QALYs 
                          q_VE_comp ,  # HVE, complications
                          q_VE      ,  # HVE, no complications
                          q_VE_comp ,  # OVE, complications

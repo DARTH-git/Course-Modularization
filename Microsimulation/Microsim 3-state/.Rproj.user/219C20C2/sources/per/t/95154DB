@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1575490092578.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "7301024",
+    "id" : "95154DB",
+    "lastKnownWriteTime" : 1575556971,
+    "last_content_update" : 1575556971449,
+    "path" : "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Microsimulation/Microsim 3-state/microsim_3-state.Rmd",
+    "project_path" : "microsim_3-state.Rmd",
+    "properties" : {
+        "cursorPosition" : "100,61",
+        "scrollLine" : "73"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

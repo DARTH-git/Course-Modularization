@@ -56,27 +56,17 @@ exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
-# Exercise I: Construct a Markov Model of the Sick-Sicker Disease
+# Exercise I: The Sick-Sicker model – A Markov model 
 
-In this exercise, we will model a hypothetical disease that affects individuals with an average age of 25 years and results in increased mortality, increased healthcare costs, and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: a no-treatment and a treatment strategy. Under the treatment strategy, individuals in the sick and sicker states are treated until they recover (only if sick; individuals in the sicker state cannot recover) or die. The cost of the treatment is additive to the baseline healthcare costs of being sick or sicker. The treatment improves quality of life for those individuals who are sick but has no impact on the quality of life of those who are sicker. Unfortunately, it is not possible to reliably differentiate between people in the sick and sicker states, so treatment cannot be targeted to only those in the sick state. You are asked to evaluate the cost-effectiveness of the treatment.
+A hypothetical disease affects individuals with an average age of 25 years and results in increased mortality, increased treatment costs and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: a no-treatment and a treatment strategy. Under the treatment strategy, individuals who become sick or progress and become sicker receive treatment and continue doing so until they recover or die. The cost of the treatment is additional to the cost of being sick or sicker for one year. The treatment improves quality of life for those individuals who are sick but has no effect on the quality of life of those who are sicker. You are asked to evaluate the cost-effectiveness of the treatment.
 
-To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
+To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: healthy (H), two disease states sick (S1) and sicker (S2) and dead (D) (Figure 1). All individuals start in the healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H are assumed to have a fixed mortality rate and individuals in S1 and S2 have an increased mortality rate compared to healthy individuals. These rates are used to calculate the probabilities to die when in S1 and S2.
 
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
-
-## Tasks
-
-1.	Build the Markov model in `R` for no treatment and treatment strategies.
-
-2.	Plot the survival curve for the cohort under no treatment.
-
-3.	Estimate the cost-effectiveness of treatment vs no-treatment.
-
-4.	Create a cost-effectiveness table with all results of interest.
 
 **Table I: Input parameters**
 
@@ -110,10 +100,6 @@ include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 
 *Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -loga(1-p)$ and $p = 1-e^{(-rt)}$
 
-# Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
-
-This exercise continues based on the time-homogeneous deterministic Markov model of the Sick-Sicker model from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
-
 **Table II: Input parameters for probabilistic analysis**
 
 |           **Parameter**            |  **Distribution** |            **Distribution values**            |
@@ -141,20 +127,11 @@ This exercise continues based on the time-homogeneous deterministic Markov model
 
 ## Tasks
 
-5. Create the `calculate_ce_out` `R` function of the Sick-Sicker Markov model in the file “Functions_markov_sick-sicker.R”.
+1.	Load the PSA dataset title “psa_sick_sicker.csv”.
 
-6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
-Hint: package `truncnorm` deals with truncated normal distributions.
+2.	Use the PSA dataset to compute EVPI for the overall model.
 
-7. Open the file “markov_sick-sicker_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
+3.	Compute EVPPI for each parameter in the model, and plot your results.
 
-8. Create histograms of model inputs.
-
-9. Create a cost-effectiveness plane to present discounted costs and QALYs.
-
-10. Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$.
-
-11. Create the expected loss curves (ELCs) plot
-
-12. Create an expected value of perfect information (EVPI) plot. 
+4.	Compute EVSI for cost of treatment `c.trt` [hint n0 = shape parameter of the gamma distribution].
 

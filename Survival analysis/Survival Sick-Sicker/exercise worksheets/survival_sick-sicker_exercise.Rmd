@@ -63,7 +63,7 @@ In this exercise, we will model a hypothetical disease that affects individuals 
 
 To model this disease, we will rely on a microsimulation model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
 
-You were given access to individual-level data of patients with the hypothetical disease. From the data you are asked to inform the transition probabilities for the transitions from S1 to H, from S1 to S2 and from S1 to D directly from the data through the use  of parametric survival functions. A snapshot of the data is presented below:
+You were given access to individual-level data of patients with the hypothetical disease. From the data you are asked to inform the transition probabilities for the transitions from S1 to H, from S1 to S2 and from S1 to D directly from the data through the use of parametric survival functions. A snapshot of the data is presented below:
 
 ```{r}
 data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
@@ -82,13 +82,13 @@ head(data_long)
 
 4. Draw Kaplan Meier plots for each transition.
 
-5. Estimate parametric distributions to the patient level survival data for all data-informed  transitions. 
+5. Estimate parametric distributions to the patient level survival data for all data-informed transitions. 
 
 6. Select the one with the most plausible fit (both clinically and statistically).
 
 **OPTIONAL**
 
-1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation.HINT: Depending on the distribution you choose you will need to track more time-in-state variables.
+1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation. HINT: Depending on the distribution you choose you will need to track more time-in-state variables.
 
 2.	Run the microsimulation model and draw output from it.
 

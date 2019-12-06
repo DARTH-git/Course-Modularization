@@ -1,5 +1,0 @@
-"0","    # calculate the transition probabilities for the cycle based on health state t
-    m_P <- Probs(m_M[, t], df_X)        
-"
-"2","Error in m_M[, t] : invalid subscript type 'closure'
-"

@@ -11,7 +11,7 @@
 "0","  "
 "0","  # lookup baseline probability and rate of dying based on individual characteristics"
 "0","  p_HD_all <- inner_join(df_X, m_p_HD, by = c(""Sex""))"
-"0","  p_HD     <- p_HD_all[M_t == ""healthy"",""p_HD""]"
+"0","  p_HD     <- p_HD_all[M_t == ""healthy"", ""p_HD""]"
 "0","  "
 "0","  # update m_p_t with the appropriate probabilities   "
 "0","  # transition probabilities when healthy "

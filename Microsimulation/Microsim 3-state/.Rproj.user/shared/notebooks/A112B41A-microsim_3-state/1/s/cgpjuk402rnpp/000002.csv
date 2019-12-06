@@ -11,7 +11,7 @@
 "0","#### Deterministic analysis ####"
 "0",""
 "0","# Transition probabilities"
-"0","p_HS <- 0.05           # probability healthy -> sick"
+"0","p_HS        <- 0.05    # probability healthy -> sick"
 "0","p_HD_female <- 0.0382  # probability health -> dead when female"
 "0","p_HD_male   <- 0.0463  # probability health -> dead when male"
 "0","m_p_HD      <- data.frame(Sex = c(""Female"", ""Male""), p_HD = c(p_HD_female, p_HD_male))"

@@ -120,10 +120,10 @@ head(OS_PFS_data)
 Showcasing the use of packages `survival`, `flexsurv`. 
 
 ```{r}
-fit_KM <- survfit (Surv(time = OS_time, event= OS_status)~ 1 , data = OS_PFS_data, 
-                   type ="fleming-harrington")
-fit_weib <- flexsurvreg(Surv(time = OS_time, event= OS_status)~ 1 , data = OS_PFS_data, 
-                        dist = "weibull")
+fit_KM   <- survfit(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data, 
+                         type ="fleming-harrington")
+fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data, 
+                             dist = "weibull")
 plot(fit_KM, mark.time = T)
 plot(fit_weib)
 ```
@@ -134,9 +134,9 @@ plot(fit_weib)
 # fit all parametric models to the data and extract the AIC/BIC. 
 # Select the one with the most appropriate fit
 # Repeat for PFS and OS
-fit_PFS  <- fit.fun(time ="PFS_time", status = "PFS_status", data = OS_PFS_data, 
+fit_PFS  <- fit.fun(time  = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
                     times = times, extrapolate = T) 
-fit_OS   <- fit.fun(time = "OS_time", status = "OS_status" , data = OS_PFS_data, 
+fit_OS   <- fit.fun(time  = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
                     times = times, extrapolate = T) 
 
 best_PFS <- fit_PFS[["Weibull"]]  

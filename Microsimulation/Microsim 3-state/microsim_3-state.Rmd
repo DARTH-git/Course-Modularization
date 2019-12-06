@@ -96,7 +96,7 @@ v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight
 #### Deterministic analysis ####
 
 # Transition probabilities
-p_HS <- 0.05           # probability healthy -> sick
+p_HS        <- 0.05    # probability healthy -> sick
 p_HD_female <- 0.0382  # probability health -> dead when female
 p_HD_male   <- 0.0463  # probability health -> dead when male
 m_p_HD      <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male))

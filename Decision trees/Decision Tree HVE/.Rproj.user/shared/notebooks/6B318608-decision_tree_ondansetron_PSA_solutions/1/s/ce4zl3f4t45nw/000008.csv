@@ -1,4 +1,0 @@
-"0","branches <- read.csv(here('data','decision_tree_ondansetron_branches.csv'), stringsAsFactors = F, header = T)"
-"2","cannot open file 'C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Decision trees/Decision Tree HVE/data/decision_tree_ondansetron_branches.csv': No such file or directory"
-"2","Error in file(file, ""rt"") : cannot open the connection
-"

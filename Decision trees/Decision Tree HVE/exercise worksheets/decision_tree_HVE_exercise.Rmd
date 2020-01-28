@@ -1,8 +1,9 @@
 ---
-title: 'Cost-Effectiveness and Decision Modeling in R'
-subtitle: 'Decision Tree Exercise'
+title: "Cost-Effectiveness and Decision Modeling in R"
 author: "The DARTH workgroup"
+subtitle: Decision Tree Exercise
 output:
+  word_document: default
   pdf_document: default
   html_document: default
 ---
@@ -66,7 +67,7 @@ The healthcare cost of a case of viral encephalitis without complications is \$1
 
 A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.
 
-Parameters are summarized in Table 1. Use the code template provided in “HVE_DecisitionTree_Template.Rmd” as a starting point for this exercise.
+Parameters are summarized in Table 1. Use the code template provided in “decisition_tree_HVE_template.Rmd” as a starting point for this exercise.
 
 ## Tasks
 

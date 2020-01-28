@@ -1,0 +1,785 @@
+---
+title: "Markov model information"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+date: "April 16, 2015"
+---
+
+## Model Description
+
+
+
+###Transition     Matrix
+
+Use  the code  chunk  to define  the transition   matrix   for each  strategy.
+Each  strategy  of the decision   problem   will have  its  own  transition    matrix.
+
+
+###lnital  State  Vector
+
+Use  the code  chunk   to define  the initia!   state vector   for each  strategy,
+Each  strategy of the  decision   problem   will  have  its  own  initia!   state   vector.
+
+
+###Rewards  Matrix
+
+Use  the code  chunk  to  define  the rewards   matrix   for each  strategy.
+Each  strategy of the  decision   problem   will have its own rewards matrix.
+A strategymay have more than one rewards matrix  (e.g.,  a rewards matrix for cost and utilities)
+
+###Calculate Markov Trace
+
+Use the code chunk to calculate the trace of each transitionmatrix (CalcualteMarkovTrace). Reminder, there will be a transition matrix  for each strategyof the decision problem
+
+
+###Calculate Expected Value
+
+Use the code chunk to calculate the expected rewards a.ssociatecl with cach strategy (ExpectedValue)
+
+\newpage
+
+# Cancer Working Example Using the Inputs Page
+### Model Description
+
+This example uses the cancer case study to demonstrate how to use the modeling code.
+
+You will develop a 4-state Markov model with which to perform an analysis of the expected outcomes for a cohort of 55-year-old women who have undergone tumor excision for localized breast cancer.  After surgery, all patients are initially tumor-free (i.e., will start in the “Local” Markov state).  Each year, patients in the Local state face a 2% chance that they will experience a recurrence.  Of these recurrences, 75% will present as metastatic disease (and patients will enter the “Mets” Markov state), and the remainder present as local disease (and patients will enter the “Recur” Markov state).  Patients in the Recur state undergo repeat resection.  Following this operation, they face a 6% chance of recurrence each year.  (Assume that all local recurrences - 1st, 2nd, 3rd, etc. - have equivalent prognoses.)  Of these recurrences, 90% will present as metastatic disease.  Only patients with metastatic disease can die of breast cancer.  Finally, all patients in the local and recur state face a 7.6% annual probability of mortality and patients in the mets state face a 39% added risk of death. 
+
+
+```{r Load Functions and Packages, echo=FALSE, message=FALSE}
+setwd("~/Dropbox/!Research NIHES/doc Eline Krijkamp/US team papers/Markov documentation")
+source("Markov_Functions.R")
+#Be sure to set the correct working director using setwd(dir)
+require(ggplot2)
+require(reshape2)
+require(scales)
+```
+
+
+### Transition Matrix  
+In this example we are only evaluating one strategy (usual care). However, in situations when multiple strategies are being evaluated multiple transition matrices will need to be defined.  
+
+
+We can directly enter the probabilities into a transition matrix. 
+```{r label transition matrix direct enter}
+M.UC <- matrix(c(0.9046, 0.00461, 0.01384, 0.07688,
+                 0.00, 0.873, 0.0498, 0.07688,
+                 0.00, 0.00, 0.55989, 0.4401,
+                 0.00, 0.00, 0.00,1.00), 
+               nrow = 4, ncol = 4, 
+               byrow = TRUE)
+M.UC
+```
+
+It is good practice to label the states in the transition matrix.
+```{r label transition matrix direct state names}
+state.names <- c("Local", "Recur", "Mets", "Dead")
+```
+
+Finally, for the functions that are used for analyses it is necessary to define the number of states in the model.
+```{r label number of states}
+n.states <- length(state.names)
+```
+
+
+Instead of directly entering probabilities into the transition matrix we can use variables. It is best practice define the transition matrix with variables. The cancer model consists of 4-states (Local, Mets, Recur, and Dead). Therefore, we will be creating a 4x4 transition matrix.  
+
+From the decision problem we know that patients in the local state face a 2% chance of recurrence (defined as `p.BCA1`). Of these recurrences, 75% will present as metastatic disease (and patients will enter the “Mets” Markov state; defined as `p.Mets1`), and the remainder present as local disease (and patients will enter the “Recur” Markov state; i.e., `1-p.Mets`). We will create variables to represent these probabilities of the transition matrix. 
+
+```{r define variables for transition matrix}
+p.BCA1     <- 0.02
+p.Mets1    <- 0.75
+```
+
+Patients in the recur state face a 6% chance of recurrence each year (defined as `p.BCA2`). Of these recurrences, 90% will present as metastatic disease (defined as `p.Mets2`). 
+```{r define variables for transition matrix 1}
+p.BCA2     <- 0.06
+p.Mets2    <- 0.90
+```
+
+All patients in the local and recur state face a 7.6% annual probability of mortality (defined as `p.Die`). Patients in the mets state face a 39% added risk of death (defined as `p.DieMets`). 
+
+```{r define variables for transition matrix 2}
+
+mu.Die     <- 0.08 # Mean hazard
+p.Die      <- 1 - exp(-mu.Die)
+mu.DieMets <- 0.5
+p.DieMets  <- 1 - exp(-(mu.Die + mu.DieMets))
+```
+
+We are now ready to create the transition matrix. First we will define the vector that contains the transition probabilities for leaving the local state defined as (`tp.Local.UC`). 
+```{r define vector of transtion from local}
+## From Local in Usual Care (UC)
+tp.Local.UC    <- numeric() #Initialize vector
+# To Recur
+tp.Local.UC[2] <- (1 - p.Die) * p.BCA1[1] * (1 - p.Mets1) 
+# To Mets
+tp.Local.UC[3] <- (1 - p.Die) * p.BCA1[1] * p.Mets1
+# To Dead
+tp.Local.UC[4] <- p.Die
+# To Local
+tp.Local.UC[1] <- 1 - sum(tp.Local.UC[-1])
+
+# Local vector
+tp.Local.UC
+```
+
+Now we will define the vector that contains the transition probabilities for leaving the local recur state (`tp.Recur`). 
+```{r define vector of transtion from recur}
+## From Local in Usual Care (UC)
+tp.Recur    <- numeric()
+# To Local
+tp.Recur[1] <- 0
+# To Mets
+tp.Recur[3] <- (1 - p.Die) * p.BCA2 * p.Mets2
+# To Dead
+tp.Recur[4] <- p.Die
+# To Recur
+tp.Recur[2] <- 1 - sum(tp.Recur[-2])
+
+# Local vector
+tp.Recur
+```
+Now we will define the vector that contains the transition probabilities for leaving the mets state defined as (`tp.Mets`). 
+```{r define vector of transtion from Mets}
+## From Local in Usual Care (UC)
+## From Mets
+tp.Mets     <- numeric()
+# To Local
+tp.Mets[1]  <- 0
+# To Recur
+tp.Mets[2]  <- 0
+# To Dead
+tp.Mets[4]  <- p.DieMets
+# To Mets
+tp.Mets[3]  <- 1 - sum(tp.Mets[-3])
+
+# Local vector
+tp.Mets
+```
+Finally, we create a vector that contains the transition probabilities for leaving the dead state defined as (`tp.Dead`).  
+```{r define vector of transtion from Dead}
+## From Dead
+tp.Dead <- c(0, 0, 0, 1)
+```
+The vectors are used to generate the transition matrix (`M.UC`). To generate the transition matrix we first label the state names (`state.names`) and define the number of states in the model (`n.states`).
+
+
+```{r define transition matrix}
+## From Dead
+### Transition Matrix
+state.names <- c("Local", "Recur", "Mets", "Dead")
+n.states <- length(state.names)
+## Create a 4 x 4 matrix for Usual Care (UC)
+
+M.UC <- matrix(c(tp.Local.UC,
+                 tp.Recur,
+                 tp.Mets,
+                 tp.Dead), 
+               nrow = n.states, ncol = n.states, 
+               byrow = TRUE)
+M.UC
+```
+We can label the rows and columns of the transition matrix
+```{r label transition matrix}
+rownames(M.UC) <- state.names
+colnames(M.UC) <- state.names
+M.UC
+```
+
+### Inital State Vector  
+We now define the initial state vector (`p0'). In the this example everyone starts in the local state. 
+```{r Inital State Vector}
+p0 <- c(1, 0, 0, 0) # Everyone starts in the local state
+```
+
+
+### Calculate Markov Trace  
+All of the components necessary to run the Markov model are now in place. We use the function `CalculateMarkovTrace` to run the model. For the function to work we define the transition matrix (`M.UC`), the initial state vector (`p0`), and the number of cycles we want the model to run mode (in this example we select 51)
+```{r Calculate Markov Trace}
+UC <- CalculateMarkovTrace(M = M.UC, p0 = p0, n.cycles = 51)
+```
+
+### Rewards Matrix  
+We can use the Markov Trace to calculate life years, quality adjusted life years, and cost. We can specify a reward matrix to determine life years. 
+
+```{r Rewards Matrix life years}
+ly.UC  <- c(1, 1, 1, 0)
+rwd.ly <- matrix(c(rep(ly.UC, (n.states - 1)), rep(0, n.states)), 
+                 nrow = n.states, byrow = TRUE,
+                 dimnames = list(state.names, state.names))
+rwd.ly
+```
+Using the `ExpectedValue` function we can calculate the life years of the Markov cohort. In the expected value function we reference the transition array (generated from the Markov trace), apply a 0.03 discount rate and the half cycle correction. 
+```{r Calculate Expected Value Life Year}
+UC$ly <- ExpectedValue(trans = UC$trans, rwd = rwd.ly, r = 0.03, half = TRUE)
+UC$ly
+```
+
+If we are interested in quality adjusted life years we can create a rewards matrix with utility values. Lets assume that being in the local state has a utility of 0.90, being in the recur state  has a utility of 0.80, being in the mets state has a utility of 0.40, and being dead has a utility of 0.
+
+```{r Rewards Matrix qalys}
+u.Local    <- 0.9
+u.Recur    <- 0.8
+u.Mets     <- 0.4
+qaly.UC <- c(u.Local[1], u.Recur, u.Mets, 0)
+rwd.qaly.UC <- matrix(c(rep(qaly.UC, (n.states - 1)), rep(0, n.states)), 
+                      nrow = n.states, byrow = TRUE,
+                      dimnames = list(state.names, state.names))
+```
+Using the utility reward matrix and the `ExpectedValue` function we can calculate the quality adjusted life years of the cohort.
+```{r Calculate Expected Value Life Year qaly}
+UC$qaly <- ExpectedValue(trans = UC$trans, rwd = rwd.qaly.UC, r = 0.03, half = TRUE)
+UC$qaly
+```
+### Output
+Finally, we can output results in table form.
+```{r Output}
+rankings <- data.frame(Strategy = "Cancer", 
+                       LYs      = c(UC$ly), 
+                       QALYs    = c(UC$qaly))
+print(rankings)
+```
+
+
+\newpage
+
+# Markov Trace and Array Documentation
+
+**Author** Fernando Alarid-Escudero & Eric Jutkowitz  
+**Description**  Calculates Markov trace and transition array  
+**Depends** TBA  
+
+## Description
+
+This documentation describes the R function `CalcualteMarkovTrace`. This function is used to calculate the trace and transition array of a Markov model without time varying probabilities.
+
+
+### Usage  
+`CalculateMarkovTrace(M, p0, n.cycles)`  
+
+### Arguments  
+`M`          transition matrix  
+`p0`         initial state vector  
+`n.cycles`   number of cycles for model to run
+
+
+## Full Syntax
+
+```{r Markov Trace, eval=FALSE}
+CalculateMarkovTrace <- function(M, p0, n.cycles){
+  # Computes the Markov trace and tranistion array for a given transition Matrix
+  # Args:
+  #  M:        Transition probability matrix
+  #  p0:       Initial state vector
+  #  n.cycles: Total number of cycles to run the Markov model
+  #  c:        Cost scalar
+  #  u:        Utility scalar
+  #
+  # Return
+  #  trace: A (n.cycles x n.states) matrix with Markov trace
+  #  trans: A (n.states x n.states x n.cycles) array with transitions over time
+  #
+  #
+  # Extract number of states
+  n.states <- ncol(M)
+  
+  # Check if transition matrix is valid (i.e., each row should add up to 1)
+  if (sum(rowSums(M)) != n.states){
+    print("Error: This is not a valid transition Matrix")
+    stop()
+  }
+    
+  # Extract name of states
+  state.names <- colnames(M)
+  # Initialize trace matrix; Preallocate for speed purposes
+  trace <- matrix(0, ncol = n.states, nrow = n.cycles) 
+  # Name trace's columns with states names taken from columns of M
+  colnames(trace) <- state.names
+  rownames(trace) <- paste("Cycle", 0:(n.cycles - 1), sep = "")
+  
+  # Initialize trans array; Preallocate for speed purposes
+  trans <- array(0, 
+                 dim = c(n.states, n.states, n.cycles), 
+                 dimnames = list(state.names, state.names, 
+                                 paste("Cycle", 0:(n.cycles - 1), sep = "")))
+  
+  # First row of trace is initial state vector 
+  trace[1, ]    <- p0
+  # First row of first stach of trans array is initial state vector 
+  trans[1, , 1] <- p0
+  #diag(trans[ , , 1]) <- p0
+  
+  # Run Markov model for n.cycles-1
+  for (t in 2:n.cycles){
+    trace[t, ]   <- trace[t-1, ] %*% M
+    trans[, , t] <- trace[t-1, ] * M
+  }
+  # Return trace and trans
+  return(list(trace = trace,  
+              trans = trans)) 
+}
+
+```
+
+
+## Detailed Description of Syntax 
+
+#### User Input
+`CalculateMarkovTrace(M, p0, n.cycles)`: The function `CalculateMarkovTrace` is comprised of three inputs: 1) the transition matrix (`M`), 2) the initial state vector (`p0`), and 3) the total number of number of cycles the model will run (`n.cycles`). These inputs are predefined by the user (see documentation for __Markov101__).  
+
+
+#### Internal Calculations
+Once the inputs of the function have been defined, the function conducts a series of steps to prepare the calculation of the Markov trace (steps 1 - 8). The function then calculates the Markov trace and transition array (step 9) and results are stored (step 10).
+
+Steps 1-8: 1) The number of states in the model are extracted and stored in the variable `n.states`. 2) The function checks if the transition matrix is valid (i.e., each row of the transition matrix sums to 1). 3) The names of the states are extracted and stored in the variable  `state.names.` 4) A shell trace is generated and stored in `trace`. The number of columns of the shell trace correspond to the number of columns in the user defined matrix (stored in `n.states`). The number of rows of the shell trace correspond to the number of cycles the model is run for as defined by the user (stored in `n.cycles`). Importantly, the starting population begins in cycle 0 which is the first row of the transition matrix. 5) Column names (i.e., the state names) are attached to the shell trace (stored in `state.names`). 6) Row names (i.e., the number of cycles) are attached to the shell trace. 7) A shell transition array is generated and stored in `trans`. The transition array displays the cohort transitions in a given cycle. 8) The first row of the trace and transition array are generated. These correspond to the initial state vector. 
+
+Step 9: A loop cycles for the total number of model cycles (i.e., `n.cycles`). The trace for a given cycle is generated using matrix multiplication.  The transition matrix is multiplied by the location of the cohort in the previous cycle. The transition array is generated using a similar method. The trace for a given cycle is multiplied by the transition matrix using element wise multiplication. 
+
+Step 10: Finally, the transition array and Markov trace are stored. 
+
+
+##  Example 
+```{r, echo=FALSE}
+
+## Load required functions and packages
+#source("~/Dropbox/!Research NIHES/doc Eline Krijkamp/US team papers/Markov documentation/Markov_Functions.R")
+
+setwd("~/Dropbox/!Research NIHES/doc Eline Krijkamp/US team papers/Markov documentation")
+source("Markov_Functions.R")
+require(ggplot2)
+require(reshape2)
+require(scales)
+
+#### Decision Problem ####
+# You will develop a 4-state Markov model with which to perform an analysis of the expected outcomes for a cohort of 55-year-old women who have undergone tumor excision for localized breast cancer.
+# After surgery, all patients are initially tumor-free (i.e., will start in the “Local” Markov state). Each year, patients in the Local state face a 2% chance that they will experience a recurrence.
+# Of these recurrences, 75% will present as metastatic disease (and patients will enter the “Mets” Markov state), and the remainder present as local disease (and patients will enter the “Recur” Markov state).
+
+### Strategies
+## Strategy names
+stgy.names <- c("Usual Care", "Treat")
+
+#### Parameters ####
+### Global parameters
+mu.Die     <- 0.08 # Mean hazard
+mu.DieMets <- 0.5
+p.Die      <- 1 - exp(-mu.Die)
+p.DieMets  <- 1 - exp(-(mu.Die + mu.DieMets))
+p.Mets1    <- 0.75
+p.BCA2     <- 0.06
+p.Mets2    <- 0.90
+u.Recur    <- 0.8
+u.Mets     <- 0.4
+c.Recur    <- 20000
+c.Mets     <- 5000
+
+### Strategy-specific parameters
+p.BCA1  <- c(0.02, 0.01)
+u.Local <- c(0.95, 0.9)
+c.Rx    <- c(0, 1000)
+c.Local <- 500 + c.Rx
+
+## Assign corresponding strategy 
+names(p.BCA1)  <- stgy.names
+names(u.Local) <- stgy.names
+names(c.Rx)    <- stgy.names
+
+#### States and transition matrix ####
+### State names
+state.names <- c("Local", "Recur", "Mets", "Dead")
+## Number of states
+n.states <- length(state.names)
+
+### Transition probablities
+# Set the values of the transition probabilities
+## From Local in Usual Care (UC)
+tp.Local.UC    <- numeric() #Initialize vector
+# To Recur
+tp.Local.UC[2] <- (1 - p.Die) * p.BCA1[1] * (1 - p.Mets1) 
+# To Mets
+tp.Local.UC[3] <- (1 - p.Die) * p.BCA1[1] * p.Mets1
+# To Dead
+tp.Local.UC[4] <- p.Die
+# To Local
+tp.Local.UC[1] <- 1 - sum(tp.Local.UC[-1])
+
+## From Local in Treat (Rx)
+tp.Local.Rx    <- numeric() #Initialize vector
+# To Recur
+tp.Local.Rx[2] <- (1 - p.Die) * p.BCA1[2] * (1 - p.Mets1) 
+# To Mets
+tp.Local.Rx[3] <- (1 - p.Die) * p.BCA1[2] * p.Mets1
+# To Dead
+tp.Local.Rx[4] <- p.Die
+# To Local
+tp.Local.Rx[1] <- 1 - sum(tp.Local.Rx[-1])
+
+## From Recurr
+tp.Recur    <- numeric()
+# To Local
+tp.Recur[1] <- 0
+# To Mets
+tp.Recur[3] <- (1 - p.Die) * p.BCA2 * p.Mets2
+# To Dead
+tp.Recur[4] <- p.Die
+# To Recur
+tp.Recur[2] <- 1 - sum(tp.Recur[-2])
+
+## From Mets
+tp.Mets     <- numeric()
+# To Local
+tp.Mets[1]  <- 0
+# To Recur
+tp.Mets[2]  <- 0
+# To Dead
+tp.Mets[4]  <- p.DieMets
+# To Mets
+tp.Mets[3]  <- 1 - sum(tp.Mets[-3])
+
+## From Dead
+tp.Dead <- c(0, 0, 0, 1)
+
+### Transition Matrix
+## Create a 4 x 4 matrix for Usual Care (UC)
+M.UC <- matrix(c(tp.Local.UC,
+                 tp.Recur,
+                 tp.Mets,
+                 tp.Dead), 
+               nrow = n.states, ncol = n.states, 
+               byrow = TRUE)
+rownames(M.UC) <- state.names
+colnames(M.UC) <- state.names
+# Print out the transition matrix
+#M.UC
+
+## Create a 4 x 4 matrix for Usual Care (UC)
+M.Rx <- matrix(c(tp.Local.Rx,
+                 tp.Recur,
+                 tp.Mets,
+                 tp.Dead), 
+               nrow = n.states, ncol = n.states, 
+               byrow = TRUE)
+rownames(M.Rx) <- state.names
+colnames(M.Rx) <- state.names
+# Print out the transition matrix
+#M.Rx
+
+#### Run Markov model ####
+### Initial state vector
+p0 <- c(1, 0, 0, 0) # Everyone starts in the local state
+
+UC <- CalculateMarkovTrace(M = M.UC, p0 = p0, n.cycles = 51)
+
+```
+
+
+This example illustrates how the function `CalcualteMarkovTrace` works. The function requires a transition matrix, initial state vector, and number of cycles to run.
+
+In the following example the Markov trace is calculated for the transition matrix `M.UC`.
+```{r, echo=FALSE}
+M.UC
+```
+The matrix is defined by `r n.states` states: `r colnames(M.UC)`
+
+From the initial state vector (`p0`) all individuals start in the “Local” state.
+```{r, echo=FALSE}
+p0
+```
+
+Finally, we define the total number of cycles to run the model. In this example we will run the model for 51 cycles.  
+
+We define the variable name (`UC`) that will store the function results and enter the inputs into the function.
+```{r, eval=FALSE}
+UC <- CalculateMarkovTrace(M = M.UC, p0 = p0, n.cycles = 51)
+```
+
+Alternatively, we can specify the function as.
+```{r, eval=FALSE}
+UC <- CalculateMarkovTrace(M.UC, p0, 51)
+```
+
+\newpage
+
+The Markov trace and transition array are stored in `list(UC)`. The trace can be displayed using `UC$trace` (full output is omitted).  A specific row (i.e., cycle) can be displayed by identifying the row of interest `UC$trace[2, ]` or column of interest `UC$trace[ , 2]` The output below shows the location of the cohort in cycle 0 and the first cycle. The starting population begins in cycle 0 which is equal to the first row of the transition matrix.
+```{r, eval=TRUE}
+UC$trace[1, ]
+UC$trace[2, ]
+```
+The transition array can be outputted using `UC$trans` (full output is omitted). Transitions in a specific cycle can be displayed by identifying the cycle of interest `UC$trans[, , 2]`. The output below shows the transitions that occur in the first cycle.
+```{r, eval=TRUE}
+UC$trans[, , 2]
+```
+
+The Markov trace and transition array are related to each other. The Markov trace shows the time in residence.  The transition array shows cohort transitions in a given cycle. The transition array is useful for calculating transition rewards/cost and incidence. 
+
+For example, the distribution of the cohort in the third cycle is obtained from the Markov trace:
+```{r, eval=TRUE}
+UC$trace[3, ]
+```
+
+The transitions in the third cycle are obtained from the transition array:
+```{r, eval=TRUE}
+UC$trans[, ,3]
+```
+
+
+\newpage
+
+# Markov Expected Value Documentation 
+
+**Author** Fernando Alarid-Escudero & Eric Jutkowitz  
+**Description**  Calculates the expected value
+
+## Description
+
+This documentation describes the R function `ExpectedValue`. This function is used to calculate the expected value of costs and benefits from a Markov model.
+
+
+### Usage  
+`ExpectedValue(trans, rwd, r = 0, half = TRUE)`  
+
+### Arguments  
+`trans`          transition array   
+`rwd`            matrix with state and transition rewards  
+`r`              discount factor (default = 0)  
+`half`           TRUE = apply half cycle corrections
+
+
+## Full Syntax
+
+```{r Expected Value, eval=FALSE}
+
+ExpectedValue <- function(trans, rwd, r = 0, half = TRUE){
+  # Computes the expected value from a Markov transition array 
+  # Args:  
+  #  trans: Markov transition array generated by `CalculateMarkovTrace` function
+  #  rwd:   Matrix with state rewards (diagonal) and transition rewards
+  #         (off-diagonal)
+  #  r:     Discount factor; default = 0.
+  #  half:  If TRUE apply Half cycle correction
+  #
+  # Return
+  #  exp.value: Expected value
+  #
+  # Number of cycles
+  n.cycles <- dim(trans)[3]
+  # Discount vector
+  disc <- 1 / (1 + r) ^ seq(0, (n.cycles - 1))
+  # Apply half cycle correction
+  if (half){
+    trans[, , 1]    <- trans[, , 1] * 0.5
+    trans[, , n.cycles] <- trans[, , n.cycles] * 0.5
+  }
+  trans.rwd <- array(apply(trans, 3, function(x) x * rwd), 
+                     dim = c(n.states, n.states, n.cycles))
+  trace.rwd <- t(colSums(trans.rwd)) * disc
+  
+  exp.value <- sum(trace.rwd)
+  
+  return(exp.value)
+}
+```
+
+## Detailed Description of Syntax 
+
+#### User Input
+`ExpectedValue(trans, rwd, r = 0, half = TRUE)`: The function `ExpectedValue` is comprised of four inputs: 1) the transition array (`trans`) which is generated from the Markov model (see documentation for __Markov Trace and Array Documentation__), 2) a matrix with state and transition rewards (`rwd`), 3) a discount factor (`r`), and 4) an option to apply a half cycle correction (`half = TRUE`). 
+
+
+#### Internal Calculations
+Once the inputs of the function have been defined, the function conducts a series of internal calculations (steps 1 - 5). The function then calculates the expected value for an outcome based on the transition matrix (step 6) and results are outputted (step 7).
+
+Steps 1-5: 1) The number of cycles the model was run for are stored. 2) The discount rate is calculated for each model cycle. 3) If `half = TRUE` then the model will apply a half cycle correction by multiplying the transitions in the first and last cycle by 0.5. This is equivalent to multiplying the rewards associated with the first and last cycle by 0.5. 4) The transition reward matrix is multiplied by the transitions in a given cycle using the transition array. The 5) The rewards for each cycle and state are calculated by summing the columns of the transition array for a given cycle. 
+
+##  Example 
+```{r Example Data Using Cancer Example, echo=FALSE, message=FALSE}
+
+## Load required functions and packages
+setwd("~/Dropbox/!Research NIHES/doc Eline Krijkamp/US team papers/Markov documentation")
+source("Markov_Functions.R")
+require(ggplot2)
+require(reshape2)
+require(scales)
+
+#### Decision Problem ####
+# You will develop a 4-state Markov model with which to perform an analysis of the expected outcomes for a cohort of 55-year-old women who have undergone tumor excision for localized breast cancer.
+# After surgery, all patients are initially tumor-free (i.e., will start in the “Local” Markov state). Each year, patients in the Local state face a 2% chance that they will experience a recurrence.
+# Of these recurrences, 75% will present as metastatic disease (and patients will enter the “Mets” Markov state), and the remainder present as local disease (and patients will enter the “Recur” Markov state).
+
+### Strategies
+## Strategy names
+stgy.names <- c("Usual Care", "Treat")
+
+#### Parameters ####
+### Global parameters
+mu.Die     <- 0.08 # Mean hazard
+mu.DieMets <- 0.5
+p.Die      <- 1 - exp(-mu.Die)
+p.DieMets  <- 1 - exp(-(mu.Die + mu.DieMets))
+p.Mets1    <- 0.75
+p.BCA2     <- 0.06
+p.Mets2    <- 0.90
+u.Recur    <- 0.8
+u.Mets     <- 0.4
+c.Recur    <- 20000
+c.Mets     <- 5000
+
+### Strategy-specific parameters
+p.BCA1  <- c(0.02, 0.01)
+u.Local <- c(0.95, 0.9)
+c.Rx    <- c(0, 1000)
+c.Local <- 500 + c.Rx
+
+## Assign corresponding strategy 
+names(p.BCA1)  <- stgy.names
+names(u.Local) <- stgy.names
+names(c.Rx)    <- stgy.names
+
+#### States and transition matrix ####
+### State names
+state.names <- c("Local", "Recur", "Mets", "Dead")
+## Number of states
+n.states <- length(state.names)
+
+### Transition probablities
+# Set the values of the transition probabilities
+## From Local in Usual Care (UC)
+tp.Local.UC    <- numeric() #Initialize vector
+# To Recur
+tp.Local.UC[2] <- (1 - p.Die) * p.BCA1[1] * (1-p.Mets1) 
+# To Mets
+tp.Local.UC[3] <- (1 - p.Die) * p.BCA1[1] * p.Mets1
+# To Dead
+tp.Local.UC[4] <- p.Die
+# To Local
+tp.Local.UC[1] <- 1 - sum(tp.Local.UC[-1])
+
+## From Local in Treat (Rx)
+tp.Local.Rx    <- numeric() #Initialize vector
+# To Recur
+tp.Local.Rx[2] <- (1 - p.Die) * p.BCA1[2] * (1 - p.Mets1) 
+# To Mets
+tp.Local.Rx[3] <- (1 - p.Die) * p.BCA1[2] * p.Mets1
+# To Dead
+tp.Local.Rx[4] <- p.Die
+# To Local
+tp.Local.Rx[1] <- 1 - sum(tp.Local.Rx[-1])
+
+## From Recurr
+tp.Recur    <- numeric()
+# To Local
+tp.Recur[1] <- 0
+# To Mets
+tp.Recur[3] <- (1 - p.Die) * p.BCA2 * p.Mets2
+# To Dead
+tp.Recur[4] <- p.Die
+# To Recur
+tp.Recur[2] <- 1 - sum(tp.Recur[-2])
+
+## From Mets
+tp.Mets     <- numeric()
+# To Local
+tp.Mets[1]  <- 0
+# To Recur
+tp.Mets[2]  <- 0
+# To Dead
+tp.Mets[4]  <- p.DieMets
+# To Mets
+tp.Mets[3]  <- 1 - sum(tp.Mets[-3])
+
+## From Dead
+tp.Dead <- c(0, 0, 0, 1)
+
+### Transition Matrix
+## Create a 4 x 4 matrix for Usual Care (UC)
+M.UC <- matrix(c(tp.Local.UC,
+                 tp.Recur,
+                 tp.Mets,
+                 tp.Dead), 
+               nrow = n.states, ncol = n.states, 
+               byrow = TRUE)
+rownames(M.UC) <- state.names
+colnames(M.UC) <- state.names
+# Print out the transition matrix
+#M.UC
+
+## Create a 4 x 4 matrix for Usual Care (UC)
+M.Rx <- matrix(c(tp.Local.Rx,
+                 tp.Recur,
+                 tp.Mets,
+                 tp.Dead), 
+               nrow = n.states, ncol = n.states, 
+               byrow = TRUE)
+rownames(M.Rx) <- state.names
+colnames(M.Rx) <- state.names
+# Print out the transition matrix
+#M.Rx
+
+#### Run Markov model ####
+### Initial state vector
+p0 <- c(1, 0, 0, 0) # Everyone starts in the local state
+
+UC <- CalculateMarkovTrace(M = M.UC, p0 = p0, n.cycles = 51)
+
+
+### Treat (Rx)
+## Calculate Markov trace and transition array
+Rx <- CalculateMarkovTrace(M = M.Rx, p0 = p0, n.cycles = 51)
+
+
+#### Reward matrices ####
+## Life Years (LYs)
+ly.UC  <- c(1, 1, 1, 0)
+rwd.ly <- matrix(c(rep(ly.UC, (n.states-1)), rep(0, n.states)), 
+                 nrow = n.states, byrow = TRUE,
+                 dimnames = list(state.names, state.names))
+
+### Usual Care (UC)
+## Quality Adjusted Life Years (QALYs)
+qaly.UC <- c(u.Local[1], u.Recur, u.Mets, 0)
+rwd.qaly.UC <- matrix(c(rep(qaly.UC, (n.states - 1)), rep(0, n.states)), 
+                      nrow = n.states, byrow = TRUE,
+                      dimnames = list(state.names, state.names))
+
+c.UC <- c(c.Local[1], c.Recur, c.Mets, 0)
+rwd.c.UC <- matrix(c(rep(c.UC, (n.states - 1)), rep(0, n.states)), 
+                   nrow = n.states, byrow = TRUE,
+                   dimnames = list(state.names, state.names))
+```
+This example illustrates how the function `ExpectedValue` works. The function requires a transition array, a matrix of rewards, and a discount factor. 
+
+The expected values are calculated independently for benefits and costs. 
+
+Using the cancer example, the Markov model has been run and the transition array is stored in `UC$trans` (output omitted).  A rewards matrix is generated for usual care `rwd.qaly.UC`.  The state rewards are represented by the diagonal of the reward matrix. The transition rewards are represented by the off-diagonal elements of the transition reward matrix.
+```{r, echo=FALSE}
+rwd.qaly.UC
+```
+
+The previous matrix uses utilities. Alternatively, if we are only interested in life expectancy or life years we can specify a matrix 1's and 0's matrix. 
+```{r, echo=FALSE}
+rwd.ly
+```
+
+To calculate the expected value for usual care we use the function `ExpectedValue` and store the results in `UC$qaly. We apply a 0.03 discount rate and a half cycle correction. 
+```{r, eval=TRUE}
+UC$qaly <- ExpectedValue(trans = UC$trans, rwd = rwd.qaly.UC, r = 0.03, half = T)
+```
+The expected QALYs can be called using `UC$qaly`
+```{r, eval=TRUE}
+UC$qaly <- ExpectedValue(trans = UC$trans, rwd = rwd.qaly.UC, r = 0.03, half = T)
+UC$qaly
+```
+
+Similarly, we can calculate the expected costs associated with usual care. The a matrix for cost rewards is generated `rwd.c.UC`. The state costs are represented by the diagonal of the reward matrix. The transition rewards are represented by the off-diagonal elements of the transition costs matrix.
+```{r, echo=FALSE}
+rwd.c.UC
+```
+
+To calculate the expected cost for usual care we use the function `ExpectedValue` and store the results in `UC$c. We apply a 0.03 discount rate and a half cycle correction. 
+```{r, eval=FALSE}
+UC$c <- ExpectedValue(UC$trans, rwd.c.UC, r = 0.03 , half = T)
+```
+

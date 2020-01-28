@@ -1,6 +1,0 @@
-"0","v_prev_tunnels <- rowSums(m_M_td_notrt[, c(""S1"", ""S2"")]) / v_os_notrt_tunnels"
-"0","plot(v_prev_tunnels,"
-"0","     ylim = c(0, 1),"
-"0","     ylab = ""Prevalence"","
-"0","     xlab = ""Cycle"","
-"0","     main = ""Disease prevalence"")"

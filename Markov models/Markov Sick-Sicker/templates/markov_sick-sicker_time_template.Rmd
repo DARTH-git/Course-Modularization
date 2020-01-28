@@ -158,7 +158,7 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort
 
 ```{r}
 # create transition probability array for NO treatment
-a_P_notrt <- array(0,                                    # Create 3-D array
+a_P_notrt <- array(0,                                    # create 3-D array
                    dim      = c(n_s, n_s, n_t),
                    dimnames = list(v_n, v_n, 0:(n_t-1))) # name dimensions of the array
 ```

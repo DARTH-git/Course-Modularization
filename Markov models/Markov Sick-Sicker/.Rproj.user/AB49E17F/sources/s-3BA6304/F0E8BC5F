@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580201013744.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F0E8BC5F",
+    "lastKnownWriteTime" : 1580201136,
+    "last_content_update" : 1580201136810,
+    "path" : "~/Documents/GitHub/Course-Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.Rmd",
+    "project_path" : "exercise worksheets/markov_sick-sicker_exercise.Rmd",
+    "properties" : {
+        "cursorPosition" : "87,56",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

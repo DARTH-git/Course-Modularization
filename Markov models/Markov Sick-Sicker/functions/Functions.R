@@ -1,6 +1,7 @@
-#-----------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a beta distribution from mean and st. deviation ####
-#-----------------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#### R function to extract the parameters of a beta distribution            ####
+####                from mean and st. deviation                             ####
+#------------------------------------------------------------------------------#
 #' @param m mean 
 #' @param s standard deviation
 #' 
@@ -11,9 +12,10 @@ betaPar <- function(m, s)
   list(a = a, b = b)
 }
 
-#-------------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a gamma distribution from mean and st. deviation  ####
-#-------------------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#### R function to extract the parameters of a gamma distribution           ####
+####                   from mean and st. deviation                          ####
+#------------------------------------------------------------------------------#
 #' @param m mean 
 #' @param s standard deviation
 #' 

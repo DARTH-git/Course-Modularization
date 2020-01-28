@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580201431962.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7CFD0FAB",
+    "lastKnownWriteTime" : 1580201582,
+    "last_content_update" : 1580201582246,
+    "path" : "~/Documents/GitHub/Course-Modularization/Markov models/Markov Sick-Sicker/functions/Functions_markov_sick-sicker.R",
+    "project_path" : "functions/Functions_markov_sick-sicker.R",
+    "properties" : {
+        "cursorPosition" : "87,114",
+        "scrollLine" : "74"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

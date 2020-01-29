@@ -1,6 +1,6 @@
 ---
 title: 'Cost-Effectiveness and Decision Modeling in R'
-subtitle: 'Basic Markov Model Exercise'
+subtitle: 'PSA Markov Model Exercise'
 author: "The DARTH workgroup"
 output:
   pdf_document: default

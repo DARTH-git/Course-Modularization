@@ -1,4 +1,0 @@
-"0","l_psa <- make_psa_obj(cost          = df_c, "
-"0","                      effectiveness = df_e, "
-"0","                      parameters    = df_psa_input, "
-"0","                      strategies    = v_names_str)"

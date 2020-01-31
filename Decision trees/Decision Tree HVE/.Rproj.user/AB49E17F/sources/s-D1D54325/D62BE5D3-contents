@@ -1,0 +1,149 @@
+---
+title: 'Cost-Effectiveness and Decision Modeling in R'
+subtitle: 'Decision Tree Exercise'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6, 7)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+   Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+# Exercise I: Treatment for Viral encephalitis – A Decision Tree
+
+Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE). Herpes viruses cause approximately 52% of cases of viral encephalitis. Without treatment, the risk of complications (death or severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug, vidarabine, decreases the likelihood of complications due to HVE from 71% down to 36%. However, among OVE patients, treatment with vidarabine is associated with severe side effects, increasing the risk of complications from the 1% baseline to 20%. It is possible to obtain a definitive diagnosis of HVE by means of a brain biopsy, but the procedure itself also has a 5% probability of inducing complications.
+
+You are tasked with evaluating the healthcare costs and benefits associated with three possible management strategies (no treatment, vidarabine treatment, or brain biopsy followed by vidarabine treatment for those who are diagnosed with HVE). Benefits will be measured in terms of quality-adjusted life-years (QALYs). 
+
+The healthcare cost of a case of viral encephalitis without complications is \$1,200; however, if complications occur, the cost rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a brain biopsy is a \$25,000 procedure. 
+
+A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.
+
+Parameters are summarized in Table 1. Use the code template provided in “HVE_DecisitionTree_Template.Rmd” as a starting point for this exercise.
+
+## Tasks
+
+1. Sketch out the decision tree, with a particular focus on the outcome values (costs and QALYs) at terminal nodes.
+
+2. The code template contains calculations for the “No Treatment” strategy. Write code that calculates the expected outcomes for the two other strategies.
+
+3. Use the `calculate_icers()` function from the `dampack` package to calculate the incremental costs, QALYs, and ICERs of each strategy. Type “`?calculate_icers()`” to see function documentation.
+
+**Table I: Input parameters**
+
+|           **Parameter**             |  **R name**       |   **Value**       |
+|:------------------------------------|:------------------|:-----------------:|
+| Prevalence of HVE                   | `p_HVE`           | 0.52              |
+| Probability of complications (death or sequelae) without treatment |   |    |
+| - HVE                               | `p_HVE_comp`      | 0.71              |
+| - OVE                               | `p_OVE_comp`      | 0.01              |
+| Probability of complications (death or sequelae) with vidarabine treatment  |  |   |
+| - HVE                               | `p_HVE_comp_tx`   |  0.36             |
+| - OVE                               | `p_OVE_comp_tx`   |  0.20             |
+| Probability of complications due to brain biopsy        | `p_biopsy_comp`   | 0.05 |
+| Quality-adjusted life-years (QALYs) |                   |                   |
+| - Remaining QALYs without VE complications | `q_VE`     |  20               |
+| - Remaining QALYs with VE complications | `q_VE_comp`   |  19               |
+| - QALY loss due to brain biopsy     | `q_loss_biopsy`   |  -0.01            |
+| Healthcare costs                    |                   |                   |
+| - Cost of viral encephalitis without complications | `c_VE`      | $1,200   |
+| - Cost of viral encephalitis with complications    | `c_VE_comp` | $9,000   |
+| - Vidarabine treatment              | `c_tx`            |  $9,500           |
+| - Brain biopsy                      | `c_biopsy`        |  $25,000          |
+
+
+# Exercise II: Probabilistic sensitivity analysis of the Decision Tree model
+
+This exercise continues based on the HVE decision tree from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
+
+## Tasks
+
+4. Change some input values and to see if/how the expected outcomes under each strategy change (One-way and two-way sensitivity analyses).
+
+5. Create the `calculate_ce_out` `R` function of the decision tree model in the file “Functions_decision_tree_HVE.R”.
+
+6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
+Hint: package `truncnorm` deals with truncated normal distributions.
+
+7. Open the file “decision_tree_HVE_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
+
+8. Create histograms of model inputs.
+
+9. Create a cost-effectiveness plane to present discounted costs and QALYs.
+
+10. Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$300,000$.
+
+11. Create the expected loss curves (ELCs) plot
+
+12. Create an expected value of perfect information (EVPI) plot. 
+
+
+**Table II: Input parameters for probabilistic analysis**
+
+|           **Parameter**             |  **Distribution** | **Distribution values**                  |
+|:------------------------------------|------------------:|-----------------------------------------:|
+| Prevalence of HVE                   | Beta              |  $\alpha=30, \ \beta=170$                |
+| Probability of complications (death or sequelae) without treatment |                   |           |
+| - HVE                               | Beta              |  $\alpha=30, \ \beta=170$                |
+| - OVE                               | Beta              |  $\alpha=30, \ \beta=170$                |
+| Probability of complications (death or sequelae) with vidarabine treatment  |          |           |
+| - HVE                               | Beta              |  $\alpha=30, \ \beta=170$                |
+| - OVE                               | Beta              |  $\alpha=30, \ \beta=170$                |
+| Probability of complications due to brain biopsy        |  Beta  | $\alpha=30, \ \beta=170$        |
+| Quality-adjusted life-years (QALYs) |                   |                                          |
+| - Remaining QALYs without VE complications | Normal     |  $\mu = log(3), \ \sigma = 0.01$         |
+| - Remaining QALYs with VE complications | Normal        |  $\mu = log(3), \ \sigma = 0.01$         |
+| - QALY loss due to brain biopsy     | Tr. Normal        |  $\mu = 1.00, \ \sigma = 0.01, \ b = 1$  |
+| Healthcare costs                    |                   |                                          |
+| - Cost of viral encephalitis without complications      |  Gamma | shape = 100.0, scale = 20.0     |
+| - Cost of viral encephalitis with complications         |  Gamma | shape = 100.0, scale = 20.0     |
+| - Vidarabine treatment              | Gamma             |  shape = 100.0, scale = 20.0             |
+| - Brain biopsy                      | Gamma             |  shape = 100.0, scale = 20.0             |
+

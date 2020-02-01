@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6, 7)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -47,7 +47,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -85,7 +85,7 @@ n_str <- length(v_names_str)
 
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_s  <- length(v_n)                     # number of states
+n_states <- length(v_n)                     # number of states
 n_t  <- 60                              # number of cycles
 
 p_HD <- seq(0.003, 0.01, length.out = n_t)  # probabilities to die when sick (age-dependent) - this is now a sequence of numbers, officially v_HD
@@ -116,7 +116,7 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 m_M <- matrix(NA, 
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
                                 # understand cycle 0)
-              ncol = n_s, 
+              ncol = n_states, 
               dimnames = list(0:n_t, v_n))
 
 m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
@@ -127,7 +127,7 @@ m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
 ```{r}
 # create the transition probability array
 a_P <- array(0,                                    # Create 3-D array
-             dim = c(n_s, n_s, n_t),
+             dim = c(n_states, n_states, n_t),
              dimnames = list(v_n, v_n, 0:(n_t - 1))) # name the dimensions of the array 
 ```
 
@@ -174,7 +174,7 @@ try(
 )
 
 # Check if transition probability array is valid
-valid <- apply(a_P, 3, function(x) all.equal(sum(rowSums(x)), n_s))
+valid <- apply(a_P, 3, function(x) all.equal(sum(rowSums(x)), n_states))
 if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
   if(verbose){
     stop("This is not a valid transition Matrix")

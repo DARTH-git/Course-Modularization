@@ -1,0 +1,7 @@
+"0","if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages"
+"0","# load (install if required) packages from CRAN"
+"0","p_load(""here"", ""dplyr"", ""devtools"", ""scales"", ""ellipse"", ""ggplot2"", ""lazyeval"", ""igraph"", ""truncnorm"", ""ggraph"", ""reshape2"", ""knitr"")                                               "
+"0","# load (install if required) packages from GitHub"
+"0","# install_github(""DARTH-git/dampack"", force = TRUE) Uncomment if there is a newer version"
+"0","# install_github(""DARTH-git/dectree"", force = TRUE) # Uncomment if there is a newer version"
+"0","p_load_gh(""DARTH-git/dampack"", ""DARTH-git/dectree"")"

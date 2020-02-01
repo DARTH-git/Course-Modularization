@@ -84,7 +84,7 @@ n_str <- length(v_names_str)
 
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_s  <- length(v_n)                     # number of states
+n_states  <- length(v_n)                # number of states
 n_t  <- 60                              # number of cycles
 
 p_HD <- 0.02                            # probability to die when healthy
@@ -115,7 +115,7 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 m_M <- matrix(NA, 
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
                                 # understand Cycle 0)
-              ncol = n_s, 
+              ncol = n_states, 
               dimnames = list(0:n_t, v_n))
 
 m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
@@ -126,8 +126,7 @@ m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
 ```{r}
 # create the transition probability matrix
 m_P  <- matrix(0,
-               nrow = n_s,
-               ncol = n_s,
+               nrow = n_states, ncol = n_states,
                dimnames = list(v_n, v_n)) # name the columns and rows of the transition 
                                           # probability matrix
 m_P

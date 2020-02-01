@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4168647059",
+    "hash" : "1577817891",
     "id" : "7054888B",
-    "lastKnownWriteTime" : 1580492208,
-    "last_content_update" : 1580492208152,
+    "lastKnownWriteTime" : 1580557471,
+    "last_content_update" : 1580557471194,
     "path" : "~/Documents/GitHub/Course-Modularization/Decision trees/Decision Tree Ondansetron/solutions/decision_tree_ondansetron_solutions.Rmd",
     "project_path" : "solutions/decision_tree_ondansetron_solutions.Rmd",
     "properties" : {
-        "cursorPosition" : "49,75",
-        "scrollLine" : "48"
+        "cursorPosition" : "22,30",
+        "scrollLine" : "20"
     },
     "relative_order" : 1,
     "source_on_save" : false,

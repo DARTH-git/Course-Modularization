@@ -65,13 +65,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
-# load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
-# load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack") 
+# all necessary package already loaded
 ```
 
 # 02 Load functions
@@ -95,15 +89,15 @@ max_age <- 55                       # maximum age of follow up
 n_t     <- max_age - age            # time horizon, number of cycles
 v_n     <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                     # Sicker (S2), Dead (D)
-n_s     <- length(v_n)              # number of health states 
+n_states     <- length(v_n)              # number of health states 
 
 # Tunnels
-tunnel_size <- n_t
+n_tunnel_size <- n_t
 # Sick state
-Sick_tunnel <- paste("S1_", seq(1, tunnel_size), "Yr", sep = "")
+v_Sick_tunnels <- paste("S1_", seq(1, n_tunnel_size), "Yr", sep = "")
 ### Create variables for time-dependent model
-v_n_td      <- c("H", Sick_tunnel, "S2", "D")   # state names
-n_s_td      <- length(v_n_td)                   # number of states
+v_n_tunnels      <- c("H", v_Sick_tunnels, "S2", "D")   # state names
+n_states_tunnels      <- length(v_n_tunnels)                   # number of states
 
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file
@@ -121,7 +115,7 @@ p_S1H   <- 0.5           	           # probability to become healthy when sick
 l       <- 0.08 # scale
 g       <- 1.1  # shape
 # Weibull function
-p_S1S2  <- l*g*(1:tunnel_size)^{g-1} # probability to become sicker when sick 
+p_S1S2  <- l*g*(1:n_tunnel_size)^{g-1} # probability to become sicker when sick 
                                      # (time-dependent)
 
 hr_S1   <- 3             	           # hazard ratio of death in sick vs healthy
@@ -160,14 +154,14 @@ v_dwe   <- 1 / (1 + d_r) ^ (0:n_t)
 # create the markov trace matrix M capturing the proportion of the cohort in each state 
 # at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
-                                nrow = n_t + 1, ncol = n_s_td,
-                                dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n_td)) 
+                                nrow = n_t + 1, ncol = n_states_tunnels,
+                                dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n_tunnels)) 
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
 # The cohort starts as healthy
 # initialize first cycle of Markov trace accounting for the tunnels
-m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, rep(0, tunnel_size), 0, 0) 
+m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, rep(0, n_tunnel_size), 0, 0) 
 ```
 
 ## 04.2 Transition probability array
@@ -175,8 +169,8 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, rep(0, tunnel_size), 0, 0)
 ```{r}
 # create the transition probability array for NO treatment
 a_P_notrt <- array(0,                                          # Create 3-D array
-                   dim = c(n_s_td, n_s_td, n_t),
-                   dimnames = list(v_n_td, v_n_td, 0:(n_t-1))) # name dimensions
+                   dim = c(n_states_tunnels, n_states_tunnels, n_t),
+                   dimnames = list(v_n_tunnels, v_n_tunnels, 0:(n_t-1))) # name dimensions
 ```
 
 Fill in the transition probability array:
@@ -184,21 +178,21 @@ Fill in the transition probability array:
 ```{r}
 # from Healthy
 a_P_notrt["H", "H", ]            <- 1 - (p_HS1 + p_HD)
-a_P_notrt["H", Sick_tunnel[1], ] <- p_HS1
+a_P_notrt["H", v_Sick_tunnels[1], ] <- p_HS1
 a_P_notrt["H", "D", ]            <- p_HD
 
 # from Sick
-for(i in 1:(tunnel_size - 1)){
-  a_P_notrt[Sick_tunnel[i], "H", ]  <- p_S1H
-  a_P_notrt[Sick_tunnel[i], Sick_tunnel[i + 1], ] <- 1 - (p_S1H + p_S1S2[i] + p_S1D)
-  a_P_notrt[Sick_tunnel[i], "S2", ] <- p_S1S2[i]
-  a_P_notrt[Sick_tunnel[i], "D", ]  <- p_S1D
+for(i in 1:(n_tunnel_size - 1)){
+  a_P_notrt[v_Sick_tunnels[i], "H", ]  <- p_S1H
+  a_P_notrt[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - (p_S1H + p_S1S2[i] + p_S1D)
+  a_P_notrt[v_Sick_tunnels[i], "S2", ] <- p_S1S2[i]
+  a_P_notrt[v_Sick_tunnels[i], "D", ]  <- p_S1D
 }
-a_P_notrt[Sick_tunnel[tunnel_size], "H", ]  <- p_S1H
-a_P_notrt[Sick_tunnel[tunnel_size], Sick_tunnel[tunnel_size], ] <- 1 - 
-  (p_S1H + p_S1S2[tunnel_size] + p_S1D)
-a_P_notrt[Sick_tunnel[tunnel_size], "S2", ] <- p_S1S2[tunnel_size]
-a_P_notrt[Sick_tunnel[tunnel_size], "D", ] <- p_S1D
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "H", ]  <- p_S1H
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - 
+  (p_S1H + p_S1S2[n_tunnel_size] + p_S1D)
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "S2", ] <- p_S1S2[n_tunnel_size]
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "D", ] <- p_S1D
 
 # from Sicker
 a_P_notrt["S2", "S2", ] <- 1 - p_S2D
@@ -208,7 +202,7 @@ a_P_notrt["S2", "D", ]  <- p_S2D
 a_P_notrt["D", "D", ] <- 1
 
 # Check if transition matrix is valid (i_e_, each row should add up to 1)
-valid <- apply(a_P_notrt, 3, function(x) sum(rowSums(x))==n_s_td)
+valid <- apply(a_P_notrt, 3, function(x) sum(rowSums(x))==n_states_tunnels)
 if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
   stop("This is not a valid transition Matrix")
 }
@@ -234,13 +228,13 @@ head(m_M_notrt)  # show the first 6 lines of the matrix
 
 # create aggregated traces
 m_M_td_notrt <- cbind(H = m_M_notrt[, "H"], 
-                       S1 = rowSums(m_M_notrt[, 2:(tunnel_size +1)]), 
+                       S1 = rowSums(m_M_notrt[, 2:(n_tunnel_size +1)]), 
                        S2 = m_M_notrt[, "S2"],
                        D = m_M_notrt[, "D"])
 head(m_M_td_notrt)
 
 m_M_td_trt    <- cbind(H = m_M_trt[, "H"], 
-                       S1 = rowSums(m_M_trt[, 2:(tunnel_size +1)]), 
+                       S1 = rowSums(m_M_trt[, 2:(n_tunnel_size +1)]), 
                        S2 = m_M_trt[, "S2"],
                        D = m_M_trt[, "D"])
 head(m_M_td_trt)
@@ -257,7 +251,7 @@ matplot(m_M_td_notrt, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace")                 
 # add a legend to the graph
-legend("topright", v_n, col = 1:n_s,lty = 1:n_s, bty = "n") 
+legend("topright", v_n, col = 1:n_states,lty = 1:n_states, bty = "n") 
 ```
 
 ## 06.2 Overall Survival (OS)

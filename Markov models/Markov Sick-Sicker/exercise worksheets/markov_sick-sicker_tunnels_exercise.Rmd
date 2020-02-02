@@ -2,10 +2,9 @@
 title: "Cost-Effectiveness and Decision Modeling in R"
 subtitle: 'Markov Model Variants Exercise'
 author: "The DARTH workgroup"
-subtitle: Markov Model Variants Exercise
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
   html_document: default
 ---
 
@@ -60,9 +59,15 @@ and adapted with proper attribution.
 
 # Exercise I: Variations on the Sick-Sicker Markov Model
 
-Previously, you built a Markov of the Sick-Sicker model where transition probabilities were assumed to be constant over time. In this exercise, you will expand on that model to incorporate age-dependence (time-varying probabilities) and history-dependence.
+Previously, you built a Markov of the Sick-Sicker model where transition probabilities were assumed to be constant over time. In this exercise, you will expand on that model to incorporate dependence on time since model start and on state residence.
 
-**History-dependence**
+**Time since model start**
+
+Healthy individuals are no longer assumed to have a fixed mortality rate. Their mortality rate depends on their age. The Human Mortality Database (HMD) (www.mortality.org) provides these age specific mortality rates (Mx1x1). You can load this data in R using different packages, for example the HMDHFplus, demography or data.table package. Registration (free) on the HMD website is required in order to use the data. For this exercise, we provide you with this mortality rate for the US in the file “HMD_USA_Mx_2015.csv”.
+
+Remember: individuals in S1 and S2 still have an increased mortality relative to healthy individuals, as described in the original exercise. The same hazard ratios are used to calculate the probabilities of dying from S1 and S2 in this exercise. 
+
+**State residence**
 
 It has been recently discovered that the risk of progression from Sick to Sicker increases the longer a person has been sick. This increase follows a Weibull growth curve, calculated as 
 
@@ -70,7 +75,7 @@ $p_{S1S2(t)} = \lambda_\gamma t^{(\gamma-1)}$
 
 where $t$ is the $t$-th cycle (year) that a person has been in the Sick state. $\lambda = 0.08$ and $\gamma = 1.1$ are the scale and shape parameters of the Weibull function, respectively.
 
-We will now expand the age-dependent model to include this history dependence by adding tunnel states for S1, as shown in Figure 2.
+We will now expand the model to include age and state residence dependency by adding age varying probabilies for death and tunnel states for S1, as shown in Figure 2.
 
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
@@ -86,17 +91,18 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 
 ## Tasks
 
-1. Starting from the age-dependent Markov model in the R function “Markov_Sick-Sicker_time.R”, expand the 3D transition probability array to account for tunnels.
 
-2. Create the parameter `p_S1S2` as a Weibull function as follows:
-- `p_S1S2 <- l*g*(1:tunnel_size)^{g-1}`, where 
-- `l <- 0.08` (scale)
-- `g <- 1.1`  (shape)
+1. Incorporate the tunnel states in the markov trace and initialize it with everyone being healthy at model start. 
 
+2. Create a 3D transition probability array to account for tunnels and age dependency.
 
-3.	Fill in the 3D transition probability array accounting for the tunnel states for S1
+3. Fill in the 3D transition probability array accounting for the tunnel states for S1 and the age dependence of transitioning to death
 
-4.	Plot the survival curve for the cohort under no treatment. Extra challenge: plot the survival curves for all three Markov model versions (time-homogenous, age-dependent, and history-dependent) in one graph so you can compare.
+4. Costs and utilities for all tunnel states are the same. Therefre, aggregrate the markov trace back to a healthy sick-sicker-dead trace and estimate total costs and QALYs for both strategies.
+
+5. Estimate incremental costs and QALYs and the ICER.  
+
+6. Plot the survival curve for the cohort under no treatment. 
 
 |           **Parameter**            |  **R name** |   **Value**   |
 |:-----------------------------------|:------------|:-------------:|
@@ -109,7 +115,7 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 | - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
 | - Disease progression (S1 to S2)   | `p_S1S2`    | Weibull function |
 | Annual mortality                   |             |               |
-| - All-cause mortality (H to D)     | `p_HD`      | `1 - exp(-v_r_HD)` |
+| - All-cause mortality (H to D)     | `p_HD`      | Age-dependent |
 | - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |
 | - Hazard ratio of death in S2 vs H | `hr_S2`     |  10           |
 | Annual costs                       |             |               |
@@ -127,3 +133,4 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
 
 *Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$
+

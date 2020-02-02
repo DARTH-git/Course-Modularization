@@ -91,9 +91,9 @@ n_t  <- 60                              # number of cycles
 # Tunnels
 n_tunnel_size <- n_t
 # Sick state
-v_Sick_tunnel <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
+v_Sick_tunnels <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for time-dependent model
-v_n_tunnels  <- c("Healthy", v_Sick_tunnel, "Dead")   # state names
+v_n_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")   # state names
 n_states_tunnels  <- length(v_n_tunnels)              # number of states
 
 p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability to die when sick (age-dependent) - this is a sequence - officially v_HD
@@ -155,12 +155,12 @@ a_P["Healthy", "Dead", ]     <- p_HD
 
 # from Sick
 for(i in 1:(n_tunnel_size - 1)){ 
-  a_P[v_Sick_tunnel[i], v_Sick_tunnel[i + 1], ] <- 1 - p_SD[i]
-  a_P[v_Sick_tunnel[i], "Dead", ] <- p_SD[i]
+  a_P[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - p_SD[i]
+  a_P[v_Sick_tunnels[i], "Dead", ] <- p_SD[i]
 }
 
-a_P[v_Sick_tunnel[n_tunnel_size], v_Sick_tunnel[n_tunnel_size], ] <- 1 - p_SD[n_tunnel_size]
-a_P[v_Sick_tunnel[n_tunnel_size], "Dead", ] <- p_SD[n_tunnel_size]
+a_P[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - p_SD[n_tunnel_size]
+a_P[v_Sick_tunnels[n_tunnel_size], "Dead", ] <- p_SD[n_tunnel_size]
 
 # from Dead
 a_P["Dead", "Dead", ] <- 1

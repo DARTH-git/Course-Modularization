@@ -66,13 +66,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning = FALSE, message = FALSE}
-if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
-# load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
-# load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-# install_github("DARTH-git/dectree", force = TRUE) # Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
+# all packages were loaded at the start of the course
 ```
 
 # 02 Load functions
@@ -94,7 +88,7 @@ p_HVE_comp    <- 0.71   # complications with untreated HVE
 p_OVE_comp    <- 0.01   # complications with untreated OVE
 p_HVE_comp_tx <- 0.36   # complications with treated HVE
 p_OVE_comp_tx <- 0.20   # complications with treated OVE
-p_biopsy_comp <- 0.05   # probability of complications due to biopsy
+p_biopsy_death <- 0.005   # probability of death due to biopsy
 
 # Costs
 c_VE          <- 1200   # cost of viral encephalitis care without complications
@@ -103,16 +97,17 @@ c_tx          <- 9500   # cost of treatment
 c_biopsy      <- 25000  # cost of brain biopsy
 
 # QALYs
-q_VE          <- 20     # remaining QALYs for those without VE-related complications
-q_VE_comp     <- 19     # remaining QALYs for those with VE-related complications
-q_loss_biopsy <- -0.01  # one-time  QALY loss due to brain biopsy
+q_VE           <- 20    # remaining QALYs for those without VE-related complications
+q_VE_comp      <- 19    # remaining QALYs for those with VE-related complications
+q_loss_biopsy  <- 0.01  # one-time  QALY loss due to brain biopsy
+q_death_biopsy <- 0     # remaining QALYs for those who died during biopsy
 
 # store the parameters into a list
-l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
+l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_death, 
                                    c_VE, c_VE_comp, c_tx, c_biopsy, 
                                    q_VE, q_VE_comp, q_loss_biopsy))
 # store the names of the parameters into a vector
-v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_comp', 
+v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_death', 
                     'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
 ```
 
@@ -123,27 +118,25 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
   
   # Create vector of weights for each strategy 
   
-  v_w_no_tx  <- c(  p_HVE  *    p_HVE_comp  ,  # HVE, complications
-                    p_HVE  * (1-p_HVE_comp) ,  # HVE, no complications
-                 (1-p_HVE) *    p_OVE_comp  ,  # OVE, complications
-                 (1-p_HVE) * (1-p_OVE_comp))   # OVE, no complications
+  v_w_no_tx  <- c(    p_HVE  *    p_HVE_comp  ,    # HVE, complications
+                      p_HVE  * (1 - p_HVE_comp) ,  # HVE, no complications
+                 (1 - p_HVE) *    p_OVE_comp  ,    # OVE, complications
+                 (1 - p_HVE) * (1 - p_OVE_comp))   # OVE, no complications
   
-  v_w_tx     <- c(  1                          ,  # On treatment
-                    p_HVE  *    p_HVE_comp_tx  ,  # HVE w/tx, complications
-                    p_HVE  * (1-p_HVE_comp_tx) ,  # HVE w/tx, no complications
-                 (1-p_HVE) *    p_OVE_comp_tx  ,  # OVE w/tx, complications
-                 (1-p_HVE) * (1-p_OVE_comp_tx))   # OVE w/tx, no complications
+  v_w_tx     <- c(    p_HVE  *    p_HVE_comp_tx  ,   # HVE w/tx, complications
+                      p_HVE  * (1 - p_HVE_comp_tx) , # HVE w/tx, no complications
+                 (1 - p_HVE) *    p_OVE_comp_tx   ,  # OVE w/tx, complications
+                 (1 - p_HVE) * (1 - p_OVE_comp_tx))  # OVE w/tx, no complications
   
-  v_w_biopsy <- c(  1                                              , # Undergo biopsy
-                    p_biopsy_comp                                  , # biopsy complications
-                 # no biopsy comp., HVE w/tx,  complications
-                 (1-p_biopsy_comp) *    p_HVE  *    p_HVE_comp_tx  ,  
-                 # no biopsy comp., HVE w/tx, no complications
-                 (1-p_biopsy_comp) *    p_HVE  * (1-p_HVE_comp_tx) ,  
-                 # no biopsy comp., OVE, complications
-                 (1-p_biopsy_comp) * (1-p_HVE) *    p_OVE_comp     ,  
-                 # no biopsy comp., OVE, no complications
-                 (1-p_biopsy_comp) * (1-p_HVE) * (1-p_OVE_comp))      
+  v_w_biopsy <- c(p_biopsy_death                  , # biopsy death
+                 # no biopsy death., HVE w/tx,  complications
+                 (1-p_biopsy_death) *    p_HVE  *    p_HVE_comp_tx  ,  
+                 # no biopsy death., HVE w/tx, no complications
+                 (1-p_biopsy_death) *    p_HVE  * (1-p_HVE_comp_tx) ,  
+                 # no biopsy death., OVE, complications
+                 (1-p_biopsy_death) * (1-p_HVE) *      p_OVE_comp     ,  
+                 # no biopsy death., OVE, no complications
+                 (1-p_biopsy_death) * (1-p_HVE) * (1 - p_OVE_comp))      
   
   # Create vector of outcomes (QALYs) for each strategy 
   
@@ -152,19 +145,18 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                      q_VE_comp ,  # OVE, complications
                      q_VE)        # OVE, no complications
   
-  v_qaly_tx     <- c(0      ,     # treatment does not directly add any QALYs 
-                     q_VE_comp ,  # HVE, complications
+  v_qaly_tx     <- c(q_VE_comp ,  # HVE, complications
                      q_VE      ,  # HVE, no complications
                      q_VE_comp ,  # OVE, complications
                      q_VE)        # OVE, no complications
   
   
-  v_qaly_biopsy <- c(q_loss_biopsy  ,  # loss due to biopsy
-                     q_VE_comp      ,  # biopsy complications
-                     q_VE_comp      ,  # no biopsy comp., HVE w/tx, complications 
-                     q_VE           ,  # no biopsy comp., HVE w/tx, no complications
-                     q_VE_comp      ,  # no biopsy comp., OVE, complications
-                     q_VE)             # no biopsy comp., OVE, no complications
+  v_qaly_biopsy <- - q_loss_biopsy +  # loss due to biopsy
+                    c( q_death_biopsy  ,  # biopsy complications
+                       q_VE_comp       ,  # no biopsy comp., HVE w/tx, complications 
+                       q_VE            ,  # no biopsy comp., HVE w/tx, no complications
+                       q_VE_comp       ,  # no biopsy comp., OVE, complications
+                       q_VE)              # no biopsy comp., OVE, no complications
   
   # Create vector of costs for each strategy 
   
@@ -173,15 +165,15 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                      c_VE_comp ,  # OVE, complications
                      c_VE)        # OVE, no complications
   
-  v_cost_tx     <- c(c_tx      ,  # cost of treatment
-                     c_VE_comp ,  # HVE, complications
-                     c_VE      ,  # HVE, no complications
-                     c_VE_comp ,  # OVE, complications
-                     c_VE)        # OVE, no complications
+  v_cost_tx     <- c_tx +           # cost of treatment
+                     c(c_VE_comp ,  # HVE, complications
+                       c_VE      ,  # HVE, no complications
+                       c_VE_comp ,  # OVE, complications
+                       c_VE)        # OVE, no complications
   
   
-  v_cost_biopsy <- c(c_biopsy         ,  # cost of biopsy procedure
-                     c_VE_comp        ,  # biopsy complications
+  v_cost_biopsy <- c_biopsy +           # cost of biopsy procedure
+                   c(0                ,  # cost of death (zero)
                      c_VE_comp + c_tx ,  # no biopsy comp., HVE w/tx, complications 
                      c_VE + c_tx      ,  # no biopsy comp., HVE w/tx, no complications
                      c_VE_comp        ,  # no biopsy comp., OVE, complications
@@ -224,8 +216,10 @@ decision_tree_HVE_output
 
 ```{r, out.width = '100%'}
 branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
+
 tree     <- create_tree(branches)
-#plot_tree(tree, font.size = 5)
+plot_tree(tree, font.size = 5)
+#estimate_tree(tree, payoffs = "effect")
 ```
 
 ## 05 Cost-Effectiveness Analysis

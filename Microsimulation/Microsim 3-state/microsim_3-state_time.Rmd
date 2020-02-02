@@ -87,7 +87,7 @@ set.seed(1)  # set the seed
 
 # Model structure
 v_n   <- c("healthy", "sick", "dead")          # vector with state names
-n_s   <- length(v_n)                           # number of states
+n_states   <- length(v_n)                           # number of states
 n_t   <- 60                                    # number of cycles
 n_i   <- 10000                                 # number of individuals
 d_r   <- 0.03                                  # discount rate of 3% per cycle
@@ -150,7 +150,7 @@ Probs <- function(M_t, df_X, v_Ts) {
     # transition probabilities for that cycle
   
   # create matrix of state transition probabilities
-  m_p_t           <- matrix(0, nrow = n_s, ncol = n_i)  
+  m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  
   # give the state names to the rows
   rownames(m_p_t) <-  v_n                               
   

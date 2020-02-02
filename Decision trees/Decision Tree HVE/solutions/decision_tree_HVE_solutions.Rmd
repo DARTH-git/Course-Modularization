@@ -1,5 +1,5 @@
 ---
-title: 'PSA: Three-strategy decision tree in R - HVE'
+title: 'Three-strategy decision tree in R - HVE'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -66,7 +66,13 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning = FALSE, message = FALSE}
-# all packages were loaded at the start of the course
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+#install_github("DARTH-git/dectree", force = TRUE) #Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
@@ -216,9 +222,9 @@ decision_tree_HVE_output
 
 ```{r, out.width = '100%'}
 branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
+#tree     <- create_tree(branches)
 
-tree     <- create_tree(branches)
-plot_tree(tree, font.size = 5)
+#plot_tree(tree, font.size = 5)
 #estimate_tree(tree, payoffs = "effect")
 ```
 

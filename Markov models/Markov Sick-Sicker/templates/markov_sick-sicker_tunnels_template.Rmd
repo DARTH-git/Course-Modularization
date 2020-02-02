@@ -65,7 +65,13 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# everything is already loaded
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
+       "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack") 
 ```
 
 # 02 Load functions
@@ -103,7 +109,7 @@ n_s_tunnels      <- length(v_n_tunnels)                   # number of states
 # Read age-specific mortality rates from csv file
 lt_usa_2005 <- read.csv(here::here("data", "HMD_USA_Mx_2015.csv"))
 v_r_HD <- lt_usa_2005 %>% 
-  filter(Age >= age & Age <= (max_age-1)) %>%
+  filter(Age >= age & Age <= (max_age - 1)) %>%
   select(Total) %>%
   as.matrix()
 

@@ -4,20 +4,20 @@ Root,Do not treat,Do not treat,,
 Root,Treat,Treat,,
 Biopsy,Biopsy | Survive,Survive,-0.01,0.995
 Biopsy,Biopsy | Biopsy death,Biopsy death,-0.01,0.005
-Biopsy | Survive,Biopsy | Survive | OVE,OVE,,0.48
-Biopsy | Survive,Biopsy | Survive | HVE,HVE,,0.52
+Biopsy | Survive,Biopsy | Survive | OVE,OVE,0,0.48
+Biopsy | Survive,Biopsy | Survive | HVE,HVE,0,0.52
 Biopsy | Survive | OVE,Biopsy | Survive | OVE| No Complications,No Complications,20,0.99
 Biopsy | Survive | OVE,Biopsy | Survive | OVE| Complications,Complications,19,0.01
 Biopsy | Survive | HVE,Biopsy | Survive | HVE| No Complications,No Complications,20,0.64
 Biopsy | Survive | HVE,Biopsy | Survive | HVE| Complications,Complications,19,0.36
-Treat,Treat | OVE,OVE,,0.48
-Treat,Treat | HVE,HVE,,0.52
+Treat,Treat | OVE,OVE,0,0.48
+Treat,Treat | HVE,HVE,0,0.52
 Treat | OVE,Treat | OVE | No Complications,No Complications,20,0.8
 Treat | OVE,Treat | OVE | Complications,Complications,19,0.2
 Treat | HVE,Treat | HVE | No Complications,No Complications,20,0.64
 Treat | HVE,Treat | HVE | Complications,Complications,19,0.36
-Do not treat,Do not treat | OVE,OVE,,0.48
-Do not treat,Do not treat | HVE,HVE,,0.52
+Do not treat,Do not treat | OVE,OVE,0,0.48
+Do not treat,Do not treat | HVE,HVE,0,0.52
 Do not treat | OVE,Do not treat | OVE | No Complications,No Complications,20,0.99
 Do not treat | OVE,Do not treat | OVE | Complications,Complications,19,0.01
 Do not treat | HVE,Do not treat | HVE | No Complications,No Complications,20,0.29

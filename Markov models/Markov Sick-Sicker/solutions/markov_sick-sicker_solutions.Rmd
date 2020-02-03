@@ -67,7 +67,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
@@ -129,6 +129,26 @@ v_dwc   <- 1 / (1 + d_r) ^ (0:n_t)
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
 v_dwe   <- 1 / (1 + d_r) ^ (0:n_t) 
 ```
+Create a diagram of the model
+```{r}
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag["H","S1" ]  = "" 
+m_P_diag["H","D" ]  = "" 
+m_P_diag["H","H" ]  = "" 
+m_P_diag["S1","H" ]  = "" 
+m_P_diag["S1","S2" ]  = "" 
+m_P_diag["S1","D" ]  = "" 
+m_P_diag["S1","S1" ]  = "" 
+m_P_diag["S2","D" ]  = "" 
+m_P_diag["S2","S2" ]  = "" 
+m_P_diag["D","D" ]  = "" 
+layout.fig <- c(3,1)
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,  
+        latex = T, arr.type = "curved", relsize = 0.9, box.prop=0.8, 
+        cex = 0.8, box.cex = 0.9, lwd = 1)
+
+```
+
 
 # 04 Define and initialize matrices and vectors
 

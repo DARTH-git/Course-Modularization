@@ -114,10 +114,10 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 
 ```{r}
 
-  v_w_no_tx  <- c(  p_HVE  *    p_HVE_comp  ,  # HVE, complications
-                    p_HVE  * (1-p_HVE_comp) ,  # HVE, no complications
-                 (1-p_HVE) *    p_OVE_comp  ,  # OVE, complications
-                 (1-p_HVE) * (1-p_OVE_comp))   # OVE, no complications
+  v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp  ,  # HVE, complications
+                      p_HVE  * (1 - p_HVE_comp) ,  # HVE, no complications
+                 (1 - p_HVE) *      p_OVE_comp  ,  # OVE, complications
+                 (1 - p_HVE) * (1 - p_OVE_comp))   # OVE, no complications
   
   v_w_tx     # <-  your turn
     
@@ -142,9 +142,9 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
                      c_VE_comp ,  # OVE, complications
                      c_VE)        # OVE, no complications
   
-  v_costs_tx     # <-  your turn
+  v_cost_tx     # <-  your turn
     
-  v_costs_biopsy # <-  your turn 
+  v_cost_biopsy # <-  your turn 
   
   # Calculate total utilities for each strategy ####
   total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      

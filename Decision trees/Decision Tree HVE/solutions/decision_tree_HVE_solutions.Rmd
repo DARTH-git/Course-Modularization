@@ -225,6 +225,7 @@ branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFac
 tree     <- create_tree(branches)
 
 plot_tree(tree, font.size = 5)
+# estimate_tree(tree, "outcome")
 ```
 
 ## 05 Cost-Effectiveness Analysis

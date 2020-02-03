@@ -68,7 +68,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                             
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 #install_github("DARTH-git/dectree", force = TRUE) #Uncomment if there is a newer version
@@ -222,10 +222,9 @@ decision_tree_HVE_output
 
 ```{r, out.width = '100%'}
 branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
-#tree     <- create_tree(branches)
+tree     <- create_tree(branches)
 
-#plot_tree(tree, font.size = 5)
-#estimate_tree(tree, payoffs = "effect")
+plot_tree(tree, font.size = 5)
 ```
 
 ## 05 Cost-Effectiveness Analysis

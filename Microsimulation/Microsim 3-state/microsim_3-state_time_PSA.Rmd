@@ -64,7 +64,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
+```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
 p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
@@ -90,8 +90,12 @@ v_n   <- c("healthy", "sick", "dead")          # vector with state names
 n_s   <- length(v_n)                           # number of states
 n_t   <- 60                                    # number of cycles
 n_i   <- 10000                                 # number of individuals
-d_r   <- 0.03                                  # discount rate of 3% per cycle
-v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
+d_e <- d_c <- 0.03                             # equal discount of costs and QALYs by 3%
+
+# calculate discount weights for costs for each cycle based on discount rate d_c
+v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
+# calculate discount weights for effectiveness for each cycle based on discount rate d_e
+v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 
 #### Deterministic analysis ####
 

@@ -100,7 +100,7 @@ c_D  <- 0                               # cost of remaining one cycle dead
 u_H  <- 0.8                             # utility when healthy 
 u_S  <- 0.5                             # utility when sick
 u_D  <- 0                               # utility when dead
-d_e  <- d_c <- 0.03                     # equal discount of costs and QALYs by 3%
+d_e <- d_c <- 0.03                      # equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 

@@ -3,8 +3,8 @@ title: "Cost-Effectiveness and Decision Modeling in R"
 author: "The DARTH workgroup"
 subtitle: Decision Tree Exercise
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document: default
 ---
 

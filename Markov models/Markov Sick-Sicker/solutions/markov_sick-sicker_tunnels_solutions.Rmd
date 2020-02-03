@@ -1,6 +1,6 @@
 ---
 title: 'Markov Sick-Sicker model in R'
-subtitle: 'with age-specific mortality'
+subtitle: 'with dependency for time-since model start AND with state-residency dependency'
 author: "The DARTH workgroup"
 output:
   pdf_document: default

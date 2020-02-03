@@ -209,7 +209,7 @@ m_P_trt <- m_P_notrt
 
 ```
 
-## 06.4 ratio of sick(S1) vs sicker(S2)
+## 06.4 ratio of sick(S1) vs the total prevalence of the disease (S1+S2)
 
 ```{r}
 # your turn

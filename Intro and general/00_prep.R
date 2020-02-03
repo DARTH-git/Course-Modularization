@@ -7,7 +7,7 @@
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 
 # load (install if required) packages from CRAN
-p_load("here", "devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown","stringr")
+p_load("here", "devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr")
 
 # load (install if required) packages from GitHub
 install_github("DARTH-git/dampack", force = TRUE) # (Un)comment if there is a newer version

@@ -85,7 +85,7 @@ n_str <- length(v_names_str)
 
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_states <- length(v_n)                     # number of states
+n_states <- length(v_n)                 # number of states
 n_t  <- 60                              # number of cycles
 
 p_HD <- seq(0.003, 0.01, length.out = n_t)  # probabilities to die when sick (age-dependent) - this is now a sequence of numbers, officially v_HD

@@ -109,20 +109,19 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 ```
 
 
-Draw the cohort model
+## Draw the state-transition cohort model
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
-m_P_diag["Healthy","Sick" ]  = "" 
-m_P_diag["Healthy","Dead" ]  = ""
-m_P_diag["Healthy","Healthy" ]  = ""
-m_P_diag["Sick","Dead" ]  = ""
-m_P_diag["Sick","Sick" ]  = ""
+m_P_diag["Healthy", "Sick" ]  = "" 
+m_P_diag["Healthy", "Dead" ]  = ""
+m_P_diag["Healthy", "Healthy" ]  = ""
+m_P_diag["Sick", "Dead" ]  = ""
+m_P_diag["Sick", "Sick" ]  = ""
 m_P_diag["Dead", "Dead" ]  = ""
 layout.fig <- c(2, 1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
-        latex = T, arr.type = "curved", relsize = 0.85, box.prop=0.8, 
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
         cex = 0.8, box.cex = 0.7, lwd = 1)
-
 ```
 
 # 04 Define and initialize matrices and vectors
@@ -191,7 +190,7 @@ matplot(m_M, type = 'l',
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
-abline(v = which.max(m_M[, "Sick"]), col = "gray")
+abline(v = which.max(m_M[, "Sick"]), col = "gray") # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 ## 06.2 Overall Survival (OS)

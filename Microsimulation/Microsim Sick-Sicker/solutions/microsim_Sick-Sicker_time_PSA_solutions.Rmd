@@ -31,7 +31,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -47,7 +47,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -64,14 +64,13 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
+```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
-# load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
-# load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack")  
+ # load (install if required) packages from CRAN
+ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+ # load (install if required) packages from GitHub
+ # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+ p_load_gh("DARTH-git/dampack") 
 ```
 
 # 02 Load functions

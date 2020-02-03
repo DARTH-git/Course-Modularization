@@ -1,8 +1,9 @@
 ---
-title: 'Cost-Effectiveness and Decision Modeling in R'
-subtitle: 'PSA Markov Model Exercise'
+title: "Cost-Effectiveness and Decision Modeling in R"
 author: "The DARTH workgroup"
+subtitle: PSA Markov Model Exercise
 output:
+  word_document: default
   pdf_document: default
   html_document: default
 ---
@@ -133,18 +134,17 @@ This exercise continues based on the time-homogeneous deterministic Markov model
 | - Sick individuals in S2           | Gamma             |  shape = 225.0, scale = 66.7                  |
 | - Additional costs of sick individuals treated in S1 or S2 | Gamma | shape = 73.5, scale = 163.3       |
 | Utility weights                    |                   |                                               |
-| - Healthy individuals              | Tr. Normal        | $\mu = 1.00, \ \sigma = 0.01, \ b = 1$        |
-| - Sick individuals in S1           | Tr. Normal        | $\mu = 0.75, \ \sigma = 0.02, \ b = 1$        |
-| - Sick individuals in S2           | Tr. Normal        | $\mu = 0.50, \ \sigma = 0.03, \ b = 1$        |
+| - Healthy individuals              | Beta              | $\alpha = 200, \ \beta = 3$                   |
+| - Sick individuals in S1           | Beta              | $\alpha = 130, \ \beta = 45$                  |
+| - Sick individuals in S2           | Beta              | $\alpha = 230, \ \beta = 230$                 |
 | Intervention effect                |                   |                                               |
-| - Utility for treated individuals in S1 | Tr. Normal   | $\mu = 0.95, \ \sigma = 0.02, \ b = 1$        |
+| - Utility for treated individuals in S1 | Beta         | $\alpha = 300, \ \beta = 15$                  |
 
 ## Tasks
 
 5. Create the `calculate_ce_out` `R` function of the Sick-Sicker Markov model in the file “Functions_markov_sick-sicker.R”.
 
 6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
-Hint: package `truncnorm` deals with truncated normal distributions.
 
 7. Open the file “markov_sick-sicker_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
 

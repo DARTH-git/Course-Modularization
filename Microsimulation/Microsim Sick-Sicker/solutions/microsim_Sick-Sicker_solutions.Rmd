@@ -65,7 +65,12 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning = F, message = F}
-# all packages are loaded already
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+ # load (install if required) packages from CRAN
+ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+ # load (install if required) packages from GitHub
+ # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+ p_load_gh("DARTH-git/dampack") 
 ```
 
 # 02 Load functions
@@ -83,7 +88,7 @@ set.seed(1)  # set the seed
 n_t   <- 30                       # time horizon, 30 cycles
 n_i   <- 100000                   # number of simulated individuals
 v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)              # the number of health states
+n_states   <- length(v_n)         # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names

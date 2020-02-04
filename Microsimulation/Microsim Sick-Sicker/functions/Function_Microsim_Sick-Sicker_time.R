@@ -40,7 +40,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # Returns: 
       #   transition probabilities for that cycle
       
-      m_p_t           <- matrix(0, nrow = n_s, ncol = n_i)  # create matrix of state transition probabilities
+      m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  # create matrix of state transition probabilities
       rownames(m_p_t) <-  v_n                               # give the state names to the rows
       
       # lookup baseline probability and rate of dying based on individual characteristics

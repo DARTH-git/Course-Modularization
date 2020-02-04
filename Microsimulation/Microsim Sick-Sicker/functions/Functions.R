@@ -58,9 +58,9 @@ plot_m_TR <- function(m_M) {
   colnames(m_TR) <- v_n                                    # name the rows of the matrix
   rownames(m_TR) <- paste("Cycle", 0:n_t, sep = " ")       # name the columns of the matrix
   # Plot trace of first health state
-  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_s,
+  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_states,
        ylim = c(0, 1), ylab = "Proportion of cohort", xlab = "Cycle")
-  legend("topright", v_n, col = 1:n_s,    # add a legend to current plot
+  legend("topright", v_n, col = 1:n_states,    # add a legend to current plot
          lty = rep(1, 3), bty = "n", cex = 0.65)
   
 }

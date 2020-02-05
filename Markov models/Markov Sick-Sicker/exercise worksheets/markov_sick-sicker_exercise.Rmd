@@ -62,13 +62,14 @@ In this exercise, we will model a hypothetical disease that affects individuals 
 
 To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(here))  install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
 
 ## Tasks
+Using the template "markov_sick-sicker_template.Rmd", please do the following. 
 
 1.	Build the Markov model in `R` for the no treatment and treatment strategies.
 

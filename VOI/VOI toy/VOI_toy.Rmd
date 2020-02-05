@@ -66,8 +66,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "matrixStats", "scales", "ggplot2", "grid", "mgcv", "gridExtra", "gdata", 
-       "reshape2", "knitr")       
+p_load("here", "dplyr", "devtools", "matrixStats", "scales", "ggplot2", "grid", "mgcv", "gridExtra", "gdata", "reshape2", "knitr")       
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack") 
@@ -76,8 +75,8 @@ p_load_gh("DARTH-git/dampack")
 # 02 Load functions
 
 ```{r}
-source("VOI_Functions.R")
-source("GA_functions.R")
+source("VOI_Functions.R") # VOI functions 
+source("GA_functions.R")  # Gaussian Approximation Approach functions
 ```
 
 # 03 Input model parameters
@@ -86,6 +85,9 @@ source("GA_functions.R")
 # Load simulation file
 # Read the `.csv` simulation file into `R`.
 toy   <- read.csv("PSA.csv", header = TRUE)[, -1]
+# Strategy A = includes parameter uncertainty
+# Strategy B = includes paramter uncertainty
+# Strategy C = no parameter uncertainty -> same NBM for all PSA runs
 n_sim <- nrow(toy)
 
 # Display first five observations of the data fram using the command `head`
@@ -94,7 +96,7 @@ head(toy)
 # Net Monetary Benefit (NMB) 
 # Create NMB matrix
 nmb <- toy[, 5:7]
-head(nmb)
+head(nmb) # print the first six rows 
 
 # Number of Strategies
 n_strategies <- ncol(nmb)
@@ -103,7 +105,7 @@ n_strategies
 # Assign name of strategies
 strategies    <- c("Strategy A", "Strategy B", "Strategy C")
 colnames(nmb) <- strategies
-head(nmb)
+head(nmb)  # print the first six rows 
 
 # Format data frame suitably for plotting
 nmb_gg <- melt(nmb,  
@@ -113,13 +115,16 @@ nmb_gg <- melt(nmb,
 # Plot NMB for different strategies
 # Faceted plot by Strategy
 ggplot(nmb_gg, aes(x = NMB/1000)) +
-  geom_histogram(aes(y =..density..), col="black", fill = "gray") +
+  geom_histogram(aes(y =..density..), col = "black", fill = "gray") +
   geom_density(color = "red") +
   facet_wrap(~ Strategy, scales = "free_y") +
   xlab("Net Monetary Benefit (NMB) x10^3") +
   scale_x_continuous(breaks = number_ticks(5), labels = dollar) + 
   scale_y_continuous(breaks = number_ticks(5)) + 
   theme_bw()
+
+
+
 ```
 
 # 04 Incremental NMB (INMB) 
@@ -215,7 +220,7 @@ ggplot(params, aes(x = value)) +
   theme_bw(base_size = 14)
 ```
 
-Construct Spline metamodel.
+### Construct Spline metamodel
 
 ```{r}
 # Splines
@@ -250,7 +255,7 @@ ggplot(data = evppi_splines_gg, aes(x = Parameter, y = EVPPI)) +
   theme_bw(base_size = 14)
 ```
 
-# 08 EVSI
+# 08 Expected value of sample information (EVSI)
 
 ```{r}
 # Effective (prior) Sample size

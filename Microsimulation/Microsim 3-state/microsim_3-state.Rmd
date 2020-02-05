@@ -1,6 +1,6 @@
 ---
-title: 'Simple 3-state microsimulation model with PSA'
-subtitle: 'Includes sex specific probability of dying when healthy'
+title: 'Simple 3-state microsimulation model'
+subtitle: 'Includes age and sex specific probability of dying when healthy'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -47,7 +47,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -64,8 +64,13 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
-# all necessary packages are already loaded
+```{r, warning = FALSE, message = FALSE}
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+ # load (install if required) packages from CRAN
+ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+ # load (install if required) packages from GitHub
+ # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+ p_load_gh("DARTH-git/dampack") 
 ```
 
 # 02 Load functions
@@ -80,12 +85,16 @@ source("Functions.R")
 set.seed(1)  # set the seed  
 
 # Model structure
-v_n   <- c("healthy", "sick", "dead")          # vector with state names
-n_states   <- length(v_n)                           # number of states
-n_t   <- 60                                    # number of cycles
-n_i   <- 10000                                 # number of individuals
-d_r   <- 0.03                                  # discount rate of 3% per cycle
-v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
+v_n   <- c("healthy", "sick", "dead")       # vector with state names
+n_states   <- length(v_n)                   # number of states
+n_t   <- 60                                 # number of cycles
+n_i   <- 10000                              # number of individuals
+d_e <- d_c <- 0.03                          # equal discount of costs and QALYs by 3%
+
+# calculate discount weights for costs for each cycle based on discount rate d_c
+v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
+# calculate discount weights for effectiveness for each cycle based on discount rate d_e
+v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 
 #### Deterministic analysis ####
 

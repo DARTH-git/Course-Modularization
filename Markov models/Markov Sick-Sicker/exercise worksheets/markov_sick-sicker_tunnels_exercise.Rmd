@@ -77,20 +77,19 @@ where $t$ is the $t$-th cycle (year) that a person has been in the Sick state. $
 
 We will now expand the model to include age and state residence dependency by adding age varying probabilies for death and tunnel states for S1, as shown in Figure 2.
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, out.width = '100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 ```
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model with tunnels states for S1', fig.align='center'}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model with tunnels states for S1', fig.align = 'center'}
 if (!require(here)) install.packages('knitr')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 ```
 
 ## Tasks
-
 
 1. Incorporate the tunnel states in the markov trace and initialize it with everyone being healthy at model start. 
 
@@ -109,7 +108,7 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 | Time horizon                       | `n_t`       | 30 years      |
 | Cycle length                       |             | 1 year        |
 | Names of health states             | `v_n`       | H, S1, S2, D  |
-| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Annual discount rate (costs/QALYs) | `d_c` `d_e` |  3%           |
 | Annual transition probabilities    |             |               |
 | - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
 | - Recovery (S1 to H)               | `p_S1H`     |  0.5          |

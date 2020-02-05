@@ -32,6 +32,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -64,7 +65,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
+```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
 p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
@@ -123,13 +124,15 @@ u_D     <- 0                        # utility when dead
 u_trt   <- 0.95                     # utility when being treated
 
 # Discounting factor
-d_r     <- 0.03                     # equal discount of costs and QALYs by 3%
+d_e  <- d_c <- 0.03                     # equal discount of costs and QALYs by 3%
+
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 ```
-Create a diagram of the model
+
+## Create a state-transition diagram of the cohort model
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
 m_P_diag["H","S1" ]  = "" 
@@ -142,9 +145,10 @@ m_P_diag["S1","S1" ]  = ""
 m_P_diag["S2","D" ]  = "" 
 m_P_diag["S2","S2" ]  = "" 
 m_P_diag["D","D" ]  = "" 
-layout.fig <- c(3,1)
+layout.fig <- c(3, 1)
+
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,  
-        latex = T, arr.type = "curved", relsize = 0.9, box.prop=0.8, 
+        latex = T, arr.type = "curved", relsize = 0.9, box.prop = 0.8, 
         cex = 0.8, box.cex = 0.9, lwd = 1)
 
 ```
@@ -220,14 +224,14 @@ head(m_M_notrt)  # show the first 6 lines of the matrix
 
 ## 06.1 Cohort trace
 
-```{r, message=F}
+```{r, message = FALSE}
 # create a plot of the data
 matplot(m_M_notrt, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
         main = "Cohort Trace")             
 # add a legend to the graph
-legend("topright", v_n, col = 1:n_states,lty = 1:n_states, bty = "n") 
+legend("topright", v_n, col = 1:n_states, lty = 1:n_states, bty = "n") 
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -280,7 +284,7 @@ plot(0:n_t, v_prop_S1,
 
 ```{r}
 # Vectors with costs and utilities by treatment
-v_u_notrt   <- c(u_H, u_S1, u_S2, u_D)
+v_u_notrt   <- c(u_H, u_S1,  u_S2, u_D)
 v_u_trt     <- c(u_H, u_trt, u_S2, u_D)
 
 v_c_notrt   <- c(c_H, c_S1, c_S2, c_D)

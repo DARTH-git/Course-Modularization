@@ -1,6 +1,6 @@
 ---
 title: 'Simple 3-state Markov model in R'
-subtitle: 'with age dependency AND with time dependency'
+subtitle: 'with dependency for time-since model start AND with state-residency dependency'
 author: "The DARTH workgroup"
 output:
   pdf_document: default

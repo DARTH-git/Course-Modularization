@@ -18,22 +18,22 @@
 #####################################################################################
 # Developed by Petros Pechlivanoglou
 
-samplev <- function(m.Probs, m) {
+samplev <- function(m_Probs, m) {
 # Arguments
- # m.Probs: matrix with probabilities (n.i * n.s)
+ # m_Probs: matrix with probabilities (n.i * n.s)
  # m:       number of states than need to be sampled per individual  
 # Return
   # ran:    n.i x m matrix filled with sampled health state(s) per individual
   
-  d <- dim(m.Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
+  d <- dim(m_Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
   n <- d[1]          # first dimension - number of rows (number of individuals to sample for)
   k <- d[2]          # second dimension - number of columns (number of health states considered)
-  lev <- dimnames(m.Probs)[[2]]  # extract the names of the health states considered for sampling
+  lev <- dimnames(m_Probs)[[2]]  # extract the names of the health states considered for sampling
   if (!length(lev))  # in case names for the health states are missing, use numbers to specify the health states
     lev <- 1:k       # create a sequence from 1:k (number of health states considered)
   # create a matrix 
   ran <- matrix(lev[1], ncol = m, nrow = n) # create the matrix ran, filled with the first health state of the levels 
-  U <- t(m.Probs)    # transposed m.Probs matrix n.i x n.s --> n.s x n.i 
+  U <- t(m_Probs)    # transposed m_Probs matrix n.i x n.s --> n.s x n.i 
   
   for(i in 2:k) {    # start loop, from the 2nd health states
     U[i, ] <- U[i, ] + U[i - 1, ] # start summing the probabilities of the different health states per individual 

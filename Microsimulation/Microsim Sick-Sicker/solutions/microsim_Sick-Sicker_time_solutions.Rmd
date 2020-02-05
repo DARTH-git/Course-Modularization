@@ -1,6 +1,6 @@
 ---
-title: 'Microsimulation Sick-Sicker model'
-subtitle: 'Includes individual characteristics: age, age dependent mortality probabilities, individual treatment effect modifyer'
+title: 'Microsimulation Sick-Sicker model with time dependency '
+subtitle: 'Includes individual characteristics: age, age dependent mortality probabilities, individual treatment effect modifyer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness (tunnel)'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6,7)
+Petros Pechlivanoglou, PhD (6)
 
 Alan Yang, MSc (7)
 
@@ -88,7 +88,7 @@ set.seed(1)  # set the seed
 n_t   <- 30                       # time horizon, 30 cycles
 n_i   <- 100000                   # number of simulated individuals
 v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)         # the number of health states
+n_states   <- length(v_n)              # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names
@@ -106,12 +106,13 @@ p_mort   <- read.csv(here("data", "mortProb_age.csv"))
 # load age distribution
 dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
 
-p_S1D    <- 0.0149          # probability to die in S1 by cycle 
-p_S2D    <- 0.048           # probability to die in S2 by cycle
+# probability to die in S1 by cycle (is increasing)
+p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
+p_S2D    <- 0.048           # probability to die in S2
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
-c_S1    <- 4000             # cost of one cycle in the sick state
+c_S1    <- 4000             # cost of one cycle in the sick state  
 c_S2    <- 15000            # cost of one cycle in the sicker state
 c_D     <- 0                # cost of one cycle in the dead state
 c_Trt   <- 12000            # cost of treatment (per cycle)
@@ -130,17 +131,25 @@ u_Trt   <- 0.95             # utility when sick and being treated
 
 ```{r}
 v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline 
-# sample from age distribution an initial age for every individual
-v_age0  <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
-df_X    <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0)
 ```
 
 ## 04.2 Dynamic characteristics 
 
 ```{r}
+# sample from age distribution an initial age for every individual
+v_age0  <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
+# a vector with the time of being sick at the start of the model  
+
 # Specify the initial health state of the individuals 
 # everyone begins in the healthy state (in this example)
-v_M_init  <- rep("H", n_i)   # a vector with the initial health state for all individuals   
+# a vector with the initial health state for all individuals
+v_M_init  <- rep("H", n_i)
+v_Ts_init <- rep(0, n_i)         # since all individuals start healthy this value is zero for everyone
+```
+
+## 04.3 Create a dataframe with the individual characteristics 
+```{r}
+df_X    <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_ts = v_Ts_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
 ```
 
 # 05 Define Simulation Functions
@@ -170,7 +179,7 @@ Probs <- function(M_t, df_X, t) {
   # transition probabilities when healthy
   m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)                              
   # transition probabilities when sick
-  m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D, p_S1S2, p_S1D)  
+  m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[df_X$n_ts], p_S1S2, p_S1D[df_X$n_ts])  
   # transition probabilities when sicker
   m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D, p_S2D)                                            
   # transition probabilities when dead   
@@ -226,7 +235,7 @@ Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
 # 06 Run Microsimulation
 
 ```{r}
-MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
+MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
 # Arguments:  
   # n_i:     number of individuals
     # df_X     data frame with individual characteristics data 
@@ -235,7 +244,8 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   
   set.seed(seed) # set the seed
   
-
+  n_states <- length(v_n) # the number of health states
+  
   # create three matrices called m_M, m_C and m_E
   # number of rows is equal to the n_i, the number of columns is equal to n_t  
   # (the initial state and all the n_t cycles)
@@ -247,8 +257,8 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
                                      dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
                                                      paste("cycle", 0:n_t, sep = " ")))  
 
-    # initial health state at cycle 0 for individual i
-    m_M [, 1] <- v_M_init    
+    m_M [, 1] <- v_M_init    # initial health state at cycle 0 for individual i
+  
     # calculate costs per individual during cycle 0
     m_C[, 1]  <- Costs(m_M[, 1], Trt)     
     # calculate QALYs per individual during cycle 0
@@ -265,6 +275,8 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
       # calculate QALYs per individual during cycle t + 1
       m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt)    
       
+      # update time since illness onset for t + 1 
+      df_X$n_ts <- if_else(m_M[, t + 1] == "S1", df_X$n_ts + 1, 0) 
       # update the age of individuals that are alive
       df_X$Age[m_M[, t + 1] != "D"]  <- df_X$Age[m_M[, t + 1] != "D"] + 1
     
@@ -313,7 +325,7 @@ plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "Q
 plot_m_TR(outcomes_trt$m_M)     # health state trace
 ```
 
-# 08 Cost Effectiveness Analysis
+# 08 Cost-Effectiveness Analysis
 
 ```{r}
 # store the mean costs of each strategy in a new variable C (vector of costs)
@@ -326,4 +338,3 @@ calculate_icers(cost       = v_C,
                 effect     = v_E,
                 strategies = v_names_str)
 ```
-

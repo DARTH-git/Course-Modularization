@@ -88,7 +88,7 @@ set.seed(1)  # set the seed
 n_t   <- 30                       # time horizon, 30 cycles
 n_i   <- 100000                   # number of simulated individuals
 v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)              # the number of health states
+n_states   <- length(v_n)         # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names
@@ -107,7 +107,7 @@ p_mort   <- read.csv(here("data", "mortProb_age.csv"))
 dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
 
 p_S1D    <- 0.0149          # probability to die in S1 by cycle 
-p_S2D    <- 0.048           # probability to die in S2
+p_S2D    <- 0.048           # probability to die in S2 by cycle
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
@@ -121,7 +121,7 @@ u_H     <- 1                # utility when healthy
 u_S1    <- 0.75             # utility when sick 
 u_S2    <- 0.5              # utility when sicker
 u_D     <- 0                # utility when dead
-u_Trt   <- 0.95             # utility when sick(er) and being treated
+u_Trt   <- 0.95             # utility when sick and being treated
 ```
 
 # 04 Sample individual level characteristics

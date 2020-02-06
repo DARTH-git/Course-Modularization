@@ -1,5 +1,0 @@
-"0","fit_KM <- survfit (Surv(time = OS_time, event= OS_status)~ 1 , data = OS_PFS_data, "
-"0","                   type =""fleming-harrington"")"
-"0","fit_weib <- flexsurvreg(Surv(time = OS_time, event= OS_status)~ 1 , data = OS_PFS_data, "
-"0","                        dist = ""weibull"")"
-"0","plot(fit_KM, mark.time = T)"

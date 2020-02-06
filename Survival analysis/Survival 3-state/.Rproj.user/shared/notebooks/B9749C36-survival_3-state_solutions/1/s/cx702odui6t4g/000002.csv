@@ -1,6 +1,0 @@
-"0","if (!require('here')) install.packages('here'); library(gems)"
-"0","if (!require('gems')) install.packages('gems'); library(gems)"
-"0","if (!require('msm')) install.packages('msm'); library(msm)"
-"0","if (!require('flexsurv')) install.packages('flexsurv'); library(flexsurv)"
-"0","if (!require('dplyr')) install.packages('dplyr'); library(dplyr)"
-"0","if (!require('mstate')) install.packages('mstate'); library(mstate)"

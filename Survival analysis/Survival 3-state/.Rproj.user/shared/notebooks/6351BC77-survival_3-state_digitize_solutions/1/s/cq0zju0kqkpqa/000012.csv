@@ -1,5 +1,0 @@
-"0","# fit all parametric models to the data and extract the AIC/BIC "
-"0","# Select the one with the most appropriate fit"
-"0","# Repeat for PFS and OS"
-"0","fit_PFS  <- fit.fun(time =""time"", status = ""event"", data = IPD_PFS, times = times,"
-"0","                    extrapolate = T) "

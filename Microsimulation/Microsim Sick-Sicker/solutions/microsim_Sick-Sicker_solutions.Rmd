@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6,7)
+Petros Pechlivanoglou, PhD (6)
 
 Alan Yang, MSc (7)
 
@@ -107,7 +107,7 @@ p_mort   <- read.csv(here("data", "mortProb_age.csv"))
 dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
 
 p_S1D    <- 0.0149          # probability to die in S1 by cycle 
-p_S2D    <- 0.048           # probability to die in S2 by cycle
+p_S2D    <- 0.048           # probability to die in S2
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
@@ -121,7 +121,7 @@ u_H     <- 1                # utility when healthy
 u_S1    <- 0.75             # utility when sick 
 u_S2    <- 0.5              # utility when sicker
 u_D     <- 0                # utility when dead
-u_Trt   <- 0.95             # utility when sick and being treated
+u_Trt   <- 0.95             # utility when sick(er) and being treated
 ```
 
 # 04 Sample individual level characteristics
@@ -150,7 +150,7 @@ v_M_init  <- rep("H", n_i)   # a vector with the initial health state for all in
 The function that updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, t) { 
+Probs <- function(M_t, df_X) { 
   # Arguments:
     # M_t: health state occupied by individual i at cycle t (character variable)
     # df_X:     data frame with individual characteristics data 
@@ -226,7 +226,7 @@ Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
 # 06 Run Microsimulation
 
 ```{r}
-MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
+MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
 # Arguments:  
   # n_i:     number of individuals
     # df_X     data frame with individual characteristics data 
@@ -234,7 +234,6 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   # seed:    default is 1
   
   set.seed(seed) # set the seed
-  
 
   # create three matrices called m_M, m_C and m_E
   # number of rows is equal to the n_i, the number of columns is equal to n_t  
@@ -243,7 +242,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   # m_C is used to store the costs information over time for every individual
   # m_E is used to store the effects information over time for every individual
   
-  m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_t + 1, 
+  m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_t + 1, 
                                      dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
                                                      paste("cycle", 0:n_t, sep = " ")))  
 
@@ -257,7 +256,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
     # open a loop for time running cycles 1 to n_t 
     for (t in 1:n_t) {
       # calculate the transition probabilities for the cycle based on  health state t
-      m_P <- Probs(m_M[, t], df_X, t)             
+      m_P <- Probs(m_M[, t], df_X)             
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P, 1)                  
       # calculate costs per individual during cycle t + 1
@@ -266,7 +265,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
       m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt)    
       
       # update the age of individuals that are alive
-      df_X$Age[m_M[, t + 1] != "D"]  <- df_X$Age[m_M[, t + 1] != "D"] + 1
+      df_X$Age[m_M[, t + 1] != "D"] <- df_X$Age[m_M[, t + 1] != "D"] + 1
     
       # Display simulation progress
       if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
@@ -300,7 +299,7 @@ outcomes_trt     <- MicroSim(n_i, df_X, Trt = TRUE,  seed = 1)
 # 07 Visualize results
 
 ```{r}
-options(scipen = 999) # disabling scientific notation in R
+options(scipen = 999)
 
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")

@@ -161,9 +161,9 @@ The function that updates the transition probabilities of every cycle is shown b
 ```{r}
 Probs <- function(M_t, df_X, t) { 
   # Arguments:
-    # M_t: health state occupied by individual i at cycle t (character variable)
-    # df_X:     data frame with individual characteristics data 
-  # t:     current cycle 
+    # M_t:  health state occupied by individual i at cycle t (character variable)
+    # df_X: data frame with individual characteristics data 
+    # t:    current cycle 
 # Returns: 
   #   transition probabilities for that cycle
   
@@ -253,8 +253,8 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
   # m_C is used to store the costs information over time for every individual
   # m_E is used to store the effects information over time for every individual
   
-  m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_t + 1, 
-                                     dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
+  m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_t + 1, 
+                                  dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
                                                      paste("cycle", 0:n_t, sep = " ")))  
 
     m_M [, 1] <- v_M_init    # initial health state at cycle 0 for individual i

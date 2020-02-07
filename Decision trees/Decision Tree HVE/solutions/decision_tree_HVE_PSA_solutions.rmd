@@ -255,22 +255,25 @@ l_params_all
 ## 06.2 Load decision tree model function
 
 ```{r}
+#### We wrapped the decision tree in a function which we called calculate_ce_out 
+# This function is stored in "Functions_decision_tree_HVE.R" and needes the list of parameters
 source(here("functions", "Functions_decision_tree_HVE.R"))
-# Test function
+# Test function to see if it gives the CE results
 calculate_ce_out(l_params_all)
 ```
 
 ## 06.3 One-way sensitivity analysis (OWSA)
 
-```{r, warning=F}
-params_owsa      <- c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy") # parameters of interest for OWSA
+```{r, warning = FALSE}
+params_owsa   <- c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy") # parameters of interest for OWSA
 # dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
-params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
-                               max  = rep(NA, length(v_names_params))) 
+params_all_owsa  <- data.frame(pars = params_owsa, min = rep(NA, length(params_owsa )),  max  = rep(NA, length(params_owsa ))) 
+
 params_all_owsa$min[params_all_owsa$pars %in% params_owsa] <- c(0.01, 0.01,  1000, 10000)  # min parameter values
 params_all_owsa$max[params_all_owsa$pars %in% params_owsa] <- c(0.99, 0.50, 15000, 40000)  # max parameter values
-owsa_nmb         <- run_owsa_det(params     = params_owsa,      # parameters of interest
-                                 params_all = params_all_owsa,  # dataframe containing relevant parameter values
+
+owsa_nmb         <- run_owsa_det(params_range = subset(params_all_owsa, select = c("pars", "min", "max")) ,  # dataframe containing relevant parameter values
+                                 params_basecase = l_params_all,  # dataframe containing relevant parameter values
                                  nsamp      = 100,              # number of parameter values
                                  FUN        = calculate_ce_out, # function to compute outputs
                                  outcomes   = c("NMB"),         # output to do the OWSA on
@@ -300,16 +303,16 @@ owsa_tornado(owsa = owsa_nmb)
 
 ## 06.4 Two-way sensitivity analysis (TWSA)
 
-```{r, warning=F}
+```{r, warning = FALSE}
 params_twsa     <- c("p_HVE", "c_tx") # parameters of interest for TWSA
 # dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
-params_all_twsa <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
-                              max  = rep(NA, length(v_names_params))) 
+params_all_twsa <- data.frame(pars = params_twsa, min = rep(NA, length(params_twsa )), max  = rep(NA, length(params_twsa ))) 
+
 params_all_twsa$min[params_all_twsa$pars %in% params_twsa] <- c(0.01, 2000)   # min parameter values
 params_all_twsa$max[params_all_twsa$pars %in% params_twsa] <- c(0.99, 40000)  # max parameter values
-twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameters of interest
-                                param2     = params_twsa[2],   # second parameters of interest 
-                                params_all = params_all_twsa,  # dataframe containing relevant parameter values
+
+twsa_nmb        <- run_twsa_det(params_range = params_all_twsa, # parameters of interest
+                                params_basecase = l_params_all,  # dataframe containing relevant parameter values
                                 nsamp      = 40,               # number of parameter values
                                 FUN        = calculate_ce_out, # function to compute outputs
                                 outcomes   = c("NMB"),         # output to do the twsa on
@@ -321,13 +324,13 @@ twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameter
 
 ```{r}
 plot(twsa_nmb) + 
-  ggtitle(label = "Two-way sensitivity analysis",subtitle = "Net monetary benefit") +
+  ggtitle(label = "Two-way sensitivity analysis", subtitle = "Net monetary benefit") +
   theme(legend.position = "bottom")
 ```
 
 # 07 Probabilistic Sensitivity Analysis (PSA)
 
-```{r, warning=F, message=F}
+```{r, warning = FALSE, message = FALSE}
 # Function to generate PSA input dataset
 generate_psa_params <- function(n_sim = 1000, seed = 071518){
   set.seed(seed)
@@ -351,7 +354,7 @@ generate_psa_params <- function(n_sim = 1000, seed = 071518){
     # Utilities
     q_VE          = rnorm(n_sim, mean = 20, sd = 1),  # utility when healthy
     q_VE_comp     = rnorm(n_sim, mean = 19, sd = 2),  # utility when sick
-    q_loss_biopsy = rtruncnorm(n_sim, mean = -0.01, sd = 0.005, a = -0.1, b = 0)
+    q_loss_biopsy = -rbeta(n_sim, shape1 = 4, shape2 = 380)
   )
   return(df_psa_params)
 }
@@ -378,6 +381,7 @@ df_c <- as.data.frame(matrix(0,
                       nrow = n_sim,
                       ncol = n_str))
 colnames(df_c) <- v_names_str
+
 # Dataframe of effectiveness
 df_e <- as.data.frame(matrix(0, 
                       nrow = n_sim,
@@ -407,6 +411,7 @@ l_psa <- make_psa_obj(cost          = df_c,
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 
                       strategies    = v_names_str)
+head(l_psa)
 ```
 
 ## 07.2.1 Save PSA objects
@@ -460,7 +465,7 @@ write.csv(df_cea_psa,
 ## 07.4.1 Plot cost-effectiveness frontier
 
 ```{r}
-plot(df_cea_psa)
+plot(df_cea_psa) 
 ```
 
 ## 07.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)

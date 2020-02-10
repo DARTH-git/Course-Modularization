@@ -178,7 +178,7 @@ head(loss)
 ```{r}
 # Find maximum loss overall strategies at each state of the world 
 # (i.e., PSA sample)
-max_loss_i <- rowMaxs(loss)
+max_loss_i <- rowMaxs(loss)  # Only the positive values are a loss. Negative values show we selected the best strategy
 head(max_loss_i)
 ## Average expected loss across all states of the world
 ## Expected loss = expected value of perfect information

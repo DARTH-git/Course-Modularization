@@ -72,7 +72,9 @@ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", 
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+# install_github("annaheath/EVSI", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
+p_load_gh("annaheath/EVSI")
 ```
 
 # 02 Load functions
@@ -265,6 +267,7 @@ calculate_ce_out(l_params_all)
 ## 06.3 One-way sensitivity analysis (OWSA)
 
 ```{r, warning = FALSE}
+options(scipen = 999) # disabling scientific notation in R
 params_owsa   <- c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy") # parameters of interest for OWSA
 # dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
 params_all_owsa  <- data.frame(pars = params_owsa, min = rep(NA, length(params_owsa )),  max  = rep(NA, length(params_owsa ))) 
@@ -387,6 +390,8 @@ df_e <- as.data.frame(matrix(0,
                       nrow = n_sim,
                       ncol = n_str))
 colnames(df_e) <- v_names_str
+
+
 ```
 
 ## 07.1 Conduct probabilistic sensitivity analysis
@@ -431,7 +436,7 @@ load(file = here("output", "decision_tree_HVE_PSA_dataset.RData"))
 Vector with willingness-to-pay (WTP) thresholds.
 
 ```{r}
-v_wtp <- seq(0, 300000, by = 10000)
+v_wtp <- seq(0, 3000000, by = 100000)
 ```
 
 ## 07.3.1 Cost-Effectiveness Scatter plot
@@ -471,6 +476,7 @@ plot(df_cea_psa)
 ## 07.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
 ```{r}
+
 ceac_obj <- ceac(wtp = v_wtp, psa = l_psa)
 # Regions of highest probability of cost-effectiveness for each strategy
 summary(ceac_obj)
@@ -492,6 +498,32 @@ plot(elc_obj, log_y = FALSE)
 ```{r}
 evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
-plot(evpi, effect_units = "QALY")
+plot(evpi, effect_units = "QALY") 
 ```
 
+## 07.4.5 Expected value of sample information 
+
+```{r}
+evppi <- calc_evppi(psa = l_psa, wtp = v_wtp, params = c("q_VE_comp"), outcome = c("nmb"),
+  type = c("gam", "poly"),
+  poly.order = 2,
+  k = -1,
+  pop = 1
+)
+
+dampack:::plot.evppi(evppi)
+
+
+evsi <- calc_evsi(n = seq(20,200,20),pop = 1, n0 = 20, psa = l_psa ,
+                  wtp = v_wtp,
+                  params = c("q_VE_comp"),
+                  outcome = c("nmb"),
+                  type = c("gam", "poly"),
+                  poly.order = 2)
+dampack:::plot.evsi(evsi)
+
+ g <- ggplot(data = evsi, aes_(x = as.name("n"), y = as.name("EVSI"))) + 
+            xlab("Additional Sample Size")
+
+ g + geom_line()
+```

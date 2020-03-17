@@ -3,8 +3,8 @@ title: "Introduction to Survival analysis"
 author: "petros.pechlivanoglou@sickkids.ca"
 date: "17/3/2020"
 output:
-  slidy_presentation: default
   beamer_presentation: default
+  slidy_presentation: default
 subtitle: The DARTH Workgroup
 ---
 
@@ -214,11 +214,12 @@ Fully Parametric models (Accelerated Failure Time models)
  
 AFT and covariates
 ==========================================================
- - We can incorporate covariates in a sort of similar way as we would do in a linear regression moodel
- $ log(T) = \beta_0 + X\beta_1 + \epsilon$ 
- ```{r, out.width='50%', echo=F}
+ - We can incorporate covariates in a sort of similar way as we would do in a linear regression model $log(T) = \beta_0 + X\beta_1 + \epsilon$ 
+ 
+```{r, out.width='50%', echo=F}
 knitr::include_graphics('figures/aft.png')
 ```
+
 Choosing the "right" distribution
 ========================================================
 - Statistical considerations of goodness-of-fit

@@ -109,7 +109,7 @@ Example: the exponential distribution
 
 Some shapes of hazards
 =======================================================
-```{r, out.width='50%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/hazards.png')
 ```
 
@@ -124,7 +124,7 @@ Non-Parametric models
   - known as the "product-limit" estimator. The most used survival analysis method
   - makes no parametric assumption on the data
   
-```{r, echo = FALSE,  out.width='50%'}
+```{r, echo = FALSE,  out.width='100%'}
 library(survival)
 leukemia.surv <- survfit(Surv(time, status) ~ x, data = aml) 
 plot(leukemia.surv, lty = 2:3) 
@@ -145,7 +145,7 @@ Non-Parametric models - testing
  - long-rank test: is the difference in survival times statistically different? 
   - relying on a $\chi^2$ distribution
  
-```{r, echo = FALSE,  out.width='50%'} 
+```{r, echo = FALSE,  out.width='100%'} 
  survdiff(Surv(time, status) ~ x, data = aml) 
 
 ```
@@ -156,7 +156,7 @@ Non-Parametric models
 -  Often, more intuitive to look at the results on the cumulative hazard rate
  - Nelson Aalen cumulative hazard is the most common non parametric estimator 
 
-```{r, echo = FALSE, out.width='50%'}
+```{r, echo = FALSE, out.width='100%'}
 temp <- summary(survfit(Surv(time, status) ~ 1, data = aml, type = "fh")) 
 plot(temp$time, -log(temp$surv), type= "s", ylab = "cumulative hazard", xlab = "Time") 
 title("Nelson Aaalen Curves\nfor AML Maintenance Study") 
@@ -181,7 +181,7 @@ Notice that the effect of the covariates is proportional on the baseline hazard.
 The assumption of proportional hazards
 ========================================================
 
-```{r, out.width='50%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/Churn.png')
 ```
 
@@ -191,7 +191,7 @@ Assessing the proportionality assumption
 
 The assumption can be assessed  number of ways :
 visually 
-```{r, out.width='50%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/prop.png')
 ```
 http://nicedsu.org.uk/wp-content/uploads/2016/03/NICE-DSU-TSD-Survival-analysis.updated-March-2013.v2.pdf
@@ -216,7 +216,7 @@ AFT and covariates
 ==========================================================
  - We can incorporate covariates in a sort of similar way as we would do in a linear regression model $log(T) = \beta_0 + X\beta_1 + \epsilon$ 
  
-```{r, out.width='50%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/aft.png')
 ```
 
@@ -333,7 +333,7 @@ Extrapolating a relative treatment effect
 ========================================================
 Drummond, et al (2015). Methods for the economic evaluation of health care programmes. Oxford university press.
 
-```{r, out.width='80%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/drummond.png')
 ```
 
@@ -449,7 +449,7 @@ knitr::include_graphics('figures/venn.png')
 Multistate modeling
 ========================================================
 
-```{r, out.width='80%', echo=F}
+```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/msmnice.png')
 ```
 
@@ -469,7 +469,7 @@ Mixture Cure Models - Main Points
     - non-cured fraction at risk of progression and death informed by the trial
     - cured fraction at risk of death informed by external data. 
     
-```{r, echo = F, out.width='85%'}
+```{r, echo = F, out.width='100%'}
 M <- matrix(c(0, 0.05, 0.15,   0, 0.05,
               0,    0,    0, 0.3, 0.05,
               0,    0,    0,   0, 0.05,

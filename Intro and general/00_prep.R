@@ -1,5 +1,3 @@
-# Welcome to the CE16 course
-
 ### Run all code in this script to download the desired R packages 
 ### from either CRAN or GitHub
 

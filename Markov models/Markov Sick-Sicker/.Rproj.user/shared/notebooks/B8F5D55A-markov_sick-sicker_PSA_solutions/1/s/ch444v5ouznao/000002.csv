@@ -1,5 +1,0 @@
-"0","# Vectors with costs and utilities by treatment"
-"0","v_u_notrt   <- c(u_H, u_S1, u_S2, u_D)"
-"0","v_u_trt     <- c(u_H, u_trt, u_S2, u_D)"
-"0","v_c_notrt   <- c(c_H, c_S1, c_S2, c_D)"
-"0","v_c_trt     <- c(c_H, c_S1 + c_trt, c_S2 + c_trt, c_D)"

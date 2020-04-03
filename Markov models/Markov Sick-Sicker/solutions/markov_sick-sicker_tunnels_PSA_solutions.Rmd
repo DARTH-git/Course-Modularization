@@ -405,20 +405,28 @@ calculate_ce_out(l_params_all)
 
 ## 08.3 One-way sensitivity analysis (OWSA)
 
-```{r, warning=F}
-params_owsa      <- c("p_HS1", "c_trt", "u_S1", "u_trt") # parameters of interest for OWSA
+```{r}
+v_params_owsa <-c("p_HS1", "c_trt", "u_S1", "u_trt") # vector of names of parameters of interest
+
 # dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
-params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
-                               max  = rep(NA, length(v_names_params))) 
-params_all_owsa$min[params_all_owsa$pars %in% params_owsa] <- c(0.01 ,  6000 , 0.65, 0.80)  # min parameter values
-params_all_owsa$max[params_all_owsa$pars %in% params_owsa] <- c( 0.3 , 18000 , 0.85, 0.98)  # max parameter values
-owsa_nmb         <- run_owsa_det(params     = params_owsa,      # parameters of interest
-                                 params_all = params_all_owsa,  # dataframe containing relevant parameter values
-                                 nsamp      = 100,              # number of parameter values
-                                 FUN        = calculate_ce_out, # function to compute outputs
-                                 outcomes   = c("NMB"),         # output to do the OWSA on
-                                 strategies = v_names_str,      # names of the strategies
-                                 n_wtp      = 120000)           # extra argument to pass to FUN
+params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), max  = rep(NA, length(v_names_params))) 
+params_all_owsa$min[params_all_owsa$pars %in% v_params_owsa] <-  c(0.05 ,  6000 , 0.65, 0.80)  # min parameter values
+params_all_owsa$max[params_all_owsa$pars %in% v_params_owsa] <-  c(0.155, 18000 , 0.85, 0.98)  # max parameter values
+
+# list of all parameters with their basecase values
+params_basecase_owsa <- as.list(params_all_owsa$basecase)
+names(params_basecase_owsa) <- as.character(params_all_owsa$pars)
+
+# dataframe containing name, min and max of parameters of interest
+df_params_owsa <- params_all_owsa[params_all_owsa$pars %in% v_params_owsa, !colnames(params_all_owsa) %in% 'basecase']
+
+owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,        # parameters of interest
+                          params_basecase  = params_basecase_owsa,  # dataframe containing all parameter basecase values
+                          nsamp            = 100,                   # number of parameter values
+                          FUN              = calculate_ce_out,      # function to compute outputs
+                          outcomes         = c("NMB"),              # output to do the OWSA on
+                          strategies       = v_names_str,           # names of the strategies
+                          n_wtp            = 120000)                # extra argument to pass to FUN
 ```
 
 ## 08.3.1 Plot OWSA
@@ -444,20 +452,29 @@ owsa_tornado(owsa = owsa_nmb)
 ## 08.4 Two-way sensitivity analysis (TWSA)
 
 ```{r, warning=F}
-params_twsa     <- c("c_trt", "u_trt") # parameters of interest for TWSA
+v_params_twsa     <- c("c_trt", "u_trt") # parameters of interest for TWSA
 # dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
-params_all_twsa <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
+params_all_twsa <- data.frame(pars = v_names_params, 
+                              basecase = as.numeric(l_params_all), 
+                              min = rep(NA, length(v_names_params)), 
                               max  = rep(NA, length(v_names_params))) 
-params_all_twsa$min[params_all_twsa$pars %in% params_twsa] <- c( 6000, 0.80)   # min parameter values
-params_all_twsa$max[params_all_twsa$pars %in% params_twsa] <- c(18000, 0.98)  # max parameter values
-twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameters of interest
-                                param2     = params_twsa[2],   # second parameters of interest 
-                                params_all = params_all_twsa,  # dataframe containing relevant parameter values
-                                nsamp      = 40,               # number of parameter values
-                                FUN        = calculate_ce_out, # function to compute outputs
-                                outcomes   = c("NMB"),         # output to do the twsa on
-                                strategies = v_names_str,      # names of the strategies
-                                n_wtp      = 120000)           # extra argument to pass to FUN
+params_all_twsa$min[params_all_twsa$pars %in% v_params_twsa] <- c( 6000, 0.80)  # min parameter values
+params_all_twsa$max[params_all_twsa$pars %in% v_params_twsa] <- c(18000, 0.98)  # max parameter values
+
+# list of all parameters with their basecase values
+params_basecase_twsa <- as.list(params_all_twsa$basecase)
+names(params_basecase_twsa) <- as.character(params_all_twsa$pars)
+
+# dataframe containing name, min and max of parameters of interest
+df_params_twsa <- params_all_twsa[params_all_twsa$pars %in% v_params_twsa, !colnames(params_all_twsa) %in% 'basecase']
+
+twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,       # parameters of interest
+                         params_basecase = params_basecase_twsa, # dataframe containing all parameter basecase value
+                         nsamp           = 40,                   # number of parameter values
+                         FUN             = calculate_ce_out,     # function to compute outputs
+                         outcomes        = c("NMB"),             # output to do the twsa on
+                         strategies      = v_names_str,          # names of the strategies
+                         n_wtp           = 120000)               # extra argument to pass to FUN
 ```
 
 ## 08.4.1 Plot TWSA

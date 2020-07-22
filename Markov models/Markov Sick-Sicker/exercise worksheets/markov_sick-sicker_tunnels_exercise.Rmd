@@ -1,10 +1,10 @@
 ---
-title: "Cost-Effectiveness and Decision Modeling in R"
+title: "Decision Modeling in R"
 subtitle: 'Markov Model Variants Exercise'
 author: "The DARTH workgroup"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document: default
 ---
 

@@ -77,7 +77,7 @@ p_load_gh("DARTH-git/dampack")
 # 02 Load functions
 
 ```{r}
-source(here("functions","Functions.R"))
+#source(here("functions","Functions.R"))
 ```
 
 # 03 Input model parameters

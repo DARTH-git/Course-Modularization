@@ -73,7 +73,7 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "ms
 # 02 Load functions
 
 ```{r}
-source(here("functions", "functions.R"))
+source("functions.R")
 ```
 
 # 03 Input model parameters
@@ -106,21 +106,21 @@ Use the function `digitise()` to translate the digitised OS and PFS data into pa
 
 ```{r, results="hide"}
 # Create IPD and KM data for the OS curves
-digitise(here("data", "OS_Examp.txt"), 
-         here("data", "OS_Examp_AtRisk.txt"), 
-         km_output  = here("output", "KMdata_OS.txt"), 
-         ipd_output = here("output", "IPDdata_OS.txt"))
+digitise("OS_Examp.txt", 
+         "OS_Examp_AtRisk.txt", 
+         km_output  = "KMdata_OS.txt", 
+         ipd_output = "IPDdata_OS.txt")
 
 # Create IPD and KM data for the PFS curves (there have been 99 events in the cohort)
-digitise(here("data", "PFS_Examp.txt"), 
-         here("data", "PFS_Examp_AtRisk.txt"), 
-         km_output  = here("output", "KMdata_PFS.txt"), 
-         ipd_output  = here("output", "IPDdata_PFS.txt"))
+digitise("PFS_Examp.txt", 
+         "PFS_Examp_AtRisk.txt", 
+         km_output  = "KMdata_PFS.txt", 
+         ipd_output = "IPDdata_PFS.txt")
 
 # Link the IPD files across the two arms of the trial for OS and PFS
-IPD_OS  <- make.ipd(ipd_files = c(here("output", "IPDdata_OS.txt")), ctr = 1, 
+IPD_OS  <- make.ipd(ipd_files = c("IPDdata_OS.txt"), ctr = 1, 
                     var.labs  = c("time","event","arm"))
-IPD_PFS <- make.ipd(ipd_files = c(here("output", "IPDdata_PFS.txt")), ctr = 1,
+IPD_PFS <- make.ipd(ipd_files = c("IPDdata_PFS.txt"), ctr = 1,
                     var.labs  = c("time","event","arm"))
 ```
 

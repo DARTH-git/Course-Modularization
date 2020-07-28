@@ -100,7 +100,7 @@ c_D  <- 0                               # cost of remaining one cycle dead
 u_H  <- 0.8                             # utility when healthy 
 u_S  <- 0.5                             # utility when sick
 u_D  <- 0                               # utility when dead
-d_e <- d_c <- 0.03                      # equal discount of costs and QALYs by 3%
+d_e  <- d_c <- 0.03                     # equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
@@ -112,12 +112,12 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 ## Draw the state-transition cohort model
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
-m_P_diag["Healthy", "Sick" ]  = "" 
-m_P_diag["Healthy", "Dead" ]  = ""
+m_P_diag["Healthy", "Sick" ]     = "" 
+m_P_diag["Healthy", "Dead" ]     = ""
 m_P_diag["Healthy", "Healthy" ]  = ""
-m_P_diag["Sick", "Dead" ]  = ""
-m_P_diag["Sick", "Sick" ]  = ""
-m_P_diag["Dead", "Dead" ]  = ""
+m_P_diag["Sick"   , "Dead" ]     = ""
+m_P_diag["Sick"   , "Sick" ]     = ""
+m_P_diag["Dead"   , "Dead" ]     = ""
 layout.fig <- c(2, 1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
         latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
@@ -259,4 +259,6 @@ results <- data.frame( "Total Discounted Cost" = v_tc_d,
                        check.names = F)
 results
 ```
+
+
 

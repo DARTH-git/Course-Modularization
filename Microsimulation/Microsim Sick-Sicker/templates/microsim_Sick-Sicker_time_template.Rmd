@@ -81,7 +81,7 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 # 02 Load functions
 
 ```{r}
-source(here("functions", "Functions.R"))
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -107,9 +107,9 @@ p_S1S2  <- 0.105                  # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv(here("data", "mortProb_age.csv"))
+p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
 
 # probability to die in S1 by cycle 
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
@@ -148,7 +148,7 @@ v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at bas
 
 ## 04.3 Create a dataframe with the individual characteristics 
 ```{r}
-df_X    <- data.frame(# ADD ALL CHARACTERISTICS ) 
+df_X    <- #data.frame( # ADD ALL CHARACTERISTICS ) 
 ```
 
 # 05 Define Simulation Functions
@@ -170,8 +170,9 @@ cost_stay <- function (days = 0, Trt = FALSE) {
   return(cost)       # return the pric e
 }
 
-cost_stay_noTrt <- cost_stay(days = 10, Trt = FALSE)  # run the function for the no treatment strategy
-cost_stay_Trt   <- cost_stay(days = 10, Trt = TRUE)   # run the function for the treatment strategy
+cost_stay_noTrt <- cost_stay(days = 10, Trt = FALSE) # run the function for the no treatment strategy
+cost_stay_Trt   <- cost_stay(days = 10, Trt = TRUE) # run the function for the treatment strategy
+
 cost_stay_noTrt
 cost_stay_Trt
 

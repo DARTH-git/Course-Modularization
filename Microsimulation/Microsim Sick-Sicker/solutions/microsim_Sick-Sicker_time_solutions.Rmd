@@ -76,7 +76,7 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 # 02 Load functions
 
 ```{r}
-source(here("functions", "Functions.R"))
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -102,9 +102,9 @@ p_S1S2  <- 0.105                  # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv(here("data", "mortProb_age.csv"))
+p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
@@ -338,3 +338,4 @@ calculate_icers(cost       = v_C,
                 effect     = v_E,
                 strategies = v_names_str)
 ```
+

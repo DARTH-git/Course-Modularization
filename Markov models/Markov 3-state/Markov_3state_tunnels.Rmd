@@ -93,7 +93,7 @@ n_tunnel_size <- n_t
 # Sick state
 v_Sick_tunnels <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for time-dependent model
-v_n_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")   # state names
+v_n_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")  # state names
 n_states_tunnels  <- length(v_n_tunnels)              # number of states
 
 p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability to die when sick (age-dependent) - this is a sequence - officially v_HD
@@ -103,16 +103,16 @@ p_SD <- 0.1                                 # probability to die when sick
 # Weibull parameters
 l <- 0.08
 g <- 1.1
-p_SD <- l*g*(1:n_tunnel_size)^{g-1}       # probability to die when sick (time-dependent)
+p_SD <- l*g*(1:n_tunnel_size)^{g-1}         # probability to die when sick (time-dependent)
 
 # Costs and utilities  
-c_H  <- 400                             # cost of remaining one cycle healthy
-c_S  <- 1000                            # cost of remaining one cycle sick
-c_D  <- 0                               # cost of remaining one cycle dead
-u_H  <- 0.8                             # utility when healthy 
-u_S  <- 0.5                             # utility when sick
-u_D  <- 0                               # utility when dead
-d_e <- d_c <- 0.03                      # equal discount of costs and QALYs by 3%
+c_H  <- 400                                 # cost of remaining one cycle healthy
+c_S  <- 1000                                # cost of remaining one cycle sick
+c_D  <- 0                                   # cost of remaining one cycle dead
+u_H  <- 0.8                                 # utility when healthy 
+u_S  <- 0.5                                 # utility when sick
+u_D  <- 0                                   # utility when dead
+d_e <- d_c <- 0.03                          # equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 

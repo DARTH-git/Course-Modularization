@@ -1,10 +1,10 @@
 ---
-title: "Cost-Effectiveness and Decision Modeling in R"
+title: "Decision Modeling in R workshop"
 author: "The DARTH workgroup"
 subtitle: Decision Tree Exercise
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document: default
 ---
 
@@ -101,3 +101,6 @@ Parameters are summarized in Table 1. Use the code template provided in “decis
 | - Vidarabine treatment              | `c_tx`            |  $9,500           |
 | - Brain biopsy                      | `c_biopsy`        |  $25,000          |
 | - Willingness-to-pay                | `wtp`             | $100,000/QALY     |
+
+
+

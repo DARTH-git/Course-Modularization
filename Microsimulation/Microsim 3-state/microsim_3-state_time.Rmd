@@ -64,7 +64,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
+```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
  # load (install if required) packages from CRAN
  p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
@@ -76,7 +76,7 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+source("Functions.R")  # This line only works when you "Function.R" file is in the same folder
 ```
 
 # 03 Input model parameters
@@ -102,7 +102,7 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 p_HS <- 0.05           # probability healthy -> sick
 p_HD_female <- 0.0382  # probability health -> dead when female
 p_HD_male   <- 0.0463  # probability health -> dead when male
-m_p_HD      <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male))
+m_p_HD      <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male)) # combine the probabilities in a dataframe 
 
 # probability to die in sick state by cycle of being sick
 p_SD <- c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_t - 5)) 
@@ -125,7 +125,7 @@ u_D  <- 0         # utility when dead
 ```{r}
 # randomly sample the sex of an individual (50% female)
 v_sex <- sample(x = c("Female", "Male"), prob = c(0.5, 0.5), size = n_i, replace = TRUE) 
-df_X  <- data.frame(ID = 1:n_i, Sex = v_sex)
+df_X  <- data.frame(ID = 1:n_i, Sex = v_sex) # Make a data frame of the individual cahracteristics
 ```
 
 ## 04.2 Dynamic characteristics 
@@ -141,12 +141,12 @@ v_Ts_init <- rep(0, n_i)  # a vector with the time of being sick at the start of
 
 ## 05.1 Probability function
 
-The function that updates the transition probabilities of every cycle is shown below.
+The function that updates the transition probabilities of every cycle is shown below. 
 
 ```{r}
 Probs <- function(M_t, df_X, v_Ts) { 
   # Arguments:
-    # M_t: health state occupied  at cycle t (character variable)
+    # M_t: health state occupied at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
     # v_Ts: vector with the duration of being sick
   # Returns: 
@@ -211,7 +211,9 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   # Arguments:  
     # n_i:     number of individuals
     # df_X     data frame with individual data 
-  # seed: default is 1
+    # seed: default is 1
+  # Returns:
+    # results: a list if microsimulation results
   
   set.seed(seed) # set the seed
   
@@ -228,8 +230,8 @@ MicroSim <- function(n_i, df_X, seed = 1) {
  
   m_M[, 1] <- v_M_init          # initial health state
   v_Ts     <- v_Ts_init         # initialize time since illnes onset
-  m_C[, 1] <- Costs(m_M[, 1])   # costs accrued  during cycle 0
-  m_E[, 1] <- Effs(m_M[, 1])    # QALYs accrued  during cycle 0
+  m_C[, 1] <- Costs(m_M[, 1])   # costs accrued during cycle 0
+  m_E[, 1] <- Effs(m_M[, 1])    # QALYs accrued during cycle 0
   
   # open a loop for time running cycles 1 to n_t 
   for (t in 1:n_t) {
@@ -279,9 +281,9 @@ results
 # 07 Visualize results
 
 ```{r}
-options(scipen = 999)
+options(scipen = 999)  # disabling scientific notation in R
 plot(density(outcomes$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes$m_M)    # health state trace
+plot_m_TR(outcomes$m_M)    # health state trace, function from the "Function.R"-file
 ```
 

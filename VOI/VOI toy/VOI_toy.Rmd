@@ -122,9 +122,6 @@ ggplot(nmb_gg, aes(x = NMB/1000)) +
   scale_x_continuous(breaks = number_ticks(5), labels = dollar) + 
   scale_y_continuous(breaks = number_ticks(5)) + 
   theme_bw()
-
-
-
 ```
 
 # 04 Incremental NMB (INMB) 

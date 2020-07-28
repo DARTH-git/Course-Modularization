@@ -78,7 +78,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 # 02 Load functions
 
 ```{r}
-source(here("functions","Functions.R"))
+# no functions needed
 ```
 
 # 03 Input model parameters
@@ -133,24 +133,24 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 ```
 
 ## Create a state-transition diagram of the cohort model
+
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
-m_P_diag["H","S1" ]  = "" 
-m_P_diag["H","D" ]  = "" 
-m_P_diag["H","H" ]  = "" 
-m_P_diag["S1","H" ]  = "" 
-m_P_diag["S1","S2" ]  = "" 
-m_P_diag["S1","D" ]  = "" 
-m_P_diag["S1","S1" ]  = "" 
-m_P_diag["S2","D" ]  = "" 
-m_P_diag["S2","S2" ]  = "" 
-m_P_diag["D","D" ]  = "" 
+m_P_diag["H" , "S1"] = "" 
+m_P_diag["H" , "D" ] = "" 
+m_P_diag["H" , "H" ] = "" 
+m_P_diag["S1", "H" ] = "" 
+m_P_diag["S1", "S2"] = "" 
+m_P_diag["S1", "D" ] = "" 
+m_P_diag["S1", "S1"] = "" 
+m_P_diag["S2", "D" ] = "" 
+m_P_diag["S2", "S2"] = "" 
+m_P_diag["D", "D"  ] = "" 
 layout.fig <- c(3, 1)
 
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,  
         latex = T, arr.type = "curved", relsize = 0.9, box.prop = 0.8, 
         cex = 0.8, box.cex = 0.9, lwd = 1)
-
 ```
 
 
@@ -186,19 +186,19 @@ Fill in the transition probability matrix:
 
 ```{r}
 # from Healthy
-m_P_notrt["H", "H"]   <- 1 - (p_HS1 + p_HD)
-m_P_notrt["H", "S1"]  <- p_HS1
-m_P_notrt["H", "D"]   <- p_HD
+m_P_notrt["H", "H"  ] <- 1 - (p_HS1 + p_HD)
+m_P_notrt["H", "S1" ] <- p_HS1
+m_P_notrt["H", "D"  ] <- p_HD
 # from Sick
-m_P_notrt["S1", "H"]  <- p_S1H
+m_P_notrt["S1", "H" ] <- p_S1H
 m_P_notrt["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
 m_P_notrt["S1", "S2"] <- p_S1S2
-m_P_notrt["S1", "D"]  <- p_S1D
+m_P_notrt["S1", "D" ] <- p_S1D
 # from Sicker
 m_P_notrt["S2", "S2"] <- 1 - p_S2D
-m_P_notrt["S2", "D"]  <- p_S2D
+m_P_notrt["S2", "D" ] <- p_S2D
 # from Dead
-m_P_notrt["D", "D"]   <- 1
+m_P_notrt["D", "D"  ] <- 1
 
 # check rows add up to 1
 rowSums(m_P_notrt)
@@ -213,7 +213,7 @@ m_P_trt <- m_P_notrt
 for (t in 1:n_t){     # loop through the number of cycles
   m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt    # estimate the Markov trace 
                                                            # for the next cycle (t + 1)
-  m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])  %*% m_P_trt    # estimate the Markov trace 
+  m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])  %*% m_P_trt      # estimate the Markov trace 
                                                            # for the next cycle (t + 1)
 } # close the loop
 

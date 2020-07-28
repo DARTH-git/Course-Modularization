@@ -11,22 +11,18 @@ p_load("here", "devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", 
 install_github("DARTH-git/dampack", force = TRUE) # (Un)comment if there is a newer version
 p_load_gh("DARTH-git/dampack")
 
-
 # DECISION TREE
 install_github("DARTH-git/dectree", force = TRUE) # (Un)comment if there is a newer version
 p_load_gh("DARTH-git/dectree")   
 
-
-### Below packages are module-specific are ar not relavent at this point. 
-
 # SURVIVAL ANALYSIS
-# p_load("gems", "flexsurv", "survHE", "msm", "mstate")
+p_load("gems", "flexsurv", "survHE", "msm", "mstate")
 
 # CALIBRATION
-# p_load("lhs", "IMIS", "matrixStats", "plotrix", "psych", "scatterplot3d")
+p_load("lhs", "IMIS", "matrixStats", "plotrix", "psych", "scatterplot3d")
 
 # VOI
-#p_load("grid", "mgcv", "gridExtra", "gdata")
+p_load("grid", "mgcv", "gridExtra", "gdata")
           
   
           

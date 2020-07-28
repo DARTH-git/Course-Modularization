@@ -72,7 +72,7 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "
 # 02 Load functions
 
 ```{r}
-source(here("functions", "functions.R"))
+source("survival_functions.R")
 ```
 
 # 03 Input model parameters
@@ -96,16 +96,15 @@ tmat["healthy", "dead"]  <- 2
 tmat["sick"   , "dead"]  <- 3
 
 layout.fig <- c(2,1)
-plotmat(t(tmat), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
+plotmat(t(tmat), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,  
         latex = T, arr.type = "curved", relsize = 0.85, box.prop=0.8, 
-        cex = 0.8, box.cex = 0.7, lwd = 1)
-
+        cex = 0.1, box.cex = 0.7, lwd = 1)
 ```
 
 Generate data.
 
 ```{r}
-source(here("data","data.R"))
+source("data.R")
 head(true_data)
 head(sim_data)
 head(status)

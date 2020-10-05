@@ -67,7 +67,8 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
  # load (install if required) packages from CRAN
- p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", 
+        "knitr", "matrixStats")                                               
  # load (install if required) packages from GitHub
  # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
  p_load_gh("DARTH-git/dampack") 
@@ -383,7 +384,7 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
 gen_psa(10) 
 
 # Decrease number of individuals since PSA takes a lot of time
-n_i <- 1000
+n_i <- 100000
 
 # update Sample individual level characteristics 
 
@@ -393,8 +394,8 @@ n_i <- 1000
 v_M_init  <- rep("H", n_i)    # a vector with the initial health state for all individuals 
 
 
-# Number of simulations
-n_sim <- 500
+# Number of PSA simulations
+n_sim <- 100
 
 # Generate PSA input dataset
 df_psa_input <- gen_psa(n_sim = n_sim)
@@ -432,6 +433,7 @@ calculate_ce_out(df_psa_input[1,])
 ## 09.2 Run microsimulation model on each parameter set of PSA input dataset
 
 ```{r}
+start.time <-proc.time()
 for(i in 1:n_sim){
   df_ce_psa <- calculate_ce_out(df_psa_input[i, ])
    df_c[i, ] <- df_ce_psa$Cost   # take the cost from the psa run and store in df_c
@@ -442,14 +444,13 @@ for(i in 1:n_sim){
                     sep = " "))
   }
 }
+elapsed.time <-proc.time()-start.time
 
 ### Creae PSA object for dampack
 l_psa <- make_psa_obj(cost = df_c, 
                       effectiveness = df_e, 
                       parameters = df_psa_input, 
                       strategies = v_names_str)
-
-
 ```
 
 ## 09.3 Cost Effectiveness Analysis

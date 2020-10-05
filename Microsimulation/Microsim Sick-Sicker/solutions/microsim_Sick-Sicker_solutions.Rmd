@@ -255,7 +255,7 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
     
     # open a loop for time running cycles 1 to n_t 
     for (t in 1:n_t) {
-      # calculate the transition probabilities for the cycle based on  health state t
+      # calculate the transition probabilities for the cycle based on health state t
       m_P <- Probs(m_M[, t], df_X)             
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P, 1)                  

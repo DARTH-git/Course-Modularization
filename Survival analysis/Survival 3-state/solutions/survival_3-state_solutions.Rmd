@@ -72,7 +72,7 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "
 # 02 Load functions
 
 ```{r}
-source("survival_functions.R")
+source(here("functions", "survival_functions.R"))
 ```
 
 # 03 Input model parameters
@@ -80,7 +80,7 @@ source("survival_functions.R")
 ```{r}
 v_n       <- c("healthy", "sick", "dead")  # state names
 n_s       <- length(v_n)                   # No of states 
-n_i       <- 5000                          # number of simulations 
+n_i       <- 500000                          # number of simulations 
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
 times     <- seq(0, n_t, c_l)              # the cycles in years
@@ -104,7 +104,7 @@ plotmat(t(tmat), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,
 Generate data.
 
 ```{r}
-source("data.R")
+source(here("data", "data.R"))
 head(true_data)
 head(sim_data)
 head(status)
@@ -193,10 +193,19 @@ best.fit <- fits[["Loglogistic"]]
 - Construct a DES model out of the simultaneously fitted multistate model.
 
 ```{R}
+source(here("functions", "survival_functions_backend.R"))
 # Construct a DES model out of the simultaneously fitted multistate model
 DES_data <- sim.fmsm(best.fit, start = 1, t = n_years, trans = tmat, M = n_i)
 m_M_DES  <- trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat)
+m_M_DES1  <- trace.DES1(DES_data, n_i  = n_i , times = times, tmat = tmat)
+all(m_M_DES == m_M_DES1)
 ```
+
+```{r}
+system.time(trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat))
+system.time(trace.DES1(DES_data, n_i  = n_i , times = times, tmat = tmat))
+```
+
 
 ## 04.3 MultiState modeling method 2
 

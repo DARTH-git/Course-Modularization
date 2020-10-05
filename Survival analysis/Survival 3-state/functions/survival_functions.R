@@ -143,7 +143,6 @@ trace.DES = function(msm_sim = des_sim, tmat, n_i, times )
  
   M.tr.des <- prevalence.msm(fit.msm.sim, times = times) # Markov trace when DES model is used
   
-  
   return(M.tr.des[[3]]/100)
 }
 

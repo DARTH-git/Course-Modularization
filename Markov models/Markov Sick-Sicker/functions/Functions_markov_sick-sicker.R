@@ -1,6 +1,6 @@
-#-----------------------------------------#
-####          Decision Model           ####
-#-----------------------------------------#
+#------------------------------------------------------------------------------#
+####                         Decision Model                                 ####
+#------------------------------------------------------------------------------#
 #' Decision Model
 #'
 #' \code{decision_model} implements the decision model used.
@@ -80,9 +80,9 @@ decision_model <- function(l_params_all, verbose = FALSE) {
   )
 }
 
-#---------------------------------------------#
-#### Calculate cost-effectiveness outcomes ####
-#---------------------------------------------#
+#------------------------------------------------------------------------------#
+####              Calculate cost-effectiveness outcomes                     ####
+#------------------------------------------------------------------------------#
 #' Calculate cost-effectiveness outcomes
 #'
 #' \code{calculate_ce_out} calculates costs and effects for a given vector of parameters using a simulation model.

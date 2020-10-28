@@ -1,4 +1,0 @@
-"0","owsa_tornado(owsa = owsa_nmb, strategy = c(""Treatment""))"
-"2","Error in owsa_tornado(owsa = owsa_nmb, strategy = c(""Treatment"")) : 
-  unused argument (strategy = c(""Treatment""))
-"

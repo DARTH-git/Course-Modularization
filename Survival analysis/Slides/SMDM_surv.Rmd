@@ -1,9 +1,12 @@
 ---
 title: "Survival analysis in decision modeling"
-subtitle: "The DARTH Workgroup"
-author: petros.pechlivanoglou@sickkids.ca
-date: "10/16/2019"
-output: beamer_presentation
+author: "petros.pechlivanoglou@sickkids.ca"
+date: "7/24/2020"
+output:
+  beamer_presentation: default
+  slidy_presentation: default
+  ioslides_presentation: default
+subtitle: The DARTH Workgroup
 ---
 
 Overview

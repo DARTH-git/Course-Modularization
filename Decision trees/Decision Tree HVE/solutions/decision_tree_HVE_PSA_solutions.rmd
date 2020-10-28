@@ -20,19 +20,19 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+1. Division of Public Administration, Center for Research and Teaching in Economics (CIDE), 
    Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -48,7 +48,17 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+
+- Alarid-Escudero, F., Krijkamp, E. M., Enns, E. A., Hunink, M. G. M., Pechlivanoglou, 
+P., & Jalal, H. (2020). Cohort state-transition models in R: From conceptualization 
+to implementation. arXiv:2001.07824v1, 1–31. http://arxiv.org/abs/2001.07824 
+
+- Alarid-Escudero, F., Enns, E. A., Kuntz, K. M., Michaud, T. L., & Jalal, H. (2019). 
+“Time Traveling Is Just Too Dangerous” But Some Methods Are Worth Revisiting: 
+The Advantages of Expected Loss Curves Over Cost-Effectiveness Acceptability 
+Curves and Frontier. Value in Health, 22(5), 611–618. 
+https://doi.org/10.1016/j.jval.2019.02.008
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -65,56 +75,65 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
-if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+```{r, warning = FALSE, message = FALSE}
+if (!require('pacman')) {
+  install.packages('pacman')
+}
+library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", 
+       "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "reshape2")                                            
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+# install_github("annaheath/EVSI", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
+p_load_gh("annaheath/EVSI")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here('functions','Functions.R'))
+source("Functions.R")
 ```
 
 # 03 Define parameter input values
 
 ```{r}
-v_names_str   <- c("No Tx", "Tx All", "Biopsy")    # names of strategies
-n_str         <- length(v_names_str)               # number of strategies
-wtp           <- 100000                            # willingness to pay threshold
+v_names_str <- c("No Tx", "Tx All", "Biopsy") # names of strategies
+n_str       <- length(v_names_str)            # number of strategies
+wtp         <- 100000                         # willingness to pay threshold
 
 # Probabilities
-p_HVE         <- 0.52   # prevalence of HVE
-p_HVE_comp    <- 0.71   # complications with untreated HVE
-p_OVE_comp    <- 0.01   # complications with untreated OVE
-p_HVE_comp_tx <- 0.36   # complications with treated HVE
-p_OVE_comp_tx <- 0.20   # complications with treated OVE
-p_biopsy_comp <- 0.05   # probability of complications due to biopsy
+p_HVE         <- 0.52 # prevalence of HVE
+p_HVE_comp    <- 0.71 # complications with untreated HVE
+p_OVE_comp    <- 0.01 # complications with untreated OVE
+p_HVE_comp_tx <- 0.36 # complications with treated HVE
+p_OVE_comp_tx <- 0.20 # complications with treated OVE
+p_biopsy_comp <- 0.05 # probability of complications due to biopsy
 
 # Costs
-c_VE          <- 1200   # cost of viral encephalitis care without complications
-c_VE_comp     <- 9000   # cost of viral encephalitis care with complications
-c_tx          <- 9500   # cost of treatment
-c_biopsy      <- 25000  # cost of brain biopsy
+c_VE      <- 1200  # cost of viral encephalitis care without complications
+c_VE_comp <- 9000  # cost of viral encephalitis care with complications
+c_tx      <- 9500  # cost of treatment
+c_biopsy  <- 25000 # cost of brain biopsy
 
 # QALYs
-q_VE          <- 20     # remaining QALYs for those without VE-related complications
-q_VE_comp     <- 19     # remaining QALYs for those with VE-related complications
-q_loss_biopsy <- -0.01  # one-time QALY loss due to brain biopsy
+q_VE          <- 20    # remaining QALYs for those without VE-related complications
+q_VE_comp     <- 19    # remaining QALYs for those with VE-related complications
+q_loss_biopsy <- -0.01 # one-time QALY loss due to brain biopsy
 
 # store the parameters into a list
-l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
-                                   c_VE, c_VE_comp, c_tx, c_biopsy, 
-                                   q_VE, q_VE_comp, q_loss_biopsy))
+l_params_all <- list(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, 
+                     p_OVE_comp_tx, p_biopsy_comp, 
+                     c_VE, c_VE_comp, c_tx, c_biopsy, 
+                     q_VE, q_VE_comp, q_loss_biopsy)
 # store the names of the parameters into a vector
-v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_comp', 
-                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
+v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 
+                    'p_OVE_comp_tx', 'p_biopsy_comp', 
+                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 
+                    'q_VE', 'q_VE_comp', 'q_loss_biopsy')
+names(l_params_all) <- v_names_params
 ```
 
 # 04 Create and run decision tree model
@@ -135,68 +154,68 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                  (1-p_HVE) *    p_OVE_comp_tx  ,  # OVE w/tx, complications
                  (1-p_HVE) * (1-p_OVE_comp_tx))   # OVE w/tx, no complications
   
-  v_w_biopsy <- c(  1                                              , # Undergo biopsy
-                    p_biopsy_comp                                  , # biopsy complications
+  v_w_biopsy <- c(1                                     , # Undergo biopsy
+                  p_biopsy_comp                         , # biopsy complications
                  # no biopsy comp., HVE w/tx,  complications
-                 (1-p_biopsy_comp) *    p_HVE  *    p_HVE_comp_tx  ,  
+                 (1-p_biopsy_comp) *    p_HVE  *    p_HVE_comp_tx ,  
                  # no biopsy comp., HVE w/tx, no complications
-                 (1-p_biopsy_comp) *    p_HVE  * (1-p_HVE_comp_tx) ,  
+                 (1-p_biopsy_comp) *    p_HVE  * (1-p_HVE_comp_tx),  
                  # no biopsy comp., OVE, complications
-                 (1-p_biopsy_comp) * (1-p_HVE) *    p_OVE_comp     ,  
+                 (1-p_biopsy_comp) * (1-p_HVE) *    p_OVE_comp    ,  
                  # no biopsy comp., OVE, no complications
                  (1-p_biopsy_comp) * (1-p_HVE) * (1-p_OVE_comp))      
   
   # Create vector of outcomes (QALYs) for each strategy 
   
-  v_qaly_no_tx  <- c(q_VE_comp ,  # HVE, complications
-                     q_VE      ,  # HVE, no complications
-                     q_VE_comp ,  # OVE, complications
-                     q_VE)        # OVE, no complications
+  v_qaly_no_tx  <- c(q_VE_comp, # HVE, complications
+                     q_VE     , # HVE, no complications
+                     q_VE_comp, # OVE, complications
+                     q_VE)      # OVE, no complications
   
-  v_qaly_tx     <- c(0      ,     # treatment does not directly add any QALYs 
-                     q_VE_comp ,  # HVE, complications
-                     q_VE      ,  # HVE, no complications
-                     q_VE_comp ,  # OVE, complications
-                     q_VE)        # OVE, no complications
+  v_qaly_tx     <- c(0         , # treatment does not directly add any QALYs 
+                     q_VE_comp , # HVE, complications
+                     q_VE      , # HVE, no complications
+                     q_VE_comp , # OVE, complications
+                     q_VE)       # OVE, no complications
   
   
-  v_qaly_biopsy <- c(q_loss_biopsy  ,  # loss due to biopsy
-                     q_VE_comp      ,  # biopsy complications
-                     q_VE_comp      ,  # no biopsy comp., HVE w/tx, complications 
-                     q_VE           ,  # no biopsy comp., HVE w/tx, no complications
-                     q_VE_comp      ,  # no biopsy comp., OVE, complications
-                     q_VE)             # no biopsy comp., OVE, no complications
+  v_qaly_biopsy <- c(q_loss_biopsy, # loss due to biopsy
+                     q_VE_comp    , # biopsy complications
+                     q_VE_comp    , # no biopsy comp., HVE w/tx, complications 
+                     q_VE         , # no biopsy comp., HVE w/tx, no complications
+                     q_VE_comp    , # no biopsy comp., OVE, complications
+                     q_VE)          # no biopsy comp., OVE, no complications
   
   # Create vector of costs for each strategy 
   
-  v_cost_no_tx  <- c(c_VE_comp ,  # HVE, complications
-                     c_VE      ,  # HVE, no complications
-                     c_VE_comp ,  # OVE, complications
-                     c_VE)        # OVE, no complications
+  v_cost_no_tx  <- c(c_VE_comp , # HVE, complications
+                     c_VE      , # HVE, no complications
+                     c_VE_comp , # OVE, complications
+                     c_VE)       # OVE, no complications
   
-  v_cost_tx     <- c(c_tx      ,  # cost of treatment
-                     c_VE_comp ,  # HVE, complications
-                     c_VE      ,  # HVE, no complications
-                     c_VE_comp ,  # OVE, complications
-                     c_VE)        # OVE, no complications
+  v_cost_tx     <- c(c_tx      , # cost of treatment
+                     c_VE_comp , # HVE, complications
+                     c_VE      , # HVE, no complications
+                     c_VE_comp , # OVE, complications
+                     c_VE)       # OVE, no complications
   
   
-  v_cost_biopsy <- c(c_biopsy         ,  # cost of biopsy procedure
-                     c_VE_comp        ,  # biopsy complications
-                     c_VE_comp + c_tx ,  # no biopsy comp., HVE w/tx, complications 
-                     c_VE + c_tx      ,  # no biopsy comp., HVE w/tx, no complications
-                     c_VE_comp        ,  # no biopsy comp., OVE, complications
-                     c_VE)               # no biopsy comp., OVE, no complications
+  v_cost_biopsy <- c(c_biopsy         , # cost of biopsy procedure
+                     c_VE_comp        , # biopsy complications
+                     c_VE_comp + c_tx , # no biopsy comp., HVE w/tx, complications 
+                     c_VE + c_tx      , # no biopsy comp., HVE w/tx, no complications
+                     c_VE_comp        , # no biopsy comp., OVE, complications
+                     c_VE)              # no biopsy comp., OVE, no complications
   
   # Calculate total utilities for each strategy 
-  total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      
-  total_qaly_tx     <- v_w_tx     %*%  v_qaly_tx
-  total_qaly_biopsy <- v_w_biopsy %*%  v_qaly_biopsy
+  total_qaly_no_tx  <- v_w_no_tx  %*% v_qaly_no_tx      
+  total_qaly_tx     <- v_w_tx     %*% v_qaly_tx
+  total_qaly_biopsy <- v_w_biopsy %*% v_qaly_biopsy
   
   # Calculate total costs for each strategy 
-  total_cost_no_tx  <- v_w_no_tx  %*%  v_cost_no_tx    
-  total_cost_tx     <- v_w_tx     %*%  v_cost_tx
-  total_cost_biopsy <- v_w_biopsy %*%  v_cost_biopsy
+  total_cost_no_tx  <- v_w_no_tx  %*% v_cost_no_tx    
+  total_cost_tx     <- v_w_tx     %*% v_cost_tx
+  total_cost_biopsy <- v_w_biopsy %*% v_cost_biopsy
   
   # vector of total QALYs
   v_total_qaly <- c(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy) 
@@ -210,10 +229,10 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
   names(v_total_cost) <- v_names_str  # names for the elements of the total cost vector
   names(v_nmb)        <- v_names_str  # names for the elements of the nmb vector
   
-  df_output <- data.frame(Strategy =  v_names_str,
-                          Cost     =  v_total_cost,
-                          Effect   =  v_total_qaly,
-                          NMB      =  v_nmb)
+  df_output <- data.frame(Strategy = v_names_str,
+                          Cost     = v_total_cost,
+                          Effect   = v_total_qaly,
+                          NMB      = v_nmb)
   return(df_output)
 })
 
@@ -224,8 +243,9 @@ decision_tree_HVE_output
 ## 04.1 Plot the decision tree
 
 ```{r, out.width='100%'}
-branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), stringsAsFactors = F, header = T)
-tree     <- create_tree(branches)
+# branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), 
+#                      stringsAsFactors = F, header = T)
+# tree     <- create_tree(branches)
 # plot_tree(tree, font.size = 5)
 ```
 
@@ -256,35 +276,40 @@ l_params_all
 ## 06.2 Load decision tree model function
 
 ```{r}
-source(here("functions", "Functions_decision_tree_HVE.R"))
-# Test function
+#### We wrapped the decision tree in a function which we called calculate_ce_out 
+# This function is stored in "Functions_decision_tree_HVE.R" and needes the list of parameters
+source("Functions_decision_tree_HVE.R")
+# Test function to see if it gives the CE results
 calculate_ce_out(l_params_all)
 ```
 
 ## 06.3 One-way sensitivity analysis (OWSA)
 
-```{r, warning=F}
-params_owsa      <- c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy") # parameters of interest for OWSA
-# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
-params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
-                               max  = rep(NA, length(v_names_params))) 
-params_all_owsa$min[params_all_owsa$pars %in% params_owsa] <- c(0.01, 0.01,  1000, 10000)  # min parameter values
-params_all_owsa$max[params_all_owsa$pars %in% params_owsa] <- c(0.99, 0.50, 15000, 40000)  # max parameter values
-owsa_nmb         <- run_owsa_det(params     = params_owsa,      # parameters of interest
-                                 params_all = params_all_owsa,  # dataframe containing relevant parameter values
-                                 nsamp      = 100,              # number of parameter values
-                                 FUN        = calculate_ce_out, # function to compute outputs
-                                 outcomes   = c("NMB"),         # output to do the OWSA on
-                                 strategies = v_names_str,      # names of the strategies
-                                 n_wtp      = 450000)           # extra argument to pass to FUN
+```{r, warning = FALSE}
+options(scipen = 999) # disabling scientific notation in R
+# dataframe containing all parameters, their basecase values, and the min and 
+# max values of the parameters of interest 
+df_params_owsa <- data.frame(pars = c("p_HVE", "p_biopsy_comp", "c_tx", "c_biopsy"),
+                             min  = c(0.01, 0.01,  1000, 5000),  # min parameter values
+                             max  = c(0.99, 0.50, 15000, 40000)  # max parameter values
+                             )
+
+owsa_nmb <- run_owsa_det(params_range = df_params_owsa,  # dataframe with parameters for owsa
+                         params_basecase = l_params_all, # list with all parameters
+                         nsamp      = 100,               # number of parameter values
+                         FUN        = calculate_ce_out,  # function to compute outputs
+                         outcomes   = c("NMB"),          # output to do the OWSA on
+                         strategies = v_names_str,       # names of the strategies
+                         n_wtp      = 450000)            # extra argument to pass to FUN
 ```
 
 ## 06.3.1 Plot OWSA
 
 ```{r}
-plot(owsa_nmb, txtsize = 16, n_x_ticks = 5, 
+plot(owsa_nmb, txtsize = 16, n_x_ticks = 5, n_y_ticks = 3,
      facet_scales = "free") +
-     theme(legend.position = "bottom")
+     theme(legend.position = "bottom", 
+           axis.text.x = element_text(angle = 45, vjust = 0.5))
 ```
 
 ## 06.3.2 Optimal strategy with OWSA
@@ -296,39 +321,41 @@ owsa_opt_strat(owsa = owsa_nmb)
 ## 06.3.3 Tornado plot
 
 ```{r}
-owsa_tornado(owsa = owsa_nmb)
+owsa_tornado(owsa = owsa_nmb) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 ```
 
 ## 06.4 Two-way sensitivity analysis (TWSA)
 
-```{r, warning=F}
-params_twsa     <- c("p_HVE", "c_tx") # parameters of interest for TWSA
-# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
-params_all_twsa <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), 
-                              max  = rep(NA, length(v_names_params))) 
-params_all_twsa$min[params_all_twsa$pars %in% params_twsa] <- c(0.01, 2000)   # min parameter values
-params_all_twsa$max[params_all_twsa$pars %in% params_twsa] <- c(0.99, 40000)  # max parameter values
-twsa_nmb        <- run_twsa_det(param1     = params_twsa[1],   # first parameters of interest
-                                param2     = params_twsa[2],   # second parameters of interest 
-                                params_all = params_all_twsa,  # dataframe containing relevant parameter values
-                                nsamp      = 40,               # number of parameter values
-                                FUN        = calculate_ce_out, # function to compute outputs
-                                outcomes   = c("NMB"),         # output to do the twsa on
-                                strategies = v_names_str,      # names of the strategies
-                                n_wtp      = 450000)           # extra argument to pass to FUN
+```{r, warning = FALSE}
+# dataframe containing all parameters, their basecase values, and the min and 
+# max values of the parameters of interest
+df_params_twsa <- data.frame(pars = c("p_HVE", "c_biopsy"),
+                              min  = c(0.01, 2000), # min parameter values
+                              max  = c(0.99, 40000) # max parameter values
+                              )
+
+twsa_nmb <- run_twsa_det(params_range = df_params_twsa, # dataframe with parameters for twsa
+                         params_basecase = l_params_all,# list with all parameters
+                         nsamp      = 40,               # number of parameter values
+                         FUN        = calculate_ce_out, # function to compute outputs
+                         outcomes   = c("NMB"),         # output to do the twsa on
+                         strategies = v_names_str,      # names of the strategies
+                         n_wtp      = 200000)           # extra argument to pass to FUN
 ```
 
 ## 06.4.1 Plot TWSA
 
 ```{r}
 plot(twsa_nmb) + 
-  ggtitle(label = "Two-way sensitivity analysis",subtitle = "Net monetary benefit") +
-  theme(legend.position = "bottom")
+  ggtitle(label = "Two-way sensitivity analysis", 
+          subtitle = "Net monetary benefit") +
+          theme(legend.position = "bottom")
 ```
 
 # 07 Probabilistic Sensitivity Analysis (PSA)
 
-```{r, warning=F, message=F}
+```{r, warning = FALSE, message = FALSE}
 # Function to generate PSA input dataset
 generate_psa_params <- function(n_sim = 1000, seed = 071518){
   set.seed(seed)
@@ -336,42 +363,50 @@ generate_psa_params <- function(n_sim = 1000, seed = 071518){
   df_psa_params   <- data.frame(
     
     # Transition probabilities (per cycle)
-    p_HVE         = rbeta(n_sim, 52, 48),  # prevalence of HVE
-    p_HVE_comp    = rbeta(n_sim, 71, 29),  # complications with untreated HVE
-    p_OVE_comp    = rbeta(n_sim,  1, 99),  # complications with untreated OVE
-    p_HVE_comp_tx = rbeta(n_sim, 36, 64),  # complications with treated HVE
-    p_OVE_comp_tx = rbeta(n_sim, 20, 80),  # complications with treated OVE
-    p_biopsy_comp = rbeta(n_sim,  1, 19),  # probability of complications due to biopsy
+    p_HVE         = rbeta(n_sim, 52, 48), # prevalence of HVE
+    p_HVE_comp    = rbeta(n_sim, 71, 29), # complications with untreated HVE
+    p_OVE_comp    = rbeta(n_sim,  1, 99), # complications with untreated OVE
+    p_HVE_comp_tx = rbeta(n_sim, 36, 64), # complications with treated HVE
+    p_OVE_comp_tx = rbeta(n_sim, 20, 80), # complications with treated OVE
+    p_biopsy_comp = rbeta(n_sim,  1, 19), # probability of complications due to biopsy
     
     # Costs
-    c_VE          = rgamma(n_sim, shape = 36, scale = 33.33),    # cost of remaining one cycle in state H
-    c_VE_comp     = rgamma(n_sim, shape = 81, scale = 111.1),    # cost of remaining one cycle in state S1
-    c_tx          = rgamma(n_sim, shape = 74.6, scale = 127.4),  # cost of remaining one cycle in state S2
-    c_biopsy      = rgamma(n_sim, shape = 25, scale = 1000),     # cost of treatment (per cycle)
+    c_VE      = rgamma(n_sim, shape = 36.0, scale = 33.33), # cost of remaining one cycle in state H
+    c_VE_comp = rgamma(n_sim, shape = 81.0, scale = 111.1), # cost of remaining one cycle in state S1
+    c_tx      = rgamma(n_sim, shape = 74.6, scale = 127.4), # cost of remaining one cycle in state S2
+    c_biopsy  = rgamma(n_sim, shape = 25.0, scale = 1000) , # cost of treatment (per cycle)
     
     # Utilities
-    q_VE          = rnorm(n_sim, mean = 20, sd = 1),  # utility when healthy
-    q_VE_comp     = rnorm(n_sim, mean = 19, sd = 2),  # utility when sick
-    q_loss_biopsy = rtruncnorm(n_sim, mean = -0.01, sd = 0.005, a = -0.1, b = 0)
+    q_VE          = rnorm(n_sim, mean = 20, sd = 1), # utility when healthy
+    q_VE_comp     = rnorm(n_sim, mean = 19, sd = 2), # utility when sick
+    q_loss_biopsy = -rbeta(n_sim, shape1 = 4, shape2 = 380)
   )
   return(df_psa_params)
 }
 # Try it
 generate_psa_params(10) 
+```
 
+```{r, warning = FALSE, message = FALSE}
+# Generate PSA dataset for CEA
 # Number of simulations
 n_sim <- 1000
 
 # Generate PSA input dataset
-df_psa_input     <- generate_psa_params(n_sim = n_sim)
+df_psa_input <- generate_psa_params(n_sim = n_sim)
 # First six observations
 head(df_psa_input)
 
 # Histogram of parameters
-ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
-  facet_wrap(~Parameter, scales = "free") +
-  geom_histogram(aes(y = ..density..)) +
-  theme_bw(base_size = 16)
+ggplot(reshape2::melt(df_psa_input, variable.name = "Parameter", 
+                      value.name = "Parameter value"), 
+                      aes(x = `Parameter value`)) +
+                      facet_wrap(~Parameter, scales = "free") +
+                      geom_histogram(aes(y = ..density..), alpha = 0.8) +
+                      scale_x_continuous(breaks = number_ticks(3)) +
+                      ylab("") +
+                      theme_bw(base_size = 14) +
+                      theme(axis.text.y = element_blank())                    
 
 # Initialize dataframes with PSA output 
 # Dataframe of costs
@@ -379,6 +414,7 @@ df_c <- as.data.frame(matrix(0,
                       nrow = n_sim,
                       ncol = n_str))
 colnames(df_c) <- v_names_str
+
 # Dataframe of effectiveness
 df_e <- as.data.frame(matrix(0, 
                       nrow = n_sim,
@@ -388,12 +424,13 @@ colnames(df_e) <- v_names_str
 
 ## 07.1 Conduct probabilistic sensitivity analysis
 
-```{r}
+```{r, results=FALSE}
 # Run decision tree on each parameter set of PSA input dataset
 for(i in 1:n_sim){
-  df_out_temp <- calculate_ce_out(df_psa_input[i, ])
-  df_c[i, ] <- df_out_temp$Cost
-  df_e[i, ] <- df_out_temp$Effect
+  l_psa_input <- update_param_list(l_params_all, df_psa_input[i, ])
+  df_out_psa  <- calculate_ce_out(l_psa_input)
+  df_c[i, ] <- df_out_psa$Cost
+  df_e[i, ] <- df_out_psa$Effect
   # Display simulation progress
   if(i/(n_sim/10) == round(i/(n_sim/10),0)) { # display progress every 10%
     cat('\r', paste(i/n_sim * 100, "% done", sep = " "))
@@ -415,19 +452,19 @@ l_psa <- make_psa_obj(cost          = df_c,
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str,
      l_psa,
-     file = here("output", "decision_tree_HVE_PSA_dataset.RData"))
+     file = "decision_tree_HVE_PSA_dataset.RData")
 ```
 
 ## 07.3 Create probabilistic analysis graphs
 
 ```{r}
-load(file = here("output", "decision_tree_HVE_PSA_dataset.RData"))
+load(file = "decision_tree_HVE_PSA_dataset.RData")
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.
 
 ```{r}
-v_wtp <- seq(0, 300000, by = 10000)
+v_wtp <- seq(0, 600000, by = 10000)
 ```
 
 ## 07.3.1 Cost-Effectiveness Scatter plot
@@ -452,16 +489,16 @@ df_cea_psa
 # Save CEA table with ICERs
 # As .RData
 save(df_cea_psa, 
-     file = here("tables", "decision_tree_HVE_probabilistic_CEA_results.RData"))
+     file = "decision_tree_HVE_probabilistic_CEA_results.RData")
 # As .csv
 write.csv(df_cea_psa, 
-          file = here("tables", "decision_tree_HVE_probabilistic_CEA_results.csv"))
+          file = "decision_tree_HVE_probabilistic_CEA_results.csv")
 ```
 
 ## 07.4.1 Plot cost-effectiveness frontier
 
 ```{r}
-plot(df_cea_psa)
+plot(df_cea_psa) 
 ```
 
 ## 07.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
@@ -478,7 +515,7 @@ plot(ceac_obj)
 
 ```{r}
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)
-elc_obj
+
 # ELC plot
 plot(elc_obj, log_y = FALSE)
 ```
@@ -488,6 +525,22 @@ plot(elc_obj, log_y = FALSE)
 ```{r}
 evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
-plot(evpi, effect_units = "QALY")
+plot(evpi, effect_units = "QALY") 
+```
+
+## 07.4.5 Expected value of partial perfect information (EVPPI)
+
+```{r}
+evppi <- calc_evppi(psa = l_psa, 
+                    wtp = v_wtp, 
+                    params = c("q_VE_comp"), 
+                    outcome = c("nmb"),
+                    type = c("gam", "poly"),
+                    poly.order = 2,
+                    k = -1,
+                    pop = 1
+)
+
+dampack:::plot.evppi(evppi)
 ```
 

@@ -18,33 +18,53 @@
 #####################################################################################
 # Developed by Petros Pechlivanoglou
 
-samplev <- function(m.Probs, m) {
-# Arguments
- # m.Probs: matrix with probabilities (n.i * n.s)
- # m:       number of states than need to be sampled per individual  
-# Return
+samplev <- function(m.Probs) {
+  # Arguments
+  # m.Probs: matrix with probabilities (n.i * n.s)
+  # Return
+  # ran: n.i x m matrix filled with sampled health state(s) per individual
+  d <- dim(m.Probs) # dimensions of the matrix filled with the multinomical probabilities for the health states
+  n <- d[1] # first dimension - number of rows (number of individuals to sample for)
+  k <- d[2] # second dimension - number of columns (number of health states considered)
+  lev <- dimnames(m.Probs)[[2]] # extract the names of the health states considered for sampling
+  if (!length(lev)) # in case names for the health states are missing, use numbers to specify the health states
+    lev <- 1:k # create a sequence from 1:k (number of health states considered)
+  # create a matrix
+  ran <- rep(lev[1], n) # create the matrix ran, filled with the first health state of the levels
+  U <- t(m.Probs) # transposed m.Probs matrix n.i x n.s --> n.s x n.i
+  for(i in 2:k) { # start loop, from the 2nd health states
+    U[i, ] <- U[i, ] + U[i - 1, ] # start summing the probabilities of the different health states per individual
+  }
+  if (any((U[k, ] - 1) > 1e-05)) # sum of all probs per individual - 1 should be 0 (use 1e-05 for rounding issues), else print the error statement
+    stop("error in multinom: probabilities do not sum to 1")
+  un <- rep(runif(n), rep(k, n)) # sample from a uniform distribution of length n*k
+  ran <- lev[1 + colSums(un > U)] # store the health state at the jth column of the U matrix
+  ran # return the new health state per individual n.i x m
+} # close the function
+
+#####################################################################################
+# Developed by Alan Yang, based on Rowan Iskandar's and Petro Pechivanoglou's code
+samplevRAP <- function(m_Probs, m) {
+  # Arguments
+  # m_Probs: matrix with probabilities (n.i * n.s)
+  # m:       number of states than need to be sampled per individual  
+  # Return
   # ran:    n.i x m matrix filled with sampled health state(s) per individual
   
-  d <- dim(m.Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
+  d <- dim(m_Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
   n <- d[1]          # first dimension - number of rows (number of individuals to sample for)
   k <- d[2]          # second dimension - number of columns (number of health states considered)
-  lev <- dimnames(m.Probs)[[2]]  # extract the names of the health states considered for sampling
+  lev <- dimnames(m_Probs)[[2]]  # extract the names of the health states considered for sampling
   if (!length(lev))  # in case names for the health states are missing, use numbers to specify the health states
     lev <- 1:k       # create a sequence from 1:k (number of health states considered)
   # create a matrix 
   ran <- matrix(lev[1], ncol = m, nrow = n) # create the matrix ran, filled with the first health state of the levels 
-  U <- t(m.Probs)    # transposed m.Probs matrix n.i x n.s --> n.s x n.i 
-  
-  for(i in 2:k) {    # start loop, from the 2nd health states
-    U[i, ] <- U[i, ] + U[i - 1, ] # start summing the probabilities of the different health states per individual 
+  sum.p <- rowCumsums(m_Probs) # sum probabilities of each row of the matrix with probabilities
+  for (j in 1:m) {
+    u <- runif(n,0,1) # sample from a uniform[0,1] distribution
+    ran[, j] <- lev[max.col(sum.p >=u, ties.method = "first")] # sample states using sampled uniform values from uniform CDF
   }
-  if (any((U[k, ] - 1) > 1e-05))  # sum of all probs per individual - 1 should be 0 (use 1e-05 for rounding issues), else print the error statement
-    stop("error in multinom: probabilities do not sum to 1")
   
-  for (j in 1:m) {   # start loop of the state that needs to be sampled (m)
-    un <- rep(runif(n), rep(k, n))       # sample from a uniform distribution of length n*k
-    ran[, j] <- lev[1 + colSums(un > U)] # store the health state at the jth column of the U matrix
-  }
   ran # return the new health state per individual n.i x m
 } # close the function 
 
@@ -58,9 +78,9 @@ plot_m_TR <- function(m_M) {
   colnames(m_TR) <- v_n                                    # name the rows of the matrix
   rownames(m_TR) <- paste("Cycle", 0:n_t, sep = " ")       # name the columns of the matrix
   # Plot trace of first health state
-  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_s,
+  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_states,
        ylim = c(0, 1), ylab = "Proportion of cohort", xlab = "Cycle")
-  legend("topright", v_n, col = 1:n_s,    # add a legend to current plot
+  legend("topright", v_n, col = 1:n_states,    # add a legend to current plot
          lty = rep(1, 3), bty = "n", cex = 0.65)
   
 }

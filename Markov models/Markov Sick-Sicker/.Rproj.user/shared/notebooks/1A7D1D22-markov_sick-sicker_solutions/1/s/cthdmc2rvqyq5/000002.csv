@@ -1,5 +1,0 @@
-"0","v_tu_notrt  <- m_M_notrt   %*%  v_u_notrt"
-"0","v_tu_trt    <- m_M_trt     %*%  v_u_trt"
-"0",""
-"0","v_tc_notrt  <- m_M_notrt   %*%  v_c_notrt"
-"0","v_tc_trt    <- m_M_trt     %*%  v_c_trt "

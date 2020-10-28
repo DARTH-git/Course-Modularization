@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -31,7 +31,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -46,8 +46,8 @@ Med Decis Making. 2018;38(3):400–22.
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -62,15 +62,15 @@ In this exercise, we will model a hypothetical disease that affects individuals 
 
 To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
-if (!require(here))  install.packages('here')
+```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(knitr)) install.packages('knitr')
-include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+include_graphics("sick_sicker_diagram.png")
 ```
 
 ## Tasks
+Using the template "markov_sick-sicker_template.Rmd", please do the following. 
 
-1.	Build the Markov model in `R` for no treatment and treatment strategies.
+1.	Build the Markov model in `R` for the no treatment and treatment strategies.
 
 2.	Plot the survival curve for the cohort under no treatment.
 
@@ -85,7 +85,7 @@ include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 | Time horizon                       | `n_t`       | 30 years      |
 | Cycle length                       |             | 1 year        |
 | Names of health states             | `v_n`       | H, S1, S2, D  |
-| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Annual discount rate (costs/QALYs) | `d_r`       | 3%            |
 | Annual transition probabilities    |             |               |
 | - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
 | - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
@@ -108,4 +108,4 @@ include_graphics(here::here("figures", "sick_sicker_diagram.png"))
 | Intervention effect                |             |               |
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
 
-*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -loga(1-p)$ and $p = 1-e^{(-rt)}$
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$

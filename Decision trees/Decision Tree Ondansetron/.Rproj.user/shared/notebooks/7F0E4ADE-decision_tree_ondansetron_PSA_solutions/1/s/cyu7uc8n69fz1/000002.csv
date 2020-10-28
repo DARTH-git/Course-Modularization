@@ -1,3 +1,0 @@
-"0","evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)"
-"0","# EVPI plot"
-"0","plot(evpi, effect_units = ""QALY"")"

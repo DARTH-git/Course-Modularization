@@ -25,8 +25,7 @@ Alan Yang, MSc (7)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Division of Public Administration, Center for Research and Teaching in Economics (CIDE), Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
@@ -38,13 +37,14 @@ Please cite our publications when using this code:
  
 - Alarid-Escudero F, Maclehose RF, Peralta Y, Kuntz KM, Enns EA. 
 Non-identifiability in model calibration and implications for 
-medical decision making. Med Decis Making. 2018; 38(7):810-821. 
+medical decision making. Med Decis Making. 2018; 38(7):810-821.
+https://pubmed.ncbi.nlm.nih.gov/30248276/
  
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
  
-A walkthrough of the code could be found in the follwing link:
+A walkthrough of the code could be found in the following link:
 - https://darth-git.github.io/calibSMDM2018-materials/
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
@@ -75,15 +75,12 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# calibration functionality
-if (!require('lhs'))  install.packages('lhs') ; library(lhs)
-if (!require('IMIS')) install.packages('IMIS'); library(IMIS)
-# package used for sumamry statistics
-if (!require('matrixStats')) install.packages('matrixStats'); library(matrixStats) 
-
-# visualization
-if (!require('plotrix')) install.packages('plotrix') ; library(plotrix)
-if (!require('psych'))   nstall.packages('psych')    ; library(psych)
+if (!require('pacman')) {
+  install.packages('pacman')
+}
+library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("lhs", "IMIS", "matrixStats", "plotrix", "psych")  
 ```
 
 # 02 Load target data
@@ -313,7 +310,7 @@ comp_time <- Sys.time() - t_init
 
 ```{r}
 # Plot the 1000 draws from the posterior
-v_post_color <- scales::rescale(m_calib_res[,"Posterior_prob"])
+v_post_color <- scales::rescale(m_calib_res[, "Posterior_prob"])
 plot(m_calib_res,
      xlim = c(lb[1], ub[1]), ylim = c(lb[2], ub[2]),
      xlab = v_param_names[1], ylab = v_param_names[2],
@@ -337,9 +334,13 @@ m_calib_res_95cr
 # Compute maximum-a-posteriori (MAP) parameter set
 v_calib_map <- m_calib_res[which.max(m_calib_res[,"Posterior_prob"]),]
 
-### Plot model-predicted output at mode vs targets ###
+### Model-predicted output at mode/MAP ###
 v_out_best <- run_crs_markov(v_calib_map[v_param_names])
+```
 
+## 07.1 Model predicted outputs at maximum-a-posteriori (MAP)
+```{r}
+### Plot model-predicted output at mode vs targets ###
 # set plot margins (helps plotting)
 par(mar=c(5,4,4,4)) 
 # TARGET 1: Survival ("Surv")
@@ -354,6 +355,71 @@ points(x = lst_targets$Surv$time,
 legend("topright", 
        legend = c("Target", "Model-predicted output"),
        col = c("black", "red"), pch = c(1, 8))
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = "Time", ylab = "Target 2")
+# points(x = lst_targets$Target2$time, 
+#        y = v_out_best$Target2, 
+#        pch = 8, col = "red")
+# legend("topright", 
+#        legend = c("Target", "Model-predicted output"),
+#        col = c("black", "red"), pch = c(1, 8))
+```
+
+## 07.2 Distribution of model-predicted outputs
+```{r}
+### Distribution of model-predicted output at mode vs targets ###
+## Initialize matrix to store outputs
+m_out_post <- matrix(NA, 
+                     nrow = n_resamp, 
+                     ncol = length(v_out_best$Surv))
+## Iterate model over all parameter sets from posterior distribution
+for(i in 1:n_resamp){
+  l_out <- run_crs_markov(m_calib_res[i, ])
+  m_out_post[i, ] <- l_out$Surv
+  
+  if(i/(n_resamp/10) == round(i/(n_resamp/10),0)) { # display progress every 10%
+    cat('\r', paste(i/n_resamp * 100, "% done", sep = " "))
+  }
+}
+
+## Compute model-predicted posterior summary statistics
+# Model-predicted posterior mean
+v_out_post_mean      <- colMeans(m_out_post)
+# Model-predicted posterior credible interval
+m_out_post_intervals <- colQuantiles(m_out_post, probs = c(0.025, 0.975))
+```
+
+### 07.2.1 Plot model-predicted output at mode vs targets
+```{r}
+# set plot margins (helps plotting)
+par(mar=c(5,4,4,4)) 
+# TARGET 1: Survival ("Surv")
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = "Time", ylab = "Pr Survive")
+points(x = lst_targets$Surv$time, 
+       y = v_out_post_mean, 
+       pch = 8, col = "red")
+lines(x = lst_targets$Surv$time, 
+       y = m_out_post_intervals[, 1], 
+       col = "blue")
+lines(x = lst_targets$Surv$time, 
+       y = m_out_post_intervals[, 2], 
+       col = "blue")
+legend("topright", 
+       legend = c("Target", 
+                  "Model-predicted posterior mean", 
+                  "Model-predicted 95% posterior CrI"),
+       col = c("black", "red", "blue"), 
+       pch = c(1, 8, NA),
+       lty = c(NA, NA, 1))
 
 # TARGET 2: (if you had more...)
 # plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 

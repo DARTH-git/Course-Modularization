@@ -18,7 +18,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -30,7 +30,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -46,7 +46,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -64,7 +64,9 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r}
-# no packages required
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("diagram") 
 ```
 
 # 02 Load functions
@@ -84,7 +86,7 @@ n_str <- length(v_names_str)
 
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_s  <- length(v_n)                     # number of states
+n_states  <- length(v_n)                # number of states
 n_t  <- 60                              # number of cycles
 
 p_HD <- 0.02                            # probability to die when healthy
@@ -106,6 +108,22 @@ v_dwc <- 1 / (1 + d_e) ^ (0:n_t)
 v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 ```
 
+
+## Draw the state-transition cohort model
+```{r}
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag["Healthy", "Sick" ]     = "" 
+m_P_diag["Healthy", "Dead" ]     = ""
+m_P_diag["Healthy", "Healthy" ]  = ""
+m_P_diag["Sick"   , "Dead" ]     = ""
+m_P_diag["Sick"   , "Sick" ]     = ""
+m_P_diag["Dead"   , "Dead" ]     = ""
+layout.fig <- c(2, 1)
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
+        cex = 0.8, box.cex = 0.7, lwd = 1)
+```
+
 # 04 Define and initialize matrices and vectors
 
 ## 04.1 Cohort trace
@@ -115,7 +133,7 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 m_M <- matrix(NA, 
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
                                 # understand Cycle 0)
-              ncol = n_s, 
+              ncol = n_states, 
               dimnames = list(0:n_t, v_n))
 
 m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
@@ -126,8 +144,7 @@ m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
 ```{r}
 # create the transition probability matrix
 m_P  <- matrix(0,
-               nrow = n_s,
-               ncol = n_s,
+               nrow = n_states, ncol = n_states,
                dimnames = list(v_n, v_n)) # name the columns and rows of the transition 
                                           # probability matrix
 m_P
@@ -173,7 +190,7 @@ matplot(m_M, type = 'l',
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
-abline(v=which.max(m_M[, "Sick"]), col = "gray")
+abline(v = which.max(m_M[, "Sick"]), col = "gray") # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -227,9 +244,9 @@ v_tu <- m_M %*% c(u_H, u_S, u_D)
 ## 07.2 Discounted Mean Costs and QALYs
 
 ```{r}
-# Discount costs  by multiplying the cost vector with discount weights (v_dw) 
+# Discount costs by multiplying the cost vector with discount weights (v_dw) 
 v_tc_d <-  t(v_tc) %*% v_dwc
-# Discount QALYS  by multiplying the QALYs vector with discount weights (v_dw)
+# Discount QALYS by multiplying the QALYs vector with discount weights (v_dw)
 v_te_d <-  t(v_tu) %*% v_dwe
 ```
 
@@ -242,4 +259,6 @@ results <- data.frame( "Total Discounted Cost" = v_tc_d,
                        check.names = F)
 results
 ```
+
+
 

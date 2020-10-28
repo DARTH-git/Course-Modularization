@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -31,7 +31,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -47,7 +47,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -85,10 +85,10 @@ n_str <- length(v_names_str)
 
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_s  <- length(v_n)                     # number of states
+n_states <- length(v_n)                 # number of states
 n_t  <- 60                              # number of cycles
 
-p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability to die when sick (age-dependent)
+p_HD <- seq(0.003, 0.01, length.out = n_t)  # probabilities to die when sick (age-dependent) - this is now a sequence of numbers, officially v_HD
 p_HS <- 0.05                                # probability to become sick when healthy
 p_SD <- 0.1                                 # probability to die when sick
 
@@ -115,8 +115,8 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 # create the cohort trace
 m_M <- matrix(NA, 
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
-                                # understand Cycle 0)
-              ncol = n_s, 
+                                # understand cycle 0)
+              ncol = n_states, 
               dimnames = list(0:n_t, v_n))
 
 m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
@@ -127,8 +127,8 @@ m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
 ```{r}
 # create the transition probability array
 a_P <- array(0,                                    # Create 3-D array
-             dim = c(n_s, n_s, n_t),
-             dimnames = list(v_n, v_n, 0:(n_t-1))) # name the dimensions of the array 
+             dim = c(n_states, n_states, n_t),
+             dimnames = list(v_n, v_n, 0:(n_t - 1))) # name the dimensions of the array 
 ```
 
 Fill in the transition probability array:
@@ -174,7 +174,7 @@ try(
 )
 
 # Check if transition probability array is valid
-valid <- apply(a_P, 3, function(x) all.equal(sum(rowSums(x)), n_s))
+valid <- apply(a_P, 3, function(x) all.equal(sum(rowSums(x)), n_states))
 if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
   if(verbose){
     stop("This is not a valid transition Matrix")
@@ -190,8 +190,7 @@ for (t in 1:n_t){ # t<-1                  # loop through the number of cycles
                                           # using the t-th matrix from the 
                                           # probability array 
 }
-head(m_M)
-
+head(m_M)  # print the first lines of the matrix 
 ```
 
 # 06 Compute and Plot Epidemiological Outcomes
@@ -260,9 +259,9 @@ v_tu <- m_M %*% c(u_H, u_S, u_D)
 ## 07.2 Discounted Mean Costs and QALYs
 
 ```{r}
-# Discount costs  by multiplying the cost vector with discount weights (v_dw) 
+# Discount costs by multiplying the cost vector with discount weights (v_dw) 
 v_tc_d <-  t(v_tc) %*% v_dwc
-# Discount QALYS  by multiplying the QALYs vector with discount weights (v_dw)
+# Discount QALYS by multiplying the QALYs vector with discount weights (v_dw)
 v_te_d <-  t(v_tu) %*% v_dwe
 ```
 

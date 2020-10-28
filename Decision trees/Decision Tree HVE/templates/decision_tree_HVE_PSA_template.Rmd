@@ -20,7 +20,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -32,7 +32,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -48,7 +48,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -65,15 +65,14 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning=F, message=F}
+```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                           
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")   
+# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
+# install_github("DARTH-git/dectree", force = TRUE) # Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree") # load one or more GitHub packages  
 ```
 
 # 02 Load functions
@@ -129,6 +128,10 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                  (1-p_HVE) *    p_OVE_comp  ,  # OVE, complications
                  (1-p_HVE) * (1-p_OVE_comp))   # OVE, no complications
   
+  v_w_tx     <- # your turn
+    
+  v_w_biopsy <- # your turn
+  
   # Create vector of outcomes (QALYs) for each strategy 
   
   v_qaly_no_tx  <- c(q_VE_comp ,  # HVE, complications
@@ -136,12 +139,20 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                      q_VE_comp ,  # OVE, complications
                      q_VE)        # OVE, no complications
   
+  v_qaly_tx     <- # your turn
+    
+  v_qaly_biopsy <- # your turn
+  
   # Create vector of costs for each strategy 
 
   v_cost_no_tx  <- c(c_VE_comp ,  # HVE, complications
                      c_VE      ,  # HVE, no complications
                      c_VE_comp ,  # OVE, complications
                      c_VE)        # OVE, no complications
+  
+  v_costs_tx     <- # your turn
+    
+  v_costs_biopsy <- # your turn 
   
   # Calculate total utilities for each strategy ####
   total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      

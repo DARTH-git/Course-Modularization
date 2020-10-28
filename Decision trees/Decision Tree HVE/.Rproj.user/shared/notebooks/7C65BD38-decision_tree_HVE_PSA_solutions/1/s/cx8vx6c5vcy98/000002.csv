@@ -1,6 +1,0 @@
-"0","l_psa <- make_psa_obj(cost          = df_c, "
-"0","                      effectiveness = df_e, "
-"0","                      parameters    = df_psa_input, "
-"0","                      strategies    = v_names_str)"
-"2","strategy name 'No Tx' was converted to 'No.Tx' for compatibility. See ?make.names"
-"2","strategy name 'Tx All' was converted to 'Tx.All' for compatibility. See ?make.names"

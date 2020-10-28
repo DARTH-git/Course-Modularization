@@ -1,6 +1,0 @@
-"0",""
-"0","# Histogram of parameters"
-"0","ggplot(melt(df_psa_input, variable.name = ""Parameter""), aes(x = value)) +"
-"0","  facet_wrap(~Parameter, scales = ""free"") +"
-"0","  geom_histogram(aes(y = ..density..)) +"
-"0","  theme_bw(base_size = 16)"

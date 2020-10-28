@@ -23,24 +23,27 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
   with(as.list(l_params_all), {
     
     # Static characteristics
-    v_x      <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline                                         
+    v_x      <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline                
+    # Dynami characteristics
+    v_Ts_init <- rep(0, n_i)         # since all individuals start healthy this value is zero for everyone
     v_age0   <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) # sample from age distribution an initial age for every individual
-    df_X     <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0)
+    ## Create the data.frame
+    df_X    <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_ts = v_Ts_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
     
+    v_M_init  <- rep("H", n_i)
     
     #### 05.1 Probability function ####
     # The Probs function that updates the transition probabilities of every cycle is shown below.
     
-    Probs <- function(M_t, df_X, v_Ts, t) { 
+    Probs <- function(M_t, df_X, t) { 
       # Arguments:
-      # M_t: health state occupied  at cycle t (character vector)
+      # M_t: health state occupied at cycle t (character vector)
       # df_X: dataframe with individual caracteristics
-      # v_Ts: time an individual is sick
       # t:     current cycle 
       # Returns: 
       #   transition probabilities for that cycle
       
-      m_p_t           <- matrix(0, nrow = n_s, ncol = n_i)  # create matrix of state transition probabilities
+      m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  # create matrix of state transition probabilities
       rownames(m_p_t) <-  v_n                               # give the state names to the rows
       
       # lookup baseline probability and rate of dying based on individual characteristics
@@ -49,7 +52,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       
       # update the v_p with the appropriate probabilities   
       m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)                             # transition probabilities when healthy
-      m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[v_Ts], p_S1S2, p_S1D[v_Ts]) # transition probabilities when sick
+      m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[df_X$n_ts], p_S1S2, p_S1D[df_X$n_ts]) # transition probabilities when sick
       m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D, p_S2D)                                       # transition probabilities when sicker
       m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                   # transition probabilities when dead   
       return(t(m_p_t))
@@ -92,7 +95,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
     }
     
     #### 06 Run Microsimulation ####
-    MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
+    MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
       # Arguments:  
       # n_i:     number of individuals
       # df_X     data frame with individual data 
@@ -115,19 +118,18 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
                                                            paste("cycle", 0:n_t, sep = " ")))  
       
       m_M [, 1] <- v_M_init    # initial health state at cycle 0 for individual i
-      v_Ts      <- v_Ts_init   # initialize time since illnes onset for individual i
       
       m_C[, 1]  <- Costs(m_M[, 1], Trt)         # calculate costs per individual during cycle 0
       m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt)   # calculate QALYs per individual during cycle 0
       
       # open a loop for time running cycles 1 to n_t 
       for (t in 1:n_t) {
-        v_p <- Probs(m_M[, t], df_X, v_Ts, t)             # calculate the transition probabilities for the cycle based on  health state t
-        m_M[, t + 1]  <- samplev(v_p, 1)                  # sample the current health state and store that state in matrix m_M 
-        m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         # calculate costs per individual during cycle t + 1
-        m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt)    # calculate QALYs per individual during cycle t + 1
-        
-        v_Ts <- if_else(m_M[, t + 1] == "S1", v_Ts + 1, 0) # update time since illness onset for t + 1 
+        v_p <- Probs(m_M[, t], df_X, t)                # calculate the transition probabilities for the cycle based on  health state t
+        m_M[, t + 1]  <- samplevRAP(v_p, 1)            # sample the current health state and store that state in matrix m_M 
+        m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)      # calculate costs per individual during cycle t + 1
+        m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt) # calculate QALYs per individual during cycle t + 1
+     
+        df_X$n_ts <- if_else(m_M[, t + 1] == "S1", df_X$n_ts + 1, 0) # update time since illness onset for t + 1 
         df_X$Age[m_M[,t + 1] != "D"]  <- df_X$Age[m_M[, t + 1] != "D"] + 1
         
         

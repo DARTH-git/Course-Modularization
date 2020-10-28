@@ -19,7 +19,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6)
+Petros Pechlivanoglou, PhD (6,7)
 
 Alan Yang, MSc (7)
 
@@ -31,7 +31,7 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
+6. University of Toronto, Toronto ON, Canada
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
@@ -47,7 +47,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -62,11 +62,11 @@ Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE).
 
 You are tasked with evaluating the healthcare costs and benefits associated with three possible management strategies (no treatment, vidarabine treatment, or brain biopsy followed by vidarabine treatment for those who are diagnosed with HVE). Benefits will be measured in terms of quality-adjusted life-years (QALYs). 
 
-The healthcare cost of a case of viral encephalitis without complications is $1,200; however, if complications occur, the cost rises to $9,000. The cost of vidarabine treatment is $9,500, while a brain biopsy is a $25,000 procedure. 
+The healthcare cost of a case of viral encephalitis without complications is \$1,200; however, if complications occur, the cost rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a brain biopsy is a \$25,000 procedure. 
 
 A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.
 
-Parameters are summarized in Table 1. Use the code template provided in “HVE_DecisitionTree_Template.R” as a starting point for this exercise.
+Parameters are summarized in Table 1. Use the code template provided in “HVE_DecisitionTree_Template.Rmd” as a starting point for this exercise.
 
 ## Tasks
 

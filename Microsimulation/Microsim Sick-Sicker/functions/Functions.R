@@ -17,7 +17,6 @@
 
 #####################################################################################
 # Developed by Petros Pechlivanoglou
-
 samplev <- function(m.Probs) {
   # Arguments
   # m.Probs: matrix with probabilities (n.i * n.s)
@@ -43,31 +42,6 @@ samplev <- function(m.Probs) {
 } # close the function
 
 #####################################################################################
-# Developed by Alan Yang, based on Rowan Iskandar's and Petro Pechivanoglou's code
-samplevRAP <- function(m_Probs, m) {
-  # Arguments
-  # m_Probs: matrix with probabilities (n.i * n.s)
-  # m:       number of states than need to be sampled per individual  
-  # Return
-  # ran:    n.i x m matrix filled with sampled health state(s) per individual
-  
-  d <- dim(m_Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
-  n <- d[1]          # first dimension - number of rows (number of individuals to sample for)
-  k <- d[2]          # second dimension - number of columns (number of health states considered)
-  lev <- dimnames(m_Probs)[[2]]  # extract the names of the health states considered for sampling
-  if (!length(lev))  # in case names for the health states are missing, use numbers to specify the health states
-    lev <- 1:k       # create a sequence from 1:k (number of health states considered)
-  # create a matrix 
-  ran <- matrix(lev[1], ncol = m, nrow = n) # create the matrix ran, filled with the first health state of the levels 
-  sum.p <- rowCumsums(m_Probs) # sum probabilities of each row of the matrix with probabilities
-  for (j in 1:m) {
-    u <- runif(n,0,1) # sample from a uniform[0,1] distribution
-    ran[, j] <- lev[max.col(sum.p >=u, ties.method = "first")] # sample states using sampled uniform values from uniform CDF
-  }
-  
-  ran # return the new health state per individual n.i x m
-} # close the function 
-
 
 # plot health state trace
 plot_m_TR <- function(m_M) {

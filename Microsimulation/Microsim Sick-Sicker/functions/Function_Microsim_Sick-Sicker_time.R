@@ -125,7 +125,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # open a loop for time running cycles 1 to n_t 
       for (t in 1:n_t) {
         v_p <- Probs(m_M[, t], df_X, t)                # calculate the transition probabilities for the cycle based on  health state t
-        m_M[, t + 1]  <- samplevRAP(v_p, 1)            # sample the current health state and store that state in matrix m_M 
+        m_M[, t + 1]  <- samplev(v_p)                  # sample the current health state and store that state in matrix m_M 
         m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)      # calculate costs per individual during cycle t + 1
         m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt) # calculate QALYs per individual during cycle t + 1
      

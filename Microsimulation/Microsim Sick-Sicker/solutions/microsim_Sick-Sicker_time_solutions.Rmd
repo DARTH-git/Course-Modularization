@@ -269,7 +269,7 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
       # calculate the transition probabilities for the cycle based on  health state t
       m_P <- Probs(m_M[, t], df_X, t)             
       # sample the current health state and store that state in matrix m_M 
-      m_M[, t + 1]  <- samplev(m_P, 1)                  
+      m_M[, t + 1]  <- samplev(m_P)                  
       # calculate costs per individual during cycle t + 1
       m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         
       # calculate QALYs per individual during cycle t + 1

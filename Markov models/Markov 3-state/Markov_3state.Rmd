@@ -88,19 +88,20 @@ n_str <- length(v_names_str)
 v_n  <- c("Healthy", "Sick", "Dead")    # state names
 n_states  <- length(v_n)                # number of states
 n_t  <- 60                              # number of cycles
+v_init <- c(1, 0, 0)                    # initial cohort distribution
 
-p_HD <- 0.02                            # probability to die when healthy
-p_HS <- 0.05                            # probability to become sick when healthy
-p_SD <- 0.1                             # probability to die when sick
+p_HD <- 0.02                            # probability of dying when healthy
+p_HS <- 0.05                            # probability of becoming sick when healthy
+p_SD <- 0.1                             # probability of dying when sick
 
 # Costs and utilities  
-c_H  <- 400                             # cost of remaining one cycle healthy
-c_S  <- 1000                            # cost of remaining one cycle sick
-c_D  <- 0                               # cost of remaining one cycle dead
+c_H  <- 400                             # cost of one cycle when healthy
+c_S  <- 1000                            # cost of one cycle when sick
+c_D  <- 0                               # cost of one cycle when dead
 u_H  <- 0.8                             # utility when healthy 
 u_S  <- 0.5                             # utility when sick
 u_D  <- 0                               # utility when dead
-d_e  <- d_c <- 0.03                     # equal discount of costs and QALYs by 3%
+d_e  <- d_c <- 0.03                     # discount rate per cycle equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
@@ -164,6 +165,9 @@ m_P["Sick", "Dead"] <- p_SD
 
 # from Dead
 m_P["Dead", "Dead"] <- 1
+
+# print matrix
+m_P
 
 # check rows add up to 1
 rowSums(m_P)

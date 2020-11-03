@@ -96,19 +96,19 @@ v_Sick_tunnels <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
 v_n_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")  # state names
 n_states_tunnels  <- length(v_n_tunnels)              # number of states
 
-p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability to die when sick (age-dependent) - this is a sequence - officially v_HD
-p_HS <- 0.05                                # probability to become sick when healthy
-p_SD <- 0.1                                 # probability to die when sick
+p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability of dying when sick (age-dependent) - this is a sequence - officially v_HD
+p_HS <- 0.05                                # probability of becoming sick when healthy, conditioned on not dying
+p_SD <- 0.1                                 # probability of dying when sick
 
 # Weibull parameters
 l <- 0.08
 g <- 1.1
-p_SD <- l*g*(1:n_tunnel_size)^{g-1}         # probability to die when sick (time-dependent)
+p_SD <- l*g*(1:n_tunnel_size)^{g-1}         # probability of dying when sick (time-in-state dependent)
 
 # Costs and utilities  
-c_H  <- 400                                 # cost of remaining one cycle healthy
-c_S  <- 1000                                # cost of remaining one cycle sick
-c_D  <- 0                                   # cost of remaining one cycle dead
+c_H  <- 400                                 # cost of one cycle in healthy state
+c_S  <- 1000                                # cost of one cycle in sick state
+c_D  <- 0                                   # cost of one cycle in dead state
 u_H  <- 0.8                                 # utility when healthy 
 u_S  <- 0.5                                 # utility when sick
 u_D  <- 0                                   # utility when dead
@@ -149,8 +149,8 @@ Fill in the transition probability array:
 
 ```{r}
 # from Healthy
-a_P["Healthy", "Healthy", ]  <- 1 - p_HD - p_HS
-a_P["Healthy", "Sick_1Yr", ] <- p_HS
+a_P["Healthy", "Healthy", ]  <- (1 - p_HD)* (1 - p_HS)
+a_P["Healthy", "Sick_1Yr", ] <- (1 - p_HD) * p_HS
 a_P["Healthy", "Dead", ]     <- p_HD
 
 # from Sick
@@ -184,7 +184,7 @@ for (t in 1:n_t) {                         # loop through the number of cycles
                                            # using the t-th matrix from the 
                                            # probability array 
 }
-head(m_M, n = 30)
+head(m_M)
 ```
 
 Create aggregated trace.

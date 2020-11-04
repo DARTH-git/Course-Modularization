@@ -72,7 +72,7 @@ p_load("diagram")
 # 02 Load functions
 
 ```{r}
-# no functions required
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -109,8 +109,8 @@ v_dwc <- 1 / (1 + d_e) ^ (0:n_t)
 v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 ```
 
-
 ## Draw the state-transition cohort model
+
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
 m_P_diag["Healthy", "Sick" ]     = "" 
@@ -166,11 +166,11 @@ m_P["Sick", "Dead"] <- p_SD
 # from Dead
 m_P["Dead", "Dead"] <- 1
 
-# print matrix
-m_P
-
-# check rows add up to 1
-rowSums(m_P)
+## Check if transition probability matrices are valid
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(m_P, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(m_P, n_states = n_states, n_t = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model

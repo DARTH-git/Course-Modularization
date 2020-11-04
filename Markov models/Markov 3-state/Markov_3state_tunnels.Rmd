@@ -71,7 +71,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 02 Load functions
 
 ```{r}
-# no functions required
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -169,11 +169,11 @@ a_P["Dead", "Dead", ] <- 1
 ## 04.3 Check if transition array and probabilities are valid
 
 ```{r}
-# Check if transition matrix is valid (i.e., each row should add up to 1)
-valid <- apply(a_P, 3, function(x) sum(rowSums(x))==n_states_tunnels)
-if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
-  stop("This is not a valid transition Matrix")
-}
+## Check if transition probability matrices are valid
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(a_P, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(a_P, n_states = n_states_tunnels, n_t = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -269,10 +269,10 @@ v_te_d <-  t(v_tu) %*% v_dwe
 ## 07.3 Store Results
 
 ```{r}
-df_ce <- data.frame( "Total Discounted Cost" = v_tc_d, 
-                       "Life Expectancy" = v_le, 
-                       "Total Discounted QALYs" = v_te_d, 
-                       check.names = F)
+df_ce <- data.frame("Total Discounted Cost"  = v_tc_d, 
+                    "Life Expectancy"        = v_le, 
+                    "Total Discounted QALYs" = v_te_d, 
+                    check.names = F)
 df_ce
 ```
 

@@ -71,7 +71,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 02 Load functions
 
 ```{r}
-# no functions required
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -126,7 +126,7 @@ m_M[1, ] <- c(1, 0, 0)          # initialize first cycle of Markov trace
 
 ```{r}
 # create the transition probability array
-a_P <- array(0,                                    # Create 3-D array
+a_P <- array(0,                                      # Create 3-D array
              dim = c(n_states, n_states, n_t),
              dimnames = list(v_n, v_n, 0:(n_t - 1))) # name the dimensions of the array 
 ```
@@ -150,36 +150,11 @@ a_P["Dead", "Dead", ] <- 1
 ## 04.3 Check if transition array and probabilities are valid
 
 ```{r}
-verbose <- TRUE
-# Check if transition probabilities are valid (i.e., in [0, 1])
-m_indices_notvalid <- arrayInd(which(a_P < 0 | a_P > 1), 
-                               dim(a_P))
-try(
-  if(dim(m_indices_notvalid)[1] != 0){
-    v_rows_notval   <- rownames(a_P)[m_indices_notvalid[, 1]]
-    v_cols_notval   <- colnames(a_P)[m_indices_notvalid[, 2]]
-    v_cycles_notval <- dimnames(a_P)[[3]][m_indices_notvalid[, 3]]
-    
-    df_notvalid <- data.frame(`Transition probabilities not valid:` = 
-                                matrix(paste0(paste(v_rows_notval, v_cols_notval, 
-                                                    sep = "->"),
-                                              "; at cycle ",
-                                              v_cycles_notval), ncol = 1), 
-                              check.names = FALSE)
-    if(verbose){
-      message("Not valid transition probabilities")
-      stop(print(df_notvalid), call. = FALSE)
-    } 
-  }
-)
-
-# Check if transition probability array is valid
-valid <- apply(a_P, 3, function(x) all.equal(sum(rowSums(x)), n_states))
-if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
-  if(verbose){
-    stop("This is not a valid transition Matrix")
-  } 
-}
+## Check if transition probability matrices are valid
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(a_P, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(a_P, n_states = n_states, n_t = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -210,8 +185,8 @@ legend("right", v_n, col = c("black", "red", "green"), lty = 1:3, bty = "n")
 ## 06.2 Overall Survival (OS)
 
 ```{r}
-v_os <- 1 - m_M[, "Dead"]                  # calculate the overall survival (OS) probability
-v_os <- rowSums(m_M[, 1:2])                # alternative way of calculating the OS probability   
+v_os <- 1 - m_M[, "Dead"]   # calculate the overall survival (OS) probability
+v_os <- rowSums(m_M[, 1:2]) # alternative way of calculating the OS probability   
 
 # create a simple plot showing the OS
 plot(v_os, type = 'l', 
@@ -228,7 +203,7 @@ grid(nx = n_t, ny = 10,
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os)           # summing probablity of OS over time  (i.e. life expectancy)
+v_le <- sum(v_os) # summing probablity of OS over time  (i.e. life expectancy)
 ```
 
 ## 06.3 Disease prevalence
@@ -268,10 +243,10 @@ v_te_d <-  t(v_tu) %*% v_dwe
 ## 07.3 Store Results
 
 ```{r}
-df_ce <- data.frame( "Total Discounted Cost" = v_tc_d, 
-                       "Life Expectancy" = v_le, 
-                       "Total Discounted QALYs" = v_te_d, 
-                       check.names = F)
+df_ce <- data.frame("Total Discounted Cost"  = v_tc_d, 
+                    "Life Expectancy"        = v_le, 
+                    "Total Discounted QALYs" = v_te_d, 
+                    check.names = F)
 df_ce
 ```
 

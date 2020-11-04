@@ -150,7 +150,6 @@ a_P["Dead", "Dead", ] <- 1
 ## 04.3 Check if transition array and probabilities are valid
 
 ```{r}
-## Check if transition probability matrices are valid
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1

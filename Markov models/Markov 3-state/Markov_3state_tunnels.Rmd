@@ -126,7 +126,7 @@ v_dwe <- 1 / (1 + d_c) ^ (0:n_t)
 
 ```{r}
 m_M <- matrix(NA, 
-              nrow = n_t + 1,  # create Markov trace (n_t + 1 because R doesn't understand 
+              nrow = n_t + 1,  # create Markov trace (n_t + 1) because R doesn't understand 
                                # Cycle 0)
               ncol = n_states_tunnels,                  
               dimnames = list(0:n_t, v_n_tunnels)) 
@@ -169,7 +169,6 @@ a_P["Dead", "Dead", ] <- 1
 ## 04.3 Check if transition array and probabilities are valid
 
 ```{r}
-## Check if transition probability matrices are valid
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1
@@ -229,7 +228,7 @@ grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), equ
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os)           # summing probablity of OS over time  (i.e. life expectancy)
+v_le <- sum(v_os) # summing probablity of OS over time  (i.e. life expectancy)
 ```
 
 ## 06.3 Disease prevalence

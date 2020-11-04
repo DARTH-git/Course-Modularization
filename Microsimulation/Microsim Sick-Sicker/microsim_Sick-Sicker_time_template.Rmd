@@ -153,6 +153,31 @@ v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at bas
 
 *HINT*: There is no need to make two functions for each strategy. We recommend to make one `Probs()`, one `Costs()` and one `Effs()` function and have a function argument `Trt` which you "switch" on and off (i.e TRUE/FALSE - or 0/1) of the strategy of interest. 
 
+Please see a hypothetical example below :
+
+```{r, eval = FALSE}
+cost_stay <- function (days = 0, Trt = FALSE) {
+  # Arguments:
+    # days: days an individual is staying in a care facility
+    # Trt: is the individual treated? (default is FALSE)
+  # Returns:
+    # costs accrued in this cycle
+  
+  c_stay_day <- 100   # the price to stay a day at the care facility
+  c_trt     <- 3000   # the price of treatment, total price for drug. Drug requires one dose
+  
+  cost <- c_stay_day * days + Trt * c_trt # calculate total cost
+
+  return(cost)       # return the price
+}
+
+cost_stay_noTrt <- cost_stay(days = 10, Trt = FALSE) # run the function for the no treatment strategy
+cost_stay_Trt   <- cost_stay(days = 10, Trt = TRUE) # run the function for the treatment strategy
+
+cost_stay_noTrt
+cost_stay_Trt
+```
+
 ## 05.1 Probability function
 
 The function that updates the transition probabilities of every cycle is shown below.
@@ -227,4 +252,3 @@ You have to run the `Microsim()` function twice. Once for the treatment strategy
 #                 effect     = v_E,
 #                 strategies = v_names_str)
 ```
-

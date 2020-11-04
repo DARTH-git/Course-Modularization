@@ -26,8 +26,8 @@ Alan Yang, MSc (7)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Division of Public Administration, Center for Research and Teaching in 
+   Economics (CIDE), Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
@@ -40,7 +40,11 @@ Please cite our publications when using this code:
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
- 
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 
+2020:1-48. http://arxiv.org/abs/2001.07824
+
 - Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
 Microsimulation modeling for health decision sciences using R: A tutorial. 
 Med Decis Making. 2018;38(3):400–22. 

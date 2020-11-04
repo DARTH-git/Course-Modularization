@@ -1,5 +1,5 @@
 ---
-title: "Decision Modeling in R"
+title: "Decision Modeling for Public Health"
 subtitle: 'Markov Model Variants Exercise'
 author: "The DARTH workgroup"
 output:
@@ -91,13 +91,15 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 
 ## Tasks
 
-1. Incorporate the tunnel states in the markov trace and initialize it with everyone being healthy at model start. 
+Using the template `markov_sick-sicker_tunnels_template.Rmd`, please do the following. 
+
+1. Incorporate the tunnel states in the Markov trace and initialize it with everyone being healthy at model start. 
 
 2. Create a 3D transition probability array to account for tunnels and age dependency.
 
 3. Fill in the 3D transition probability array accounting for the tunnel states for S1 and the age dependence of transitioning to death
 
-4. Costs and utilities for all tunnel states are the same. Therefre, aggregrate the markov trace back to a healthy sick-sicker-dead trace and estimate total costs and QALYs for both strategies.
+4. Costs and utilities for all tunnel states are the same. Therefore, aggregate the Markov trace back to a healthy sick-sicker-dead trace and estimate total costs and QALYs for both strategies.
 
 5. Estimate incremental costs and QALYs and the ICER.  
 
@@ -110,9 +112,9 @@ include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
 | Names of health states             | `v_n`       | H, S1, S2, D  |
 | Annual discount rate (costs/QALYs) | `d_c` `d_e` |  3%           |
 | Annual transition probabilities    |             |               |
-| - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
-| - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
-| - Disease progression (S1 to S2)   | `p_S1S2`    | Weibull function |
+| - Disease onset (H to S1), conditional on surviving          | `p_HS1`     |  0.15         |
+| - Recovery (S1 to H), conditional on surviving             | `p_S1H`     |  0.5          |
+| - Disease progression (S1 to S2), conditional on surviving   | `p_S1S2`    | Weibull function |
 | Annual mortality                   |             |               |
 | - All-cause mortality (H to D)     | `p_HD`      | Age-dependent |
 | - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |

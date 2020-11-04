@@ -71,8 +71,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack") 
@@ -81,7 +80,7 @@ p_load_gh("DARTH-git/dampack")
 # 02 Load functions
 
 ```{r}
-# no functions needed
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -103,9 +102,9 @@ n_states <- length(v_n)              # number of health states
 
 # Transition probabilities (per cycle)
 p_HD     <- 0.005                    # probability to die when healthy
-p_HS1    <- 0.15          	         # probability to become sick when healthy
-p_S1H    <- 0.5           	         # probability to become healthy when sick
-p_S1S2   <- 0.105         	         # probability to become sicker when sick
+p_HS1    <- 0.15          	         # probability to become sick when healthy conditional on surviving
+p_S1H    <- 0.5           	         # probability to become healthy when sick conditional on surviving
+p_S1S2   <- 0.105         	         # probability to become sicker when sick conditional on surviving
 hr_S1    <- 3             	         # hazard ratio of death in sick vs healthy
 hr_S2    <- 10            	         # hazard ratio of death in sicker vs healthy 
 r_HD    # <-  your turn              # rate of death in healthy
@@ -236,9 +235,9 @@ m_P_trt <- m_P_notrt
 # your turn
 
 # Store discounted costs and effectiveness for each strategy in a data frame
-df_ce       <- data.frame(Strategy = NA,# <-- your value (strategy names)
-                          Cost     = NA,# <-- your value (strategy costs)
-                          Effect   = NA # <-- your value (strategy QALYs)
+df_ce       <- data.frame(Strategy = NA, # <-- your value (strategy names)
+                          Cost     = NA, # <-- your value (strategy costs)
+                          Effect   = NA  # <-- your value (strategy QALYs)
                           )
 ```
 
@@ -257,8 +256,4 @@ df_cea
 ```{r}
 plot(df_cea, effect_units = "QALYs")
 ```
-
-
-
-
 

@@ -333,5 +333,5 @@ df_cea
 ## 07.4 Plot frontier of the Markov model
 
 ```{r}
-plot(df_cea, effect_units = "Quality of Life", xlim = c(15.6, 16.6))
+plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```

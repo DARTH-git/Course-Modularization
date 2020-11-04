@@ -342,7 +342,7 @@ tc_d_trt    <- t(v_tc_trt)    %*%  v_dwc
 v_tc_d      <- c(tc_d_notrt, tc_d_trt)
 v_tu_d      <- c(tu_d_notrt, tu_d_trt)
 
-# Dataframe with discounted costs and effectiveness
+# Store discounted costs and effectiveness for each strategy in a data frame
 df_ce       <- data.frame(Strategy = v_names_str,
                           Cost     = v_tc_d,
                           Effect   = v_tu_d)
@@ -352,6 +352,7 @@ df_ce
 ## 07.3 Compute ICERs of the Markov model
 
 ```{r}
+# Use the function calculate_icers() from the dampack package
 df_cea <- calculate_icers(cost       = df_ce$Cost,
                           effect     = df_ce$Effect,
                           strategies = df_ce$Strategy)
@@ -361,5 +362,5 @@ df_cea
 ## 07.4 Plot frontier of the Markov model
 
 ```{r}
-plot(df_cea, effect_units = "Quality of Life", xlim=c(17,18))
+plot(df_cea, effect_units = "QALYs", xlim=c(17,18))
 ```

@@ -234,20 +234,28 @@ m_P_trt <- m_P_notrt
 
 ```{r}
 # your turn
+
+# Store discounted costs and effectiveness for each strategy in a data frame
+df_ce       <- data.frame(Strategy = NA,# <-- your value (strategy names)
+                          Cost     = NA,# <-- your value (strategy costs)
+                          Effect   = NA # <-- your value (strategy QALYs)
+                          )
 ```
 
 ## 07.3 Compute ICERs of the Markov model
 
 ```{r}
-# your turn
-
+# Use the function calculate_icers() from the dampack package
+df_cea <- calculate_icers(cost       = df_ce$Cost,
+                          effect     = df_ce$Effect,
+                          strategies = df_ce$Strategy)
+df_cea 
 ```
 
 ## 07.4 Plot frontier of the Markov model
 
 ```{r}
-# your turn
-
+plot(df_cea, effect_units = "QALYs")
 ```
 
 

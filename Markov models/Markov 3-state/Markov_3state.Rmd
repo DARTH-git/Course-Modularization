@@ -72,7 +72,7 @@ p_load("diagram")
 # 02 Load functions
 
 ```{r}
-# no functions required
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -85,23 +85,23 @@ v_names_str <- c("Base Case")
 n_str <- length(v_names_str)
 
 # Markov model parameters
-v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_states  <- length(v_n)                # number of states
-n_t  <- 60                              # number of cycles
-v_init <- c(1, 0, 0)                    # initial cohort distribution
+v_n  <- c("Healthy", "Sick", "Dead")  # state names
+n_states  <- length(v_n)              # number of states
+n_t  <- 60                            # number of cycles
+v_init <- c(1, 0, 0)                  # initial cohort distribution
 
-p_HD <- 0.02                            # probability of dying when healthy
-p_HS <- 0.05                            # probability of becoming sick when healthy, conditioned on not dying
-p_SD <- 0.1                             # probability of dying when sick
+p_HD <- 0.02                          # probability of dying when healthy
+p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying
+p_SD <- 0.1                           # probability of dying when sick
 
 # Costs and utilities  
-c_H  <- 400                             # cost of one cycle in healthy state
-c_S  <- 1000                            # cost of one cycle in sick state
-c_D  <- 0                               # cost of one cycle in dead state
-u_H  <- 0.8                             # utility when healthy 
-u_S  <- 0.5                             # utility when sick
-u_D  <- 0                               # utility when dead
-d_e  <- d_c <- 0.03                     # discount rate per cycle equal discount of costs and QALYs by 3%
+c_H  <- 400                           # cost of one cycle in healthy state
+c_S  <- 1000                          # cost of one cycle in sick state
+c_D  <- 0                             # cost of one cycle in dead state
+u_H  <- 0.8                           # utility when healthy 
+u_S  <- 0.5                           # utility when sick
+u_D  <- 0                             # utility when dead
+d_e  <- d_c <- 0.03                   # discount rate per cycle equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
@@ -109,8 +109,8 @@ v_dwc <- 1 / (1 + d_e) ^ (0:n_t)
 v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
 ```
 
-
 ## Draw the state-transition cohort model
+
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
 m_P_diag["Healthy", "Sick" ]     = "" 
@@ -169,8 +169,11 @@ m_P["Dead", "Dead"] <- 1
 # print matrix
 m_P
 
-# check rows add up to 1
-rowSums(m_P)
+## Check if transition probability matrices are valid
+# Check that transition probabilities are [0, 1]
+check_transition_probability(m_P, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(m_P, n_states = n_states, n_t = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -179,7 +182,6 @@ rowSums(m_P)
 for (t in 1:n_t){                   # loop through the number of cycles
   m_M[t + 1, ] <- m_M[t, ] %*% m_P  # estimate the state vector for the next cycle (t + 1)
 }
-
 ```
 
 # 06 Compute and Plot Epidemiological Outcomes

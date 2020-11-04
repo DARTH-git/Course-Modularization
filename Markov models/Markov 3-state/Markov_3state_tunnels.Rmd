@@ -266,13 +266,13 @@ v_tc_d <-  t(v_tc) %*% v_dwc
 v_te_d <-  t(v_tu) %*% v_dwe
 ```
 
-## 07.3 Results
+## 07.3 Store Results
 
 ```{r}
-results <- data.frame( "Total Discounted Cost" = v_tc_d, 
+df_ce <- data.frame( "Total Discounted Cost" = v_tc_d, 
                        "Life Expectancy" = v_le, 
                        "Total Discounted QALYs" = v_te_d, 
                        check.names = F)
-results
+df_ce
 ```
 

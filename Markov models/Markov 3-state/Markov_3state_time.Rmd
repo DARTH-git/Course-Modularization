@@ -92,7 +92,7 @@ v_n  <- c("Healthy", "Sick", "Dead")    # state names
 n_states <- length(v_n)                 # number of states
 n_t  <- 60                              # number of cycles
 
-p_HD <- seq(0.003, 0.01, length.out = n_t)  # probabilities of dying when sick (age-dependent) - this is now a sequence of numbers, officially v_HD
+p_HD <- seq(0.003, 0.01, length.out = n_t)  # probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers, officially v_p_HD
 p_HS <- 0.05                                # probability of becoming sick when healthy, conditioned on not dying
 p_SD <- 0.1                                 # probability of dying when sick
 

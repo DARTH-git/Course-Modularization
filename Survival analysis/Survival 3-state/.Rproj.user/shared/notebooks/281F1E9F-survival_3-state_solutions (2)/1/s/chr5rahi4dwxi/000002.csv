@@ -1,0 +1,48 @@
+"0","flexsurvreg_prob
+"
+"1","function(object, newparams = NULL, times){
+"
+"1","
+"
+"1","  if(is.null(newparams) == T ){
+"
+"1","  params <- object$res[,1]  
+"
+"1","  params <- as.matrix(t(params))
+"
+"1","  }else {
+"
+"1","    params <- newparams 
+"
+"1","    params <- as.matrix(params)
+"
+"1","    }
+"
+"1","
+"
+"1","  if (ncol(params)== 1){
+"
+"1","  surv <- object$dfns$p(times, params[,1], lower.tail = F)
+"
+"1","  }else if (ncol(params)== 2){
+"
+"1","    surv <- object$dfns$p(times,params[,1],params[,2], lower.tail = F)
+"
+"1","   }else if (ncol(params)== 2){
+"
+"1","     surv <- object$dfns$p(times,params[,1],params[,2],params[,3], lower.tail = F)
+"
+"1","   } else{
+"
+"1","     surv <- object$dfns$p(times,params[,1],params[,2],params[,3], lower.tail = F)
+"
+"1","   }
+"
+"1","   
+"
+"1","  t.p <- 1- surv[-1]/(surv[-length(surv)])
+"
+"1","return(t.p = t.p)
+"
+"1","  }
+"

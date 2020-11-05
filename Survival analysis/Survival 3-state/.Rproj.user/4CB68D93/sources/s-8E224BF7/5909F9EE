@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595456164460.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3045810019",
+    "id" : "5909F9EE",
+    "lastKnownWriteTime" : 1581059964,
+    "last_content_update" : 1581059964,
+    "path" : "~/GitHub/Course-Modularization/Survival analysis/Survival 3-state/example_cycels.R",
+    "project_path" : "example_cycels.R",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

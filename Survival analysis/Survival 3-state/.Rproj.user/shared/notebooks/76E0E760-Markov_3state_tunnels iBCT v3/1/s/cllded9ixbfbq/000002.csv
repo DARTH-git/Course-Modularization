@@ -1,0 +1,13 @@
+"0","# Run Markov model on each parameter set of PSA input dataset
+for(i in 1:n_sim){
+  l_out_temp <- calculate_ce_out(df_psa_input[i, ])
+  df_c[i, ]  <- l_out_temp$Cost
+  df_e[i, ]  <- l_out_temp$Effect
+  # Display simulation progress
+  if(i/(n_sim/10) == round(i/(n_sim/10),0)) { # display progress every 10%
+    cat('\r', paste(i/n_sim * 100, ""% done"", sep = "" ""))
+  }
+}
+"
+"2","Error: object 'n_sim' not found
+"

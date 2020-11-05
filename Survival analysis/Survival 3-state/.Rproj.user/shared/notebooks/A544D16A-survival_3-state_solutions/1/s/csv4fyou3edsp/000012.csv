@@ -1,0 +1,14 @@
+"0","source(here(""data"",""data.R""))"
+"2","Simulating patient:1
+"
+"2","Simulating patient:100
+"
+"2","Simulating patient:200
+"
+"2","Simulating patient:300
+"
+"2","Simulating patient:400
+"
+"2","Simulating patient:500
+"
+"0","head(true_data)"

@@ -1,0 +1,7 @@
+"0","v_le_tunnels_no_trt <- sum(v_os_notrt_tunnels)  # summing probablity of OS over time "
+"0","                                         # (i_e_ life expectancy)"
+"0",""
+"0","v_le_tunnels_trt <- sum(v_os_trt_tunnels)  # summing probablity of OS over time "
+"0","                                         # (i_e_ life expectancy)"
+"0",""
+"0","diff_le <- v_le_tunnels_trt - v_le_tunnels_no_trt"

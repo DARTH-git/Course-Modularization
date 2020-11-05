@@ -1,0 +1,3 @@
+"0","if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages"
+"0","# load (install if required) packages from CRAN"
+"0","p_load(""here"", ""dplyr"", ""devtools"", ""gems"", ""flexsurv"", ""survminer"", ""survHE"", ""ggplot2"", ""msm"", ""igraph"", ""mstate"",   ""reshape2"", ""knitr"", ""diagram"")                                                  "

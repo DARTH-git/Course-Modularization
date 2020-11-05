@@ -1,0 +1,5 @@
+"0","# Compute expected costs and effects for each strategy from the PSA
+df_out_ce_psa <- summary(l_psa)
+"
+"2","Error in summary(l_psa) : object 'l_psa' not found
+"

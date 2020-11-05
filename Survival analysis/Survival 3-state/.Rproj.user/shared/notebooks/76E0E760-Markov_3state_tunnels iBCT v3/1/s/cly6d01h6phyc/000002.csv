@@ -1,0 +1,5 @@
+"0","# Check if transition matrix is valid (i.e., each row should add up to 1)"
+"0","valid <- apply(a_P, 3, function(x) round(sum(rowSums(x)),1)==n_states_tunnels)"
+"0","if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {"
+"0","  stop(""This is not a valid transition Matrix"")"
+"0","}"

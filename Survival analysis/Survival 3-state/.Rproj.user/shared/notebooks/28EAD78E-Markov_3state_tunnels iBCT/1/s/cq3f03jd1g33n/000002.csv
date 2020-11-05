@@ -1,0 +1,4 @@
+"0","# create the transition probability array"
+"0","a_P <- array(0,                                          # Create 3-D array"
+"0","             dim = c(n_states_tunnels, n_states_tunnels, n_t),               "
+"0","             dimnames = list(v_n_tunnels, v_n_tunnels, 0:(n_t-1)))  "

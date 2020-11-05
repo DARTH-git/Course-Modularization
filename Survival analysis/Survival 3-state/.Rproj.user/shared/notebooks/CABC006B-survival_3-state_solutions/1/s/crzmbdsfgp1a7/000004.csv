@@ -1,0 +1,17 @@
+"0","ggsurvplot(
+  fit_KM, 
+  data = OS_PFS_data, 
+  size = 1,                  # change line size
+  palette = c(""orange2""),    # custom color palettes
+  conf.int = TRUE,           # Add confidence interval
+  pval = TRUE,               # Add p-value
+  risk.table = TRUE,         # Add risk table
+  risk.table.height = 0.25,  # Useful to change when you have multiple groups
+  ggtheme = theme_bw(),      # Change ggplot2 theme
+  xlab = 'Time in days',     # Change X-axis label
+  title    = ""Survival curve for Progression-Free Survival (PFS)"", 
+  subtitle = ""Based on Kaplan-Meier estimates""
+) 
+"
+"2","There are no survival curves to be compared. 
+ This is a null model."

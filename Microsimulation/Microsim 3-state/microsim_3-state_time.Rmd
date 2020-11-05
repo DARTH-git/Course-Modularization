@@ -201,6 +201,7 @@ Costs <- function (M_t) {
   c_t[M_t == "healthy"] <- c_H  # costs accrued by being healthy this cycle
   c_t[M_t == "sick"]    <- c_S  # costs accrued by being sick this cycle
   c_t[M_t == "dead"]    <- c_D  # costs at dead state
+  
   return(c_t) 
 }
 ```
@@ -284,7 +285,6 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   te <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
   tc_hat <- mean(tc)   # average (discounted) cost 
   te_hat <- mean(te)   # average (discounted) QAL  
-  
   # store the results from the simulation in a list
   results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, 
                   te_hat = te_hat)   
@@ -299,6 +299,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
 # 06 Run Microsimulation
 
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
+
 # Run the simulation model
 outcomes <- MicroSim(n_i = n_i, df_X = df_X, seed = 1)
 

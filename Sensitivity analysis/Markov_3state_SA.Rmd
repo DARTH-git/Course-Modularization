@@ -1,5 +1,5 @@
 ---
-title: 'Simple 3-state Markov model in R'
+title: 'SA: Simple 3-state Markov model in R'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -76,7 +76,7 @@ p_load("diagram")
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No function needed
 ```
 
 # 03 Input model parameters

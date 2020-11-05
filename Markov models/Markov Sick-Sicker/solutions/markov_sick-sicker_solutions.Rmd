@@ -100,9 +100,9 @@ n_states <- length(v_n)             # number of health states
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005                    # probability to die when healthy
-p_HS1   <- 0.15          	          # probability to become sick when healthy
-p_S1H   <- 0.5           	          # probability to become healthy when sick
-p_S1S2  <- 0.105         	          # probability to become sicker when sick
+p_HS1   <- 0.15          	          # probability to become sick when healthy, conditional on surviving
+p_S1H   <- 0.5           	          # probability to become healthy when sick, conditional on surviving
+p_S1S2  <- 0.105         	          # probability to become sicker when sick, conditional on surviving
 hr_S1   <- 3             	          # hazard ratio of death in sick vs healthy
 hr_S2   <- 10            	          # hazard ratio of death in sicker vs healthy 
 r_HD    <- - log(1 - p_HD)          # rate of death in healthy

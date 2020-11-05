@@ -77,7 +77,7 @@ p_load_gh("DARTH-git/dampack")
 # 02 Load functions
 
 ```{r}
-#source(here("functions","Functions.R"))
+# No function needed
 ```
 
 # 03 Input model parameters
@@ -99,9 +99,9 @@ n_s     <- length(v_n)              # number of health states
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005                    # probability to die when healthy
-p_HS1   <- 0.15          	          # probability to become sick when healthy
-p_S1H   <- 0.5           	          # probability to become healthy when sick
-p_S1S2  <- 0.105         	          # probability to become sicker when sick
+p_HS1   <- 0.15          	          # probability to become sick when healthy, conditional on surviving
+p_S1H   <- 0.5           	          # probability to become healthy when sick, conditional on surviving
+p_S1S2  <- 0.105         	          # probability to become sicker when sick, conditional on surviving 
 hr_S1   <- 3             	          # hazard ratio of death in sick vs healthy
 hr_S2   <- 10            	          # hazard ratio of death in sicker vs healthy 
 r_HD    <- - log(1 - p_HD)          # rate of death in healthy
@@ -135,11 +135,11 @@ v_dwe   <- 1 / (1 + d_r) ^ (0:n_t)
 ## 04.1 Cohort trace
 
 ```{r}
-# create the markov trace matrix M capturing the proportion of the cohort 
+# create the Markov trace matrix M capturing the proportion of the cohort 
 # in each state at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
-                                nrow     = n_t + 1, ncol = n_s,
-                                dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
+                               nrow     = n_t + 1, ncol = n_s,
+                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
@@ -162,22 +162,19 @@ Fill in the transition probability matrix:
 
 ```{r}
 # from Healthy
-m_P_notrt["H", "H"]   <- 1 - (p_HS1 + p_HD)
-m_P_notrt["H", "S1"]  <- p_HS1
-m_P_notrt["H", "D"]   <- p_HD
+m_P_notrt["H", "H"  ] <- (1 - p_HD) * (1 - p_HS1)
+m_P_notrt["H", "S1" ] <- (1 - p_HD) * p_HS1
+m_P_notrt["H", "D"  ] <- p_HD
 # from Sick
-m_P_notrt["S1", "H"]  <- p_S1H
-m_P_notrt["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
-m_P_notrt["S1", "S2"] <- p_S1S2
-m_P_notrt["S1", "D"]  <- p_S1D
+m_P_notrt["S1", "H" ] <- (1 - p_S1D) * p_S1H
+m_P_notrt["S1", "S1"] <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2))
+m_P_notrt["S1", "S2"] <- (1 - p_S1D) * p_S1S2
+m_P_notrt["S1", "D" ] <- p_S1D
 # from Sicker
 m_P_notrt["S2", "S2"] <- 1 - p_S2D
-m_P_notrt["S2", "D"]  <- p_S2D
+m_P_notrt["S2", "D" ] <- p_S2D
 # from Dead
-m_P_notrt["D", "D"]   <- 1
-
-# check rows add up to 1
-rowSums(m_P_notrt)
+m_P_notrt["D", "D"  ] <- 1
 
 # create transition probability matrix for treatment same as no treatment
 m_P_trt <- m_P_notrt
@@ -187,10 +184,10 @@ m_P_trt <- m_P_notrt
 
 ```{r}
 for (t in 1:n_t){     # loop through the number of cycles
-  m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt    # estimate the Markov trace 
-                                                           # for the next cycle (t + 1)
-  m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% m_P_trt    # estimate the Markov trace 
-                                                           # for the next cycle (t + 1)
+  m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt   # estimate the Markov trace 
+                                                          # for the next cycle (t + 1)
+  m_M_trt[t + 1, ]   <- t(m_M_trt[t, ])    %*% m_P_trt    # estimate the Markov trace 
+                                                          # for the next cycle (t + 1)
 } # close the loop
 
 head(m_M_notrt)  # show the first 6 lines of the matrix
@@ -321,9 +318,9 @@ Create list `l_params_all` with all input probabilities, cost and utilities.
 ```{r}
 l_params_all <- as.list(data.frame(
   p_HD    = 0.005,  # probability to die when healthy
-  p_HS1   = 0.15,   # probability to become sick when healthy
-  p_S1H   = 0.5,    # probability to become healthy when sick
-  p_S1S2  = 0.105,  # probability to become sicker when sick
+  p_HS1   = 0.15,   # probability to become sick when healthy, conditional on surviving
+  p_S1H   = 0.5,    # probability to become healthy when sick, conditional on surviving
+  p_S1S2  = 0.105,  # probability to become sicker when sick, conditional on surviving
   hr_S1   = 3,      # hazard ratio of death in sick vs healthy
   hr_S2   = 10,     # hazard ratio of death in sicker vs healthy
   c_H     = 2000,   # cost of remaining one cycle in the healthy state
@@ -341,15 +338,16 @@ l_params_all <- as.list(data.frame(
 ))
 
 # store the parameter names into a vector
-v_names_params <- c('p_HD', 'p_HS1', 'p_S1H', 'p_S1S2', 
-                    'hr_S1', 'hr_S2', 'c_H', 'c_S1', 'c_S2', 'c_trt', 'c_D', 
-                    'u_H', 'u_S1', 'u_S2', 'u_D', 'u_trt', 'd_e', 'd_c')
+v_names_params <- c('p_HD', 'p_HS1', 'p_S1H', 'p_S1S2', 'hr_S1', 'hr_S2', 
+                    'c_H', 'c_S1', 'c_S2', 'c_trt', 'c_D', 
+                    'u_H', 'u_S1', 'u_S2', 'u_D', 'u_trt', 
+                    'd_e', 'd_c')
 ```
 
 ## 08.2 Load Sick-Sicker Markov model function
 
 ```{r}
-source(here("functions", "Functions_markov_sick-sicker.R"))
+source("Functions_markov_sick-sicker_sol.R")
 # Test function
 calculate_ce_out(l_params_all)
 ```
@@ -359,20 +357,24 @@ calculate_ce_out(l_params_all)
 ```{r}
 v_params_owsa <-c("p_S1S2", "c_trt", "u_S1", "u_trt") # vector of names of parameters of interest
 
-# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest 
-params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), min = rep(NA, length(v_names_params)), max  = rep(NA, length(v_names_params))) 
-params_all_owsa$min[params_all_owsa$pars %in% v_params_owsa] <-  c(0.05 ,  6000 , 0.65, 0.80)  # min parameter values
-params_all_owsa$max[params_all_owsa$pars %in% v_params_owsa] <-  c(0.155, 18000 , 0.85, 0.98)  # max parameter values
+# Dataframe containing all parameters, their base case values, and the min and max values of the parameters of interest 
+params_all_owsa  <- data.frame(pars = v_names_params, basecase = as.numeric(l_params_all), 
+                               min = rep(NA, length(v_names_params)), max = rep(NA,length(v_names_params)))
+# min parameter values
+params_all_owsa$min[params_all_owsa$pars %in% v_params_owsa] <- c(0.05, 6000, 0.65, 0.80)  
+# max parameter values
+params_all_owsa$max[params_all_owsa$pars %in% v_params_owsa] <- c(0.155, 18000 , 0.85, 0.98)  
 
 # list of all parameters with their basecase values
 params_basecase_owsa <- as.list(params_all_owsa$basecase)
 names(params_basecase_owsa) <- as.character(params_all_owsa$pars)
 
 # dataframe containing name, min and max of parameters of interest
-df_params_owsa <- params_all_owsa[params_all_owsa$pars %in% v_params_owsa, !colnames(params_all_owsa) %in% 'basecase']
+df_params_owsa <- params_all_owsa[params_all_owsa$pars %in%
+                                  v_params_owsa, !colnames(params_all_owsa) %in% 'basecase']
 
 owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,        # parameters of interest
-                          params_basecase  = params_basecase_owsa,  # dataframe containing all parameter basecase values
+                          params_basecase  = params_basecase_owsa,  # dataframe containing all parameter                                                                         basecase values
                           nsamp            = 100,                   # number of parameter values
                           FUN              = calculate_ce_out,      # function to compute outputs
                           outcomes         = c("NMB"),              # output to do the OWSA on
@@ -383,7 +385,7 @@ owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,        # parameters
 ## 08.3.1 Plot OWSA
 
 ```{r}
-plot(owsa_nmb, txtsize = 16, n_x_ticks = 5, 
+plot(owsa_nmb, txtsize = 10, n_x_ticks = 4, 
      facet_scales = "free") +
      theme(legend.position = "bottom")
 ```
@@ -391,7 +393,7 @@ plot(owsa_nmb, txtsize = 16, n_x_ticks = 5,
 ## 08.3.2 Optimal strategy with OWSA
 
 ```{r}
-owsa_opt_strat(owsa = owsa_nmb)
+owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 ```
 
 ## 08.3.3 Tornado plot
@@ -403,13 +405,13 @@ owsa_tornado(owsa = owsa_nmb)
 ## 08.4 Two-way sensitivity analysis (TWSA)
 
 ```{r, warning = FALSE}
-v_params_twsa     <- c("c_trt", "u_trt") # parameters of interest for TWSA
-# dataframe containing all parameters, their basecase values, and the min and max values of the parameters of interest
+v_params_twsa <- c("c_trt", "u_trt") # parameters of interest for TWSA
+# Dataframe containing all parameters, their base case values, and the min and max values of the parameters of interest
 params_all_twsa <- data.frame(pars = v_names_params, 
                               basecase = as.numeric(l_params_all), 
                               min = rep(NA, length(v_names_params)), 
                               max  = rep(NA, length(v_names_params))) 
-params_all_twsa$min[params_all_twsa$pars %in% v_params_twsa] <- c( 6000, 0.80)  # min parameter values
+params_all_twsa$min[params_all_twsa$pars %in% v_params_twsa] <- c(6000, 0.80)   # min parameter values
 params_all_twsa$max[params_all_twsa$pars %in% v_params_twsa] <- c(18000, 0.98)  # max parameter values
 
 # list of all parameters with their basecase values
@@ -417,10 +419,11 @@ params_basecase_twsa <- as.list(params_all_twsa$basecase)
 names(params_basecase_twsa) <- as.character(params_all_twsa$pars)
 
 # dataframe containing name, min and max of parameters of interest
-df_params_twsa <- params_all_twsa[params_all_twsa$pars %in% v_params_twsa, !colnames(params_all_twsa) %in% 'basecase']
+df_params_twsa <- params_all_twsa[params_all_twsa$pars %in% v_params_twsa, 
+                                  !colnames(params_all_twsa) %in% 'basecase']
 
 twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,       # parameters of interest
-                         params_basecase = params_basecase_twsa, # dataframe containing all parameter basecase value
+                         params_basecase = params_basecase_twsa, # dataframe containing all parameter                                                                         base case value
                          nsamp           = 40,                   # number of parameter values
                          FUN             = calculate_ce_out,     # function to compute outputs
                          outcomes        = c("NMB"),             # output to do the twsa on
@@ -438,7 +441,7 @@ plot(twsa_nmb)
 
 ```{r, warning = FALSE, message = FALSE}
 # Function to generate PSA input dataset
-generate_psa_params <- function(n_sim = 1000, seed = 071818){
+gen_psa <- function(n_sim = 1000, seed = 071818){
   set.seed(seed) # set a seed to be able to reproduce the same results
   df_psa <- data.frame(
     # Transition probabilities (per cycle)
@@ -469,13 +472,13 @@ generate_psa_params <- function(n_sim = 1000, seed = 071818){
     return(df_psa)
 }
 # Try it
-generate_psa_params(10) 
+gen_psa(10) 
 
 # Number of simulations
 n_sim <- 1000
 
 # Generate PSA input dataset
-df_psa_input <- generate_psa_params(n_sim = n_sim)
+df_psa_input <- gen_psa(n_sim = n_sim)
 # First six observations
 head(df_psa_input)
 
@@ -526,13 +529,13 @@ l_psa <- make_psa_obj(cost          = df_c,
 
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str, l_psa,
-     file = here("output", "markov_sick-sicker_PSA_dataset.RData"))
+     file = "markov_sick-sicker_PSA_dataset.RData")
 ```
 
 ## 09.3 Create probabilistic analysis graphs
 
 ```{r}
-load(file = here("output", "markov_sick-sicker_PSA_dataset.RData"))
+load(file = "markov_sick-sicker_PSA_dataset.RData")
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.
@@ -562,10 +565,10 @@ df_cea_psa
 # Save CEA table with ICERs
 # As .RData
 save(df_cea_psa, 
-     file = here("tables", "markov_sick-sicker_probabilistic_CEA_results.RData"))
+     file = "markov_sick-sicker_probabilistic_CEA_results.RData")
 # As .csv
 write.csv(df_cea_psa, 
-          file = here("tables", "markov_sick-sicker_probabilistic_CEA_results.csv"))
+          file = "markov_sick-sicker_probabilistic_CEA_results.csv")
 ```
 
 ## 09.4.1 Plot cost-effectiveness frontier

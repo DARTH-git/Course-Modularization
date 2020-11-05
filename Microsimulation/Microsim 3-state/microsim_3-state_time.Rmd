@@ -193,14 +193,14 @@ The `Costs` function estimates the costs at every cycle.
 ```{r}
 Costs <- function (M_t) {
   # Arguments:
-    # M_t: health state occupied  at cycle t (character variable)
+    # M_t: health state occupied at cycle t (character variable)
   # Returns: 
     # costs accrued in this cycle
   
   c_t <- c()
-  c_t[M_t == "dead"]    <- c_D  # costs at dead state
   c_t[M_t == "healthy"] <- c_H  # costs accrued by being healthy this cycle
-  c_t[M_t == "sick"]    <- c_S  # costs accrued by being sick this cyc  
+  c_t[M_t == "sick"]    <- c_S  # costs accrued by being sick this cycle
+  c_t[M_t == "dead"]    <- c_D  # costs at dead state
   return(c_t) 
 }
 ```
@@ -212,20 +212,20 @@ The `Effs` function to update the utilities at every cycle.
 ```{r}
 Effs <- function (M_t) {
   # Arguments:
-    # M_t: health state occupied  at cycle t (character variable)
+    # M_t: health state occupied at cycle t (character variable)
   # Returns: 
     # QALYs accrued this cycle
   
   q_t <- c() 
-  q_t[M_t == "dead"]    <- u_D  # QALYs at dead state
   q_t[M_t == "healthy"] <- u_H  # QALYs accrued by being healthy this cycle
   q_t[M_t == "sick"]    <- u_S  # QALYs accrued by being sick this cycle
+  q_t[M_t == "dead"]    <- u_D  # QALYs at dead state
   
   return(q_t)  
 }
 ```
 ## 05.4 Microsimulation function
-Below we develop the microsimulation function that allows teh model to be run.
+Below we develop the microsimulation function that allows the model to be run.
 
 ```{r}
 MicroSim <- function(n_i, df_X, seed = 1) {
@@ -262,7 +262,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
     check_transition_probability(m_P, verbose = TRUE)
     # check if each of the rows of the transition probabilities matrix sum to one
     check_sum_of_transition_array(m_P, n_states = n_i, n_t = n_t, verbose = TRUE)
-    # sample the current health state and store that state in matrix m_M
+    # sample the next health state and store that state in matrix m_M
     m_M[, t + 1]  <- samplev(m_P)    
     # calculate costs per individual during cycle t + 1
     m_C[, t + 1]  <- Costs(m_M[, t + 1])  
@@ -284,6 +284,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   te <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
   tc_hat <- mean(tc)   # average (discounted) cost 
   te_hat <- mean(te)   # average (discounted) QAL  
+  
   # store the results from the simulation in a list
   results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, 
                   te_hat = te_hat)   
@@ -298,9 +299,8 @@ MicroSim <- function(n_i, df_X, seed = 1) {
 # 06 Run Microsimulation
 
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
-
 # Run the simulation model
-outcomes <- MicroSim(n_i, df_X, seed = 1)
+outcomes <- MicroSim(n_i = n_i, df_X = df_X, seed = 1)
 
 # Show results
 results  <- data.frame("Total Cost" = outcomes$tc_hat, "Total QALYs" = outcomes$te_hat)

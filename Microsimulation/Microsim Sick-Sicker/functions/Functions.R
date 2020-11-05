@@ -3,11 +3,11 @@
 #### R function to sample states for multiple individuals simultaneously ####
 #---------------------------------------------------------------------------#
 
-# - Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+# Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
 # Microsimulation modeling for health decision sciences using R: A tutorial. 
 # Med Decis Making. 2018;38(3):400–22. https://www.ncbi.nlm.nih.gov/pubmed/29587047
 
-#####################################################################################
+################################################################################
 # Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 # All rights reserved in Canada, the United States and worldwide.  
 # Copyright, trademarks, trade names and any and all associated intellectual property 
@@ -15,8 +15,9 @@
 # institutions and may not be used, reproduced, modified, distributed or adapted 
 # in any way without appropriate citation.
 
-#####################################################################################
+################################################################################
 # Developed by Petros Pechlivanoglou
+
 samplev <- function(m.Probs) {
   # Arguments
   # m.Probs: matrix with probabilities (n.i * n.s)
@@ -41,7 +42,22 @@ samplev <- function(m.Probs) {
   ran # return the new health state per individual n.i x m
 } # close the function
 
-#####################################################################################
+
+#---------------------------------------------------------------------------#
+####                    R functions for visualization                    ####
+#---------------------------------------------------------------------------#
+
+# plot density of total cost
+plot_tc <- function(tc) {
+  # Histogram showing variability in individual total costs
+  plot(density(tc), main = paste("Total cost per person"), xlab = "Cost ($)")
+}
+
+# plot density of total QALYs
+plot_te <- function(te) {
+  # Histogram showing variability in individual total QALYs
+  plot(density(te), main = paste("Total QALYs per person"), xlab = "QALYs")
+}
 
 # plot health state trace
 plot_m_TR <- function(m_M) {
@@ -52,43 +68,20 @@ plot_m_TR <- function(m_M) {
   colnames(m_TR) <- v_n                                    # name the rows of the matrix
   rownames(m_TR) <- paste("Cycle", 0:n_t, sep = " ")       # name the columns of the matrix
   # Plot trace of first health state
-  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_states,
+  plot(0:n_t, m_TR[, 1], type = "l", main = "Health state trace", 
        ylim = c(0, 1), ylab = "Proportion of cohort", xlab = "Cycle")
-  legend("topright", v_n, col = 1:n_states,    # add a legend to current plot
+  # add a line for each additional state
+  for (n_states in 2:length(v_n)) {
+    lines(0:n_t, m_TR[, n_states], col = n_states)  # adds a line to current plot
+  }
+  legend("topright", v_n, col = 1:4,    # add a legend to current plot
          lty = rep(1, 3), bty = "n", cex = 0.65)
   
 }
 
 
-#-----------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a beta distribution from mean and st. deviation ####
-#-----------------------------------------------------------------------------------------------#
-#' @param m mean 
-#' @param s standard deviation
-#' 
-betaPar <- function(m, s) 
-{
-  a <- m * ((m * (1 - m) / s ^ 2) - 1)
-  b <- (1 - m) * ((m * (1 - m) / s ^ 2) - 1)
-  list(a = a, b = b)
-}
-
-#-------------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a gamma distribution from mean and st. deviation  ####
-#-------------------------------------------------------------------------------------------------#
-#' @param m mean 
-#' @param s standard deviation
-#' 
-gammaPar <- function(m, s) {   
-  # m: mean  
-  # s: standard deviation 
-  shape <- m ^ 2 / s ^ 2
-  scale <- s ^ 2 / m
-  list(shape = shape, scale = scale)
-}
-
 #----------------------------------------------------------------------------#
-####   Function to check if transition probability array/matrix  is valid ####
+####   Function to check if transition probability array/matrix is valid  ####
 #----------------------------------------------------------------------------#
 #' Check if transition array is valid
 #'
@@ -190,40 +183,3 @@ check_sum_of_transition_array <- function(a_P,
   }
 }
 
-
-#---------------------------------------------------------------------------#
-#### R function to sample states for multiple individuals simultaneously ####
-#---------------------------------------------------------------------------#
-
-# Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
-# Microsimulation modeling for health decision sciences using R: A tutorial. 
-# Med Decis Making. 2018;38(3):400–22. https://www.ncbi.nlm.nih.gov/pubmed/29587047
-
-################################################################################
-# Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-# All rights reserved in Canada, the United States and worldwide.  
-# Copyright, trademarks, trade names and any and all associated intellectual property 
-# are exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating 
-# institutions and may not be used, reproduced, modified, distributed or adapted 
-# in any way without appropriate citation.
-
-#---------------------------------------------------------------------------#
-####                    R functions for visualization                    ####
-#---------------------------------------------------------------------------#
-
-
-# plot health state trace
-plot_m_TR <- function(m_M) {
-  # plot the distribution of the population across health states over time (trace)
-  # count the number of individuals in each health state at each cycle
-  m_TR <- t(apply(m_M, 2, function(x) table(factor(x, levels = v_n, ordered = TRUE)))) 
-  m_TR <- m_TR / n_i                                       # calculate the proportion of individuals 
-  colnames(m_TR) <- v_n                                    # name the rows of the matrix
-  rownames(m_TR) <- paste("Cycle", 0:n_t, sep = " ")       # name the columns of the matrix
-  # Plot trace of first health state
-  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_states,
-          ylim = c(0, 1), ylab = "Proportion of cohort", xlab = "Cycle")
-  legend("topright", v_n, col = 1:n_states,    # add a legend to current plot
-         lty = rep(1, 3), bty = "n", cex = 0.65)
-  
-}

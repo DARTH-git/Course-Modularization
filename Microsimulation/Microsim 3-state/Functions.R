@@ -42,6 +42,11 @@ samplev <- function(m.Probs) {
   ran # return the new health state per individual n.i x m
 } # close the function
 
+
+#---------------------------------------------------------------------------#
+####                    R functions for visualization                    ####
+#---------------------------------------------------------------------------#
+
 # plot density of total cost
 plot_tc <- function(tc) {
   # Histogram showing variability in individual total costs
@@ -74,36 +79,9 @@ plot_m_TR <- function(m_M) {
   
 }
 
-#-----------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a beta distribution from mean and st. deviation ####
-#-----------------------------------------------------------------------------------------------#
-#' @param m mean 
-#' @param s standard deviation
-#' 
-betaPar <- function(m, s) 
-{
-  a <- m * ((m * (1 - m) / s ^ 2) - 1)
-  b <- (1 - m) * ((m * (1 - m) / s ^ 2) - 1)
-  list(a = a, b = b)
-}
-
-#-------------------------------------------------------------------------------------------------#
-#### R function to extract the parameters of a gamma distribution from mean and st. deviation  ####
-#-------------------------------------------------------------------------------------------------#
-#' @param m mean 
-#' @param s standard deviation
-#' 
-gammaPar <- function(m, s) {   
-  # m: mean  
-  # s: standard deviation 
-  shape <- m ^ 2 / s ^ 2
-  scale <- s ^ 2 / m
-  list(shape = shape, scale = scale)
-}
-
 
 #----------------------------------------------------------------------------#
-####   Function to check if transition probability array/matrix  is valid ####
+####   Function to check if transition probability array/matrix is valid  ####
 #----------------------------------------------------------------------------#
 #' Check if transition array is valid
 #'
@@ -204,5 +182,4 @@ check_sum_of_transition_array <- function(a_P,
     }
   }
 }
-
 

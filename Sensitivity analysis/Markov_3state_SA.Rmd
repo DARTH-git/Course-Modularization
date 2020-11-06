@@ -98,7 +98,7 @@ v_init <- c(1, 0, 0)                  # initial cohort distribution
 
 # Transition probabilities
 p_HD <- 0.02                          # probability of dying when healthy
-p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying
+p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying, under standard of care
 p_HS_trt <- 0.03                      # probability of becoming sick when healthy, conditioned on not dying, under treatment
 p_SD <- 0.1                           # probability of dying when sick
 
@@ -152,12 +152,13 @@ m_M[1, ] <- m_M_trt[1, ] <- v_init         # initialize first cycle of Markov tr
 ## 04.2 Transition probability matrix
 
 ```{r}
-# create the transition probability matrix
-m_P  <- matrix(0,
-               nrow = n_states, ncol = n_states,
-               dimnames = list(v_n, v_n)) # name the columns and rows of the transition 
-                                          # probability matrix
+# create the transition probability matrices
+m_P  <- m_P_trt <- matrix(0,
+                    nrow = n_states, ncol = n_states,
+                    dimnames = list(v_n, v_n)) # name the columns and rows of the transition 
+                                              # probability matrices
 m_P
+
 ```
 
 Fill in the transition probability matrix:
@@ -207,7 +208,7 @@ Standard of Care:
 matplot(m_M, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace", lwd = 3)                 # create a plot of the data
+        main = "Cohort Trace - standard of care", lwd = 3)                 # create a plot of the data
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
@@ -220,7 +221,7 @@ Treatment:
 matplot(m_M_trt, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace", lwd = 3)                 # create a plot of the data
+        main = "Cohort Trace - treatment", lwd = 3)                 # create a plot of the data
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
@@ -439,7 +440,7 @@ twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with p
                          params_basecase = l_params_all,      # list with all parameters
                          nsamp           = 40,                # number of parameter values
                          FUN             = calculate_ce_out,  # function to compute outputs
-                         outcomes        = c("NMB"),          # output to do the TWSA on
+                         outcomes        = "NMB",             # output to do the TWSA on
                          strategies      = v_names_str,       # names of the strategies
                          n_wtp           = 2000)              # extra argument to pass to FUN
 ```
@@ -461,8 +462,8 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
   df_psa <- data.frame(
     # Transition probabilities (per cycle)
     # probability to become sick when healthy
-    p_HS     = rbeta(n_sim, 24, 450), 
-    p_HS_trt = rbeta(n_sim, 9, 281),   # under treatment
+    p_HS     = rbeta(n_sim, shape1 = 24, shape2 = 450), 
+    p_HS_trt = rbeta(n_sim, shape1 = 9,  shape2 =  281),   # under treatment
     
     # Cost vectors with length n_sim
     # cost of remaining one cycle in state H
@@ -476,9 +477,9 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
     
     # Utility vectors with length n_sim 
     # utility when healthy
-    u_H      = rbeta(n_sim, 50.4, 12.6), 
+    u_H      = rbeta(n_sim, shape1 =  50.4, shape2 = 12.6), 
     # utility when sick
-    u_S      = rbeta(n_sim, 49.5, 49.5), 
+    u_S      = rbeta(n_sim, shape1 = 49.5, shape2 = 49.5), 
     # utility when dead
     u_D      = 0                                              
   )
@@ -544,12 +545,6 @@ l_psa <- make_psa_obj(cost          = df_c,
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str, l_psa,
      file = "markov_3state_PSA_dataset.RData")
-```
-
-## 09.3 Create probabilistic analysis graphs
-
-```{r}
-load(file = "markov_3state_PSA_dataset.RData")
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.

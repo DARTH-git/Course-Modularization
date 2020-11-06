@@ -432,7 +432,7 @@ twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with p
                          params_basecase = l_params_all,      # list with all parameters
                          nsamp           = 40,                # number of parameter values
                          FUN             = calculate_ce_out,  # function to compute outputs
-                         outcomes        = c("NMB"),          # output to do the TWSA on
+                         outcomes        = "NMB",          # output to do the TWSA on
                          strategies      = v_names_str,       # names of the strategies
                          n_wtp           = 120000)            # extra argument to pass to FUN
 ```

@@ -65,19 +65,20 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 # 01 Load packages
 
-```{r, warning = FALSE, message = FALSE}
+```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack") 
+# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
 ```
 
 # 02 Load functions
 
 ```{r}
-# No function needed
+source("Functions.R")
 ```
 
 # 03 Input model parameters
@@ -93,15 +94,15 @@ n_str <- length(v_names_str)
 age     <- 25                       # age at baseline
 max_age <- 55                       # maximum age of follow up
 n_t     <- max_age - age            # time horizon, number of cycles
-v_n     <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), 
-                                    # Sick (S1), Sicker (S2), Dead (D)
-n_s     <- length(v_n)              # number of health states 
+v_n     <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
+                                    # Sicker (S2), Dead (D)
+n_states <- length(v_n)             # number of health states 
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005                    # probability to die when healthy
 p_HS1   <- 0.15          	          # probability to become sick when healthy, conditional on surviving
 p_S1H   <- 0.5           	          # probability to become healthy when sick, conditional on surviving
-p_S1S2  <- 0.105         	          # probability to become sicker when sick, conditional on surviving 
+p_S1S2  <- 0.105         	          # probability to become sicker when sick, conditional on surviving
 hr_S1   <- 3             	          # hazard ratio of death in sick vs healthy
 hr_S2   <- 10            	          # hazard ratio of death in sicker vs healthy 
 r_HD    <- - log(1 - p_HD)          # rate of death in healthy
@@ -114,7 +115,7 @@ p_S2D   <- 1 - exp(-r_S2D)          # probability to die in sicker
 c_H     <- 2000                     # cost of remaining one cycle in the healthy state
 c_S1    <- 4000                     # cost of remaining one cycle in the sick state
 c_S2    <- 15000                    # cost of remaining one cycle in the sicker state
-c_trt   <- 12000                    # cost of treatment(per cycle)
+c_trt   <- 12000                    # cost of treatment (per cycle)
 c_D     <- 0                        # cost of being in the death state
 u_H     <- 1                        # utility when healthy
 u_S1    <- 0.75                     # utility when sick
@@ -123,11 +124,33 @@ u_D     <- 0                        # utility when dead
 u_trt   <- 0.95                     # utility when being treated
 
 # Discounting factor
-d_r     <- 0.03                     # equal discount of costs and QALYs by 3%
+d_e  <- d_c <- 0.03                 # equal discount of costs and QALYs by 3%
+
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
+```
+
+## Create a state-transition diagram of the cohort model
+
+```{r}
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag["H" , "S1"] = "" 
+m_P_diag["H" , "D" ] = "" 
+m_P_diag["H" , "H" ] = "" 
+m_P_diag["S1", "H" ] = "" 
+m_P_diag["S1", "S2"] = "" 
+m_P_diag["S1", "D" ] = "" 
+m_P_diag["S1", "S1"] = "" 
+m_P_diag["S2", "D" ] = "" 
+m_P_diag["S2", "S2"] = "" 
+m_P_diag["D", "D"  ] = "" 
+layout.fig <- c(3, 1)
+
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,  
+        latex = T, arr.type = "curved", relsize = 0.9, box.prop = 0.8, 
+        cex = 0.8, box.cex = 0.9, lwd = 1)
 ```
 
 # 04 Define and initialize matrices and vectors
@@ -135,10 +158,10 @@ v_dwe   <- 1 / (1 + d_r) ^ (0:n_t)
 ## 04.1 Cohort trace
 
 ```{r}
-# create the Markov trace matrix M capturing the proportion of the cohort 
-# in each state at each cycle
+# create the markov trace matrix M capturing the proportion of the cohort in each state 
+# at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
-                               nrow     = n_t + 1, ncol = n_s,
+                               nrow     = n_t + 1, ncol = n_states,
                                dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
 
 head(m_M_notrt) # show first 6 rows of the matrix 
@@ -150,10 +173,10 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort
 ## 04.2 Transition probability matrix
 
 ```{r}
-# create the transition probability matrix for NO treatment (notrt)
+# create the transition probability matrix for NO treatment
 m_P_notrt  <- matrix(0,
-                     nrow = n_s,
-                     ncol = n_s,
+                     nrow = n_states,
+                     ncol = n_states,
                      dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
 m_P_notrt
 ```
@@ -176,6 +199,11 @@ m_P_notrt["S2", "D" ] <- p_S2D
 # from Dead
 m_P_notrt["D", "D"  ] <- 1
 
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(m_P_notrt, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_t = n_t, verbose = TRUE)
+
 # create transition probability matrix for treatment same as no treatment
 m_P_trt <- m_P_notrt
 ```
@@ -184,10 +212,10 @@ m_P_trt <- m_P_notrt
 
 ```{r}
 for (t in 1:n_t){     # loop through the number of cycles
-  m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt   # estimate the Markov trace 
-                                                          # for the next cycle (t + 1)
-  m_M_trt[t + 1, ]   <- t(m_M_trt[t, ])    %*% m_P_trt    # estimate the Markov trace 
-                                                          # for the next cycle (t + 1)
+  m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt  # estimate the Markov trace 
+                                                         # for the next cycle (t + 1)
+  m_M_trt[t + 1, ]   <- t(m_M_trt[t, ])   %*% m_P_trt    # estimate the Markov trace 
+                                                         # for the next cycle (t + 1)
 } # close the loop
 
 head(m_M_notrt)  # show the first 6 lines of the matrix
@@ -197,14 +225,14 @@ head(m_M_notrt)  # show the first 6 lines of the matrix
 
 ## 06.1 Cohort trace
 
-```{r, message=F}
+```{r, message = FALSE}
 # create a plot of the data
 matplot(m_M_notrt, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
         main = "Cohort Trace")             
 # add a legend to the graph
-legend("topright", v_n, col = 1:n_s, lty = 1:n_s, bty = "n") 
+legend("topright", v_n, col = 1:n_states, lty = 1:n_states, bty = "n") 
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -228,7 +256,7 @@ grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"),
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os_notrt)     # summing probablity of OS over time  (i.e. life expectancy)
+v_le <- sum(v_os_notrt)  # summing probability of OS over time  (i.e. life expectancy)
 ```
 
 ## 06.3 Disease prevalence
@@ -257,7 +285,7 @@ plot(0:n_t, v_prop_S1,
 
 ```{r}
 # Vectors with costs and utilities by treatment
-v_u_notrt   <- c(u_H, u_S1, u_S2, u_D)
+v_u_notrt   <- c(u_H, u_S1,  u_S2, u_D)
 v_u_trt     <- c(u_H, u_trt, u_S2, u_D)
 
 v_c_notrt   <- c(c_H, c_S1, c_S2, c_D)
@@ -290,7 +318,8 @@ v_tu_d      <- c(tu_d_notrt, tu_d_trt)
 # Dataframe with discounted costs and effectiveness
 df_ce       <- data.frame(Strategy = v_names_str,
                           Cost     = v_tc_d,
-                          Effect   = v_tu_d)
+                          Effect   = v_tu_d
+                          )
 df_ce
 ```
 
@@ -299,14 +328,15 @@ df_ce
 ```{r}
 df_cea <- calculate_icers(cost       = df_ce$Cost,
                           effect     = df_ce$Effect,
-                          strategies = df_ce$Strategy)
+                          strategies = df_ce$Strategy
+                          )
 df_cea
 ```
 
 ## 07.4 Plot frontier of the Markov model
 
 ```{r}
-plot(df_cea, effect_units = "Quality of Life", xlim = c(15.6, 16.6))
+plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```
 
 # 08 Deterministic Sensitivity Analysis
@@ -356,17 +386,17 @@ options(scipen = 999) # disabling scientific notation in R
 # dataframe containing all parameters, their basecase values, and the min and 
 # max values of the parameters of interest 
 df_params_owsa <- data.frame(pars = c("p_S1S2", "c_trt", "u_S1", "u_trt"),
-                             min  = c(0.05 ,  6000 , 0.65, 0.80), # min parameter values
-                             max  = c(0.155, 18000 , 0.85, 0.98)  # max parameter values
+                             min  = c(0.05 ,  6000 , 0.65, 0.80),  # min parameter values
+                             max  = c(0.155, 18000 , 0.85, 0.98)   # max parameter values
                              )
 
-owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,   # dataframe with parameters for OWSA
-                          params_basecase  = l_params_all,     # list with all parameters
-                          nsamp            = 100,              # number of parameter values
-                          FUN              = calculate_ce_out, # function to compute outputs
-                          outcomes         = c("NMB"),         # output to do the OWSA on
-                          strategies       = v_names_str,      # names of the strategies
-                          n_wtp            = 120000)           # extra argument to pass to FUN
+owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,    # dataframe with parameters for OWSA
+                          params_basecase  = l_params_all,      # list with all parameters
+                          nsamp            = 100,               # number of parameter values
+                          FUN              = calculate_ce_out,  # function to compute outputs
+                          outcomes         = c("NMB"),          # output to do the OWSA on
+                          strategies       = v_names_str,       # names of the strategies
+                          n_wtp            = 120000)            # extra argument to pass to FUN
 ```
 
 ## 08.3.1 Plot OWSA
@@ -395,17 +425,17 @@ owsa_tornado(owsa = owsa_nmb)
 # dataframe containing all parameters, their basecase values, and the min and 
 # max values of the parameters of interest
 df_params_twsa <- data.frame(pars = c("c_trt", "u_trt"),
-                             min  = c(6000, 0.80), # min parameter values
-                             max  = c(18000, 0.98) # max parameter values
+                             min  = c(6000, 0.80),  # min parameter values
+                             max  = c(18000, 0.98)  # max parameter values
                              )
 
-twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,   # dataframe with parameters for twsa
-                         params_basecase = l_params_all,     # list with all parameters
-                         nsamp           = 40,               # number of parameter values
-                         FUN             = calculate_ce_out, # function to compute outputs
-                         outcomes        = c("NMB"),         # output to do the twsa on
-                         strategies      = v_names_str,      # names of the strategies
-                         n_wtp           = 120000)           # extra argument to pass to FUN
+twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with parameters for TWSA
+                         params_basecase = l_params_all,      # list with all parameters
+                         nsamp           = 40,                # number of parameter values
+                         FUN             = calculate_ce_out,  # function to compute outputs
+                         outcomes        = c("NMB"),          # output to do the TWSA on
+                         strategies      = v_names_str,       # names of the strategies
+                         n_wtp           = 120000)            # extra argument to pass to FUN
 ```
 l
 ## 08.4.1 Plot TWSA
@@ -463,7 +493,9 @@ head(df_psa_input)
 ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
        facet_wrap(~Parameter, scales = "free") +
        geom_histogram(aes(y = ..density..)) +
-       theme_bw(base_size = 16)
+       scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) + 
+       theme_bw(base_size = 16) + 
+       theme(axis.text = element_text(size=6)) 
 
 # Initialize dataframes with PSA output 
 # Dataframe of costs

@@ -79,15 +79,14 @@ plot_m_TR <- function(m_M) {
   
 }
 
-
 #----------------------------------------------------------------------------#
-####   Function to check if transition probability array/matrix is valid  ####
+####   Function to check if transition probability array/matrix  is valid ####
 #----------------------------------------------------------------------------#
 #' Check if transition array is valid
 #'
 #' \code{check_transition_probability} checks if transition probabilities are in \[0, 1\].
 #'
-#' @param a_P A transition probability array or matrix.
+#' @param a_P A transition probability array.
 #' @param err_stop Logical variable to stop model run if set up as TRUE. Default = FALSE.
 #' @param verbose Logical variable to indicate print out of messages. 
 #' Default = FALSE
@@ -102,6 +101,15 @@ check_transition_probability <- function(a_P,
                                          verbose = FALSE) {
   
   a_P <- as.array(a_P)
+  
+  # Verify if a_P is 2D or 3D matrix
+  n_dim <- length(dim(a_P))
+  # If a_P is a 2D matrix, convert to a 3D array
+  if (n_dim < 3){
+    a_P <- array(a_P, dim = list(nrow(a_P), ncol(a_P), 1), 
+                 dimnames = list(rownames(a_P), colnames(a_P), "Time independent"))
+  }
+  # Check which entries are not valid
   m_indices_notvalid <- arrayInd(which(a_P < 0 | a_P > 1), 
                                  dim(a_P))
   
@@ -158,9 +166,8 @@ check_sum_of_transition_array <- function(a_P,
   # For matrix
   if (d == 2) {
     valid <- sum(rowSums(a_P))
-    if (abs(valid - n_states)> 1e-04 ) {
+    if (valid != n_states) {
       if(err_stop) {
-        browser()
         stop("This is not a valid transition Matrix")
       }
       
@@ -182,4 +189,3 @@ check_sum_of_transition_array <- function(a_P,
     }
   }
 }
-

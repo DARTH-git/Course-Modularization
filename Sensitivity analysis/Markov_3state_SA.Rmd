@@ -70,7 +70,9 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("diagram") 
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")   
+# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack")
 ```
 
 # 02 Load functions
@@ -553,7 +555,7 @@ load(file = "markov_3state_PSA_dataset.RData")
 Vector with willingness-to-pay (WTP) thresholds.
 
 ```{r}
-v_wtp <- seq(0, 50000, by = 10000)
+v_wtp <- seq(0, 5000, by = 1000)
 ```
 
 ## 09.3.1 Cost-Effectiveness Scatter plot
@@ -600,6 +602,7 @@ plot(ceac_obj)
 ```
 
 ## 09.4.3 Expected Loss Curves (ELCs)
+
 The expected loss is the the quantification of the foregone benefits when choosing a suboptimal strategy given current evidence.
 
 ```{r}
@@ -616,7 +619,4 @@ evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
 plot(evpi, effect_units = "QALY")
 ```
-
-
-
 

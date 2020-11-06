@@ -67,19 +67,18 @@ rm(list = ls()) # clear memory (removes all the variables from the workspace)
 
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
-
 # load (install if required) packages from CRAN
 p_load("here", "devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr")
-
 # load (install if required) packages from GitHub
-#install_github("DARTH-git/dampack", force = TRUE) # (Un)comment if there is a newer version
-p_load_gh("DARTH-git/dampack")
+# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
+# install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No functions needed
 ```
 
 # 03 Input model parameters

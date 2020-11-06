@@ -58,11 +58,6 @@ and adapted with proper attribution.
 
 \newpage
 
-```{r, include=F}
-# Change to eval = T
-knitr::opts_chunk$set(eval = F)
-```
-
 ```{r}
 rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
@@ -71,17 +66,18 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
- # load (install if required) packages from CRAN
- p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
- # load (install if required) packages from GitHub
- # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
- p_load_gh("DARTH-git/dampack") 
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
+# install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -109,7 +105,7 @@ p_S1S2  <- 0.105                  # probability of becoming sicker when sick
 # load age dependent probability
 p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle 
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
@@ -136,7 +132,7 @@ u_Trt   <- 0.95             # utility when sick(er) and being treated
 
 ```{r}
 # your turn
-v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline 
+
 ```
 
 ## 04.2 Dynamic characteristics 
@@ -146,48 +142,14 @@ v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at bas
      
 ```
 
-## 04.3 Create a dataframe with the individual characteristics 
-```{r}
-df_X    <- #data.frame( # ADD ALL CHARACTERISTICS ) 
-```
-
 # 05 Define Simulation Functions
-
-There is no need to make two functions for each strategy. We recomment to make one `Probs()`, one `Cost()` and one `Effs()` function and have an function argument `Trt = FALSE` which you "switch" on and off of the strategy of interest. 
-
-Please see the example below:
-
-```{r}
-cost_stay <- function (days = 0, Trt = FALSE) {
-  # days: days an individual is staying in a care facility
-  # Trt:  is the individual treated? (default is FALSE) 
-  
-  c_stay_day <- 100   # the price to stay a day at the care facility
-  c_Trt <- 3000       # the price of treatment, total price for drug. Drug requires one dose
-  
-  cost <- c_stay_day * days + Trt * c_Trt
-
-  return(cost)       # return the pric e
-}
-
-cost_stay_noTrt <- cost_stay(days = 10, Trt = FALSE) # run the function for the no treatment strategy
-cost_stay_Trt   <- cost_stay(days = 10, Trt = TRUE) # run the function for the treatment strategy
-
-cost_stay_noTrt
-cost_stay_Trt
-
-```
-
 
 ## 05.1 Probability function
 
 The function that updates the transition probabilities of every cycle is shown below.
-Please make sure you correctly incorporate the time dependency
 
 ```{r}
 # your turn
-
-# In this function you have to incorporate age specific mortaility and incorporate the change in probability of the years spend in the sick state
 
 ```
 
@@ -198,23 +160,18 @@ The `Costs` function estimates the costs at every cycle.
 ```{r}
 # your turn
 
-# Make sure you incorporate the cost of the treatment in the treatment strategy
 ```
 
 ## 05.3 Health outcome function
 
 The `Effs` function to update the utilities at every cycle.
 
-
 ```{r}
 # your turn
 
-# Make sure you incorporate the treatment effect modifier 
 ```
 
 # 06 Run Microsimulation
-
-You have to run the function twice. Once for the treatment strategy and once of the no-treatment strategy
 
 ```{r}
 # your turn
@@ -234,3 +191,62 @@ You have to run the function twice. Once for the treatment strategy and once of 
 # your turn
 
 ```
+
+# 09 Probabilistic Sensitivity Analysis (PSA)
+
+```{r}
+# your turn
+
+```
+
+## 09.1 Load function of microsimulation model
+
+```{r}
+# your turn
+
+```
+
+## 09.2 Run microsimulation model on each parameter set of PSA input dataset
+
+```{r}
+# your turn
+
+```
+
+## 09.3 Cost Effectiveness Analysis
+
+Vector with willingness-to-pay (WTP) thresholds
+
+```{r}
+# your turn
+
+```
+
+## 09.3.1 ICER
+
+```{r}
+# your turn
+
+```
+
+## 09.3.2 Cost-Effectiveness Acceptability Curves (CEAC) and Frontier (CEAF)
+
+```{r}
+# your turn
+
+```
+
+## 09.3.3 Cost-Effectiveness Scatter plot
+
+```{r}
+# your turn
+
+```
+
+## 09.3.4 Expected Value of Perfect Information (EVPI)
+
+```{r}
+# your turn
+
+```
+

@@ -71,12 +71,14 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
 p_load("diagram") 
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -261,10 +263,10 @@ v_te_d <-  t(v_tu) %*% v_dwe
 ## 07.3 Store Results
 
 ```{r}
-df_ce <- data.frame( "Total Discounted Cost" = v_tc_d, 
-                       "Life Expectancy" = v_le, 
-                       "Total Discounted QALYs" = v_te_d, 
-                       check.names = F)
+df_ce <- data.frame("Total Discounted Cost" = v_tc_d, 
+                    "Life Expectancy" = v_le, 
+                    "Total Discounted QALYs" = v_te_d, 
+                     check.names = F)
 df_ce
 ```
 

@@ -451,12 +451,12 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
   set.seed(seed) # set a seed to be able to reproduce the same results
   df_psa <- data.frame(
     # Transition probabilities (per cycle)
-    p_HS1   = rbeta(n_sim, 30, 170),        # probability to become sick when healthy
-    p_S1H   = rbeta(n_sim, 60, 60) ,        # probability to become healthy when sick
-    p_S1S2  = rbeta(n_sim, 84, 716),        # probability to become sicker when sick
-    p_HD    = rbeta(n_sim, 10, 1990),       # probability to die when healthy
-    hr_S1   = rlnorm(n_sim, log(3),  0.01), # rate ratio of death in S1 vs healthy
-    hr_S2   = rlnorm(n_sim, log(10), 0.02), # rate ratio of death in S2 vs healthy 
+    p_HS1   = rbeta(n_sim, alpha = 30, beta = 170),     # probability to become sick when healthy
+    p_S1H   = rbeta(n_sim, alpha = 60, beta = 60) ,     # probability to become healthy when sick
+    p_S1S2  = rbeta(n_sim, alpha = 84, beta = 716),     # probability to become sicker when sick
+    p_HD    = rbeta(n_sim, alpha = 10, beta = 1990),    # probability to die when healthy
+    hr_S1   = rlnorm(n_sim, meanlog = log(3),  sdlog = 0.01),  # rate ratio of death in S1 vs healthy
+    hr_S2   = rlnorm(n_sim, meanlog = log(10), sdlog = 0.02),  # rate ratio of death in S2 vs healthy 
     
     # State rewards
     # Costs

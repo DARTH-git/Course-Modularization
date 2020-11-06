@@ -377,7 +377,7 @@ source("Functions_markov_sick-sicker_sol.R")
 # Test function
 calculate_ce_out(l_params_all)
 ```
-
+B
 ## 08.3 One-way sensitivity analysis (OWSA)
 
 ```{r}

@@ -75,7 +75,7 @@ include_graphics("sick_sicker_diagram.png")
 
 ## Tasks (COMPLETED)
 
-1.	Build the Markov model in `R` for no treatment and treatment strategies.
+1.	Build the cohort state transition  model in `R` for no treatment and treatment strategies.
 
 1.	Plot the survival curve for the cohort under no treatment.
 
@@ -119,7 +119,7 @@ include_graphics("sick_sicker_diagram.png")
 
 # Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
 
-This exercise continues based on the time-homogeneous deterministic Markov model of the Sick-Sicker model from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
+This exercise continues based on the time-homogeneous deterministic cohort state transition  "Sick-Sicker" model from Exercise I. In this exercise, you will build a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. Table II describes the distributions for the variables you used in the previous exercise.
 
 **Table II: Input parameters for probabilistic analysis**
 

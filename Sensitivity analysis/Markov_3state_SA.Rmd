@@ -463,13 +463,11 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
     # Transition probabilities (per cycle)
     # probability to become sick when healthy
     p_HS     = rbeta(n_sim, shape1 = 24, shape2 = 450), 
-    p_HS_trt = rbeta(n_sim, shape1 = 9,  shape2 =  281),   # under treatment
-    p_HS     = rbeta(n_sim, alpha = 24, beta = 450), 
-    p_HS_trt = rbeta(n_sim, alpha = 9, beta =281),   # under treatment
+    p_HS_trt = rbeta(n_sim, shape1 = 9,  shape2 = 281),   # under treatment
     # probability of dying when healthy
-    p_HD     = rbeta(n_sim, alpha = 16, beta = 767),
+    p_HD     = rbeta(n_sim, shape1 = 16, shape2 = 767),
     # probability of dying when sick
-    p_SD     = rbeta(n_sim, alpha = 22.4, beta = 201.6), 
+    p_SD     = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6), 
 
     # Cost vectors with length n_sim
     # cost of remaining one cycle in state H

@@ -66,17 +66,18 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
- # load (install if required) packages from CRAN
- p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
- # load (install if required) packages from GitHub
- # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
- p_load_gh("DARTH-git/dampack") 
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
+# install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here("functions", "Functions.R"))
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -102,9 +103,9 @@ p_S1S2  <- 0.105                  # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv(here("data", "mortProb_age.csv"))
+p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv(here("data", "MyPopulation-AgeDistribution.csv")) 
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
 
 p_S1D    <- 0.0149          # probability to die in S1 by cycle 
 p_S2D    <- 0.048           # probability to die in S2

@@ -71,13 +71,14 @@ p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", 
        "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack") 
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here::here("functions","Functions.R"))
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -278,7 +279,7 @@ l_params_all <- as.list(data.frame(
 ## 08.2 Load Sick-Sicker Markov model function
 
 ```{r}
-source(here::here("functions", "Functions_markov_sick-sicker_tunnels.R"))
+source("Functions_markov_sick-sicker_tunnels.R")
 
 ```
 

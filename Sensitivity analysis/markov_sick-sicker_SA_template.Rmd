@@ -71,7 +71,8 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack") 
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools") 
 ```
 
 # 02 Load functions
@@ -338,10 +339,7 @@ l_params_all <- as.list(data.frame(
 ))
 
 # store the parameter names into a vector
-v_names_params <- c('p_HD', 'p_HS1', 'p_S1H', 'p_S1S2', 'hr_S1', 'hr_S2', 
-                    'c_H', 'c_S1', 'c_S2', 'c_trt', 'c_D', 
-                    'u_H', 'u_S1', 'u_S2', 'u_D', 'u_trt', 
-                    'd_e', 'd_c')
+v_names_params <- names(l_params_all)
 ```
 
 ## 08.2 Load Sick-Sicker Markov model function

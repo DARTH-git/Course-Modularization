@@ -67,17 +67,17 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", 
-       "reshape2", "knitr")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack") 
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here("functions","Functions.R"))
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -107,7 +107,7 @@ n_s_td      <- length(v_n_td)                   # number of states
 
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file
-lt_usa_2005 <- read.csv(here("data", "HMD_USA_Mx_2015.csv"))
+lt_usa_2005 <- read.csv("HMD_USA_Mx_2015.csv")
 v_r_HD <- lt_usa_2005 %>% 
   filter(Age >= age & Age <= (max_age-1)) %>%
   select(Total) %>%
@@ -398,7 +398,7 @@ v_names_params <- c('p_HS1', 'p_S1H', 'hr_S1', 'hr_S2', 'c_H', 'c_S1', 'c_S2', '
 ## 08.2 Load Sick-Sicker Markov model function
 
 ```{r}
-source(here("functions", "Functions_markov_sick-sicker_tunnels.R"))
+source("Functions_markov_sick-sicker_tunnels.R")
 # Test function
 calculate_ce_out(l_params_all)
 ```
@@ -574,13 +574,13 @@ l_psa <- make_psa_obj(cost          = df_c,
 ```{r}
 save(df_psa_input, df_c, df_e, v_names_str, n_str,
      l_psa,
-     file = here("output", "markov_sick-sicker_tunnels_PSA_dataset.RData"))
+     file = "markov_sick-sicker_tunnels_PSA_dataset.RData")
 ```
 
 ## 09.3 Create probabilistic analysis graphs
 
 ```{r}
-load(file = here("output", "markov_sick-sicker_tunnels_PSA_dataset.RData"))
+load(file = "markov_sick-sicker_tunnels_PSA_dataset.RData")
 ```
 
 Vector with willingness-to-pay (WTP) thresholds.
@@ -610,12 +610,10 @@ df_cea_psa
 # Save CEA table with ICERs
 # As .RData
 save(df_cea_psa, 
-     file = here("tables", 
-                 "markov_sick-sicker_tunnels_probabilistic_CEA_results.RData"))
+     file = "markov_sick-sicker_tunnels_probabilistic_CEA_results.RData")
 # As .csv
 write.csv(df_cea_psa, 
-          file = here("tables", 
-                      "markov_sick-sicker_tunnels_probabilistic_CEA_results.csv"))
+          file = "markov_sick-sicker_tunnels_probabilistic_CEA_results.csv")
 ```
 
 ## 09.4.1 Plot cost-effectiveness frontier

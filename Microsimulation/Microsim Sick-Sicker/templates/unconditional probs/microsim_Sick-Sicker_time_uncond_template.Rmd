@@ -1,6 +1,6 @@
 ---
-title: 'Microsimulation Sick-Sicker model'
-subtitle: 'Includes individual characteristics: age, age dependent mortality probabilities, individual treatment effect modifyer'
+title: 'Microsimulation Sick-Sicker model with time dependency with PSA'
+subtitle: 'Includes individual characteristics: age, age dependent mortality probabilities, individual treatment effect modifyer, time dependency for the sick (S1) state, increasing change of death in the first 6 year of sickness (tunnel)'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -58,6 +58,11 @@ and adapted with proper attribution.
 
 \newpage
 
+```{r, include=F}
+# Change to eval = T
+knitr::opts_chunk$set(eval = F)
+```
+
 ```{r}
 rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
@@ -66,9 +71,9 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
- # load (install if required) packages from CRAN
- p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
- # load (install if required) packages from GitHub
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
@@ -89,7 +94,7 @@ set.seed(1)  # set the seed
 n_t   <- 30                       # time horizon, 30 cycles
 n_i   <- 100000                   # number of simulated individuals
 v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)         # the number of health states
+n_s   <- length(v_n)              # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names
@@ -107,8 +112,9 @@ p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
 dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
 
-p_S1D    <- 0.0149          # probability to die in S1 by cycle 
-p_S2D    <- 0.048           # probability to die in S2 by cycle
+# probability to die in S1 by cycle 
+p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
+p_S2D    <- 0.048           # probability to die in S2
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
@@ -122,7 +128,7 @@ u_H     <- 1                # utility when healthy
 u_S1    <- 0.75             # utility when sick 
 u_S2    <- 0.5              # utility when sicker
 u_D     <- 0                # utility when dead
-u_Trt   <- 0.95             # utility when sick and being treated
+u_Trt   <- 0.95             # utility when sick(er) and being treated
 ```
 
 # 04 Sample individual level characteristics
@@ -131,24 +137,58 @@ u_Trt   <- 0.95             # utility when sick and being treated
 
 ```{r}
 # your turn
-
+v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline 
 ```
 
 ## 04.2 Dynamic characteristics 
 
 ```{r}
 # your turn
-  
+     
+```
+
+## 04.3 Create a dataframe with the individual characteristics 
+```{r}
+df_X    <- #data.frame( # ADD ALL CHARACTERISTICS ) 
 ```
 
 # 05 Define Simulation Functions
 
+There is no need to make two functions for each strategy. We recomment to make one `Probs()`, one `Cost()` and one `Effs()` function and have an function argument `Trt = FALSE` which you "switch" on and off of the strategy of interest. 
+
+Please see the example below:
+
+```{r}
+cost_stay <- function (days = 0, Trt = FALSE) {
+  # days: days an individual is staying in a care facility
+  # Trt:  is the individual treated? (default is FALSE) 
+  
+  c_stay_day <- 100   # the price to stay a day at the care facility
+  c_Trt <- 3000       # the price of treatment, total price for drug. Drug requires one dose
+  
+  cost <- c_stay_day * days + Trt * c_Trt
+
+  return(cost)       # return the pric e
+}
+
+cost_stay_noTrt <- cost_stay(days = 10, Trt = FALSE) # run the function for the no treatment strategy
+cost_stay_Trt   <- cost_stay(days = 10, Trt = TRUE) # run the function for the treatment strategy
+
+cost_stay_noTrt
+cost_stay_Trt
+
+```
+
+
 ## 05.1 Probability function
 
 The function that updates the transition probabilities of every cycle is shown below.
+Please make sure you correctly incorporate the time dependency
 
 ```{r}
 # your turn
+
+# In this function you have to incorporate age specific mortaility and incorporate the change in probability of the years spend in the sick state
 
 ```
 
@@ -159,18 +199,23 @@ The `Costs` function estimates the costs at every cycle.
 ```{r}
 # your turn
 
+# Make sure you incorporate the cost of the treatment in the treatment strategy
 ```
 
 ## 05.3 Health outcome function
 
 The `Effs` function to update the utilities at every cycle.
 
+
 ```{r}
 # your turn
 
+# Make sure you incorporate the treatment effect modifier 
 ```
 
 # 06 Run Microsimulation
+
+You have to run the function twice. Once for the treatment strategy and once of the no-treatment strategy
 
 ```{r}
 # your turn
@@ -190,4 +235,3 @@ The `Effs` function to update the utilities at every cycle.
 # your turn
 
 ```
-

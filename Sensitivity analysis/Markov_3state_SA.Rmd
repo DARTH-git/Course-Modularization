@@ -72,13 +72,14 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 # load (install if required) packages from CRAN
 p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")   
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack")
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No function needed
 ```
 
 # 03 Input model parameters
@@ -208,7 +209,7 @@ Standard of Care:
 matplot(m_M, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace - standard of care", lwd = 3)                 # create a plot of the data
+        main = "Cohort Trace - standard of care", lwd = 3)  # create a plot of the data
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
@@ -221,7 +222,7 @@ Treatment:
 matplot(m_M_trt, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace - treatment", lwd = 3)                 # create a plot of the data
+        main = "Cohort Trace - treatment", lwd = 3)     # create a plot of the data
 legend("right", v_n, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 

@@ -66,17 +66,18 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
- # load (install if required) packages from CRAN
- p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
- # load (install if required) packages from GitHub
- # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
- p_load_gh("DARTH-git/dampack") 
+# load (install if required) packages from CRAN
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
+# install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("Functions.R")
+# No functions needed
 ```
 
 # 03 Input model parameters
@@ -233,7 +234,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
     # calculate the transition probabilities for the cycle based on health state t
     m_P <- Probs(m_M[, t], df_X)        
     # sample the current health state and store that state in matrix m_M 
-    m_M[, t + 1]  <- samplev(m_P, 1)       
+    m_M[, t + 1]  <- samplev(m_P)       
     m_C[, t + 1]  <- Costs(m_M[, t + 1])   # calculate costs 
     m_E[, t + 1]  <- Effs (m_M[, t + 1])   # calculate QALYs 
     

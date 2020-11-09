@@ -74,16 +74,11 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# package used to call files from different folders within the project folder
-if (!require('here')) install.packages('here'); library(here)
-# calibration functionality
-if (!require('lhs'))  install.packages('lhs') ; library(lhs)
-
-# visualization
-if (!require('plotrix')) install.packages('plotrix') ; library(plotrix)
-if (!require('psych'))   install.packages('psych')   ; library(psych)
-# now that we have three inputs to estimate, we'll need higher dimension visualization
-if (!require('scatterplot3d')) install.packages('scatterplot3d'); library(scatterplot3d)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("lhs", "plotrix", "psych", "scatterplot3d")  
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/darthtools")
 ```
 
 # 02 Load target data

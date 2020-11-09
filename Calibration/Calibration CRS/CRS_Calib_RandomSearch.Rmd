@@ -75,12 +75,9 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-# calibration functionality
-if (!require('lhs'))     install.packages('lhs')    ; library(lhs)
-
-# visualization
-if (!require('plotrix')) install.packages('plotrix'); library(plotrix)
-if (!require('psych'))   install.packages('psych')  ; library(psych)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("lhs", "plotrix", "psych")
 ```
 
 # 02 Load target data

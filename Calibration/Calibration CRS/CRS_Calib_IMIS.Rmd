@@ -75,10 +75,7 @@ Goodness-of-fit measure: Sum of Log-Likelihood
 # 01 Load packages
 
 ```{r, warning=F, message=F}
-if (!require('pacman')) {
-  install.packages('pacman')
-}
-library(pacman) # use this package to conveniently install other packages
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
 p_load("lhs", "IMIS", "matrixStats", "plotrix", "psych")  
 ```

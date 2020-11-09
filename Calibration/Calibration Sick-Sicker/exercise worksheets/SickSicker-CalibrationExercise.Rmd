@@ -1,7 +1,7 @@
 ---
-title: "Cost-Effectiveness and Decision Modeling in R"
+title: "Decision Modeling for Publich Health"
 author: "The DARTH workgroup"
-subtitle: Exercises – Microsimulation models 
+subtitle: Exercises – Calibration 
 output:
   pdf_document: default
   word_document: default
@@ -68,11 +68,11 @@ There are three calibration targets to be used in this example: (1) observed sur
 
 ## Tasks
 
-1. Use the `R` script “SickSicker_CalibTemplate.R” as a starting point to code the calibration of the Sick-Sicker.
+1. Use the `R` script `SickSicker_CalibTemplate.R` as a starting point to code the calibration of the Sick-Sicker.
 
- - Load and plot the calibration target data stored in “SickSicker_CalibTargets.RData”.
+ - Load and plot the calibration target data stored in `SickSicker_CalibTargets.RData`.
  
- - Source the file, “SickSicker_MarkovModel_Function.R”, which contains the Sick-Sicker model function, run_sick_sicker_markov(). This function takes in a vector of three parameters, `c(p_S1S2, hr_S1, hr_S2)`, and returns model outputs corresponding to the calibration targets. Try using the model function and look at the output.
+ - Source the file, `SickSicker_MarkovModel_Function.R`, which contains the Sick-Sicker model function, `run_sick_sicker_markov()`. This function takes in a vector of three parameters, `c(p_S1S2, hr_S1, hr_S2)`, and returns model outputs corresponding to the calibration targets. Try using the model function and look at the output.
  
 2. Implement the calibration of the Sick-Sicker model using random search with 1000 random samples. Copy code from the calibration of the 3-state model, modifying where necessary. Remember that the Sick-Sicker model needs to be calibrated to three different targets (instead of one) by varying three different inputs (instead of two).
 
@@ -124,8 +124,7 @@ There are three calibration targets to be used in this example: (1) observed sur
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
 
 ```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
-if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
-include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+include_graphics("sick_sicker_diagram.png")
 ```
 

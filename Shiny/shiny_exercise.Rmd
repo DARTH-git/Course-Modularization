@@ -64,7 +64,9 @@ Now we switch to the **UI**,
 
 To finalize the App, the command `shinyApp(ui = ui, server = server)` is inserted at the very end.
 
-**EXERCISE 2** Follow the steps below to build a Shiny App that makes stratified boxplots for the Framingham data:
+**EXERCISE 2** Follow the steps below to build a Shiny App that hosts our simple 3-state Markov model with modifiable input parameters.
+
+- Make sure to download all relevant files including `Function_MicroSim_3state.R`, `functions_input.R`, `ShinyApp.R`.
 
 - Open up `ShinyApp.R`.
 

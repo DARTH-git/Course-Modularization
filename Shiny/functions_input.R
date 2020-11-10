@@ -1,5 +1,12 @@
+# this function generates parameters for the microsimulation model
+# STEPS:
+# 1) define all initial input in a list 
+# 2) modify this input based on shiny values
+# 3) process the inital parameter input to generate the final model input
+
 generate_params <- function(input_list){
-  
+ 
+# 1) Define all initial parameter input in a list   
 init_params <- list(
   v_n         = c("healthy", "sick", "dead"),  # vector with state names
   n_t         = 60,                            # number of cycles
@@ -21,9 +28,12 @@ init_params <- list(
   u_S         = 0.85,  # utility when sick 
   u_D         = 0     # utility when dead
 )
-# which input varialbes need to be replaced based on shiny input? 
-init_params = modifyList(init_params,input_list)
-# parameters that rely on the input 
+
+# 2) replace initial values with Shiny parameter values
+init_params <- modifyList(init_params,input_list)
+
+
+# 2) process parameter values to generate the final model input
 process_params<- with(init_params,{
   list(
 n_states    = length(v_n),                   # number of states
@@ -46,5 +56,6 @@ v_M_init    = rep("healthy", times = n_i)   ,
 v_Ts_init   = rep(0, n_i)  # a vector with the time of being sick at the start of the model  
 )})
 
+# return the finla model inputs
 return(c(init_params,process_params))
 }

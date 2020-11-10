@@ -29,10 +29,9 @@ p_load("shiny", "dplyr", "devtools")
 # install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
 
-
 # load functions that are useful  for:
 source("Function_MicroSim_3state.R")  # execution of Microsimulation 
-source("Functions_Input.R")    # handling input
+source("Functions_Input.R")           # handling input
 
 # Define UI for application that presents the results of the 3-state model
 # this is the "layout of the 
@@ -51,13 +50,13 @@ h3("A Simple Example of R Shiny capabilities"),
           h2("Input parameters", align = "center"),
           br(),
           br(),
-          sliderInput(inputId = "p_HS",
-                        label = "Probability of transitioning from \"Healthy\" to \"Sick\" :",
-                        min   = 0,
-                        max   = 1,
-                        value = 0.2),
-           numericInput(inputId = "n_i",
-                        label    =  "Number of Individuals to simulate",
+          sliderInput(inputId    = "p_HS",
+                        label    = "Probability of transitioning from \"Healthy\" to \"Sick\" :",
+                        min      = 0,
+                        max      = 1,
+                        value    = 0.2),
+           numericInput( inputId = "n_i",
+                         label   =  "Number of Individuals to simulate",
                          min     = 2,
                          max     = 10000,
                          value   = 1000 ),
@@ -66,11 +65,11 @@ h3("A Simple Example of R Shiny capabilities"),
                          min     = 2,
                          max     = 100,
                          value   = 30 ),
-           sliderInput( inputId = "c_S",
+           sliderInput( inputId  = "c_S",
                          label   =  "Cost in the Sick State",
                          min     = 100,
                          max     = 1000,
-                         value    = 500)),
+                         value   = 500)),
     # Presetn a trace plot in the main panel together with the table of results
         mainPanel(
           br(),
@@ -101,13 +100,12 @@ server <- function(input, output) {
 
 # generate Markov Trace plot based on a (modified) plot_m_TR
         plot_m_TR_shiny(run_sim$Trace, params)
-        
     })
  
 # the second object in the output list is the table of results. We use the function renderTable to grab the results table.
  
  output$results <- renderTable(expr ={
-   # we load all input parameters that will be used in the model. For more details on how we do that please see file "Functions_Input.R" 
+     # we load all input parameters that will be used in the model. For more details on how we do that please see file "Functions_Input.R" 
    
      params  <- generate_params(input) 
      
@@ -117,8 +115,6 @@ server <- function(input, output) {
      # here we print the data frame with the results .
      run_sim$df_ce
  })
-
-
 }
 
 # Run the application 

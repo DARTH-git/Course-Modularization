@@ -23,7 +23,6 @@ init_params <- list(
 )
 # which input varialbes need to be replaced based on shiny input? 
 init_params = modifyList(init_params,input_list)
-
 # parameters that rely on the input 
 process_params<- with(init_params,{
   list(

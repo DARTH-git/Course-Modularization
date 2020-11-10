@@ -95,7 +95,7 @@ server <- function(input, output) {
         run_sim <- calculate_ce_out(params)
 
 # generate Markov Trace plot based on a (modified) plot_m_TR
-        plot_m_TR(run_sim$Trace, params)
+        plot_m_TR_shiny(run_sim$Trace, params)
         
     })
  

@@ -18,10 +18,6 @@
 # 5 University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
 # 6 The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
 
-
-
-
-
 calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
   with(as.list(l_params_all), {
     

@@ -22,13 +22,16 @@
 rm(list=ls())
 
 # load libraries
-library(shiny)
-library(dplyr)
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("dplyr", "devtools", "shiny")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/darthtools")
 
 # load functions that are useful  for:
 source("Function_MicroSim.R")  # execution of Microsimulation 
 source("Functions_Input.R")    # handling input
-source("Functions.R")          # general functions 
 
 # Define UI for application that presents the results of the 3-state model
 # this is the "layout of the 

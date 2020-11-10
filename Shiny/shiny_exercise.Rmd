@@ -66,15 +66,11 @@ To finalize the App, the command `shinyApp(ui = ui, server = server)` is inserte
 
 **EXERCISE 2** Follow the steps below to build a Shiny App that makes stratified boxplots for the Framingham data:
 
-- Open up the Shiny App file `app.R` in the "framingham" folder.
+- Open up `ShinyApp.R`.
 
-- You will see that we have selected the categorical variables (the `x`'s) that we wish to stratify our continuous variables (the `y`'s) by. 
+- `sliderInput()` creates a slider with minimum and maximum default values.
 
-- `selectInput()` provides a dropdown menu with different user-defined selections.
-
-- Create a dropdown menu for the continuous variables. Include age, sex, current smoking status, diabetic status, prevalent myocardial infarction status and prevalent stroke status.
-
-- Write the code to draw the boxplot under the comment "draw the boxplot of y stratified by x". Make sure you have appropriate labels for the axes and different colours for the boxplots.
+- Create one such slider input for the parameter `c_S` (cost of being in the sick state) with minimum value = 1000, maximum value = 10000 and initial value = 5000.
 
 - Run the App and test it.
 

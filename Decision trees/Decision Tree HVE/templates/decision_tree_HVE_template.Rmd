@@ -71,16 +71,16 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 # load (install if required) packages from CRAN
 p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                               
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source(here('functions','Functions.R'))
+
+# all functions in the darthtools package
 ```
+
 
 # 03 Define parameter input values
 
@@ -119,9 +119,9 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
                  (1 - p_HVE) *      p_OVE_comp  ,  # OVE, complications
                  (1 - p_HVE) * (1 - p_OVE_comp))   # OVE, no complications
   
-  v_w_tx     # <-  your turn
+  # v_w_tx      <-  your turn
     
-  v_w_biopsy # <-  your turn
+  # v_w_biopsy  <-  your turn
     
   # Create vector of outcomes (QALYs) for each strategy 
   
@@ -130,9 +130,9 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
                      q_VE_comp ,  # OVE, complications
                      q_VE)        # OVE, no complications
   
-  v_qaly_tx     # <-  your turn
-    
-  v_qaly_biopsy # <-  your turn
+  # v_qaly_tx      <-  your turn
+     
+  # v_qaly_biopsy  <-  your turn
   
   
   # Create vector of costs for each strategy 
@@ -142,9 +142,9 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
                      c_VE_comp ,  # OVE, complications
                      c_VE)        # OVE, no complications
   
-  v_cost_tx     # <-  your turn
+  # v_cost_tx      <-  your turn
     
-  v_cost_biopsy # <-  your turn 
+  # v_cost_biopsy  <-  your turn 
   
   # Calculate total utilities for each strategy ####
   total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      

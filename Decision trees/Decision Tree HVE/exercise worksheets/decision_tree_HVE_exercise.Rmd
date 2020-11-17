@@ -3,9 +3,9 @@ title: "Decision Modeling in R workshop"
 author: "The DARTH workgroup"
 subtitle: Decision Tree Exercise
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:

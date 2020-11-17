@@ -41,9 +41,9 @@ n_states    = length(v_n),                   # number of states
 p_SD        = c(p_SD1_5, rep(p_SD6, n_t - 5)) ,
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc       = 1 / (1 + d_e) ^ (0:n_t) ,
+v_dwc       = 1 / (1 + d_c) ^ (0:n_t) ,
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe       = 1 / (1 + d_c) ^ (0:n_t) ,
+v_dwe       = 1 / (1 + d_e) ^ (0:n_t) ,
 #### Deterministic analysis ####
 
 # Transition probabilities 

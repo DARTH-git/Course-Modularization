@@ -69,7 +69,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                               
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph" , "ggraph", "reshape2", "knitr", "stringr")                                               
 # load (install if required) packages from GitHub
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
@@ -93,7 +93,7 @@ p_HVE_comp     <- 0.71   # complications with untreated HVE
 p_OVE_comp     <- 0.01   # complications with untreated OVE
 p_HVE_comp_tx  <- 0.36   # complications with treated HVE
 p_OVE_comp_tx  <- 0.20   # complications with treated OVE
-p_biopsy_death <- 0.005  # probability of death due to biopsy
+p_biopsy_death <- 0.05  # probability of death due to biopsy
 
 # Costs
 c_VE           <- 1200   # cost of viral encephalitis care without complications
@@ -174,15 +174,18 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 ## 05 Cost-Effectiveness Analysis
 
 ```{r, eval = TRUE, echo = FALSE}
-# your turn
-
+# create the transition probability matrix for NO treatment
+decision_tree_HVE_cea  <- calculate_icers(cost       = df_output$Cost,
+                                          effect     = df_output$Effect,
+                                          strategies = df_output$Strategy)
+decision_tree_HVE_cea
 
 ```
 
 ## 05.1 Plot frontier of Decision Tree
 
 ```{r}
-# your turn
+plot(decision_tree_HVE_cea, effect_units = "QALYs", label="all")
 
 ```
 

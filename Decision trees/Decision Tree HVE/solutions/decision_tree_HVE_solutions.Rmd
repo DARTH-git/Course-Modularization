@@ -68,7 +68,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                               
+p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph",  "ggraph", "reshape2", "knitr", "stringr")                                               
 # load (install if required) packages from GitHub
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
@@ -76,7 +76,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 02 Load functions
 
 ```{r}
-# all functions are in the darthtools package
+# all functions are in the darthtools package so no need for additional functions
 ```
 
 # 03 Define parameter input values
@@ -92,7 +92,7 @@ p_HVE_comp     <- 0.71   # complications with untreated HVE
 p_OVE_comp     <- 0.01   # complications with untreated OVE
 p_HVE_comp_tx  <- 0.36   # complications with treated HVE
 p_OVE_comp_tx  <- 0.20   # complications with treated OVE
-p_biopsy_death <- 0.005  # probability of death due to biopsy
+p_biopsy_death <- 0.05  # probability of death due to biopsy
 
 # Costs
 c_VE           <- 1200   # cost of viral encephalitis care without complications
@@ -105,21 +105,11 @@ q_VE           <- 20     # remaining QALYs for those without VE-related complica
 q_VE_comp      <- 19     # remaining QALYs for those with VE-related complications
 q_loss_biopsy  <- 0.01   # one-time  QALY loss due to brain biopsy
 q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
-
-# store the parameters into a list
-l_params_all <- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_death, 
-                                   c_VE, c_VE_comp, c_tx, c_biopsy, 
-                                   q_VE, q_VE_comp, q_loss_biopsy))
-# store the names of the parameters into a vector
-v_names_params <- c('p_HVE', 'p_HVE_comp', 'p_OVE_comp', 'p_HVE_comp_tx', 'p_OVE_comp_tx', 'p_biopsy_death', 
-                    'c_VE', 'c_VE_comp',  'c_tx', 'c_biopsy', 'q_VE', 'q_VE_comp', 'q_loss_biopsy')
 ```
 
 # 04 Create and run decision tree model
 
 ```{r}
-decision_tree_HVE_output <- with(as.list(l_params_all), {
-  
   # Create vector of weights for each strategy 
   
   v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
@@ -208,11 +198,8 @@ decision_tree_HVE_output <- with(as.list(l_params_all), {
                           Cost     =  v_total_cost,
                           Effect   =  v_total_qaly,
                           NMB      =  v_nmb)
-  return(df_output)
-})
 
 # model output
-decision_tree_HVE_output
 ```
 
 
@@ -220,9 +207,9 @@ decision_tree_HVE_output
 
 ```{r}
 # create the transition probability matrix for NO treatment
-decision_tree_HVE_cea  <- calculate_icers(cost       = decision_tree_HVE_output$Cost,
-                                          effect     = decision_tree_HVE_output$Effect,
-                                          strategies = decision_tree_HVE_output$Strategy)
+decision_tree_HVE_cea  <- calculate_icers(cost       = df_output$Cost,
+                                          effect     = df_output$Effect,
+                                          strategies = df_output$Strategy)
 decision_tree_HVE_cea
 ```
 

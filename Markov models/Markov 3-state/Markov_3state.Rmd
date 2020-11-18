@@ -95,7 +95,7 @@ n_str <- length(v_names_str)
 v_n  <- c("Healthy", "Sick", "Dead")  # state names
 n_states  <- length(v_n)              # number of states
 n_t  <- 60                            # number of cycles
-v_init <- c(1, 0, 0)                  # initial cohort distribution
+v_init <- c(1, 0, 0)                  # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities
 p_HD <- 0.02                          # probability of dying when healthy
@@ -165,8 +165,8 @@ Fill in the transition probability matrix:
 
 ```{r}
 # from Healthy
-m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
-m_P["Healthy", "Sick"]    <- (1 - p_HD) * p_HS
+m_P["Healthy", "Healthy"] <- 1 - p_HS - p_HD
+m_P["Healthy", "Sick"]    <- p_HS
 m_P["Healthy", "Dead"]    <- p_HD
 
 # from Sick
@@ -178,8 +178,8 @@ m_P["Dead", "Dead"] <- 1
 
 # Under treatment
 m_P_trt <- m_P
-m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
-m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
+m_P_trt["Healthy", "Healthy"] <- 1 - p_HS_trt - p_HD
+m_P_trt["Healthy", "Sick"]    <- p_HS_trt
 
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P, verbose = TRUE)

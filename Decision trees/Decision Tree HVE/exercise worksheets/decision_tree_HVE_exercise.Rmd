@@ -73,11 +73,11 @@ Parameters are summarized in Table 1. Use the code template provided in “decis
 
 1. Sketch out the decision tree, with a particular focus on the outcome values (costs and QALYs) at terminal nodes.
 
-2. The code template contains calculations for the “No Treatment” strategy. Write code that calculates the expected outcomes for the two other strategies.
+2. The code template contains calculations for the "No Treatment" strategy. Write code that calculates the expected outcomes for the two other strategies.
 
-3. Use the `calculate_icers()` function from the `dampack` package to calculate the incremental costs, QALYs, ICERs and Incremantal NMB of each strategy, using a willingness to pay of $100,000/QALY. Type “`?calculate_icers()`” to see function documentation.
+3. Use the `calculate_icers()` function from the `dampack` package to calculate the incremental costs, QALYs, ICERs and Incremantal NMB of each strategy, using a willingness to pay of $100,000/QALY. Type `?calculate_icers()` to see function documentation.
 
-4. Plot the cost-effectiveness frontier using the "`plot()`" function and the output from the “`calculate_icers()`” function (see step 3 above)
+4. Plot the cost-effectiveness frontier using the "`plot()`" function and the output from the `calculate_icers()` function (see step 3 above)
 
 **Table I: Input parameters**
 

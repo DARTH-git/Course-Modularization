@@ -30,8 +30,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 
     # fill in the transition probability matrix
     # from Healthy
-    m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
-    m_P["Healthy", "Sick"]    <- (1 - p_HD) * p_HS
+    m_P["Healthy", "Healthy"] <- 1 - p_HS - p_HD
+    m_P["Healthy", "Sick"]    <- p_HS
     m_P["Healthy", "Dead"]    <- p_HD
     
     # from Sick
@@ -43,16 +43,9 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     # Under treatment
     m_P_trt <- m_P
-    m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
-    m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
-    
-    # Check that transition probabilities are in [0, 1]
-    check_transition_probability(m_P, verbose = TRUE)
-    check_transition_probability(m_P_trt, verbose = TRUE)
-    # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-    check_transition_probability(m_P_trt, verbose = TRUE)
-    
+    m_P_trt["Healthy", "Healthy"] <- 1 - p_HS_trt - p_HD
+    m_P_trt["Healthy", "Sick"]    <- p_HS_trt
+
     ############# PROCESS ###########################################
     
     for (t in 1:n_t){                               # loop through the number of cycles

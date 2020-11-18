@@ -1,5 +1,6 @@
 ---
-title: 'SA: Simple 3-state Markov model in R'
+title: 'Simple 3-state Markov model in R'
+subtitle: "With a probabilistic sensitivty analysis (PSA)"
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -70,7 +71,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")   
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr", "stringr", "diagram")   
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
@@ -79,7 +80,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 02 Load functions
 
 ```{r}
-# No function needed
+# all functions are in the darthtools package
 ```
 
 # 03 Input model parameters
@@ -95,12 +96,12 @@ n_str <- length(v_names_str)
 v_n  <- c("Healthy", "Sick", "Dead")  # state names
 n_states  <- length(v_n)              # number of states
 n_t  <- 60                            # number of cycles
-v_init <- c(1, 0, 0)                  # initial cohort distribution
+v_init <- c(1, 0, 0)                  # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities
 p_HD <- 0.02                          # probability of dying when healthy
-p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying, under standard of care
-p_HS_trt <- 0.03                      # probability of becoming sick when healthy, conditioned on not dying, under treatment
+p_HS <- 0.05                          # probability of becoming sick when healthy, under standard of care
+p_HS_trt <- 0.03                      # probability of becoming sick when healthy, under treatment
 p_SD <- 0.1                           # probability of dying when sick
 
 # Costs and utilities  
@@ -156,17 +157,16 @@ m_M[1, ] <- m_M_trt[1, ] <- v_init         # initialize first cycle of Markov tr
 # create the transition probability matrices
 m_P  <- m_P_trt <- matrix(0,
                     nrow = n_states, ncol = n_states,
-                    dimnames = list(v_n, v_n))   # name the columns and rows of the transition 
+                    dimnames = list(v_n, v_n))  # name the columns and rows of the transition 
                                                 # probability matrices
 m_P
-
 ```
 
 Fill in the transition probability matrix:
 
 ```{r}
 # from Healthy
-m_P["Healthy", "Healthy"] <-  (1 - p_HS - p_HD)
+m_P["Healthy", "Healthy"] <- 1 - p_HS - p_HD
 m_P["Healthy", "Sick"]    <- p_HS
 m_P["Healthy", "Dead"]    <- p_HD
 
@@ -179,15 +179,8 @@ m_P["Dead", "Dead"] <- 1
 
 # Under treatment
 m_P_trt <- m_P
-m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
-m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
-
-# Check that transition probabilities are in [0, 1]
-check_transition_probability(m_P, verbose = TRUE)
-check_transition_probability(m_P_trt, verbose = TRUE)
-# Check that all rows sum to 1
-check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-check_transition_probability(m_P_trt, verbose = TRUE)
+m_P_trt["Healthy", "Healthy"] <- 1 - p_HS_trt - p_HD
+m_P_trt["Healthy", "Sick"]    <- p_HS_trt
 ```
 
 # 05 Run Markov model
@@ -469,7 +462,7 @@ for(i in 1:n_sim){
 
 ## 08.5 Analyze and visualize PSA results using R package: dampack
 
-Create PSA object for dampack
+Create PSA object for `dampack`
 
 ```{r, warning = FALSE}
 l_psa <- make_psa_obj(cost          = df_c, 

@@ -99,8 +99,8 @@ v_init <- c(1, 0, 0)                  # initial cohort distribution (everyone al
 
 # Transition probabilities
 p_HD <- 0.02                          # probability of dying when healthy
-p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying, under standard of care
-p_HS_trt <- 0.03                      # probability of becoming sick when healthy, conditioned on not dying, under treatment
+p_HS <- 0.05                          # probability of becoming sick when healthy, under standard of care
+p_HS_trt <- 0.03                      # probability of becoming sick when healthy, under treatment
 p_SD <- 0.1                           # probability of dying when sick
 
 # Costs and utilities  
@@ -180,13 +180,6 @@ m_P["Dead", "Dead"] <- 1
 m_P_trt <- m_P
 m_P_trt["Healthy", "Healthy"] <- 1 - p_HS_trt - p_HD
 m_P_trt["Healthy", "Sick"]    <- p_HS_trt
-
-# Check that transition probabilities are in [0, 1]
-check_transition_probability(m_P, verbose = TRUE)
-check_transition_probability(m_P_trt, verbose = TRUE)
-# Check that all rows sum to 1
-check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-check_transition_probability(m_P_trt, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -348,3 +341,5 @@ df_cea
 ```{r}
 plot(df_cea, effect_units = "QALYs", xlim = c(10, 12))
 ```
+
+

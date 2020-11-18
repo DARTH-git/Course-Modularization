@@ -71,7 +71,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
+p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
@@ -81,7 +81,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 02 Load functions
 
 ```{r}
-# No functions needed
+# all functions are in the darthtools package
 ```
 
 # 03 Input model parameters
@@ -100,6 +100,7 @@ n_t      <- max_age - age            # time horizon, number of cycles
 v_n      <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                      # Sicker (S2), Dead (D)
 n_states <- length(v_n)              # number of health states 
+v_init <- c(1, 0, 0, 0)              # initial cohort distribution
 
 # Transition probabilities (per cycle)
 p_HD     <- 0.005                    # probability to die when healthy
@@ -142,13 +143,13 @@ v_dwe   <- 1 / (1 + d_r) ^ (0:n_t)
 # create the markov trace matrix M capturing the proportion of the cohort in each state 
 # at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
-                                nrow     = n_t + 1, ncol = n_states,
-                                dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
+                               nrow     = n_t + 1, ncol = n_states,
+                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
 # The cohort starts as healthy
-m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
+m_M_notrt[1, ] <- m_M_trt[1, ] <- v_init  # initiate first cycle of cohort trace 
 ```
 
 ## 04.2 Transition probability matrix

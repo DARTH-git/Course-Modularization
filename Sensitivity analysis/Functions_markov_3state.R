@@ -50,7 +50,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     check_transition_probability(m_P, verbose = TRUE)
     check_transition_probability(m_P_trt, verbose = TRUE)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P, n_states = n_states, n_t = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
     check_transition_probability(m_P_trt, verbose = TRUE)
     
     ############# PROCESS ###########################################

@@ -68,7 +68,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
+p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
@@ -78,7 +78,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 02 Load functions
 
 ```{r}
-# No functions needed
+# all functions are in the darthtools package
 ```
 
 # 03 Input model parameters
@@ -97,6 +97,7 @@ n_t     <- max_age - age            # time horizon, number of cycles
 v_n     <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                     # Sicker (S2), Dead (D)
 n_states <- length(v_n)             # number of health states 
+v_init <- c(1, 0, 0, 0)             # initial cohort distribution
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005                    # probability to die when healthy
@@ -168,7 +169,7 @@ m_M_notrt <- m_M_trt <- matrix(NA,
 head(m_M_notrt) # show first 6 rows of the matrix 
 
 # The cohort starts as healthy
-m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
+m_M_notrt[1, ] <- m_M_trt[1, ] <- v_init  # initiate first cycle of cohort trace 
 ```
 
 ## 04.2 Transition probability matrix
@@ -203,7 +204,7 @@ m_P_notrt["D", "D"  ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_t = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
 
 # create transition probability matrix for treatment same as no treatment
 m_P_trt <- m_P_notrt

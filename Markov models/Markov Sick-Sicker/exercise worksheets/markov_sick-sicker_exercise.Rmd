@@ -1,10 +1,10 @@
 ---
-title: 'Decision Modeling for Public Health'
+title: 'Introduction to Decision Modeling Using R'
 subtitle: 'Basic Markov Model Exercise'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:

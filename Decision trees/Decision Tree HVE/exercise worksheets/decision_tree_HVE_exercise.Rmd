@@ -59,7 +59,7 @@ and adapted with proper attribution.
 
 # Exercise I: Treatment for Viral encephalitis – A Decision Tree
 
-Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE). Herpes viruses cause approximately 52% of cases of viral encephalitis. Without treatment, the risk of complications (severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug, vidarabine, decreases the likelihood of complications due to HVE from 71% down to 36%. However, among OVE patients, treatment with vidarabine is associated with severe side effects, increasing the risk of complications from the 1% baseline to 20%. It is possible to obtain a definitive diagnosis of HVE by means of a brain biopsy, but the procedure itself also has a 0.5% probability of being fatal.
+Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE). Herpes viruses cause approximately 52% of cases of viral encephalitis. Without treatment, the risk of complications (death or severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug, vidarabine, decreases the likelihood of complications due to HVE from 71% down to 36%. However, among OVE patients, treatment with vidarabine is associated with severe side effects, increasing the risk of complications from the 1% baseline to 20%. It is possible to obtain a definitive diagnosis of HVE by means of a brain biopsy, but the procedure itself also has a 0.5% probability of being fatal.
 
 You are tasked with evaluating the healthcare costs and benefits associated with three possible management strategies (no treatment, vidarabine treatment, or brain biopsy followed by vidarabine treatment for those who are diagnosed with HVE). Benefits will be measured in terms of quality-adjusted life-years (QALYs). 
 

@@ -101,9 +101,9 @@ v_init <- c(1, 0, 0, 0)             # initial cohort distribution
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005                    # probability to die when healthy
-p_HS1   <- 0.15          	          # probability to become sick when healthy
-p_S1H   <- 0.5           	          # probability to become healthy when sick
-p_S1S2  <- 0.105         	          # probability to become sicker when sick
+p_HS1   <- 0.15          	          # probability to become sick when healthy, conditional on surviving
+p_S1H   <- 0.5           	          # probability to become healthy when sick, conditional on surviving
+p_S1S2  <- 0.105         	          # probability to become sicker when sick, conditional on surviving
 hr_S1   <- 3             	          # hazard ratio of death in sick vs healthy
 hr_S2   <- 10            	          # hazard ratio of death in sicker vs healthy 
 r_HD    <- - log(1 - p_HD)          # rate of death in healthy
@@ -187,19 +187,24 @@ Fill in the transition probability matrix:
 
 ```{r}
 # from Healthy
-m_P_notrt["H", "H"  ] <- 1 - (p_HS1 + p_HD)
-m_P_notrt["H", "S1" ] <- p_HS1
+m_P_notrt["H", "H"  ] <- (1 - p_HD) * (1 - p_HS1)
+m_P_notrt["H", "S1" ] <- (1 - p_HD) * p_HS1
 m_P_notrt["H", "D"  ] <- p_HD
 # from Sick
-m_P_notrt["S1", "H" ] <- p_S1H
-m_P_notrt["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
-m_P_notrt["S1", "S2"] <- p_S1S2
+m_P_notrt["S1", "H" ] <- (1 - p_S1D) * p_S1H
+m_P_notrt["S1", "S1"] <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2))
+m_P_notrt["S1", "S2"] <- (1 - p_S1D) * p_S1S2
 m_P_notrt["S1", "D" ] <- p_S1D
 # from Sicker
 m_P_notrt["S2", "S2"] <- 1 - p_S2D
 m_P_notrt["S2", "D" ] <- p_S2D
 # from Dead
 m_P_notrt["D", "D"  ] <- 1
+
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(m_P_notrt, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
 
 # create transition probability matrix for treatment same as no treatment
 m_P_trt <- m_P_notrt
@@ -335,4 +340,6 @@ df_cea
 ```{r}
 plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```
+
+
 

@@ -1,0 +1,403 @@
+---
+title: 'Calibrating a 3-state cancer model'
+subtitle: 'Incremental mixture importance sampling (IMIS)'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Division of Public Administration, Center for Research and Teaching in Economics (CIDE), Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Alarid-Escudero F, Maclehose RF, Peralta Y, Kuntz KM, Enns EA.
+Non-identifiability in model calibration and implications for
+medical decision making. Med Decis Making. 2018; 38(7):810-821.
+<a href="https://pubmed.ncbi.nlm.nih.gov/30248276/" class="uri">https://pubmed.ncbi.nlm.nih.gov/30248276/</a></p></li>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+</ul>
+<p>A walkthrough of the code could be found in the following link:
+- <a href="https://darth-git.github.io/calibSMDM2018-materials/" class="uri">https://darth-git.github.io/calibSMDM2018-materials/</a></p>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="calibration-specifications" class="section level1">
+<h1>00 Calibration Specifications</h1>
+<p>Model: 3-State Cancer Relative Survival (CRS) Markov Model</p>
+<p>Inputs to be calibrated: p_Mets, p_DieMets</p>
+<p>Targets: Surv</p>
+<p>Calibration method: Incremental mixture importance sampling (IMIS)</p>
+<p>Goodness-of-fit measure: Sum of Log-Likelihood</p>
+</div>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;lhs&quot;, &quot;IMIS&quot;, &quot;matrixStats&quot;, &quot;plotrix&quot;, &quot;psych&quot;)  </code></pre>
+</div>
+<div id="load-target-data" class="section level1">
+<h1>02 Load target data</h1>
+<pre class="r"><code>load(&quot;CRS_CalibTargets.RData&quot;)
+lst_targets &lt;- CRS_targets
+
+# Plot the targets
+
+# TARGET 1: Survival (&quot;Surv&quot;)
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = &quot;Time&quot;, ylab = &quot;Pr Survive&quot;)
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = &quot;Time&quot;, ylab = &quot;Target 2&quot;)</code></pre>
+</div>
+<div id="load-model-as-a-function" class="section level1">
+<h1>03 Load model as a function</h1>
+<pre class="r"><code># - inputs are parameters to be estimated through calibration
+# - outputs correspond to the target data
+
+source(&quot;CRS_MarkovModel_Function.R&quot;) # creates the function run_crs_markov()
+
+# Check that it works
+v_params_test &lt;- c(p_Mets = 0.10, p_DieMets = 0.05)
+run_crs_markov(v_params_test) # It works!</code></pre>
+</div>
+<div id="specify-calibration-parameters" class="section level1">
+<h1>04 Specify calibration parameters</h1>
+<pre class="r"><code># Specify seed (for reproducible sequence of random numbers)
+set.seed(072218)
+
+# number of random samples
+n_resamp &lt;- 1000
+
+# names and number of input parameters to be calibrated
+v_param_names &lt;- c(&quot;p_Mets&quot;,&quot;p_DieMets&quot;)
+n_param &lt;- length(v_param_names)
+
+# range on input search space
+lb &lt;- c(p_Mets = 0.04, p_DieMets = 0.04) # lower bound
+ub &lt;- c(p_Mets = 0.16, p_DieMets = 0.16) # upper bound
+
+# number of calibration targets
+v_target_names &lt;- c(&quot;Surv&quot;)
+n_target       &lt;- length(v_target_names)</code></pre>
+</div>
+<div id="calibration-functions" class="section level1">
+<h1>05 Calibration functions</h1>
+<pre class="r"><code>#  Write function to sample from prior
+sample_prior &lt;- function(n_samp){
+  m_lhs_unit   &lt;- randomLHS(n = n_samp, k = n_param)
+  m_param_samp &lt;- matrix(nrow = n_samp, ncol = n_param)
+  colnames(m_param_samp) &lt;- v_param_names
+  for (i in 1:n_param){
+    m_param_samp[, i] &lt;- qunif(m_lhs_unit[,i],
+                               min = lb[i],
+                               max = ub[i])
+    # ALTERNATIVE prior using beta (or other) distributions
+    # m_param_samp[, i] &lt;- qbeta(m_lhs_unit[,i],
+    #                            shape1 = 1,
+    #                            shape2 = 1)
+  }
+  return(m_param_samp)
+}
+
+# view resulting parameter set samples
+pairs.panels(sample_prior(1000))
+
+
+###  PRIOR  ### 
+# Write functions to evaluate log-prior and prior
+
+# function that calculates the log-prior
+calc_log_prior &lt;- function(v_params){
+  if(is.null(dim(v_params))) { # If vector, change to matrix
+    v_params &lt;- t(v_params) 
+  }
+  n_samp &lt;- nrow(v_params)
+  colnames(v_params) &lt;- v_param_names
+  lprior &lt;- rep(0, n_samp)
+  for (i in 1:n_param){
+    lprior &lt;- lprior + dunif(v_params[, i],
+                             min = lb[i],
+                             max = ub[i], 
+                             log = T)
+    # ALTERNATIVE prior using beta distributions
+    # lprior &lt;- lprior + dbeta(v_params[, i],
+    #                          shape1 = 1,
+    #                          shape2 = 1, 
+    #                          log = T)
+  }
+  return(lprior)
+}
+calc_log_prior(v_params = v_params_test)
+calc_log_prior(v_params = sample_prior(10))
+
+
+# function that calculates the (non-log) prior
+calc_prior &lt;- function(v_params) { 
+  exp(calc_log_prior(v_params)) 
+}
+calc_prior(v_params = v_params_test)
+calc_prior(v_params = sample_prior(10))
+
+
+###  LIKELIHOOD  ###
+# Write functions to evaluate log-likelihood and likelihood
+
+# function to calculate the log-likelihood
+calc_log_lik &lt;- function(v_params){
+  # par_vector: a vector (or matrix) of model parameters 
+  if(is.null(dim(v_params))) { # If vector, change to matrix
+    v_params &lt;- t(v_params) 
+  }
+  n_samp &lt;- nrow(v_params)
+  v_llik &lt;- matrix(0, nrow = n_samp, ncol = n_target) 
+  llik_overall &lt;- numeric(n_samp)
+  for(j in 1:n_samp) { # j=1
+    jj &lt;- tryCatch( { 
+      ###   Run model for parametr set &quot;v_params&quot; ###
+      model_res &lt;- run_crs_markov(v_params[j, ])
+      
+      ###  Calculate log-likelihood of model outputs to targets  ###
+      # TARGET 1: Survival (&quot;Surv&quot;)
+      # log likelihood  
+      v_llik[j, 1] &lt;- sum(dnorm(x = lst_targets$Surv$value,
+                                mean = model_res$Surv,
+                                sd = lst_targets$Surv$se,
+                                log = T))
+      
+      # TARGET 2: (if you had more...)
+      # log likelihood
+      # v_llik[j, 2] &lt;- sum(dnorm(x = lst_targets$Target2$value,
+      #                        mean = model_res$Target2,
+      #                        sd = lst_targets$Target2$se,
+      #                        log = T))
+      
+      # OVERALL 
+      llik_overall[j] &lt;- sum(v_llik[j, ])
+    }, error = function(e) NA) 
+    if(is.na(jj)) { llik_overall &lt;- -Inf }
+  } # End loop over sampled parameter sets
+  # return LLIK
+  return(llik_overall)
+}
+calc_log_lik(v_params = v_params_test)
+calc_log_lik(v_params = sample_prior(10))
+
+
+# function to calculate the (non-log) likelihood
+calc_likelihood &lt;- function(v_params){ 
+  exp(calc_log_lik(v_params)) 
+}
+calc_likelihood(v_params = v_params_test)
+calc_likelihood(v_params = sample_prior(10))
+
+
+###  POSTERIOR  ###
+# Write functions to evaluate log-posterior and posterior
+
+# function that calculates the log-posterior
+calc_log_post &lt;- function(v_params) { 
+  lpost &lt;- calc_log_prior(v_params) + calc_log_lik(v_params)
+  return(lpost) 
+}
+calc_log_post(v_params = v_params_test)
+calc_log_post(v_params = sample_prior(10))
+
+
+# function that calculates the (non-log) posterior
+calc_post &lt;- function(v_params) { 
+  exp(calc_log_post(v_params)) 
+}
+calc_post(v_params = v_params_test)
+calc_post(v_params = sample_prior(10))</code></pre>
+</div>
+<div id="calibrate" class="section level1">
+<h1>06 Calibrate!</h1>
+<pre class="r"><code># record start time of calibration
+t_init &lt;- Sys.time()
+
+###  Bayesian calibration using IMIS  ###
+# define three functions needed by IMIS: prior(x), likelihood(x), sample.prior(n)
+prior &lt;- calc_prior
+likelihood &lt;- calc_likelihood
+sample.prior &lt;- sample_prior
+
+# run IMIS
+fit_imis &lt;- IMIS(B = 1000, # the incremental sample size at each iteration of IMIS
+                 B.re = n_resamp, # the desired posterior sample size
+                 number_k = 10, # the maximum number of iterations in IMIS
+                 D = 0) 
+
+# obtain draws from posterior
+m_calib_res &lt;- fit_imis$resample
+
+# Calculate log-likelihood (overall fit) and posterior probability of each sample
+m_calib_res &lt;- cbind(m_calib_res, 
+                      &quot;Overall_fit&quot; = calc_log_lik(m_calib_res[,v_param_names]),
+                      &quot;Posterior_prob&quot; = calc_post(m_calib_res[,v_param_names]))
+
+# normalize posterior probability
+m_calib_res[,&quot;Posterior_prob&quot;] &lt;- m_calib_res[,&quot;Posterior_prob&quot;]/sum(m_calib_res[,&quot;Posterior_prob&quot;])
+
+# Calculate computation time
+comp_time &lt;- Sys.time() - t_init</code></pre>
+</div>
+<div id="exploring-posterior-distribution" class="section level1">
+<h1>07 Exploring posterior distribution</h1>
+<pre class="r"><code># Plot the 1000 draws from the posterior
+v_post_color &lt;- scales::rescale(m_calib_res[, &quot;Posterior_prob&quot;])
+plot(m_calib_res,
+     xlim = c(lb[1], ub[1]), ylim = c(lb[2], ub[2]),
+     xlab = v_param_names[1], ylab = v_param_names[2],
+     col = scales::alpha(&quot;black&quot;, v_post_color))
+# add center of Gaussian components
+points(fit_imis$center, col = &quot;red&quot;, pch = 8)
+legend(&quot;topright&quot;, c(&quot;Draws from posterior&quot;, &quot;Center of Gaussian components&quot;),
+       col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))
+
+# Plot the 1000 draws from the posterior with marginal histograms
+pairs.panels(m_calib_res[,v_param_names])
+
+# Compute posterior mean
+v_calib_post_mean &lt;- colMeans(m_calib_res[,v_param_names])
+v_calib_post_mean
+
+# Compute posterior median and 95% credible interval
+m_calib_res_95cr &lt;- colQuantiles(m_calib_res[,v_param_names], probs = c(0.025, 0.5, 0.975))
+m_calib_res_95cr
+
+# Compute maximum-a-posteriori (MAP) parameter set
+v_calib_map &lt;- m_calib_res[which.max(m_calib_res[,&quot;Posterior_prob&quot;]),]
+
+### Model-predicted output at mode/MAP ###
+v_out_best &lt;- run_crs_markov(v_calib_map[v_param_names])</code></pre>
+<div id="model-predicted-outputs-at-maximum-a-posteriori-map" class="section level2">
+<h2>07.1 Model predicted outputs at maximum-a-posteriori (MAP)</h2>
+<pre class="r"><code>### Plot model-predicted output at mode vs targets ###
+# set plot margins (helps plotting)
+par(mar=c(5,4,4,4)) 
+# TARGET 1: Survival (&quot;Surv&quot;)
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = &quot;Time&quot;, ylab = &quot;Pr Survive&quot;)
+points(x = lst_targets$Surv$time, 
+       y = v_out_best$Surv, 
+       pch = 8, col = &quot;red&quot;)
+legend(&quot;topright&quot;, 
+       legend = c(&quot;Target&quot;, &quot;Model-predicted output&quot;),
+       col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = &quot;Time&quot;, ylab = &quot;Target 2&quot;)
+# points(x = lst_targets$Target2$time, 
+#        y = v_out_best$Target2, 
+#        pch = 8, col = &quot;red&quot;)
+# legend(&quot;topright&quot;, 
+#        legend = c(&quot;Target&quot;, &quot;Model-predicted output&quot;),
+#        col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))</code></pre>
+</div>
+<div id="distribution-of-model-predicted-outputs" class="section level2">
+<h2>07.2 Distribution of model-predicted outputs</h2>
+<pre class="r"><code>### Distribution of model-predicted output at mode vs targets ###
+## Initialize matrix to store outputs
+m_out_post &lt;- matrix(NA, 
+                     nrow = n_resamp, 
+                     ncol = length(v_out_best$Surv))
+## Iterate model over all parameter sets from posterior distribution
+for(i in 1:n_resamp){
+  l_out &lt;- run_crs_markov(m_calib_res[i, ])
+  m_out_post[i, ] &lt;- l_out$Surv
+  
+  if(i/(n_resamp/10) == round(i/(n_resamp/10),0)) { # display progress every 10%
+    cat(&#39;\r&#39;, paste(i/n_resamp * 100, &quot;% done&quot;, sep = &quot; &quot;))
+  }
+}
+
+## Compute model-predicted posterior summary statistics
+# Model-predicted posterior mean
+v_out_post_mean      &lt;- colMeans(m_out_post)
+# Model-predicted posterior credible interval
+m_out_post_intervals &lt;- colQuantiles(m_out_post, probs = c(0.025, 0.975))</code></pre>
+<div id="plot-model-predicted-output-at-mode-vs-targets" class="section level3">
+<h3>07.2.1 Plot model-predicted output at mode vs targets</h3>
+<pre class="r"><code># set plot margins (helps plotting)
+par(mar=c(5,4,4,4)) 
+# TARGET 1: Survival (&quot;Surv&quot;)
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = &quot;Time&quot;, ylab = &quot;Pr Survive&quot;)
+points(x = lst_targets$Surv$time, 
+       y = v_out_post_mean, 
+       pch = 8, col = &quot;red&quot;)
+lines(x = lst_targets$Surv$time, 
+       y = m_out_post_intervals[, 1], 
+       col = &quot;blue&quot;)
+lines(x = lst_targets$Surv$time, 
+       y = m_out_post_intervals[, 2], 
+       col = &quot;blue&quot;)
+legend(&quot;topright&quot;, 
+       legend = c(&quot;Target&quot;, 
+                  &quot;Model-predicted posterior mean&quot;, 
+                  &quot;Model-predicted 95% posterior CrI&quot;),
+       col = c(&quot;black&quot;, &quot;red&quot;, &quot;blue&quot;), 
+       pch = c(1, 8, NA),
+       lty = c(NA, NA, 1))
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = &quot;Time&quot;, ylab = &quot;Target 2&quot;)
+# points(x = lst_targets$Target2$time, 
+#        y = v_out_best$Target2, 
+#        pch = 8, col = &quot;red&quot;)
+# legend(&quot;topright&quot;, 
+#        legend = c(&quot;Target&quot;, &quot;Model-predicted output&quot;),
+#        col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))</code></pre>
+</div>
+</div>
+</div>

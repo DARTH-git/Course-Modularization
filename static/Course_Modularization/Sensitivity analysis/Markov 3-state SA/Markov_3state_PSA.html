@@ -1,0 +1,460 @@
+---
+title: 'Simple 3-state Markov model in R'
+subtitle: "With a probabilistic sensitivty analysis (PSA)"
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6,7)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Division of Public Administration, Center for Research and Teaching in
+Economics (CIDE), Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2.
+2020:1-48. <a href="http://arxiv.org/abs/2001.07824" class="uri">http://arxiv.org/abs/2001.07824</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Making. Online First <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load( &quot;dplyr&quot;, &quot;devtools&quot;, &quot;scales&quot;, &quot;ellipse&quot;, &quot;ggplot2&quot;, &quot;lazyeval&quot;, &quot;igraph&quot;, &quot;ggraph&quot;, &quot;reshape2&quot;, &quot;knitr&quot;, &quot;stringr&quot;, &quot;diagram&quot;)   
+# load (install if required) packages from GitHub
+p_load_gh(&quot;DARTH-git/dampack&quot;, &quot;DARTH-git/darthtools&quot;)</code></pre>
+</div>
+<div id="load-functions" class="section level1">
+<h1>02 Load functions</h1>
+<pre class="r"><code># all functions are in the darthtools package</code></pre>
+</div>
+<div id="input-model-parameters" class="section level1">
+<h1>03 Input model parameters</h1>
+<pre class="r"><code># Strategy names
+v_names_str &lt;- c(&quot;Standard of Care&quot;, &quot;Treatment&quot;)  
+
+# Number of strategies
+n_str &lt;- length(v_names_str)
+
+# Markov model parameters
+v_n  &lt;- c(&quot;Healthy&quot;, &quot;Sick&quot;, &quot;Dead&quot;)  # state names
+n_states  &lt;- length(v_n)              # number of states
+n_t  &lt;- 60                            # number of cycles
+v_init &lt;- c(1, 0, 0)                  # initial cohort distribution (everyone allocated to the &quot;healthy&quot; state)
+
+# Transition probabilities
+p_HD &lt;- 0.02                          # probability of dying when healthy
+p_HS &lt;- 0.05                          # probability of becoming sick when healthy, under standard of care
+p_HS_trt &lt;- 0.03                      # probability of becoming sick when healthy, under treatment
+p_SD &lt;- 0.1                           # probability of dying when sick
+
+# Costs and utilities  
+c_H   &lt;- 400                          # cost of one cycle in healthy state
+c_S   &lt;- 1000                         # cost of one cycle in sick state
+c_D   &lt;- 0                            # cost of one cycle in dead state
+c_trt &lt;- 800                          # cost of treatment (per cycle)
+u_H   &lt;- 0.8                          # utility when healthy 
+u_S   &lt;- 0.5                          # utility when sick
+u_D   &lt;- 0                            # utility when dead
+d_e   &lt;- d_c &lt;- 0.03                  # discount rate per cycle equal discount of costs and QALYs by 3%
+
+# calculate discount weights for costs for each cycle based on discount rate d_c
+v_dwc &lt;- 1 / (1 + d_e) ^ (0:n_t) 
+# calculate discount weights for effectiveness for each cycle based on discount rate d_e
+v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t) </code></pre>
+<div id="draw-the-state-transition-cohort-model" class="section level2">
+<h2>Draw the state-transition cohort model</h2>
+<pre class="r"><code>m_P_diag &lt;- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag[&quot;Healthy&quot;, &quot;Sick&quot; ]     = &quot;&quot; 
+m_P_diag[&quot;Healthy&quot;, &quot;Dead&quot; ]     = &quot;&quot;
+m_P_diag[&quot;Healthy&quot;, &quot;Healthy&quot; ]  = &quot;&quot;
+m_P_diag[&quot;Sick&quot;   , &quot;Dead&quot; ]     = &quot;&quot;
+m_P_diag[&quot;Sick&quot;   , &quot;Sick&quot; ]     = &quot;&quot;
+m_P_diag[&quot;Dead&quot;   , &quot;Dead&quot; ]     = &quot;&quot;
+layout.fig &lt;- c(2, 1)
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
+        latex = T, arr.type = &quot;curved&quot;, relsize = 0.85, box.prop = 0.8, 
+        cex = 0.8, box.cex = 0.7, lwd = 1)</code></pre>
+</div>
+</div>
+<div id="define-and-initialize-matrices-and-vectors" class="section level1">
+<h1>04 Define and initialize matrices and vectors</h1>
+<div id="cohort-trace" class="section level2">
+<h2>04.1 Cohort trace</h2>
+<pre class="r"><code># create the cohort trace
+m_M &lt;- m_M_trt &lt;-  matrix(NA, 
+                         nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn&#39;t 
+                                           # understand Cycle 0)
+                         ncol = n_states, 
+                        dimnames = list(0:n_t, v_n))
+
+m_M[1, ] &lt;- m_M_trt[1, ] &lt;- v_init         # initialize first cycle of Markov trace</code></pre>
+</div>
+<div id="transition-probability-matrix" class="section level2">
+<h2>04.2 Transition probability matrix</h2>
+<pre class="r"><code># create the transition probability matrices
+m_P  &lt;- m_P_trt &lt;- matrix(0,
+                    nrow = n_states, ncol = n_states,
+                    dimnames = list(v_n, v_n))  # name the columns and rows of the transition 
+                                                # probability matrices
+m_P</code></pre>
+<p>Fill in the transition probability matrix:</p>
+<pre class="r"><code># from Healthy
+m_P[&quot;Healthy&quot;, &quot;Healthy&quot;] &lt;- 1 - p_HS - p_HD
+m_P[&quot;Healthy&quot;, &quot;Sick&quot;]    &lt;- p_HS
+m_P[&quot;Healthy&quot;, &quot;Dead&quot;]    &lt;- p_HD
+
+# from Sick
+m_P[&quot;Sick&quot;, &quot;Sick&quot;] &lt;- 1 - p_SD
+m_P[&quot;Sick&quot;, &quot;Dead&quot;] &lt;- p_SD
+
+# from Dead
+m_P[&quot;Dead&quot;, &quot;Dead&quot;] &lt;- 1
+
+# Under treatment
+m_P_trt &lt;- m_P
+m_P_trt[&quot;Healthy&quot;, &quot;Healthy&quot;] &lt;- 1 - p_HS_trt - p_HD
+m_P_trt[&quot;Healthy&quot;, &quot;Sick&quot;]    &lt;- p_HS_trt</code></pre>
+</div>
+</div>
+<div id="run-markov-model" class="section level1">
+<h1>05 Run Markov model</h1>
+<pre class="r"><code>for (t in 1:n_t){                               # loop through the number of cycles
+  m_M[t + 1, ]     &lt;- m_M[t, ]     %*% m_P      # estimate the state vector for the next cycle (t + 1)
+  m_M_trt[t + 1, ] &lt;- m_M_trt[t, ] %*% m_P_trt  # for treatment
+}</code></pre>
+</div>
+<div id="compute-and-plot-epidemiological-outcomes" class="section level1">
+<h1>06 Compute and Plot Epidemiological Outcomes</h1>
+<div id="cohort-trace-1" class="section level2">
+<h2>06.1 Cohort trace</h2>
+<p>Standard of Care:</p>
+<pre class="r"><code>matplot(m_M, type = &#39;l&#39;, 
+        ylab = &quot;Probability of state occupancy&quot;,
+        xlab = &quot;Cycle&quot;,
+        main = &quot;Cohort Trace - standard of care&quot;, lwd = 3)  # create a plot of the data
+legend(&quot;right&quot;, v_n, col = c(&quot;black&quot;, &quot;red&quot;, &quot;green&quot;), 
+       lty = 1:3, bty = &quot;n&quot;)                            # add a legend to the graph
+
+abline(v = which.max(m_M[, &quot;Sick&quot;]), col = &quot;gray&quot;)      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  </code></pre>
+<p>Treatment:</p>
+<pre class="r"><code>matplot(m_M_trt, type = &#39;l&#39;, 
+        ylab = &quot;Probability of state occupancy&quot;,
+        xlab = &quot;Cycle&quot;,
+        main = &quot;Cohort Trace - treatment&quot;, lwd = 3)     # create a plot of the data
+legend(&quot;right&quot;, v_n, col = c(&quot;black&quot;, &quot;red&quot;, &quot;green&quot;), 
+       lty = 1:3, bty = &quot;n&quot;)                            # add a legend to the graph
+
+abline(v = which.max(m_M[, &quot;Sick&quot;]), col = &quot;gray&quot;)      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  </code></pre>
+</div>
+<div id="overall-survival-os" class="section level2">
+<h2>06.2 Overall Survival (OS)</h2>
+<p>Standard of Care:</p>
+<pre class="r"><code>v_os &lt;- 1 - m_M[, &quot;Dead&quot;]             # calculate the overall survival (OS) probability
+v_os &lt;- rowSums(m_M[, 1:2])           # alternative way of calculating the OS probability   
+
+plot(v_os, type = &#39;l&#39;, 
+     ylim = c(0, 1),
+     ylab = &quot;Survival probability&quot;,
+     xlab = &quot;Cycle&quot;,
+     main = &quot;Overall Survival&quot;)       # create a simple plot showing the OS
+
+# add grid 
+grid(nx = n_t, ny = 10, col = &quot;lightgray&quot;, lty = &quot;dotted&quot;, lwd = par(&quot;lwd&quot;), 
+     equilogs = TRUE) </code></pre>
+<p>Treatment:</p>
+<pre class="r"><code>v_os_trt &lt;- 1 - m_M_trt[, &quot;Dead&quot;]     # calculate the overall survival (OS) probability
+v_os_trt &lt;- rowSums(m_M_trt[, 1:2])   # alternative way of calculating the OS probability
+
+plot(v_os_trt, type = &#39;l&#39;, 
+     ylim = c(0, 1),
+     ylab = &quot;Survival probability&quot;,
+     xlab = &quot;Cycle&quot;,
+     main = &quot;Overall Survival&quot;)       # create a simple plot showing the OS
+
+# add grid 
+grid(nx = n_t, ny = 10, col = &quot;lightgray&quot;, lty = &quot;dotted&quot;, lwd = par(&quot;lwd&quot;), 
+     equilogs = TRUE) </code></pre>
+</div>
+<div id="life-expectancy-le" class="section level2">
+<h2>06.2.1 Life Expectancy (LE)</h2>
+<pre class="r"><code>v_le     &lt;- sum(v_os)      # summing probability of OS over time (i.e. life expectancy)
+v_le_trt &lt;- sum(v_os_trt)  # summing probability of OS over time (i.e. life expectancy), treatment</code></pre>
+</div>
+<div id="disease-prevalence" class="section level2">
+<h2>06.3 Disease prevalence</h2>
+<p>Standard of Care:</p>
+<pre class="r"><code>v_prev &lt;- m_M[, &quot;Sick&quot;]/v_os
+plot(v_prev,
+     ylim = c(0, 1),
+     ylab = &quot;Prevalence&quot;,
+     xlab = &quot;Cycle&quot;,
+     main = &quot;Disease prevalence&quot;)</code></pre>
+<p>Treatment:</p>
+<pre class="r"><code>v_prev_trt &lt;- m_M_trt[, &quot;Sick&quot;]/v_os_trt
+plot(v_prev_trt,
+     ylim = c(0, 1),
+     ylab = &quot;Prevalence&quot;,
+     xlab = &quot;Cycle&quot;,
+     main = &quot;Disease prevalence&quot;)</code></pre>
+</div>
+</div>
+<div id="compute-cost-effectiveness-outcomes" class="section level1">
+<h1>07 Compute Cost-Effectiveness Outcomes</h1>
+<div id="mean-costs-and-qalys" class="section level2">
+<h2>07.1 Mean Costs and QALYs</h2>
+<pre class="r"><code># per cycle
+# calculate expected costs by multiplying m_M with the cost vector for the different 
+# health states   
+v_tc     &lt;- m_M     %*% c(c_H, c_S, c_D)          # Standard of Care
+v_tc_trt &lt;- m_M_trt %*% c(c_H, c_S + c_trt, c_D)  # Treatment
+# calculate expected QALYs  by multiplying m_M with the utilities for the different 
+# health states   
+v_tu     &lt;- m_M     %*% c(u_H, u_S, u_D)          # Standard of Care
+v_tu_trt &lt;- m_M_trt %*% c(u_H, u_S, u_D)          # Treatment</code></pre>
+</div>
+<div id="discounted-mean-costs-and-qalys" class="section level2">
+<h2>07.2 Discounted Mean Costs and QALYs</h2>
+<pre class="r"><code># Discount costs by multiplying the cost vector with discount weights  
+tc_d     &lt;-  t(v_tc)     %*% v_dwc      # Standard of Care
+tc_d_trt &lt;-  t(v_tc_trt) %*% v_dwc      # Treatment
+# Discount QALYS by multiplying the QALYs vector with discount weights 
+tu_d     &lt;-  t(v_tu)     %*% v_dwe      # Standard of Care
+tu_d_trt &lt;-  t(v_tu_trt) %*% v_dwe      # Treatment
+
+# store them into a vector
+v_tc_d   &lt;- c(tc_d, tc_d_trt)
+v_tu_d   &lt;- c(tu_d, tu_d_trt)
+
+# Dataframe with discounted costs and effectiveness
+df_ce       &lt;- data.frame(Strategy = v_names_str,
+                          Cost     = v_tc_d,
+                          Effect   = v_tu_d
+                          )
+df_ce</code></pre>
+</div>
+<div id="compute-icers-of-the-markov-model" class="section level2">
+<h2>07.3 Compute ICERs of the Markov model</h2>
+<pre class="r"><code>df_cea &lt;- calculate_icers(cost       = df_ce$Cost,
+                          effect     = df_ce$Effect,
+                          strategies = df_ce$Strategy
+                          )
+df_cea</code></pre>
+</div>
+<div id="plot-frontier-of-the-markov-model" class="section level2">
+<h2>07.4 Plot frontier of the Markov model</h2>
+<pre class="r"><code>plot(df_cea, effect_units = &quot;QALYs&quot;, xlim = c(10, 12))</code></pre>
+</div>
+</div>
+<div id="probabilistic-sensitivity-analysis" class="section level1">
+<h1>08 Probabilistic Sensitivity Analysis</h1>
+<div id="list-of-input-parameters" class="section level2">
+<h2>08.1 List of input parameters</h2>
+<p>Create list <code>l_params_all</code> with all input probabilities, cost and utilities.</p>
+<pre class="r"><code>l_params_all &lt;- as.list(data.frame(
+  p_HD     = 0.02,  # probability of dying when healthy
+  p_HS     = 0.05,  # probability of becoming sick when healthy, conditioned on not dying
+  p_HS_trt = 0.03,  # probability of becoming sick when healthy, conditioned on not dying
+  p_SD     = 0.1,   # probability of dying when sick
+  c_H      = 400,   # cost of one cycle in healthy state
+  c_S      = 1000,  # cost of one cycle in sick state
+  c_D      = 0,     # cost of one cycle in dead state
+  c_trt    = 800,   # cost of treatment (per cycle)
+  u_H      = 0.8,   # utility when healthy 
+  u_S      = 0.5,   # utility when sick
+  u_D      = 0,     # utility when dead
+  d_e      = 0.03,  # discount factor for effectiveness
+  d_c      = 0.03   # discount factor for costs
+))
+
+# store the parameter names into a vector
+v_names_params &lt;- names(l_params_all)</code></pre>
+</div>
+<div id="load-sick-sicker-markov-model-function" class="section level2">
+<h2>08.2 Load Sick-Sicker Markov model function</h2>
+<pre class="r"><code>source(&quot;Functions_markov_3state.R&quot;)
+# Test function
+calculate_ce_out(l_params_all)</code></pre>
+</div>
+<div id="generate-psa-datasets" class="section level2">
+<h2>08.3 Generate PSA datasets</h2>
+<pre class="r"><code># Function to generate PSA input dataset
+gen_psa &lt;- function(n_sim = 1000, seed = 071818){
+  set.seed(seed) # set a seed to be able to reproduce the same results
+  df_psa &lt;- data.frame(
+    # Transition probabilities (per cycle)
+    # probability to become sick when healthy
+    p_HS     = rbeta(n_sim, shape1 = 24, shape2 = 450), 
+    p_HS_trt = rbeta(n_sim, shape1 = 9,  shape2 = 281),   # under treatment
+    # probability of dying when healthy
+    p_HD     = rbeta(n_sim, shape1 = 16, shape2 = 767),
+    # probability of dying when sick
+    p_SD     = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6), 
+
+    # Cost vectors with length n_sim
+    # cost of remaining one cycle in state H
+    c_H      = rgamma(n_sim, shape = 16, scale = 25), 
+    # cost of remaining one cycle in state S1
+    c_S      = rgamma(n_sim, shape = 100, scale = 10), 
+    # cost of being in the death state
+    c_D      = 0, 
+    # cost of treatment (per cycle)
+    c_trt    = rgamma(n_sim, shape = 64, scale = 12.5),
+    
+    # Utility vectors with length n_sim 
+    # utility when healthy
+    u_H      = rbeta(n_sim, shape1 =  50.4, shape2 = 12.6), 
+    # utility when sick
+    u_S      = rbeta(n_sim, shape1 = 49.5, shape2 = 49.5), 
+    # utility when dead
+    u_D      = 0                                              
+  )
+  return(df_psa)
+}
+# Try it
+gen_psa(10) 
+
+# Number of simulations
+n_sim &lt;- 1000
+
+# Generate PSA input dataset
+df_psa_input &lt;- gen_psa(n_sim = n_sim)
+# First six observations
+head(df_psa_input)
+
+# Histogram of parameters
+ggplot(melt(df_psa_input, variable.name = &quot;Parameter&quot;), aes(x = value)) +
+       facet_wrap(~Parameter, scales = &quot;free&quot;) +
+       geom_histogram(aes(y = ..density..)) +
+       theme_bw(base_size = 16) + 
+       theme(axis.text = element_text(size=8))
+
+# Initialize dataframes with PSA output 
+# Dataframe of costs
+df_c &lt;- as.data.frame(matrix(0, 
+                      nrow = n_sim,
+                      ncol = n_str))
+colnames(df_c) &lt;- v_names_str
+# Dataframe of effectiveness
+df_e &lt;- as.data.frame(matrix(0, 
+                      nrow = n_sim,
+                      ncol = n_str))
+colnames(df_e) &lt;- v_names_str</code></pre>
+</div>
+<div id="conduct-probabilistic-sensitivity-analysis" class="section level2">
+<h2>08.4 Conduct probabilistic sensitivity analysis</h2>
+<pre class="r"><code># Run Markov model on each parameter set of PSA input dataset
+for(i in 1:n_sim){
+  l_out_temp &lt;- calculate_ce_out(df_psa_input[i, ])
+  df_c[i, ] &lt;- l_out_temp$Cost
+  df_e[i, ] &lt;- l_out_temp$Effect
+  # Display simulation progress
+  if(i/(n_sim/10) == round(i/(n_sim/10), 0)) { # display progress every 10%
+    cat(&#39;\r&#39;, paste(i/n_sim * 100, &quot;% done&quot;, sep = &quot; &quot;))
+  }
+}</code></pre>
+</div>
+<div id="analyze-and-visualize-psa-results-using-r-package-dampack" class="section level2">
+<h2>08.5 Analyze and visualize PSA results using R package: dampack</h2>
+<p>Create PSA object for <code>dampack</code></p>
+<pre class="r"><code>l_psa &lt;- make_psa_obj(cost          = df_c, 
+                      effectiveness = df_e, 
+                      parameters    = df_psa_input, 
+                      strategies    = v_names_str)</code></pre>
+</div>
+<div id="save-psa-objects" class="section level2">
+<h2>08.5.1 Save PSA objects</h2>
+<pre class="r"><code>save(df_psa_input, df_c, df_e, v_names_str, n_str, l_psa,
+     file = &quot;markov_3state_PSA_dataset.RData&quot;)</code></pre>
+<p>Vector with willingness-to-pay (WTP) thresholds.</p>
+<pre class="r"><code>v_wtp &lt;- seq(0, 5000, by = 1000)</code></pre>
+</div>
+<div id="cost-effectiveness-scatter-plot" class="section level2">
+<h2>08.5.2 Cost-Effectiveness Scatter plot</h2>
+<pre class="r"><code>plot(l_psa)</code></pre>
+</div>
+<div id="conduct-cea-with-probabilistic-output" class="section level2">
+<h2>08.5.3 Conduct CEA with probabilistic output</h2>
+<pre class="r"><code># Compute expected costs and effects for each strategy from the PSA
+df_out_ce_psa &lt;- summary(l_psa)
+
+# Calculate incremental cost-effectiveness ratios (ICERs)
+df_cea_psa &lt;- calculate_icers(cost       = df_out_ce_psa$meanCost, 
+                              effect     = df_out_ce_psa$meanEffect,
+                              strategies = df_out_ce_psa$Strategy)
+df_cea_psa
+
+# Save CEA table with ICERs
+# As .RData
+save(df_cea_psa, 
+     file = &quot;markov_3state_probabilistic_CEA_results.RData&quot;)
+# As .csv
+write.csv(df_cea_psa, 
+          file = &quot;markov_3state_probabilistic_CEA_results.csv&quot;)</code></pre>
+</div>
+<div id="plot-cost-effectiveness-frontier" class="section level2">
+<h2>08.5.4 Plot cost-effectiveness frontier</h2>
+<pre class="r"><code>plot(df_cea_psa)</code></pre>
+</div>
+<div id="cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf" class="section level2">
+<h2>08.5.6 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)</h2>
+<pre class="r"><code>ceac_obj &lt;- ceac(wtp = v_wtp, psa = l_psa)
+# Regions of highest probability of cost-effectiveness for each strategy
+summary(ceac_obj)
+# CEAC &amp; CEAF plot
+plot(ceac_obj)</code></pre>
+</div>
+<div id="expected-loss-curves-elcs" class="section level2">
+<h2>08.5.7 Expected Loss Curves (ELCs)</h2>
+<p>The expected loss is the the quantification of the foregone benefits when choosing a suboptimal strategy given current evidence.</p>
+<pre class="r"><code>elc_obj &lt;- calc_exp_loss(wtp = v_wtp, psa = l_psa)
+elc_obj
+# ELC plot
+plot(elc_obj, log_y = FALSE)</code></pre>
+</div>
+<div id="expected-value-of-perfect-information-evpi" class="section level2">
+<h2>08.5.8 Expected value of perfect information (EVPI)</h2>
+<pre class="r"><code>evpi &lt;- calc_evpi(wtp = v_wtp, psa = l_psa)
+# EVPI plot
+plot(evpi, effect_units = &quot;QALY&quot;)</code></pre>
+</div>
+</div>

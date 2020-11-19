@@ -27,7 +27,7 @@ Install packages required for this workshop by running all code in this `R` scri
 
 ## Slides
 
-[Download slides](../../Course_Modularization/Intro to R/Worksheets/Student Templates/01_getting_ready.Rmd)
+[Download slides](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/01_getting_ready.Rmd)
 
 ## Student template
 

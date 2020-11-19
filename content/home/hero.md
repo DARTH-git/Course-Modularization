@@ -6,7 +6,7 @@ title: Welcome
 weight: 10
 ---
 
-This is the website for a seven-day hands-on workshop: Decision Modeling for Public Health.  
+This is the website for a seven-day hands-on workshop: Decision Modeling for Public Health.
 
 The [Decision Analysis in `R` for Technologies in Health (DARTH) workgroup](http://darthworkgroup.com/) is offering a workshop on decision modeling for public health using `R` from **Novmeber 2 to 10, 2020** exclusively for the CDC Prevention Effectiveness Fellowship Program. The workshop will be **offered virtually via Zoom**. Co-instructors Eva Enns, Petros Pechlivanoglou, Hawre Jalal, Fernando Alarid-Escudero, Eline Krijkamp and Alan Yang will cover the principles of decision analytic modeling and will guide participants in implementing Markov models, microsimulation models, probabilistic sensitivity analysis in `R`. The workshop will also cover more advanced topics, such as model calibration and `R` Shiny interface design. 
 

@@ -19,11 +19,11 @@ blogdown::shortcode("vimeo", "472839769")
 ```
 
 
-## Install packages
+## Install packages 1
 
 Install packages required for this workshop by running all code in this `R` script:
 
-[Download R script](../../../rmds/00_prep.R)
+[Download R script](../../Course_Modularization/Intro to R/Worksheets/Student Templates/01_getting_ready.Rmd)
 
 ## Slides
 

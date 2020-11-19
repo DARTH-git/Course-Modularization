@@ -1,0 +1,51 @@
+---
+title: Calibration - Presentation Videos
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Calibration videos
+menu:
+  day6:
+    weight: 2
+---
+
+## Slides
+
+[Download slides - Calibration](../../../rmds/Calibration_CDC.pptx)
+
+Calibration 0 - Introduction 
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "472449017")
+```
+
+Calibration 1 - Overview
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "472449025")
+```
+
+Calibration 2 - Goodness of Fit
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "472470868")
+```
+
+Calibration 3 - Search
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "472471571")
+```
+
+Calibration 4 - 3-state cancer model
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474881490")
+```
+
+Calibration 5 - 3-state cancer model
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474891149")
+```
+

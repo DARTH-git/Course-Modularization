@@ -1,0 +1,379 @@
+---
+title: "Intro to R for Decision Modeling"
+author: "SickKids and DARTH"
+date: "11/2/2020"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+subtitle: Loops and Functions
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<p>This worksheet introduces the programming capabilities of <code>R</code>. Programming in <code>R</code> can make it easier to perform repetitive analyses such as sensitivity analysis and allow you to create your own functions to perform specific data analysis for example. This session is split into the following sections:</p>
+<ol style="list-style-type: decimal">
+<li><p>Loops</p></li>
+<li><p>Functions</p></li>
+<li><p>The ‘apply’ family</p></li>
+</ol>
+<p>Throughout the course, we will demonstrate code and leave some empty <em>code chunks</em> for you to fill in. We will also provide solutions after the session.</p>
+<p>Feel free to modify this document with your own comments and clarifications.</p>
+<div id="load-data-into-r" class="section level1">
+<h1>0. Load data into <code>R</code></h1>
+<p>Before we begin this session, we need to load our Framingham dataset into <code>R</code>.</p>
+<pre class="r"><code>data &lt;- read.csv(&#39;framingham.csv&#39;, header = TRUE)</code></pre>
+<p>We will modify a few important variables so that we can understand and visualize the results better.</p>
+<p>Nested <code>ifelse</code> statements should be read from ‘outside-in’. That is, start with the most outer <code>ifelse</code> statement and work your way in. For the purpose of working through these exercises, you do not have to fully understand the code in the below code chunk.</p>
+<pre class="r"><code>library(dplyr)
+data1 &lt;- data %&gt;% 
+             mutate(SEX = ifelse(!is.na(SEX), 
+                                    ifelse(SEX == 1, 
+                                           &#39;male&#39;, &#39;female&#39;), 
+                                 NA)) %&gt;%
+             mutate(PREVSTRK = ifelse(!is.na(PREVSTRK), 
+                                         ifelse(PREVSTRK == 1, 
+                                                &#39;yes&#39;, &#39;no&#39;), 
+                                      NA)) %&gt;%
+             mutate(PREVMI = ifelse(!is.na(PREVMI), 
+                                       ifelse(PREVMI == 1, 
+                                              &#39;yes&#39;, &#39;no&#39;), 
+                                    NA)) %&gt;% 
+             mutate(DIABETES = ifelse(!is.na(DIABETES), 
+                                         ifelse(DIABETES== 1, 
+                                                &#39;yes&#39;, &#39;no&#39;), 
+                                      NA)) %&gt;%
+             mutate(CURSMOKE = ifelse(!is.na(CURSMOKE), 
+                                         ifelse(CURSMOKE== 1, 
+                                                &#39;yes&#39;, &#39;no&#39;), 
+                                      NA)) %&gt;%
+             mutate(BPMEDS = ifelse(!is.na(BPMEDS), 
+                                       ifelse(BPMEDS== 1, 
+                                              &#39;yes&#39;, &#39;no&#39;), 
+                                    NA))</code></pre>
+</div>
+<div id="loops" class="section level1">
+<h1>1. Loops</h1>
+<p>When programming in <code>R</code>, we often wish to execute an operation or a combination of operations multiple times. If you are copying the same code multiple times it may be easier to use loops to iterate. Both for speed and readibility.</p>
+<p>For creating loops we will be looking at <code>for</code>, <code>while</code>, <code>if</code> and <code>else</code> statements.</p>
+<div id="for-loop" class="section level2">
+<h2><code>for</code> loop</h2>
+<p>A <code>for</code> loop in R allows us to run a piece of code multiple times and is structured as follows.</p>
+<pre><code>for(value in sequence){
+ do something 
+}</code></pre>
+<p>The <code>value</code> is a character (we often use <code>i</code>), and the <code>sequence</code> is a vector. For example, the following <code>for</code> loop prints (outputs) the sqaure of each element in the vector <code>Ages</code>:</p>
+<pre class="r"><code>Ages &lt;- c(5, 10, 12) 
+# For each age, square it
+for(i in Ages){
+  print(i ^ 2)
+}</code></pre>
+<pre><code>## [1] 25
+## [1] 100
+## [1] 144</code></pre>
+<p>Note that we used the <code>print()</code> function in the code above. Typically <code>R</code> does not produce any output in the console or R Markdown document when using a <code>for</code> loop. The <code>print()</code> function is used to give output from the loop.</p>
+<p>There are two key functions that are often used in conjunction with <code>for</code> loops:</p>
+<ul>
+<li>The colon operator <code>:</code>, which creates a sequence from the number left of the <code>:</code> to the number right, increasing by 1 or -1, e.g.</li>
+</ul>
+<pre class="r"><code>1:10</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>4:1 </code></pre>
+<pre><code>## [1] 4 3 2 1</code></pre>
+<ul>
+<li>The <code>length()</code> function that returns the number of elements in a vector or list.</li>
+</ul>
+<pre class="r"><code>length(Ages)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>A common structure of a <code>for</code> loop uses the colon operator and <code>length()</code> to perfom an operation for the <span class="math inline">\(i^{th}\)</span> element in a vector,</p>
+<pre class="r"><code># For each age, square it
+for(i in 1:length(Ages)){
+  print(Ages[i] ^ 2)
+}</code></pre>
+<pre><code>## [1] 25
+## [1] 100
+## [1] 144</code></pre>
+<p>The number of functions and mathematical operations that can be used within a <code>for</code> loop is very large. So, <code>for</code> loops can get very complex as you perform more complex operations.</p>
+<p><strong>EXERCISE 1</strong> Print the BMI multiplied by 2 for each of the first ten subjects in the Framingham dataset.</p>
+<pre class="r"><code># Your turn
+for (i in 1:10) {
+   print(data1$BMI[i] * 2)
+}</code></pre>
+<pre><code>## [1] NA
+## [1] 57
+## [1] 49.22
+## [1] 62.34
+## [1] 44.04
+## [1] 51.44
+## [1] 58.22
+## [1] 43.96
+## [1] 53.24
+## [1] 49.54</code></pre>
+<p>Within the <code>for</code> loop it is also possible to assign values to different elements in a vector. In the following code, we calculate the mean age for males and females in Framingham dataset and save it to a vector called <code>mean_sex_age</code>. <strong>Notice that <em>before</em> saving the mean age for males and females in the vector <code>mean_sex_age</code>, we have to create a vector called <code>mean_sex_age</code> so <code>R</code> knows where to save the calculations.</strong> We usually create an empty vector of the right length to store our results, e.g.,</p>
+<pre class="r"><code># a vector containing the categories of the SEX variable for us to iterate over later
+sex_index &lt;- c(&quot;male&quot;, &quot;female&quot;)
+# create an empty vector store the result of our for loop
+mean_sex_age &lt;- vector(length = length(sex_index))
+# the names() function gives names to the elements in a vector
+names(mean_sex_age) &lt;- sex_index
+
+# set up and run the for loop
+for (i in 1:length(sex_index)) {
+  mean_sex_age[i] &lt;- mean(
+  data1$AGE[data1$SEX == sex_index[i]]
+  )
+}
+
+# display the results
+mean_sex_age</code></pre>
+<pre><code>##     male   female 
+## 60.34895 60.86940</code></pre>
+</div>
+<div id="if-and-else-statement" class="section level2">
+<h2><code>if</code> and <code>else</code> statement</h2>
+<p>An <code>if</code> statement is used to perform an action when a specific statement is true. The syntax for an <code>if</code> statement is:</p>
+<pre><code>if (expression) {
+statement
+}</code></pre>
+<p>If the <code>expression</code> is <code>TRUE</code>, the code in the <code>statement</code> is run. If the <code>expression</code> is <code>FALSE</code>, nothing happens.</p>
+<p><strong>EXERCISE 2</strong> The following code prints “negative number” if <code>x</code> is negative, test this statement with different values for <code>x</code>.</p>
+<pre class="r"><code># Your turn
+x &lt;- 5
+if (x &lt; 0) {
+    print(&quot;negative number&quot;)
+}</code></pre>
+<p>It is possible to follow <code>if</code> by <code>else</code> to create a <code>if...else</code> statement. The syntax is:</p>
+<pre><code>if (expression) {
+statement1
+} else {
+statement2
+}</code></pre>
+<p>The <code>else</code> component is optional and is only evaluated if the expression is FALSE.</p>
+<p><strong>ExERCISE 3</strong> Create an <code>if...else</code> statement that prints “negative number” if <code>x</code> is less than 0 and “not a negative number” if <code>x</code> is not. Test your statement with different values for <code>x</code>.</p>
+<pre class="r"><code># Your turn
+x &lt;- -10
+if (x &lt; 0) {
+   print(&quot;negative number&quot;)
+} else {
+  print(&quot;not a negative number&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;negative number&quot;</code></pre>
+<p>You can also have another <code>if</code> with an expression followed by <code>else</code> as follows:</p>
+<pre><code>if (expression 1) {
+statement1
+} else if (expression 2) {
+statement2
+}</code></pre>
+<p><strong>ExERCISE 4</strong> Create an <code>if...else</code> statement that prints “negative number” if <code>x</code> is less than 0 and “positive number” if <code>x</code> is greater than 0. Test your statement with different values for <code>x</code>.</p>
+<pre class="r"><code># Your turn
+x &lt;- 10
+if (x &lt; 0) {
+   print(&quot;negative number&quot;)
+} else if (x &gt; 0) {
+  print(&quot;positive number&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;positive number&quot;</code></pre>
+<p>We can combine <code>if...else</code> statements with <code>for</code> loops to create powerful tools for data analysis and data manipulation. For example,</p>
+<pre class="r"><code>y &lt;- c(1, 3, 10, -1, 122, -9, -200)
+for (i in 1:length(y)) {
+  if (y[i] &gt; 0) {
+  print(&#39;positive&#39;)
+  } 
+  else if (y[i] &lt; 0) {
+  print(&#39;negative&#39;)
+  }
+}</code></pre>
+<pre><code>## [1] &quot;positive&quot;
+## [1] &quot;positive&quot;
+## [1] &quot;positive&quot;
+## [1] &quot;negative&quot;
+## [1] &quot;positive&quot;
+## [1] &quot;negative&quot;
+## [1] &quot;negative&quot;</code></pre>
+<p>The code above loops through the vector <code>y</code> and prints ‘positive’ if the <code>i</code>-th element is greater than 0 and ‘negative’ if it is less than 0.</p>
+<p><strong>EXERCISE 5</strong> Store the subject id (<code>RANDID</code>) of all subjects over 70 years old in a vector and display it using <code>for</code>, <code>if</code> and <code>else</code>. Check your answer by using <code>filter()</code> and <code>select()</code> from the <code>dplyr</code> package.</p>
+<pre class="r"><code># Your turn
+age_70_index &lt;- vector(length = length(data1$AGE))
+for (i in 1:nrow(data1)) {
+  if (data1$AGE[i] == 70) {
+     age_70_index[i] &lt;- 1 
+  }
+}
+age_70 &lt;- data$RANDID[age_70_index == 1]
+age_70[1:6]</code></pre>
+<pre><code>## [1] 390449 491826 571377 610146 814971 968768</code></pre>
+<pre class="r"><code># check answer
+data1 %&gt;% 
+     filter(AGE == 70) %&gt;%
+     select(RANDID) %&gt;%
+     head()</code></pre>
+<pre><code>##   RANDID
+## 1 390449
+## 2 491826
+## 3 571377
+## 4 610146
+## 5 814971
+## 6 968768</code></pre>
+</div>
+</div>
+<div id="functions" class="section level1">
+<h1>2. Functions</h1>
+<p>Almost all operations in <code>R</code> are achieved using <em>functions</em>. The general syntax for <em>functions</em> is <code>function_name(arguments)</code>
+We have seen many of them until now (e.g. <code>mean()</code>, <code>max()</code>, <code>quantile()</code>). These are pre-specified (built-in) functions in <code>R</code>.</p>
+<p>In some settings, pre-specified functions in <code>R</code> are not sufficient for the analysis we would like to perform. In such cases, it is good practice to define your own functions to perform analyses. This can help you reproduce your analysis at a later date and repeat the same analysis on another dataset.</p>
+<p>The generally syntax for writing your own function is as follows:</p>
+<pre><code>function_name &lt;- function(arguments) {
+   ...
+   return(output)
+}</code></pre>
+<p>The function can have a large number of <code>arguments</code>, or function inputs, separated by commas. The <code>output</code> from a function can have multiple elements that should be returned as a list.</p>
+<pre><code>function_name &lt;- function(argument1, argument2, argument3) {
+   ...
+   return(list(output1, output2, output3)
+}</code></pre>
+<p>Once a function has been defined using the code above, it can be used as a standard function in <code>R</code>.</p>
+<p>For example, the following function calculates the mean of a vector:</p>
+<pre class="r"><code># Write our own function to calculate the mean
+mean_own &lt;- function(data){
+   mean_calc &lt;- sum(data) / length(data)
+   return(mean_calc)
+}
+mean_own(1:10)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<pre class="r"><code># test
+mean(1:10)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<p><strong>EXERCISE 6</strong> Write a function that converts Fahrenheit to Celsius. The formula is (F-12) * 5 / 9. Test your function on 100 degrees Fahrenheit.</p>
+<pre class="r"><code># Your turn
+F_to_C &lt;- function(temperature_F) {
+   temperature_C &lt;- (temperature_F - 32) * 5 / 9
+   return(temperature_C)
+}
+# test 
+F_to_C(100)</code></pre>
+<pre><code>## [1] 37.77778</code></pre>
+<p><strong>EXERCISE 7</strong> Write a function that calculates the square root of the sum of the squares of two numbers. Test your function on 3 and 4. The answer should be 5.</p>
+<pre class="r"><code># Your turn
+root_sum_of_squares &lt;- function (x, y) {
+   root_sum_squares &lt;- sqrt(x ^ 2 + y ^ 2)
+   return(root_sum_squares)
+}
+
+# test
+root_sum_of_squares(3,4)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>sqrt(3 ^ 2 + 4 ^ 2)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>You can write any number of operations between the left curly bracket <code>{</code> and the right curly bracket <code>}</code>. All these operations will be included in the function so you can perform the same operations on different datasets.</p>
+<p>Functions can be combined with loops to perform complex operations but as these functions and loops become more complex, it is good practice to insert comments within your functions.</p>
+<p>Below we create our own summary function that calculates the mean, standard deviation, minima and maxima of a vector. We use it on the age variable in the framingham dataset.</p>
+<pre class="r"><code># Write a function to summarize data
+summary_own &lt;- function(data) {
+  # summary statistics
+   mean_calc &lt;- sum(data) / length(data)
+   sd_calc &lt;- sd(data)
+   min_calc &lt;- min(data)
+   max_calc &lt;-max(data)
+   # name the summary statistics
+   summaries &lt;- c(mean_calc,sd_calc,min_calc,max_calc)
+   names(summaries) &lt;- c(&#39;mean&#39;, &#39;sd&#39;, &#39;min&#39;, &#39;max&#39;)
+   return(summaries)
+}
+
+# use it on AGE and store the ouptut in a object
+age_summary &lt;- summary_own(data$AGE)
+# print the results
+age_summary</code></pre>
+<pre><code>##      mean        sd       min       max 
+## 60.648177  8.296766 44.000000 81.000000</code></pre>
+<p><strong>EXERCISE 8</strong> Write a function that tests whether the mean systolic blood pressure (<code>SYSBP</code>) is different for those who have prevalent stroke (<code>PREVSTRK</code>) and those who do not and produces a box plot of systolic blood pressure stratified by prevalent stroke status with an appropriate title and labels. The function takes our framingham dataset as the only argument.</p>
+<pre class="r"><code># Your turn
+test_sysbp &lt;- function (data) {
+                no_PREVSTRK_SYSBP &lt;- data$SYSBP[data$PREVSTRK 
+                                                == &#39;no&#39;]
+                PREVSTRK_SYSBP &lt;- data$SYSBP[data$PREVSTRK 
+                                             == &#39;yes&#39;]
+                boxplot(SYSBP ~ PREVSTRK, data = data, 
+                        main = &#39;Systolic blood pressure by 
+                                prevalent stroke status&#39;, 
+                        xlab = &#39;prevalent stroke&#39;,
+                        ylab = &#39;systolic blood pressure&#39;)
+                return(t.test(no_PREVSTRK_SYSBP, PREVSTRK_SYSBP))
+}
+test_sysbp(data1)</code></pre>
+<p><img src="Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  no_PREVSTRK_SYSBP and PREVSTRK_SYSBP
+## t = -6.9149, df = 71.276, p-value = 1.654e-09
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -23.56921 -13.01937
+## sample estimates:
+## mean of x mean of y 
+##  139.8289  158.1232</code></pre>
+</div>
+<div id="the-apply-family" class="section level1">
+<h1>3. The ‘apply’ family</h1>
+<p><code>R</code> can be quite slow if you use a <code>for</code> loop to repeatedly use the same function across different elements of a dataset, or multiple datasets. <code>R</code> is much faster when we use a family of functions called the <code>apply</code> function. These functions, such as <code>sapply()</code> function or <code>lapply()</code> are used to repeatedly <em>apply</em> the same function to a dataset or a list of different datasets.</p>
+<p><code>sapply()</code> and <code>lapply()</code> take a list as its 1st argument and a function as its 2nd argument. It calls the function on each item in the list. The first <em>code chunk</em> demonstrates the <code>for</code> loop that we could use to calculate the summary statistics using our function for the age of both males and females.</p>
+<pre class="r"><code>sex_index &lt;- c(&quot;male&quot;, &quot;female&quot;)
+# create an dummy matrix to store the summary statistics
+summary_sex_age &lt;- matrix(0, nrow = 4, ncol = length(sex_index))
+# name the columns of the matrix
+colnames(summary_sex_age) &lt;- sex_index
+# use for loop to calculate the statistics 
+for (i in 1:length(sex_index)) {
+  summary_sex_age[,i] &lt;- summary_own(
+  data1$AGE[data1$SEX == sex_index[i]]
+  )
+}
+# display the results
+summary_sex_age</code></pre>
+<pre><code>##           male    female
+## [1,] 60.348955 60.869403
+## [2,]  8.191481  8.369054
+## [3,] 45.000000 44.000000
+## [4,] 80.000000 81.000000</code></pre>
+<p>The <code>sapply()</code> function can be used to avoid the <code>for</code> loop:</p>
+<pre class="r"><code># create a list containing the ages for males and females separately
+age_list &lt;- list(data1$AGE[data1$SEX == sex_index[1]],
+                 data1$AGE[data1$SEX == sex_index[2]])
+# use sapply to calculate the summary statistics
+summary_sex_age1 &lt;- sapply(age_list, summary_own)
+# name the rows
+colnames(summary_sex_age1) &lt;- sex_index
+# display the results
+summary_sex_age1</code></pre>
+<pre><code>##           male    female
+## mean 60.348955 60.869403
+## sd    8.191481  8.369054
+## min  45.000000 44.000000
+## max  80.000000 81.000000</code></pre>
+<p>We can also use the <code>apply()</code> to apply a function to the rows or columns (or both) of a data frame. While <code>lapply()</code> requires a list input and returns a list instead of a vector as we saw for <code>sapply()</code>.</p>
+<p><strong>EXERCISE 9</strong> We have created a list of temperatures in Fahrenheit. Use the <code>sapply()</code> or <code>lapply()</code> functions to convert them to Celsius.</p>
+<pre class="r"><code># Your turn
+F_temperatures &lt;- list(50, 62, 81, 102, 157) 
+lapply(F_temperatures, F_to_C)</code></pre>
+<pre><code>## [[1]]
+## [1] 10
+## 
+## [[2]]
+## [1] 16.66667
+## 
+## [[3]]
+## [1] 27.22222
+## 
+## [[4]]
+## [1] 38.88889
+## 
+## [[5]]
+## [1] 69.44444</code></pre>
+<pre class="r"><code>sapply(F_temperatures, F_to_C)</code></pre>
+<pre><code>## [1] 10.00000 16.66667 27.22222 38.88889 69.44444</code></pre>
+</div>

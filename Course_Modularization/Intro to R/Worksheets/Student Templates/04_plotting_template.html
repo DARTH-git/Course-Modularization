@@ -1,0 +1,199 @@
+---
+title: "Intro to R for Decision Modeling"
+author: "SickKids and DARTH"
+date: "11/2/2020"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+subtitle: Plotting
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<p>This goal of this worksheet is to introduce and provide guidance on visualizing data using <code>ggplot2</code> and base R. It is separated into the following sections:</p>
+<ol style="list-style-type: decimal">
+<li><p>Plotting graphs in <code>R</code> using <code>ggplot2</code></p></li>
+<li><p>Plotting graphs in <code>R</code> using base <code>R</code> capabilities</p></li>
+</ol>
+<p>Throughout the course, we will demonstrate code and leave some empty <em>code chunks</em> for you to fill in. We will also provide solutions after the session.</p>
+<p>Feel free to modify this document with your comments and clarifications.</p>
+<div id="load-data-into-r" class="section level1">
+<h1>1.0 Load data into <code>R</code></h1>
+<p>Before we begin this session, we need to load The Framingham dataset into <code>R</code> as we did in the previous session. The Framingham dataset we have provided has 3,263 rows. To demonstrate plotting, we will use a the first 1000 entries from this dataset.</p>
+<pre class="r"><code>data &lt;- read.csv(&#39;framingham.csv&#39;, header = TRUE)
+# Selecting the first 1000 Ids
+data_small &lt;- data[1:1000, ]</code></pre>
+</div>
+<div id="plotting-graphs-using-ggplot2" class="section level1">
+<h1>1. Plotting graphs using <code>ggplot2</code></h1>
+<p>The package <code>ggplot2</code> is a powerful visualization tool within <code>R</code>. We can use ggplot to create high-quality publication-ready graphs.</p>
+<p>All ggplot graphs contain four key components:</p>
+<ol style="list-style-type: decimal">
+<li>A <code>ggplot()</code> function which outlines what data will be plotted</li>
+<li>An <code>aes()</code> function inside <code>ggplot()</code> that determines what parts of the graph will depend on the data.</li>
+<li>A <code>geom_</code> function indicating the type of graph we are creating.</li>
+<li>Graph options not related to the data (placed outside the <code>aes()</code> function).</li>
+</ol>
+<div id="starting-off-with-scatterplots" class="section level2">
+<h2>1.1 Starting off with Scatterplots</h2>
+<p>Before we begin plotting, it is important that the <code>ggplot2</code> package is loaded in <code>R</code>.</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p>Let’s start by creating a plot with Age (<code>AGE</code>) on the x-axis and Systolic Blood Pressure (<code>SYSBP</code>) on the y-axis.</p>
+<pre class="r"><code>ggplot(data = data_small, 
+       aes(x = AGE,
+           y = SYSBP)) </code></pre>
+<p>If we do not specify a <code>geom_</code> function we get an empty plot. We can think of <code>ggplot()</code> function as creating a base layer which we will be adding geometry to. We add <code>geom_</code> to the original <code>ggplot()</code> using the <code>+</code> sign.</p>
+<p>Lets add a scatter plot to the graph we created above.</p>
+<pre class="r"><code>ggplot(data = data_small, 
+       aes(x = AGE,y = SYSBP))  + 
+  geom_point()</code></pre>
+<p><strong>EXERCISE 1</strong> Create a scatter plot of <code>SYSBP</code> against <code>BMI</code>.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>There are several asthetic options to customize scatter plots.</p>
+<ul>
+<li><strong>color</strong>: Point colour (a variable name if inside <code>aes()</code> or the name of a colour “purple” or HEX codes “#800080”)</li>
+<li><strong>shape</strong>: shape of point (a variable name if inside <code>aes()</code> or a number between 1-25)</li>
+<li><strong>alpha</strong>: transparency of each point (a variable name if inside <code>aes()</code>or a number between 0-1 with 0 being completely transparent and 1 being solid)</li>
+</ul>
+<p>You can type <code>?geom_point()</code> to see the help file for <code>geom_point()</code> in the bottom right-hand corner. This will show the complete list of the asthetics assocaited with <code>geom_point</code>.</p>
+<p>The code below returns a scatter plot of blue points that are 50% transparent.</p>
+<pre class="r"><code>ggplot(data_small, 
+       aes(x = BMI, y = SYSBP)) + 
+  geom_point( colour = &#39;blue&#39;, 
+              alpha = 0.5)</code></pre>
+<p>Note that if the asthetics should vary depending on the data, i.e. the colour changes due to the subgroup, then they should be included within the <code>aes()</code> function. For example, we can vary the colour of the points by age.</p>
+<pre class="r"><code>ggplot(data_small, 
+       aes(x = BMI, y = SYSBP, color = AGE)) + 
+  geom_point( alpha = 0.75) </code></pre>
+<p><strong>EXERCISE 2</strong> Make the colour vary in the graph of <code>SYSBP</code> against <code>BMI</code> based on Prevalent Hypertensive (PREVHYP).</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>In the plot above, you can see that there are two distinct categories for <code>PREVHYP</code> but <code>ggplot</code> has used a colour scale from 0 to 1. This is because <code>ggplot</code> treats numbers as numerical variables rather than understanding that the numbers code two distinct categories (<code>0</code> means free from hypertension and <code>1</code> means the participant has hypertension). Therefore, to improve the plot, we need to use the <code>factor()</code> function to turn <code>PREVHYP</code> into a categorical variable:</p>
+<pre class="r"><code>data_small$PREVHYP.fct &lt;-  factor(data_small$PREVHYP, 
+                                    levels = 0:1, 
+                                    labels = c(&#39;Free of disease&#39;,
+                                               &#39;Prevalent disease&#39;))</code></pre>
+<p><strong>EXERCISE 3</strong> Plot a scatter plot with two variables from the Framingham dataset while making colour vary based on <code>PREVHYP.fct</code>.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="labeling-plots-themes" class="section level2">
+<h2>1.2 Labeling plots &amp; Themes</h2>
+<p>The <code>ggplot2</code> package contains several functions to change titles and labels of plot elements.
+- <code>xlab()</code> &amp; <code>ylab()</code> change axis labels.
+- <code>ggtitle()</code> adds a title and a subtitle</p>
+<pre class="r"><code>ggplot(data_small, 
+      aes(x = AGE, y = SYSBP, color = factor(PREVHYP.fct))) +
+  geom_point(alpha = 0.75) +
+  xlab(label = &quot;Age, Years&quot;) + 
+  ylab(label = &quot;Systolic Blood Pressure&quot;) +
+  ggtitle(label = &quot;Figure 1: Age and Systolic Blood Pressure&quot;, 
+          subtitle = &quot;Stratified by prevalence of hypertension&quot;) </code></pre>
+<p>We can also use functions of the form scale_<em>asthetic</em>_<em>type</em> to change the legend for arguments passed in <code>aes()</code>. These different functions are named so the <em>aesthetic</em> is the aesthetic that we want to name, e.g. color, fill shape, alpha, and <em>type</em> is the format of the data that is plotted with that aesthetic e.g. continuous, discrete, date.</p>
+<p>For example, to change the name of the legend associated with the prevalence of hypertension, we use <code>scale_color_discrete()</code>.</p>
+<pre class="r"><code>ggplot(data_small, 
+      aes(x = AGE, y = SYSBP, color = factor(PREVHYP.fct))) +
+  geom_point(alpha = 0.75) +
+  xlab(label = &quot;Age, Years&quot;) + 
+  ylab(label = &quot;Systolic Blood Pressure&quot;) +
+  ggtitle(label = &quot;Figure 1: Age and Systolic Blood Pressure&quot;, 
+          subtitle = &quot;Stratified by prevalence of hypertension&quot;) + 
+  scale_color_discrete(name = &quot;Prevalence of hypertension&quot; )</code></pre>
+<p>We can also change the background of a plot using the <code>theme_</code> functions. For example, the default colour for a ggplot is grey (as we see above) but the following graphic has a white background with a black box around using the <code>theme_bw()</code> function. You can find more ggplot2 themes in the <code>ggthemes</code> package.</p>
+<pre class="r"><code>ggplot(data_small, 
+      aes(x = AGE, y = SYSBP, color = factor(PREVHYP.fct))) +
+  geom_point(alpha = 0.75) +
+  xlab(label = &quot;Age, Years&quot;) + 
+  ylab(label = &quot;Systolic Blood Pressure&quot;) +
+  ggtitle(label = &quot;Figure 1: Age and Systolic Blood Pressure&quot;, 
+          subtitle = &quot;Stratified by prevalence of hypertension&quot;) + 
+  scale_color_discrete(name = &quot;Prevalence of hypertension&quot; ) + 
+  theme_bw()</code></pre>
+<p>We can also plot two different types of the same data using two alternative <code>geom_</code> functions with the same asthetics. For example, in the graphic below, we produce a scatterplot of the data using <code>geom_point()</code> and then add the fitted line from a linear model using the <code>geom_smooth()</code> plot type. For example:</p>
+<pre class="r"><code>ggplot(data_small, 
+      aes(x = AGE, y = SYSBP, color = factor(PREVHYP.fct))) +
+  geom_point(alpha = 0.75) +
+  geom_smooth(method = &quot;lm&quot;) +
+  xlab(label = &quot;Age, Years&quot;) + 
+  ylab(label = &quot;Systolic Blood Pressure&quot;) +
+  ggtitle(label = &quot;Figure 1: Age and Systolic Blood Pressure&quot;, 
+          subtitle = &quot;Stratified by prevalence of hypertension&quot;) + 
+  scale_color_discrete(name = &quot;Prevalence of hypertension&quot; ) + 
+  theme_bw()</code></pre>
+</div>
+</div>
+<div id="axis-limits" class="section level1">
+<h1>Axis limits</h1>
+<p>You can set alternative axis limits using <code>ylim()</code> and <code>xlim()</code>. This is done by providing the function a vector of length two indicating where the axis begin and end. Notice that each time we add an additional element to the plot, we add with a <code>+</code>.</p>
+<pre class="r"><code>ggplot(data_small, 
+      aes(x = AGE, y = SYSBP, color = factor(PREVHYP.fct))) +
+  geom_point(alpha = 0.75) +
+  geom_smooth(method = &quot;lm&quot;) +
+  xlab(label = &quot;Age, Years&quot;) + 
+  ylab(label = &quot;Systolic Blood Pressure&quot;) +
+  ggtitle(label = &quot;Figure 1: Age and Systolic Blood Pressure&quot;, 
+          subtitle = &quot;Stratified by prevalence of hypertension&quot;) + 
+  scale_color_discrete(name = &quot;Prevalence of hypertension&quot; ) + 
+  ylim(c(0,300))+
+  theme_bw()</code></pre>
+<div id="other-graphs" class="section level2">
+<h2>Other graphs</h2>
+<p><strong>EXERCISE 4</strong>: Create a box plot with <code>PREVSTRK.fct</code> (Prevalent stroke) on the x-axis and <code>SYSBP</code> (Systolic Blood Pressure) on the y-axis.</p>
+<p>Note: <code>?geom_boxplot</code> provides the documentation for the boxplotting function.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><strong>EXERCISE 5</strong>: Create a histogram of Age stratified by Prevalent hypertension (<code>PREVHYP.fct</code>).</p>
+<ul>
+<li><p><code>?geom_histogram</code> provides the documentation for the boxplotting function.</p></li>
+<li><p><code>fill</code> allows you to change the colour of the histogram (more widely it changes the colour of geometry).</p></li>
+</ul>
+<pre class="r"><code># Your turn</code></pre>
+<p><strong>EXERCISE 6</strong> Plot the density of age in the Framingham dataset.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+</div>
+<div id="plotting-graphs-using-base-r" class="section level1">
+<h1>2. Plotting graphs using base <code>R</code></h1>
+<p>While <code>ggplot2</code> offers extensive customizability and publication-standard graphics, there are some basic plotting capabilities in <code>R</code> that are sufficient, and often preferred, for exploratory analysis.</p>
+<div id="scatter-plot" class="section level2">
+<h2>Scatter plot</h2>
+<p>Suppose you want to create a scatter plot of two variables you can simply use the <code>plot()</code> function. The following command plots heart rate and Systolic blood pressure</p>
+<pre class="r"><code>plot(x = data_small$BMI,y =  data_small$SYSBP, 
+     col = &#39;blue&#39;,
+     main = &#39;Scatter plot of systolic blood pressure against BMI&#39;, 
+     xlab = &#39;BMI&#39;, ylab = &#39;systolic blood pressure&#39;)</code></pre>
+<p><strong>EXERCISE 7</strong> Re-create the scatter plot you made in EXERCISE 3 using the base plotting function. Make appropriate titles and labels.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="box-plot" class="section level2">
+<h2>Box plot</h2>
+<p>The following code creates a box plot of <code>SYSBP</code> stratified by <code>PREVSTRK</code>.</p>
+<pre class="r"><code>boxplot(SYSBP ~ PREVSTRK ,data=data_small, 
+        main=&quot;Box plot of systolic blood pressure stratified 
+        by prevalent stroke&quot;,
+        names = c(&#39;free of disease&#39;, &#39;prevalent disease&#39;),
+        col = c(&#39;red&#39;, &#39;blue&#39;),
+        xlab = &quot;prevalent stroke&quot;, ylab=&quot;systolic blood pressure&quot;)</code></pre>
+<p>The <code>~</code> symbol is frequently used in <code>R</code> to define formulas (which we will see in the Regression session), but here indicates that you want to plot the continuous variable <code>SYSBP</code> across the two categories of <code>PREVSTRK</code>.</p>
+<p><strong>EXERCISE 8</strong> Create a box plot of two variables in the Framingham database with the appropriate title and labels.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="histogram" class="section level2">
+<h2>Histogram</h2>
+<p>The following command creates a histogram showing the distribution of <code>AGE</code> with appropriate labelling.</p>
+<pre class="r"><code>hist(data_small$BMI, main = &#39;Histogram of age&#39;, xlab = &#39;age&#39;)</code></pre>
+<p><strong>EXERCISE 9</strong> Create a histogram of BMI with smaller sized bins (hint: explore <code>?hist()</code> and the <code>breaks</code> option).</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="other-types-of-graphs" class="section level2">
+<h2>Other types of graphs</h2>
+<p>Several R functions have output which the <code>plot()</code> function understands intunitively how to visualize. For example the <code>density()</code> funciton calculates kernel density estimates of a vector. When we call the <code>plot()</code> function to the results of <code>density()</code> we get a meaninful plot.</p>
+<p>Not all output from <code>R</code> functions can be plotted.</p>
+<pre class="r"><code># Plotting output of (density)
+den.age &lt;- density(data_small$AGE)
+den.age
+plot(den.age, main = &#39;Density plot of age&#39;)</code></pre>
+</div>
+</div>

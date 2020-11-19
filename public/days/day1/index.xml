@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 1 schedule on Decision Modeling in R Workshop</title>
+    <link>/days/day1/</link>
+    <description>Recent content in Day 1 schedule on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/days/day1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Intro to decision modeling in R</title>
+      <link>/days/day1/intro/</link>
+      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day1/intro/</guid>
+      <description>Slides CourseIntroSlides.pptx
+Preparation Run code in this script to download all packages needed for this workshop.
+00_prep.R</description>
+    </item>
+    
+    <item>
+      <title>Decision tree models in R</title>
+      <link>/days/day1/tree/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day1/tree/</guid>
+      <description>Slides DecisionTreeSlides.pptx
+Exercise worksheet decision_tree_HVE_exercise.pdf
+Student exercise template decision_tree_HVE_template.Rmd
+Instructor solutions decision_tree_HVE_solutions.Rmd
+Below is the dataset that is the input of the dectree functions.
+decision_tree_HVE_branches.csv</description>
+    </item>
+    
+    <item>
+      <title>dampack &amp; darthpack</title>
+      <link>/days/day1/tools/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day1/tools/</guid>
+      <description>Slides dampack.pptx
+darthpack.pdf</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,7 +1,0 @@
-"0","# Load simulation file"
-"0","# Read the `.csv` simulation file into `R`."
-"0","toy <- read.csv(here(""data"", ""psa_sick_sicker.csv""), header = TRUE)[, -1]"
-"0","n_sim <- nrow(toy)"
-"0",""
-"0","# Display first five observations of the data fram using the command `head`"
-"0","head(toy)"

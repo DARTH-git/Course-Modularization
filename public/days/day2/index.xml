@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 2 schedule on Decision Modeling in R Workshop</title>
+    <link>/days/day2/</link>
+    <description>Recent content in Day 2 schedule on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/days/day2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Markov models in R</title>
+      <link>/days/day2/markov/</link>
+      <pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day2/markov/</guid>
+      <description>Slides MarkovModelSlides.pptx
+Demostration Markov_3state.Rmd
+Exercise worksheet markov_sick-sicker_exercise.pdf
+Student exercise template markov_sick-sicker_template.Rmd
+Instructor solutions mmarkov_sick-sicker_solutions.Rmd</description>
+    </item>
+    
+    <item>
+      <title>Markov model variants</title>
+      <link>/days/day2/markov_variants/</link>
+      <pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day2/markov_variants/</guid>
+      <description>Slides MarkovModelSlides.pptx
+Demostration Markov_3state_time.Rmd
+Markov_3state_tunnels.Rmd
+Exercise worksheet Dataset required for the exercise:
+HMD_USA_Mx_2015.csv
+markov_sick-sicker_tunnels_exercise.pdf
+Student exercise template markov_sick-sicker_tunnels_template.Rmd
+Instructor solutions markov_sick-sicker_tunnels_solutions.Rmd</description>
+    </item>
+    
+  </channel>
+</rss>

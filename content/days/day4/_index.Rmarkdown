@@ -1,0 +1,43 @@
+---
+title: Day 3 schedule
+author: ''
+date: "`r Sys.Date()`"
+slug: day4
+categories: []
+tags: []
+menu:
+  day4:
+    name: "Day 3 schedule"
+    weight: 1
+toc: yes
+type: docs
+---
+
+**Thursday, Nov 5**: *Microsimulation Models*
+
+Basic agenda:
+
+- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 9:00am - 4:00pm Eastern Time
+
+Here is a tentative timetable for Day 3:
+
+|                            |            |
+|--------------------------------------------|:------------------|
+| 9:00 – 9:30  | Review: cohort state-transition model exercise solutions |
+| 9:30 – 10:30| Code review: Microsimulation models in R  | 
+| 10:30 – 12:00 | Hands-on exercise: Microsimulation models |
+| 1:00pm – 4:00pm | On your own |
+
+From 1:00pm to 4:00pm, please:
+
+- Complete microsimulation hands-on exercise
+
+- Watch "Day 4: Sensitivity Analysis" lecture series
+
+## Synchronous session recording
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "476082616")
+```
+

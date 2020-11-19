@@ -1,0 +1,21 @@
+---
+title: Introduction to R - Q & A
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Intro to R - Q & A
+menu:
+  day2:
+    weight: 5
+---
+
+## Slides
+
+[Download slides - Matrix Algebra](../../../rmds/matrix_algebra_slides.pptx)
+
+## Matrix algebra handout
+
+[Download handout](../../../rmds/matrix.algebra.pdf)

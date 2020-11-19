@@ -1,0 +1,45 @@
+---
+title: Day 2 schedule
+author: ''
+date: "2020-11-05"
+slug: day3
+categories: []
+tags: []
+menu:
+  day3:
+    name: "Day 2 schedule"
+    weight: 1
+toc: yes
+type: docs
+---
+
+**Wednesday, Nov 4**: *Cohort State-Transition Models*
+
+Basic agenda:
+
+- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 9:00am - 4:00pm Eastern Time
+
+Here is a tentative timetable for Day 2:
+
+|                            |            |
+|--------------------------------------------|:------------------|
+| 9:00 – 9:45  | Code review: Basic cohort state-transition model in R  |
+| 9:45 – 10:30 | Hands-on exercise: Cohort state-transition model  | 
+| 10:30 – 11:00 | Code review: Advanced cohort state-transition models |
+| 11:00 – 12:00 | Hands-on exercise: Cohort state-transition model extensions |
+| 1:00pm – 4:00pm | On your own |
+
+From 1:00pm to 4:00pm, please:
+
+- Complete Cohort state-transition model hands-on exercises
+
+- Watch "Day 3: Microsimulation Models" lecture series
+
+## Synchronous session recording
+
+<!--html_preserve-->{{% vimeo "475724349" %}}<!--/html_preserve-->
+
+
+
+ 

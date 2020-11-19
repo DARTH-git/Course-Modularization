@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 5 schedule on Decision Modeling in R Workshop</title>
+    <link>/days/day5/</link>
+    <description>Recent content in Day 5 schedule on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Mon, 13 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/days/day5/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Model calibration in R</title>
+      <link>/days/day5/calib/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day5/calib/</guid>
+      <description>Here you find all the files for the calibration session. To avoid issued with directories, we recommend storing all files in one folder.
+Slides Calibration.pptx
+Demostration CRS_CalibTargets.RData
+CRS_MarkovModel_Function.R
+CRS_Calib_NelderMead.Rmd
+CRS_Calib_IMIS.Rmd</description>
+    </item>
+    
+    <item>
+      <title>Survival analysis in R</title>
+      <link>/days/day5/survival/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day5/survival/</guid>
+      <description>Here you find all the files for the survival analysis session. To avoid issued with directories, we recommend storing all files in one folder.
+Slides SurvivalAnalysisSlides.pdf
+Demostration data.R
+survival_functions.R
+survival_3-state_solutions.Rmd</description>
+    </item>
+    
+    <item>
+      <title>Value of information analysis in R</title>
+      <link>/days/day5/voi/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day5/voi/</guid>
+      <description>Here you find all the files for the VOI session. To avoid issued with directories, we recommend storing all files in one folder.
+Slides VOI2.pptx
+Demostration PSA.csv
+GA_functions.R
+VOI_Functions.R
+VOI_toy.Rmd</description>
+    </item>
+    
+  </channel>
+</rss>

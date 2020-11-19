@@ -1,0 +1,13 @@
+---
+title: Decision tree models in R
+date: "`r Sys.Date()`"
+draft: false
+toc: true
+type: docs
+
+linktitle: Decision tree models in R
+menu: day1
+weight: 3
+---
+
+[darthpack](../../../rmds/Coding_framework.pdf)

@@ -1,0 +1,122 @@
+---
+title: Introduction to R for Health Services Research
+subtitle: Reproducible Research
+author: SickKids and DARTH
+date: 12/09/2019
+output: pdf_document
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>This worksheet highlights some key settings where <code>R</code> can help make your research easier to reproduce and present to key stakeholder. This session is split into the following sections:</p>
+<ol style="list-style-type: decimal">
+<li><p>R Markdown</p></li>
+<li><p>R Script</p></li>
+<li><p>R Shiny Applications</p></li>
+</ol>
+<p>Throughout the course, we will demonstrate code and leave some empty <em>code chunks</em> for you to fill in. We will also provide solutions after the session.</p>
+<p>Feel free to modify this document with your own comments and clarifications.</p>
+<div id="r-markdown" class="section level1">
+<h1>1. R Markdown</h1>
+<p>Throughout this course, we have provided all materials using R Markdown but we will now briefly highlight how R Markdown can improve the reproducibility of research. In an R Markdown document, you can store, comment on, and run code from <strong>code chunks</strong>. This document can be shared with collaborators or other stakeholders so people can:</p>
+<ul>
+<li><p>Re-run your code and view the outputs and analysis results.</p></li>
+<li><p>Read your free text that explains the analysis and the data.</p></li>
+<li><p>Easily modify your code in any way they want.</p></li>
+<li><p>Use your document as a template to build their own R Markdown document.</p></li>
+</ul>
+<p>You can <strong>Knit</strong> R Markdown documents to other file types including HTML, PDF and Word. These alternative outputs can be submitted to journals so keep you analysis and manuscript writing in the same document.</p>
+<ul>
+<li><p>To knit to a HTML document, you will need an Internet browser installed on your computer, but you do not need to connect to the Internet.</p></li>
+<li><p>To knit to a Word document, you will need Microsoft Office Word installed on your computer.</p></li>
+<li><p>To knit to a PDF document, you will need to install <a href="https://miktex.org/download"><strong>MiKTex</strong></a>, an up-to-date implementation of TeX/LaTeX and related programs. You should download the <strong>Net Intaller</strong>, not the Basic Installer. You do not need to <em>use</em> LaTeX.</p></li>
+</ul>
+<p><strong>Inline Code Chunks</strong></p>
+<p>R Markdown also contains an <em>inline</em> feature that allows you to run small pieces of code within the text. This is useful if you want to refer to figures from your data/statistical analysis within the main body of your text, e.g., 82% of trial participants were successfully sedated. Inline code is specified using the following structure: 3. In this case, the <strong>knited</strong> R Markdown document will display the mean of the number 1 to 5 (e.g., 3) in place of the code above. You can <strong>Knit</strong> the document to see.</p>
+</div>
+<div id="r-script" class="section level1">
+<h1>2. R Script</h1>
+<p>You can also use <code>R</code> with <em>scripts</em>. These <em>scripts</em> are like a single code chunk from a Markdown document and can be used to write <code>R</code> code for more complex operations or to save functions that are reused across multiple documents. <code>R</code> scripts can be used to write, store and run <code>R</code> code. To open a new <code>R</code> script, click</p>
+<p><strong>File -&gt; New File -&gt; R Script…</strong></p>
+<p>You can type code anywhere in a script. To run a line, you can click on that line and either hit the <strong>Run</strong> button on the top right corner of this window or hit CTRL + ENTER.</p>
+<p><strong>EXERCISE 1</strong></p>
+<ul>
+<li><p>Create a new <code>R</code> script.</p></li>
+<li><p>Run a few mathematical operations.</p></li>
+<li><p>Type in and run <code>plot(iris$Sepal.Width,iris$Sepal.Length)</code>. Note that <code>iris</code> is a standard dataset that is loaded whenever you open <code>R</code>.</p></li>
+</ul>
+<p>Note that when you run code from a <code>R</code> script the output <em>only</em> displays in the console and the plots display in the bottom right-hand corner of the RStudio interface.</p>
+<p><strong>Setting a working directory</strong></p>
+<p>The <em>working directory</em> in <code>R</code> is an important way to ensure that your research results are easy to find and you have loaded the correct dataset. The <em>working directory</em> is the folder where all data will be imported from and where all output, scripts and Markdown documents should be stored. You can display the current working directory using the function <code>getwd()</code>. You can change the working directory either by clicking <strong>Session - &gt; Set working directory -&gt; Choose Directory</strong> and setting your working directory or writing the command <code>setwd("path of your working directory")</code>.</p>
+<p>Remember that you should use a forward slash to define your filenames and the path to the folder, e.g. (“C:/”).</p>
+<p>You can also ask <code>R</code> to set the working directory to the folder where you have saved your Markdown document or script using <strong>Session -&gt; Set Working Directory -&gt; To Source File Location</strong>. If you data files are not in the same folder as your <code>R</code> script, you have to specify the full path to the data files (as we did in Session 3).</p>
+<p><strong>Cleaning the working space and the R memory</strong></p>
+<p>To ensure your results are reproducible and not based on previous analysis, it is advisable to begin each Markdown document or <code>R</code> script with a command that clears <code>R</code>’s memory. This removes all the variables that you used in your previous analysis and any user-defined functions you created. The command to clear you memory is</p>
+<pre class="r"><code>rm(list = ls())</code></pre>
+<p>You can also clear your <code>R</code> console (your working space) using type CTRL + L.</p>
+<p><strong>EXERCISE 2</strong> Create a few variables with different values in the following <em>code chunk</em>. Then clear the working space and the <code>R</code> memory.</p>
+<p><strong>Adding explanatory comments</strong></p>
+<p>It is good practice in any programming language to write code clearly, using logical steps and explaining clearly why those steps were taken. This helps other researchers reproduce your results and review you analysis. It also helps you remember what you did!</p>
+<p>In R Markdown, you can explain your analysis using text and add short comments to the code. We have used this method throughout the course. Within an <code>R</code> script, you can only use comments, indicated using the hashtag (<code>#</code>) symbol. Any line with a <code>#</code> symbol will be ignored by <code>R</code>, e.g.</p>
+<pre class="r"><code># cleaning the memory of R
+rm(list = ls ()) </code></pre>
+<p>You can also add comments in the same line as your code to explain what analysis you are doing on each line. For example:</p>
+<pre class="r"><code>rm(list = ls ()) # cleaning the memory of R</code></pre>
+<p>This commenting approach reduces the lines of code and results in more condensed code but can be more challenging to read if the comments are long.</p>
+</div>
+<div id="r-shiny-applications" class="section level1">
+<h1>3. <code>R</code> Shiny Applications</h1>
+<p><code>R</code> Shiny is a powerful and elegant package that that allows you to build web-based applications using <code>R</code>. It lets you turn your analyses into interactive web applications without requiring JavaScript, CSS or HTML coding.</p>
+<p>To create a new Shiny App, click</p>
+<p><strong>File -&gt; New File -&gt; Shiny Web App…</strong></p>
+<p>and choose a name for your App and the working directory it will be saved in.</p>
+<p><strong>EXERCISE 3</strong> Create a new Shiny App file and name it “demo”.</p>
+<p>After you create this app, you will see <code>R</code> has opened up a file name <code>app.R</code> –&gt; this is the script for your App.</p>
+<p>By default, <code>R</code> provides an example of a Shiny App which you can use by clicking the <strong>Run App</strong> button on the top right corner of the Script Editor. This App plots a histogram of the distribution of waiting time to eruption of the geyser from a the Old Faithful Geyser dataset, which is provided by standard in <code>R</code>.</p>
+<p>This App interactively generates and displays a histogram with the binwidth the user selects. The user of the App does not have to write or run any <code>R</code> code as everything is done through clicks. This is what makes Shiny Apps cool and powerful!</p>
+<p>The following section briefly introduces how to build a shiny app for your analysis. To begin, call the <code>shiny</code> library.</p>
+<pre class="r"><code>library(shiny)</code></pre>
+<p>All shiny apps have two components: <strong>UI</strong> and <strong>Server</strong>.</p>
+<ul>
+<li><p><strong>UI</strong> stands for “User Interface”, this is where you code what the user can see and click on.</p></li>
+<li><p><strong>Server</strong> contains functions that produce the output that is displayed in or used by the UI.</p></li>
+</ul>
+<p>It is easier to start with the Server since it feeds things into the UI.</p>
+<p>In the demo App, the <strong>Server</strong>:</p>
+<ul>
+<li><p>Contains a function that first stores the 2nd column (eruption wait time) of the Old Faithful Geyser dataset into a variable called <code>x</code>.</p></li>
+<li><p>Then, it takes different number of bins defined in the UI (called “bins”) to create the <code>bins</code> variable.</p></li>
+<li><p>Finally, it plots the histogram using the appropriate arguments (<code>x</code>, <code>bins</code>, etc).</p></li>
+<li><p>The entire operation is wrapped by Shiny function <code>renderPlot()</code> (a function that takes plots produced in <code>R</code>) and saved into a variable called <code>output$distPlot</code>.</p></li>
+<li><p><code>output</code> tells <code>R</code> that this is an output to be sent to the UI and <code>distPlot</code> is the name given to this operation.</p></li>
+</ul>
+<p>Now we switch to the <strong>UI</strong>,</p>
+<ul>
+<li><p>This UI has two parts: the side panel and the main panel.</p></li>
+<li><p>The side panel contains a side bar with slider input that contains different number of bins (input name is “bins”) ranging from 1 to 50, with the default being 30.</p></li>
+<li><p>The main panel contains a function called <code>plotOutput()</code> that takes our histogram and plots it on the main panel of the App.</p></li>
+</ul>
+<p>To finalize the App, the command <code>shinyApp(ui = ui, server = server)</code> is inserted at the very end.</p>
+<p><strong>EXERCISE 4</strong> Follow the steps below to build a Shiny App that makes stratified boxplots for the Framingham data:</p>
+<ul>
+<li><p>Open up the Shiny App file “app.R” in the “framingham” folder.</p></li>
+<li><p>You will see that we have selected the categorical variables (the <code>x</code>’s) that we wish to stratify our continuous variables (the <code>y</code>’s) by.</p></li>
+<li><p><code>selectInput()</code> provides a dropdown menu with different user-defined selections.</p></li>
+<li><p>Create a dropdown menu for the continuous variables. Include age, sex, current smoking status, diabetic status, prevalent myocardial infarction status and prevalent stroke status.</p></li>
+<li><p>Write the code to draw the boxplot under the comment “draw the boxplot of y stratified by x”. Make sure you have appropriate labels for the axes and different colours for the boxplots.</p></li>
+<li><p>Run the App and test it.</p></li>
+</ul>
+</div>
+<div id="further-reading" class="section level1">
+<h1>4. Further Reading</h1>
+<p>There are loads of great resources available to learn more about R:</p>
+<ol style="list-style-type: decimal">
+<li>Christopher Gandrud, Reproducible Research with R and RStudio</li>
+<li>Yihui Xie, Dynamic Documents with R and knitr</li>
+<li>The tidyverse website, <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a></li>
+<li>The R Markdown website, <a href="https://rmarkdown.rstudio.com/" class="uri">https://rmarkdown.rstudio.com/</a></li>
+<li>Hadley Wickham, Advanced R.</li>
+</ol>
+</div>

@@ -1,3 +1,0 @@
-"0",""
-"0","# Plot the 1000 draws from the posterior with marginal histograms"
-"0","pairs.panels(m_calib_res[,v_param_names])"

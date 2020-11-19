@@ -1,0 +1,15 @@
+---
+title: Introduction to Decision Modeling
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Intro to Decision Modeling
+menu:
+  day2:
+    weight: 3
+---
+
+## Slides
+
+[Download slides](../../../rmds/DecisionModelingIntroSlides_CDC.pptx)
+

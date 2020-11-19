@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Welcome on Decision Modeling in R Workshop</title>
+    <link>/prework/</link>
+    <description>Recent content in Welcome on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/prework/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Install software</title>
+      <link>/prework/system/</link>
+      <pubDate>Wed, 15 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/prework/system/</guid>
+      <description>In this workshop, we will use R and RStudio. RStudio is not required but recommended, because it makes it easier for an average user to work with R Markdown.
+Install R  A recent version of R (&amp;gt;= 3.5.1 &amp;ldquo;Feather Spray&amp;rdquo;) is recommended. You can check your version from the R Console:  R.version.string## [1] &amp;quot;R version 3.6.3 (2020-02-29)&amp;quot;Install RStudio  RStudio can be installed from [here] (https://www.rstudio.com/products/rstudio/download/#download).  </description>
+    </item>
+    
+    <item>
+      <title>Preparation</title>
+      <link>/prework/local/</link>
+      <pubDate>Mon, 13 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/prework/local/</guid>
+      <description>Virtual attendance   The workshop will be offered virtually via Zoom (online/teaching platform)
+  We will use Slack as our primary offline communication platform
+  What do I need to do before the workshop? You&amp;rsquo;ll need to complete the following items:
+Set up Slack
+This is our main platform for communications for participants and instructors for this workshop. Everyone should complete this step.
+Install software
+We will use R and RStudio for this workshop.</description>
+    </item>
+    
+    <item>
+      <title>A virtual workshop</title>
+      <link>/prework/accommodations/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 -0800</pubDate>
+      
+      <guid>/prework/accommodations/</guid>
+      <description>The workshop will be offered virtually via Zoom. Instructions on how to set it up and use it is [here](../../../rmds/Zoom information.docx).
+A Zoom link will be sent shortly prior to the workshop.
+List of things you will need  Your laptop A working microphone Stable Internet connection A webcam (optional, we&amp;rsquo;d like to meet you!)  </description>
+    </item>
+    
+    <item>
+      <title>Instructors</title>
+      <link>/prework/instructors/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 -0800</pubDate>
+      
+      <guid>/prework/instructors/</guid>
+      <description>Petros Pechlivanoglou, PhD Petros Pechlivanoglou, PhD, is a Scientist at the Hospital for Sick Children’s Research Institute and an Assistant Professor at the University of Toronto’s Institute of Health Policy, Management and Evaluation. After studying economics in his native Greece, he received both a Master’s in econometrics and a PhD in health econometrics from the University of Groningen. His research interests include: the use of health decision analysis in economic evaluation; bridging evidence synthesis, administrative data and decision analysis; and the application and extension of predictive models in health economics.</description>
+    </item>
+    
+    <item>
+      <title>Time and location</title>
+      <link>/prework/time-and-location/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 -0800</pubDate>
+      
+      <guid>/prework/time-and-location/</guid>
+      <description>When Monday, July 20, 2020 - Friday, July 24, 2020
+8:00 AM - 11:00 AM
+Eastern Time
+Where Virtual meeting on Zoom</description>
+    </item>
+    
+    <item>
+      <title>Resources</title>
+      <link>/prework/tutorials/</link>
+      <pubDate>Mon, 10 Dec 2018 00:00:00 -0800</pubDate>
+      
+      <guid>/prework/tutorials/</guid>
+      <description>R tutorials: If you feel rusty with R, the following additional resources are super useful for brushing up your R skills.
+R-handbook by DARTH
+This comprehensive handbook for using R covers a wide range of topics in detail and is publically available on DARTH&amp;rsquo;s GitHub repository.
+R Markdown
+This is the official site of R Markdown that has an abundance of resources and references about using R Markdown.
+Tidyverse style guide</description>
+    </item>
+    
+    <item>
+      <title>Set up Slack</title>
+      <link>/prework/slack/</link>
+      <pubDate>Mon, 10 Dec 2018 00:00:00 -0800</pubDate>
+      
+      <guid>/prework/slack/</guid>
+      <description>We will use Slack as the main platform for online communications. Throughout and after the workshop, we encourage the instructors and the participants to stay connected on Slack to exchange ideas, discuss problems and seek help from each other.
+We wiil send an invitation to join the Slack workspace shortly prior to the workshop. Please email alan.yang@sickkids.ca if you fail to join. After you join, you can access the workspace via its URL (https://app.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,39 @@
+---
+title: Getting Ready
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Getting Ready
+menu:
+  day1:
+    weight: 2
+---
+
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "472839769")
+```
+
+
+## Install packages
+
+Install packages required for this workshop by running all code in this `R` script:
+
+[Download R script](../../../rmds/00_prep.R)
+
+## Slides
+
+[Download slides](../../Course_Modularization/Intro to R/Worksheets/Student Templates/01_getting_ready.Rmd)
+
+## Student template
+
+[Download student template](../../../rmds/01_getting_ready.Rmd)
+
+## Instructor solutions
+
+There are no solutions for this template - simply go through the it.
+

@@ -1,0 +1,32 @@
+---
+title: Data visualization 
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Data visualization 
+menu:
+  day1:
+    weight: 5
+---
+
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473445406")
+```
+
+## Slides
+
+[Download slides](../../../rmds/04_plotting_slides.pptx)
+
+## Student templates
+
+[Download student template](../../../rmds/04_plotting_template.Rmd)
+
+## Instructor solutions
+
+[Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd)
+

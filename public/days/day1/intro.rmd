@@ -1,0 +1,13 @@
+---
+title: Intro to decision modeling in R
+date: "`r Sys.Date()`"
+draft: false
+toc: true
+type: docs
+
+linktitle: Intro to decision modeling in R
+menu: day1
+weight: 2
+---
+
+[Slides](../../../rmds/Adv2020_CourseIntroSlides.pptx)

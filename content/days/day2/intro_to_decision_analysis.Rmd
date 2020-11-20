@@ -11,5 +11,5 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_template.html)
+[Download slides](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html)
 

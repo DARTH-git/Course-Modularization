@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on Decision Modeling in R Workshop</title>
+    <link>/home/</link>
+    <description>Recent content in Homes on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Sun, 15 Oct 2017 00:00:00 -0700</lastBuildDate>
+    
+	<atom:link href="/home/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Welcome</title>
+      <link>/home/hero/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 -0700</pubDate>
+      
+      <guid>/home/hero/</guid>
+      <description>This is the website for a five-day hands-on workshop on decision modeling in R.
+The Decision Analysis in R for Technologies in Health (DARTH) workgroup is offering a workshop on An Overview of Decision Modeling Using R from July 20 to 24, 2020 (every day from 8:00AM to 11:00AM Eastern Time). The workshop will be offered virtually via Zoom. Co-instructors Fernando Alarid-Escudero, Hawre Jalal, Eline Krijkamp, Alan Yang and Petros Pechlivanoglou will cover the principles of cost-effectiveness analysis and decision analytic modeling and will guide participants in implementing decision trees, Markov models, and microsimulation models and their implementations in R.</description>
+    </item>
+    
+    <item>
+      <title>About this workshop</title>
+      <link>/home/intro/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/home/intro/</guid>
+      <description>Although this is an introductory course, participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. We will cover the following topics at the workshop:
+July 20: Introduction and building decision trees
+July 21: Markov models
+July 22: Microsimulation models
+July 23: Deterministic and probabilistic sensitivity analysis
+July 24: Calibration/ survival analysis and value of information analysis</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/home/contact/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 -0700</pubDate>
+      
+      <guid>/home/contact/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

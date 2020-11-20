@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 4 schedule on Decision Modeling in R Workshop</title>
+    <link>/days/day4/</link>
+    <description>Recent content in Day 4 schedule on Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Mon, 13 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/days/day4/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Probabilistic sensitivity analysis in R</title>
+      <link>/days/day4/psa/</link>
+      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/days/day4/psa/</guid>
+      <description>Here you find all the files for the sensitivity analysis session. To avoid issued with directories, we recommend storing all files in one folder.
+Slides SensitivityAnalysisSlides.pptx
+Demostration Please download Functions.R under student exercise template.
+Functions_decision_tree_HVE.R
+decision_tree_HVE_PSA_solutions.rmd
+Exercise worksheet markov_sick-sicker_PSA_exercise.pdf
+Student exercise template Functions we use:
+Functions.R
+Functions_markov_sick-sicker.R
+markov_sick-sicker_PSA_template.rmd
+Instructor solutions markov_sick-sicker_PSA_solutions.rmd</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,217 @@
+---
+title: "Intro to R for Decision Modeling"
+author: "SickKids and DARTH"
+date: "11/2/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+subtitle: Introduction
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.This worksheet provides an introduction to some key concepts in <code>R</code>. This session is split into the following sections:</p>
+<ol style="list-style-type: decimal">
+<li><p>Using <code>R</code> as a calculator</p></li>
+<li><p>Assigning values in <code>R</code></p></li>
+<li><p>Creating vectors and matrices</p></li>
+<li><p>Manipulating Matrices in <code>R</code></p></li>
+<li><p>Actions in <code>R</code></p></li>
+<li><p>Customized tools in <code>R</code></p></li>
+</ol>
+<p>Throughout the course, we will demonstrate code and leave some empty <em>code chunks</em> for you to fill in. We will also provide solutions after the session.</p>
+<p>Feel free to modify this document with your own comments and clarifications.</p>
+<div id="using-r-as-a-calculator" class="section level1">
+<h1>1. Using <code>R</code> as a calculator</h1>
+<p>Although <code>R</code> has lots of capabilities, we will start by using it as a calculator.</p>
+<p><strong>EXERCISE 1</strong> Type <code>2 + 3</code> in the <em>code chunk</em> below and run. Remember that the code chunk can be run using the green arrow at the right hand corner of the chunk or using the keyboard shortcut CTRL + SHIFT + ENTER.</p>
+<pre class="r"><code># Your turn
+2 + 3</code></pre>
+<p>You should now see that the calculation <code>2 + 3</code> has been completed as the output is shown in two places. In the console below and in the R Markdown document directly above.</p>
+<p><strong>EXERCISE 2</strong> Perform a few more calculations in the <em>code chunk</em> below. You can use the following commands:</p>
+<ul>
+<li><code>-</code>: subtract</li>
+<li><code>*</code>: multiply</li>
+<li><code>/</code>: divide</li>
+<li><code>^2</code>: squared</li>
+</ul>
+<pre class="r"><code># Your turn
+5^5
+12/4
+(12/4)^2
+(51-4)*9</code></pre>
+</div>
+<div id="assigning-values-in-r" class="section level1">
+<h1>2. Assigning values in <code>R</code></h1>
+<p><code>R</code> performs data analysis by applying actions (known as <em>functions</em>) to <em>objects</em>. One example of an <em>object</em> is a dataset that we load into <code>R</code>. Any function you wish to apply (e.g. finding the mean for each variable in your dataset) will be an action on a particular object (the dataset in this case).</p>
+<p>We define an object in <code>R</code> using the symbol <code>&lt;-</code>. So for example,</p>
+<pre class="r"><code># Defining a
+a &lt;- 5</code></pre>
+<p>means that we are defining an object called <code>a</code> and it is defined as being equal to 5. <code>R</code> is case-sensitive so <code>a</code> and <code>A</code> are different objects in <code>R</code>, if both defined.</p>
+<p><strong>EXERCISE 3</strong> Define two objects <code>alpha</code> equal to 7 and <code>beta</code> equal to 2 in the <em>code chunk</em> below and run. Note that each object needs to be defined on a separate line within the <em>code chunk</em>.</p>
+<pre class="r"><code># Your turn
+alpha &lt;- 7
+beta &lt;- 2</code></pre>
+<p>For the <em>code chunk</em> above, notice that there was no output in the R Markdown document. This is because we were only defining alpha and beta and not asking <code>R</code> to do any calculations. If you look in the console, you will see the two lines of code you just run are in the console so we know that <code>R</code> has defined these objects.</p>
+<p>As <code>R</code> now knows what we mean by <code>alpha</code> and <code>beta</code>, we can use <code>R</code> to apply functions to these objects. The calculations we use in Section 1 are examples of functions, e.g. run the following <em>code chunk</em></p>
+<pre class="r"><code># Addition
+alpha + beta</code></pre>
+<p><strong>EXERCISE 4</strong> Use the commands from the first section to undertake some additional calculations with <code>alpha</code> and <code>beta</code> in the following <em>code chunk</em> and run.</p>
+<pre class="r"><code># Your turn
+alpha - beta
+alpha * beta
+alpha / beta
+alpha ^ 2</code></pre>
+</div>
+<div id="types-of-data-in-r" class="section level1">
+<h1>3. Types of data in R</h1>
+<p>An object doesn’t have to be a number, common <code>R</code> objects include numbers (as we defined above), a character string, a dataset, a vector, a matrix, an array and a plot.</p>
+<p>Vectors are a set of numbers with a specific set of properties. To define a vector, we pass a list of numbers to the <code>c()</code> function in <code>R</code>. For example, the following <em>code chunk</em> defines a vector that contains the ages for three different people:</p>
+<pre class="r"><code># Defining a vector
+ages &lt;- c(12, 63, 27)</code></pre>
+<p><strong>EXERCISE 5</strong> In the <em>code chunk</em> below, define <code>vector1</code> that contains the numbers 3, 5 and 1 and <code>vector2</code> that contains the numbers -1, 8, and -3. Run this <em>code chunk</em>.</p>
+<pre class="r"><code># Your turn
+vector1 &lt;- c(3, 5, 1)
+vector2 &lt;- c(-1, 8, -3)</code></pre>
+<p>Character strings contain words, rather than numbers. To ensure that <code>R</code> knows you are using a character string, you need to use <code>""</code>, for example,</p>
+<pre class="r"><code># Defining a character string
+fruit &lt;- &quot;apple&quot;</code></pre>
+<p>You can also combine character strings into a vector.</p>
+<p><strong>EXERCISE 6</strong> In the <em>code chunk</em> below, define a vector <code>fruits</code> that contains the strings “apple”, “banana” and “orange”. Run this <em>code chunk</em>.</p>
+<pre class="r"><code># Your turn
+fruits &lt;- c(&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;)</code></pre>
+<p>Another important object is a matrix, which is a set of numbers or characters with a specific shape. For example, the following <em>code chunk</em> creates a matrix called <code>matrixA</code> that contains the numbers 1 to 9 in a 3 by 3 grid:</p>
+<pre class="r"><code># Creating a matrix
+matrixA &lt;- matrix(data = c(1, 2, 3, 4, 5, 6, 7, 8, 9), 
+                  nrow = 3, 
+                  ncol = 3)
+matrixA</code></pre>
+<p>In this <em>code chunk</em>, we can see that the matrix <code>matrixA</code> is printed in this R Markdown document above. This is because we added the extra command <code>matrixA</code> to our <em>code chunk</em>, this allows us to see what the object <code>matrixA</code> is.</p>
+<p><strong>EXERCISE 7</strong> Use the following <em>code chunk</em> to create a matrix <code>matrixB</code> with 2 rows and 4 columns and a matrix <code>matrixC</code> with 4 rows and 2 columns:</p>
+<pre class="r"><code># Your turn
+
+matrixB &lt;- matrix(data = c(1, 2, 3, 4, 5, 6, 7, 8), 
+                  nrow = 2, 
+                  ncol = 4)
+matrixB
+
+matrixC &lt;- matrix(data = c(1, 2, 3, 4, 5, 6, 7, 8), 
+                  nrow = 4, 
+                  ncol = 2)
+matrixC</code></pre>
+<p>We can also use functions on vectors and matrices, for example, if we use <code>vector1</code> and <code>vector2</code> that we defined above:</p>
+<pre class="r"><code># Functions on vectors
+vector1 + vector2</code></pre>
+<p><strong>EXERCISE 8</strong> Explore what happens when you use the commands from section 1 on vectors in the <em>code chunk</em> below:</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>What happens if we change the definition of <code>vector1</code>?</p>
+<p><strong>EXERCISE 9</strong> Run the following <em>code chunk</em> to change the definition of <code>vector1</code>:</p>
+<pre class="r"><code># Your turn
+vector1 &lt;- c(3, 5, 2)</code></pre>
+<p>The top right hand window will show the defintion of <code>vector1</code>. Note that if you overwrite the definition of an object, you cannot retrieve the previous defintion of the object unless you rerun the initial code.</p>
+<p>You can check the definition of an object by typing the name of an object into a <em>code chunk</em> and running that line of code. This prints the object in the console and in the R Markdown so you can check it is defined correctly. You can also check the defintion in the top right-hand window that displays you <em>workspace</em>.</p>
+</div>
+<div id="manipulating-matrices-in-r" class="section level1">
+<h1>4. Manipulating Matrices in <code>R</code></h1>
+<p>In <code>R</code>, there are three key operations that we can do with matrices, addition (<code>+</code>), multiplication (<code>*</code>) and matrix multiplication (<code>%*%</code>). Each of these operations can only be used if the matrices are compatible.</p>
+<p><strong>EXERCISE 10</strong> Run the following operations to determine which matrices or vectors are compatible for matrix addition. Note that some of them will give you errors, make a note of these errors and why they occur to help you understand issues in you coding during the course.</p>
+<pre class="r"><code># Matrix added to a number
+matrixA + 5
+
+# Matrix added to a vector
+matrixA + vector1
+matrixB + vector1
+
+# Matrix addition
+matrixA + matrixA
+matrixB + matrixC</code></pre>
+<p>Notice that when you are adding a vector to a matrix, the addition is done column-wise where the vector is added to each column of the matrix. When adding matrices, the addition is performed element-wise, so the two matrix entries in the same position are added together. Scalar multiplcation <code>*</code> is similar to addition.</p>
+<p><strong>EXERCISE 11</strong> Copying the code above, or writing your own, explore how scalar multiplication works with matrices and vectors:</p>
+<pre class="r"><code># Matrix multipled by a number
+matrixA * 5
+
+# Matrix multipled by a vector
+matrixA * vector1
+matrixB * vector1
+
+# Matrix with scalar multiplication
+matrixA * matrixA
+matrixB * matrixC</code></pre>
+<p>Matrix multiplication <code>%*%</code>, on the other hand, follows a different set of rules, outlined in the pre-course material.</p>
+<p><strong>EXERCISE 12</strong> Run the following code to explore how matrix multiplication works in R:</p>
+<pre class="r"><code># Matrix Multiplication
+matrixA %*% vector1
+matrixA %*% matrixA
+matrixB %*% matrixC
+matrixC %*% matrixB</code></pre>
+<p>Notice that the order of the matrices matters for matrix multiplication as the last two operations give different results. It is also important to remember that matrix multiplication can only be undertaken if the number of columns in the first matrix is equal to the number of rows in the second matrix. The resulting matrix will have the same number of rows as the first matrix and the same number of columns as the second matrix.</p>
+</div>
+<div id="actions-in-r" class="section level1">
+<h1>5. Actions in <code>R</code></h1>
+<p><em>Functions</em> in <code>R</code> are used to perform actions on the different objects.</p>
+<p>We have already seen some simple actions; +, *, - and / — these are calculator or arithmetic actions.</p>
+<p>More complex functions are given in two parts.</p>
+<ul>
+<li><p>The name of the function, e.g. <code>c</code></p></li>
+<li><p>The object to be acted on in brackets, e.g. <code>(alpha)</code></p></li>
+</ul>
+<p>Within the brackets function specific options (formally called “arguments”) can also be given after commas, e.g. <code>(alpha, beta)</code></p>
+<p>Some examples of function in <code>R</code> include:</p>
+<ul>
+<li><p><code>log()</code></p></li>
+<li><p><code>sum()</code></p></li>
+<li><p><code>prod()</code></p></li>
+<li><p><code>exp()</code></p></li>
+<li><p><code>sort()</code></p></li>
+</ul>
+<p><strong>EXERCISE 13</strong> Use <code>vector1</code>, <code>vector2</code> and <code>matrixA</code> to investigate how these different functions are used for vectors and matrices. You can use the <em>code chunk</em> below:</p>
+<pre class="r"><code># Your turn
+vector1
+log(vector1)
+prod(vector1)
+vector2
+sort(vector2)
+sum(vector2)
+matrixA
+exp(matrixA)</code></pre>
+<p>Remember, you can run a single line in a <em>code chunk</em> by highlighting that line using CTRL + ENTER.</p>
+<ul>
+<li><p>To access help for a function you can type <code>?function</code> or <code>help(function)</code> into the <code>R</code> console, where <code>function</code> is the name of the function you need help for.</p></li>
+<li><p>Some <em>functions</em> can only be used for certain <em>objects</em> and in the future sessions we will see some more complex <em>functions</em> that can be used to manipulate our data.</p></li>
+<li><p>Many <em>functions</em> can take multiple arguments; simply separate them by <code>,</code> in your function call.</p></li>
+</ul>
+<p><strong>EXERCISE 14</strong> Open up and read the help document for the function <code>sum()</code>.</p>
+<p>There are some key functions that are very helpful when working with matrices.</p>
+<ul>
+<li><p><code>t()</code> creates the matrix transpose, i.e., the matrix where the element in the i-th row and j-th column of the original matrix is set to the j-th row and i-th column.</p></li>
+<li><p><code>diag(n)</code> creates a matrix of size <code>n</code> by <code>n</code> with 1s at each diagonal element and 0s everywhere else, i.e., the identity matrix.</p></li>
+</ul>
+<p><strong>EXERCISE 15</strong> Explore the transponse function using the code provided below:</p>
+<pre class="r"><code>matrixD &lt;- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2)
+
+# Determine the difference between matrixC and the transpose of matrixC
+matrixC
+t(matrixC)
+
+# Transpose can allow for matrix multiplication when they may not have been 
+# compatible before
+matrixD %*% t(matrixC)
+matrixC %*% matrixD
+t(matrixB) %*% matrixD
+matrixD %*% matrixB </code></pre>
+</div>
+<div id="customized-tools-in-r" class="section level1">
+<h1>5. Customized tools in <code>R</code></h1>
+<p><em>Packages</em> give <code>R</code> extra capabilities as they contain additional <em>functions</em>. There are over 8000 additional packages in <code>R</code> that can perform a huge range of additional <em>functions</em>.</p>
+<p><em>Packages</em> can be thought as customized tools that anyone can use that have been developed by people who use <code>R</code>. This is one of the many things that make <code>R</code> so great!</p>
+<p>Before we can use all the <em>functions</em> in a package, we need to load those functions in <code>R</code> using the command <code>library</code>. For example:</p>
+<p><code>library(dplyr)</code></p>
+<p>allows you to use all the <em>functions</em> saved in the <code>dplyr</code> package — these functions are very useful for data manipulation.</p>
+<p>The first time you use a package it may be necessary to download the package to your RStudio. This is done using the command:</p>
+<p><code>install.packages("dplyr")</code></p>
+<p>Note the quotation marks <code>"</code> that surround the name of the package.</p>
+<p><strong>EXERCISE 16</strong> Install <code>R</code> package <em>dplyr</em>. Usually, the command to install a package is run from the console as running it from <em>code chunks</em> can cause problems.</p>
+</div>

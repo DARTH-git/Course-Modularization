@@ -1,0 +1,53 @@
+---
+title: Cohort State Transition Models (STM) - Presentation Videos
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: STM videos
+menu:
+  day3:
+    weight: 4
+---
+
+## Slides
+
+[Download slides](../../../rmds/MarkovModelSlides_CDC.pptx)
+
+STM 1: Introduction
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550894")
+```
+
+STM 2: Overview
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550940")
+```
+
+STM 3: Simple 3-State Example
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474551568")
+```
+
+STM 4: Calculating Model Outcomes
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474553106")
+```
+
+STM 5: Time-Varying State-Transition Models
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560741")
+```
+
+STM 6: History Dependence
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560799")
+```
+
+
+

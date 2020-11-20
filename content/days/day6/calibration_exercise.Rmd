@@ -1,0 +1,33 @@
+---
+title: Calibration - Exercises
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Calibration exercises
+menu:
+  day6:
+    weight: 5
+---
+
+## Exercise worksheet (Calibration: Markov Sick-Sicker model)
+
+[Download exercise worksheet](../../../rmds/SickSicker-CalibrationExercise.pdf)
+
+## Relevant files for the exercise
+
+[Download data (calibration targets)](../../../rmds/SickSicker_CalibTargets.RData)
+
+[Download Sick-Sicker Markov model function (for calibration)](../../../rmds/SickSicker_MarkovModel_Function.R)
+
+## Student template
+
+[Download student template](../../../rmds/SickSicker_CalibTemplate.Rmd)
+
+## Instructor solutions
+
+[Download instructor solutions - Random Search](../../../rmds/Solutions_SickSicker_Calib_RandomSearch.Rmd)
+
+[Download instructor solutions - Nelder Mead](../../../rmds/Solutions_SickSicker_Calib_NelderMead.Rmd)
+
+[Download instructor solutions - Bayesian IMIS](../../../rmds/Solutions_SickSicker_Calib_IMIS.Rmd)
+

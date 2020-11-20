@@ -1,0 +1,32 @@
+---
+title: Introduction to R
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Introduction to R
+menu:
+  day1:
+    weight: 3
+---
+
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473442290")
+```
+
+## Slides
+
+[Download slides](../../../rmds/02_introduction_to_R_slides.pptx)
+
+## Student template
+
+[Download student template](../../../rmds/02_Introduction_template.Rmd)
+
+## Instructor solutions
+
+[Download instructor solutions](../../../rmds/02_Introduction_solutions.Rmd)
+

@@ -1,0 +1,44 @@
+---
+title: Day 5 schedule
+author: ''
+date: "2020-11-09"
+slug: day6
+categories: []
+tags: []
+menu:
+  day6:
+    name: "Day 5 schedule"
+    weight: 1
+toc: yes
+type: docs
+---
+
+**Monday, Nov 9**: *Model Calibration*
+
+Basic agenda:
+
+- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 9:00am - 4:00pm Eastern Time
+
+Here is a tentative timetable for Day 5:
+
+|                            |            |
+|--------------------------------------------|:------------------|
+| 9:00 – 9:30  |   Review: sensitivity analysis model exercise solutions |
+| 9:30 – 9:45 | Code review: Basic model calibration (non-Bayesian) | 
+| 10:00 – 11:00 | Hands-on exercise: Basic model calibration  |
+| 11:00 – 11:30 | Code review: Bayesian model calibration |
+| 11:30 – 12:00 | Hands-on exercise: Bayesian model calibration (to be finished on your own) |
+| 1:00pm – 4:00pm | On your own |
+
+From 1:00pm to 4:00pm, please do the following on your own:
+
+- Complete model calibration hands-on exercise
+
+
+## Synchronous session recording
+
+<!--html_preserve-->{{% vimeo "477344233" %}}<!--/html_preserve--><!--html_preserve-->{{% vimeo "477344531" %}}<!--/html_preserve-->
+
+
+  

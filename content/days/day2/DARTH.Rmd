@@ -1,0 +1,16 @@
+---
+title: The DARTH Workgroup
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+
+linktitle: The DARTH Workgroup
+menu:
+  day2:
+    weight: 2
+---
+
+## Slides
+
+[Download slides](../../../rmds/DARTH Overview_CDC.pptx)
+

@@ -1,2 +1,0 @@
-"0","# add center of Gaussian components"
-"0","s3d$points3d(fit_imis$center, col = ""red"", pch = 8)"

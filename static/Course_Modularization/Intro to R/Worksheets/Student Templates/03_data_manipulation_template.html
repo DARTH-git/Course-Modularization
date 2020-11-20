@@ -1,0 +1,330 @@
+---
+title: "Intro to R for Decision Modeling"
+author: "SickKids and DARTH"
+date: "11/2/2020"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+subtitle: Data Manipulation
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<div id="general" class="section level2">
+<h2>General</h2>
+<p>This session presents the key commands needed to manipulate a dataset in <code>R</code>. This worksheet is split into the following sections:</p>
+<ol style="list-style-type: decimal">
+<li><p>Data input and output</p></li>
+<li><p>Subselecting data</p></li>
+<li><p>Identifying and replacing data</p></li>
+<li><p>Calculating useful statistics</p></li>
+<li><p>Data manipulation with <code>dplyr</code></p></li>
+<li><p>Data manipulation with <code>pipe</code></p></li>
+</ol>
+<p>Throughout the course, we will demonstrate code and leave some empty <em>code chunks</em> for you to fill in. We will also provide solutions after the session.</p>
+<p>Feel free to modify this document with your own comments and clarifications.</p>
+</div>
+<div id="data-input-and-output" class="section level1">
+<h1>1. Data input and output</h1>
+<p><strong>Input</strong></p>
+<p>There are several ways of loading your data in <code>R</code>. A convenient way of importing data into <code>R</code> is through tab-delimited text (.txt) or comma separated (.csv) files. For this course, we have provided a <code>.txt</code> file that contains the data we are going to be using.</p>
+<p>If you have a dataset to analyze in <code>R</code>, you can save the file as a tab-delimited or as a comma separated file by opening it in Excel and clicking <strong>File -&gt; Save As -&gt; Save as type</strong> and selecting either the tab delimited or comma separated file type.</p>
+<p>Once you have saved your file, it is time to load it in <code>R</code>:</p>
+<ul>
+<li><code>read.table()</code> is used to load <code>.txt</code> data</li>
+<li><code>read.csv()</code> is used to load <code>.csv</code> data.</li>
+</ul>
+<p>The following example loads everything from a tab-delimited file called <code>course_data.txt</code> and creates an <code>R</code> object called <code>mydata</code> that contains all the data from our file:</p>
+<p><code>mydata &lt;- read.table('C:/Users/UserName/Documents/course_data.txt', header = TRUE)</code></p>
+<p>To ensure that <code>R</code> can find your file, you need to specify the <em>filepath</em> of your dataset (C:/Users/UserName/Documents/course_data.txt). The easiest way to find this filepath in Windows is to navtigate to the file in the file explorer, right click on the file, select Properties and copy the <strong>Location:</strong> into <code>R</code> (<code>C:/Users/UserName/Documents</code> in the above example). On a Mac, you can hold down the command button, right click and choose the option <strong>Copy File Path</strong>.</p>
+<ul>
+<li><p>When you copy directly, you need to change the backslashes in the filepath to forward slashes!</p></li>
+<li><p>You then need to add the name of the file and the file extension following another forward slash</p></li>
+<li><p>You need to enter your <em>filepath</em> between two quotation marks (’’).</p></li>
+</ul>
+<p>The code above contains the statement <code>header = TRUE</code> to specify that the first row of the data contains the variable names for your dataset. The data is also loaded and saved as an <em>object</em> so it can be used later for our data manipulation and analysis.</p>
+<p>If your data file and the <code>R</code> file that loads the data file are in the same folder, you can avoid typing your filepath by navigating to the top bar of RStudio and click ‘Session’ -&gt; ‘Set Working Directory’ -&gt; ‘To Source File Location’. This sets the default filepath in <code>R</code>, often referred as the working directory, to the filepath of your <code>R</code> or R Mardkown file that is currently opened.</p>
+<p><strong>EXERCISE 1</strong> Use the function <code>read.csv()</code> to read in <code>framingham.csv</code>, the dataset provided for the exercises of this workshop. Store the dataset as a variable named <code>data</code>. You can use the <em>code chunk</em> below.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><strong>Output</strong></p>
+<p>When you are done with your statistical analysis and you want to export the output of your work, you can use the <code>write.table()</code> function to export the output as a tab delimited file or the <code>write.csv()</code> function to export the output as a <code>.csv</code> file.</p>
+<p><code>write.table(mydata, file = 'course_data_export.txt')</code> exports the <code>R</code> object <code>mydata</code> back to a tab delimited text file.</p>
+<p><code>write.csv(data, file = 'framingham_export.csv')</code> exports the <code>R</code> object <code>mydata</code> back to a <code>.csv</code> file.</p>
+<p>To export to a specific file, you should use the entire <em>filepath</em> as described above. In the code above, the data would be saved to <code>R</code>’s <em>working directory</em>. This is default folder where <code>R</code> will save all your results unless you specify the filepath. You can find out the current working directory using:</p>
+<pre class="r"><code>getwd()</code></pre>
+<p>It is possible to change the <em>working directory</em>, using the command <code>setwd()</code> and specifying the <em>path</em> to a specific folder. You can also set the working directory to your current file location using <strong>Session -&gt; Set Working Directory -&gt; To Source File Location</strong>.</p>
+</div>
+<div id="subselecting-data" class="section level1">
+<h1>2. Subselecting data</h1>
+<p>Most data manipulation in <code>R</code> involves comparing two values using a <em>relational operator</em>.</p>
+<p><code>R</code>’s relational operators compare two values and return either TRUE or FALSE depending on the value and the comparison. The simplest relational operator is the “equal to” operator (<code>==</code>) which tests whether two values are the same.</p>
+<p>The following table provides a list of <code>R</code>’s relational operators and examples of possible logical expressions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Relational Operators</th>
+<th>Description</th>
+<th>Example logical expression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>==</code></td>
+<td>equal to</td>
+<td><code>gender == "male"</code></td>
+</tr>
+<tr class="even">
+<td><code>!=</code></td>
+<td>not equal</td>
+<td><code>gender != "male"</code></td>
+</tr>
+<tr class="odd">
+<td><code>&lt;</code></td>
+<td>less than</td>
+<td><code>age &lt; 40</code></td>
+</tr>
+<tr class="even">
+<td><code>&gt;</code></td>
+<td>greater than</td>
+<td><code>age &gt; 10</code></td>
+</tr>
+<tr class="odd">
+<td><code>&lt;=</code></td>
+<td>less than or equal to</td>
+<td><code>age &lt;= 40</code></td>
+</tr>
+<tr class="even">
+<td><code>&gt;=</code></td>
+<td>greater than or equal to</td>
+<td><code>age &gt;= 40</code></td>
+</tr>
+<tr class="odd">
+<td><code>%in%</code></td>
+<td>in</td>
+<td><code>age %in% c(30,31,32)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>EXERCISE 2</strong> Create two <code>R</code> objects called <code>gender</code> and <code>age</code>. In the <em>code chunk</em> below, run a few example logical expressions from the table above.</p>
+<pre class="r"><code># prep
+gender &lt;- &quot;male&quot;
+gender &lt;- c(&quot;male&quot;,&quot;female&quot;,&quot;other&quot;)
+age    &lt;- 80
+
+# Your turn</code></pre>
+<p>When comparing a vector to a single item, the logical expression returns TRUE or FALSE for each item in the vector depending on the logical comparison.</p>
+<p><strong>EXERCISE 3</strong> Run the following <em>code chunk</em> to understand vectors and logical comparisons:</p>
+<pre class="r"><code># Vectors and Relational Operators
+genders &lt;- c(&quot;male&quot;,&quot;female&quot;,&quot;male&quot;,&quot;female&quot;)
+genders == &quot;male&quot;
+c(1,2,3,4) &gt; 2</code></pre>
+<p>Comparing vectors of the same length compares the <span class="math inline">\(i^{th}\)</span> element in the first vector to the <span class="math inline">\(i^{th}\)</span> element in the second vector.</p>
+<p><strong>EXERCISE 4</strong> Run the following <em>code chunk</em> to understand vectors and logical comparisons:</p>
+<pre class="r"><code># Vectors and Relational Operators
+genders == c(&quot;Bridge&quot;, &quot;Building&quot;, &quot;male&quot;, &quot;Road&quot;)</code></pre>
+<p>We can combine the relational operators with <code>R</code>’s logical operators of and (<code>&amp;</code>) and or (<code>|</code>) to create more complex logical expressions.</p>
+<ul>
+<li><code>&amp;</code> returns TRUE when both expressions on the left and right side of the ampersand return TRUE.</li>
+<li><code>|</code> returns TRUE when either of the expressions on the left or right side of the <code>|</code> returns TRUE.</li>
+</ul>
+<p><strong>EXERCISE 5</strong> Use to code in the following <em>code chunk</em> to understand <code>&amp;</code> and <code>|</code>:</p>
+<pre class="r"><code># Your turn
+2 == 1 &amp; &quot;a&quot; == &quot;a&quot;
+2 == 1 | &quot;a&quot; == &quot;a&quot;</code></pre>
+<p><strong>Subselecting rows or columns in a dataset</strong></p>
+<p>There are many cases where you will need to select specific rows or columns of your data after you load it in <code>R</code>, for example:</p>
+<ul>
+<li><p>You may import more variables into <code>R</code> than you would like to use in the analysis.</p></li>
+<li><p>Subjects may need to be excluded from further analysis, e.g. for incomplete data or outlier testing.</p></li>
+<li><p>You might want to stratify your data into two or more categories before proceeding with the analysis.</p></li>
+</ul>
+<p>This is called subsetting or subselecting and can be easily performed in <code>R</code>.</p>
+<p>If you want to create a new dataset <code>data_new</code> that only contains the first five columns of the Framingham dataset, we type the following code:</p>
+<pre class="r"><code>data_new &lt;- data[ , 1:5]</code></pre>
+<p>Remember, the Framingham dataset is stored in an <em>object</em> called <code>data</code> that we loaded earlier.</p>
+<p>In <code>R</code>, the statement <code>1:5</code> is read as ‘from 1 to 5’ and specifies that we should select columns, 1, 2, 3, 4, 5.</p>
+<p><strong>EXERCISE 6</strong> Create a new dataset named <code>data_new</code> that only contains the first 10 columns of the Framingham dataset.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>The <code>data</code> <em>object</em> is stored by <code>R</code> as a data frame. As data frame has columns that contains the different variables and rows that contain information about each subject. In the above code, we selected a specific subset of the <em>columns</em>. We can also select a specific subset of <em>rows</em> by placing numbers before the comma, e.g. </p>
+<pre class="r"><code>data1 &lt;- data[1:5, 1:5]
+head(data1)</code></pre>
+<p>Subselects the first five columns from the first five subjects only and stores them in a variable called <code>data1</code>.</p>
+<p>You can also subselect columns and rows by their name, e.g.</p>
+<pre class="r"><code>data2 &lt;- data[, c(&quot;SEX&quot;, &quot;AGE&quot;, &quot;BMI&quot;, &quot;HEARTRTE&quot;, &quot;GLUCOSE&quot;)]
+head(data2)</code></pre>
+<p><strong>EXERCISE 7</strong> Create a new dataset named `data2_new’ that contains the first 10 subjects and the subject ID, sex, age, bmi, heart rate and glucose columns from the Framingham dataset. Then, take a quick glance of the new dataset.</p>
+<ul>
+<li><p>You can see the names of the columns of a dataset using the command <code>colnames(data)</code>, you can also look at the data dictionary.</p></li>
+<li><p>The function <code>head()</code> takes a dataset and returns the first 6 rows and all columns. It is a very useful function to get a quick glace of your data.</p></li>
+</ul>
+<pre class="r"><code># Your turn</code></pre>
+<p>It is also possible to subset with logical expressions and select the rows or columns of a data frame that fulfils a certain condition. For example, we can extract and present all rows of our <code>data</code> where the participant is older than 30.</p>
+<pre class="r"><code>head(data[data$AGE &gt; 30,])</code></pre>
+<ul>
+<li><code>data$AGE</code> is shorthand in <code>R</code> for <code>data[,"AGE"]</code>. In general, you can use the $ sign followed by the name of the variable to select a specific column of a data set. You can only use this shorthand to select a single column from a data frame.</li>
+</ul>
+<p><strong>EXERCISE 8</strong> Create a new dataset called <code>data3</code> that contains all the subject ID, sex, age, BMI and hear rates for the subjects whose heart rate is greater than 100. Display the first 6 rows.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="identifying-and-replacing-data" class="section level1">
+<h1>3. Identifying and replacing data</h1>
+<p><strong>Identifying missing values</strong></p>
+<p>Datasets are hardly ever complete. Missing values in data are very common and problematic in analysis procedures as they can cause issues with the analysis. It is usefull to identify, and potentially, replace or remove missing values from a dataset.</p>
+<p><code>R</code> assigns the value <code>NA</code> (Not Available) in every cell of a data frame that is missing.</p>
+<p>To identify missing values, you can use the function <code>is.na()</code>. This function returns a logical vector or matrix (depending on the input) with the value TRUE where there is an NA and FALSE where the data are complete. For example:</p>
+<pre class="r"><code>b &lt;- c(1, 2, 10, NA, 9, NA)
+is.na(b)</code></pre>
+<p>If you want to subselect subjects without missing data for the a heart rate. You could use the function <code>is.na()</code> to identify the subjects that have no missing values in their heart rate variable and exclude them:</p>
+<pre class="r"><code>No_missing_heartrate_data &lt;- data[is.na(data$HEARTRTE) == FALSE, ]</code></pre>
+<p><strong>EXERCISE 9</strong> Subselect subjects without any glucose information.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><code>R</code> also has a function <code>na.omit()</code>, that removes all observations with missing values in any of the columns.</p>
+<p><strong>EXERCISE 10</strong> Calculate the number of observations in our data that does not have any missing values for the heart rate and glucose columns. Hint: The <code>nrow()</code> and <code>ncol()</code> functions give the total number of rows and columns of a dataset, respectively, when used on a dataset. Also when using <code>sum()</code> on a vector of <code>TRUE</code> and <code>FALSES</code> returns the number of <code>TRUE</code> in the vector.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><strong>Identifying and replacing values in a dataset</strong></p>
+<p>It is also possible to find and replace values in a dataset. For example, we may want to create a new variable named <code>SEX_char</code> for the existing Framingham dataset. We want our new varible to be equal to “male” when <code>SEX</code> is equal to 1 and “female” when <code>SEX</code> equals 2. This is achieved using the following commands.</p>
+<pre class="r"><code># Creating a new variable
+data$SEX_char[data$SEX == 1] &lt;- &#39;male&#39;
+data$SEX_char[data$SEX == 2] &lt;- &#39;female&#39;</code></pre>
+<p><strong>EXERCISE 11</strong> Construct a new variable named <code>DIABETES_char</code> within the Framingham dataset. In this variable, all <code>DIABETES</code> elements equal to ‘0’ should be given the character string ‘Not a diabetic’, and all elements equal to ‘1’ should be given the character string ‘Diabetic’.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>You can also replace <code>NA</code> values with a numerical value. For example, if all subjects with missing values are not diabetic, we can correct this using the <code>R</code> code below</p>
+<pre class="r"><code># Updated missingness
+data$DIABETES[is.na(data$DIABETES)] &lt;- 0</code></pre>
+<p><strong>Factors</strong></p>
+<p>If some of the predictors have a categorical structure, we need to ensure that <code>R</code> recognizes these as <em>factors</em> as opposed to numerical values. When we create <em>factors</em>, we can also decide which category is going to be used as the reference level.</p>
+<ul>
+<li><p>The function <code>factor()</code> turns a character variable into a factor variable.</p></li>
+<li><p>The function <code>levels()</code> shows the categories, or <em>levels</em>, of a factor, in ascending order. The first level by default is the reference category when inserted into a regression model.</p></li>
+</ul>
+<p>The following code makes <code>SEX</code> into a factor variable and display the level.</p>
+<pre class="r"><code>data$SEX_char &lt;- factor(data$SEX_char)
+levels(data$SEX_char)</code></pre>
+</div>
+<div id="calculating-useful-statistics" class="section level1">
+<h1>4. Calculating useful statistics</h1>
+<p>Assume you want to calculate the arithmetic mean and variance of the age of your Framingham sample. You can easily do this by typing:</p>
+<pre class="r"><code>mean(data1$AGE)
+var(data1$AGE)</code></pre>
+<p><strong>EXERCISE 12</strong> Calculate the mean and variance of BMI. Hint: most statistical functions in <code>R</code> does not automatically exclude missing values. If your variable has missing values, you need to specify <code>na.rm = TRUE</code> or the result will always be <code>NA</code>.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>There are several functions in <code>R</code> to compute different descriptive statistics:</p>
+<ul>
+<li><code>median()</code>: Calculates the median for the data</li>
+<li><code>min()</code>: Finds the minimum value for the data</li>
+<li><code>max()</code>: Finds the maximum value for the data</li>
+<li><code>sd()</code>: Calculates the standard deviation of the data</li>
+<li><code>quantile()</code>: Find data quantiles, by default the min, 25% quantile, median, 75% quantile and the maximum.</li>
+</ul>
+<p><code>summary()</code> is a useful function that produces various common statistics in one go.</p>
+<p><strong>EXERCISE 13</strong> Call the <code>summary()</code> function on BMI and see what types of statistics it gives.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>We can use subsetting to calculate summary statistics for different subgroups in our data. For example, we can compute the mean and variance of age for men and women:</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><strong>EXERCISE 14</strong> Calculate the median and max of BMI for those who are over 60 years old with a heart rate of over 100 beats/min.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>We can calculate the correlation between two or more variables using the <code>cor()</code> function. There are three methods for calculating correlation supported within <code>R</code> (Pearson, Kendal or Spearman method), more information can be found by running <code>?cor</code>.</p>
+<p>To calculate the Pearson correlation coefficient for BMI and systolic blood pressure, we use:</p>
+<pre class="r"><code>cor(data$AGE, data$SYSBP)</code></pre>
+<p>If you want to calculate the correlations across several continuous variables in your dataset, the <code>cor()</code> function can be called on a data frame.</p>
+<p><strong>EXERCISE 15</strong> Create a new dataset that only contains age, BMI, heart rate, glucose and systolic blood pressure. Use the <code>cor()</code> function to find the pairwise correlations between all these variables.</p>
+<p>Note that <code>cor()</code> does not automatically exclude missing values. This can be achieved using the option <code>use = "pairwise.complete.obs"</code> in the <code>cor()</code> function.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="data-manipulation-with-dplyr" class="section level1">
+<h1>5. Data manipulation with <code>dplyr</code></h1>
+<p>When manipulating larger datasets the <code>dplyr</code> package provides a set of functions that are easier to read, modify, and computationally faster than the code we showed above.</p>
+<p>We will be focusing on these five functions:</p>
+<ul>
+<li><code>filter()</code> for selecting rows based on observational characteristics</li>
+<li><code>select()</code> for selecting variables based on their names</li>
+<li><code>mutate()</code> for creating new variables</li>
+<li><code>summarise()</code> for summarizing data</li>
+<li><code>group_by()</code> for sub-population analysis</li>
+</ul>
+<p>Let’s start by loading the <code>dplyr</code> package that you installed in the previous session.</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<p>An important thing to note is that all <code>dplyr</code> functions use the dataset (e.g. <code>data</code>) as the first argument.</p>
+<p>The function <code>filter()</code> returns a new dataset with all the observations that satisfy a set of logical expressions.</p>
+<p>For example, we can select all the male participants (represented as 1) in the Framingham dataset who are under 40 years old and have a heart rate of over 100 beats/min (and use <code>head()</code> to only print the first 5 rows):</p>
+<pre class="r"><code>head(filter(data, SEX == 1, AGE &gt; 40, HEARTRTE &gt; 100))</code></pre>
+<p><strong>EXERCISE 16</strong> Select all female participants (represented as a 2 in the <code>SEX</code> variable) in the Framingham dataset who are over 50 years old and have a glucose measurement of over 100 mg/dL. Only display the first 6 observations.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><code>select()</code> allows you to select variables from a dataset based on the variable names. To select <code>SEX</code>, <code>AGE</code>, <code>BMI</code> <code>HEARTRTE</code> and <code>GLUCCOSE</code> from the Framingham dataset, the following command is used:</p>
+<pre class="r"><code>head(select(data, SEX, AGE, BMI, HEARTRTE, GLUCOSE))</code></pre>
+<p>It is also possible to remove variables from a dataset by including <code>-</code>. To remove our newly created <code>DIABETES</code> variable from <code>data</code> you can type:</p>
+<pre class="r"><code>head(select(data, -DIABETES))</code></pre>
+<p>Be careful, once you remove a variable from a dataset you cannot recover it. Therefore, you should usually make a copy of the original dataset and manipulate the copy.</p>
+<p><code>mutate()</code> creates new variables in a dataset. The following command creates a new variable that is the logarithmic transformation of <code>AGE</code>.</p>
+<pre class="r"><code>head(mutate(data, log_AGE = log(AGE)))</code></pre>
+<p><strong>EXERCISE 17</strong> Add an additional column to the dataset that is a logarithmic transformation of <code>HEARTRTE</code>. Display the age, log of age, heart rate, and log of heart rate columns for the first 6 observations .</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>When a variable is created, it becomes instantly available to use in the same <code>mutate()</code> function to create new variables. The following command takes the <code>log()</code> of <code>AGE</code> and then taking the <code>exp()</code> of the new variable to return the original <code>AGE</code> value.</p>
+<pre class="r"><code>head(mutate(data, log_AGE = log(AGE), AGE = exp(log_AGE)))</code></pre>
+<p><strong>EXERCISE 18</strong> Create two variables, <code>BMI</code> multiplied by 2 and the log of the variable you just cretated (BMI times 2). Use the <code>head</code> function to only display the first 6 observations and the two BMI variables.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p><code>summarise()</code> creates a summary of a dataset based on a set of functions provided. It returns a new dataset with columns for each summary.</p>
+<p>If we wanted to compute the mean and variance of <code>AGE</code> for the Framingham dataset, we would use the following command:</p>
+<pre class="r"><code>summarise(data, mean_AGE = mean(AGE), variance_AGE = var(AGE))</code></pre>
+<p><strong>EXERCISE 19</strong> Compute the mean and variance of <code>BMI</code> for the Framingham dataset.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>We can create subgroups in our datasets, to calculate summary measures for different patient subgroups. Firstly, we create the groups using the <code>group_by()</code> function, e.g. to group by <code>SEX_char</code>:</p>
+<pre class="r"><code>data_grouped &lt;- group_by(data, SEX_char)</code></pre>
+<p>We can then use the <code>summarise()</code> function to return a summary for each group in our new dataset. For example, we can estimate the mean and variance of <code>AGE</code> for men and women.</p>
+<pre class="r"><code>summarise(data_grouped, mean_AGE = mean(AGE), variance_AGE = var(AGE))</code></pre>
+<p><strong>EXERCISE 21</strong> Group the data by <code>DIABETES</code> and estimate the mean, median, variance and standard deviation of ‘BMI’ for diabetic and non-diabetic groups. Display the summary.</p>
+<ul>
+<li><code>median</code> is the <code>R</code> function to find the median</li>
+<li><code>sd</code> is the <code>R</code> function to find the standard deviation.</li>
+</ul>
+<pre class="r"><code># Your turn</code></pre>
+<p>We can also group and summarize using multiple variables. This creates a summary for each unique subgroup combination of the variables. For example, we could group our dataset <code>data</code> by <code>SEX_char</code> and <code>DIABETES_char</code> creating 4 subgroups:</p>
+<ul>
+<li>Males who are diabetic</li>
+<li>Males who are not diabetic</li>
+<li>Females who are not diabetic</li>
+<li>Females who are diabetic</li>
+</ul>
+<p><strong>EXERCISE 22</strong> Estimate the mean and variance of <code>AGE</code> for the above 4 subgroups.</p>
+<pre class="r"><code># Your turn</code></pre>
+</div>
+<div id="data-manipulation-with-pipe" class="section level1">
+<h1>6. Data manipulation with <code>pipe</code></h1>
+<p>The <em>pipe</em> operator (<code>%&gt;%</code>) is a part of the <code>dplyr</code> package. This offers a convenient and concise way of performing a sequence of data manipulations.</p>
+<p>The operator <code>%&gt;%</code> <em>pipe</em> their value to the left-hand of the operator forward into expressions on the right-hand side.</p>
+<ul>
+<li>If you have multiple pipes, the output from the previous <em>pipe</em> operation is the input of the next <em>pipe</em> operation. An easy way to remember this is that whatever is on the left-hand side is always the input of the <em>pipe</em> that follows immediately.</li>
+</ul>
+<p>In the following command first subselects subjects over 60 years old using <em>pipe</em> and then selects the variables <code>RANDID</code> and <code>AGE</code>.</p>
+<pre class="r"><code>data %&gt;%
+     filter(AGE &gt; 60) %&gt;%
+     select(RANDID, AGE) %&gt;%
+     head()
+
+# VS 
+
+temp1 &lt;- filter(data, AGE &gt;60)
+temp2 &lt;- select(temp1,RANDID, AGE)
+head(temp2)
+
+# OR 
+
+head(select(filter(data, AGE &gt; 60), RANDID, AGE))</code></pre>
+<p><strong>EXERCISE 23</strong> Subselect subjects with a heart rate of over 80 beats/min and select the subject ID, heart rate, glucose and BMI columns.</p>
+<pre class="r"><code># Your turn</code></pre>
+<p>The following code gives the mean BMI stratified by sex for those over 60 years old.</p>
+<pre class="r"><code>data %&gt;%
+     filter(AGE &gt; 60) %&gt;%
+     group_by(SEX_char) %&gt;%
+     summarise(Avg_BMI = mean(BMI, na.rm = TRUE))</code></pre>
+<p><strong>EXTENSION EXERCISE</strong> Give the mean, median, variance and standard deviation of systolic blood pressure, stratified by prevalent stroke (<code>PREVSTRK</code>), among those who are <em>either</em> a smoker or a diabetic.</p>
+<p>Hint: The <code>ifelse()</code> function takes in an expression as its first argument, returns the 2nd argument when the expression is satisfied, and returns the 3rd argument when it is not. Try the following code:</p>
+<pre class="r"><code>ifelse(2 &lt; 3, &#39;Correct&#39;, &#39;Incorrect&#39;)
+ifelse(1 &gt; 10, &#39;Right&#39;, &#39;Wrong&#39;)</code></pre>
+<pre class="r"><code># Your turn</code></pre>
+</div>

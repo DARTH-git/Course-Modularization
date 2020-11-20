@@ -1,0 +1,42 @@
+---
+title: Day 4 schedule
+author: ''
+date: "2020-11-09"
+slug: day5
+categories: []
+tags: []
+menu:
+  day5:
+    name: "Day 4 schedule"
+    weight: 1
+toc: yes
+type: docs
+---
+
+**Friday, Nov 6**: *Sensitivity Analysis*
+
+Basic agenda:
+
+- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 9:00am - 4:00pm Eastern Time
+
+Here is a tentative timetable for Day 4:
+
+|                            |            |
+|--------------------------------------------|:------------------|
+| 9:00 – 9:30  | Review: microsimulation model exercise solutions |
+| 9:30 – 10:30| Code review: Probabilistic sensitivity analysis  | 
+| 10:30 – 12:00 | Hands-on exercise: Probabilistic sensitivity analysis  |
+| 1:00pm – 4:00pm | On your own |
+
+From 1:00pm to 4:00pm, please:
+
+- Complete sensitivity analysis hands-on exercise
+
+- Watch “Day 5: Model Calibration” lecture series
+
+## Synchronous session recording
+
+<!--html_preserve-->{{% vimeo "477007766" %}}<!--/html_preserve-->
+
+

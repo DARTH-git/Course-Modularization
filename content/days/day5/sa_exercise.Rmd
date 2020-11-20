@@ -1,0 +1,31 @@
+---
+title: Sensitivty Analysis - Exercises
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: SA exercises
+menu:
+  day5:
+    weight: 5
+---
+
+## Exercise worksheet (SA: Markov Sick-Sicker model)
+
+[Download exercise worksheet](../../../rmds/markov_sick-sicker_SA_exercise.pdf)
+
+## Data for the exercise
+
+[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
+
+## Student template
+
+[Download Sick-Sicker Markov model function (template)](../../../rmds/Functions_markov_sick-sicker.R)
+
+[Download student template](../../../rmds/markov_sick-sicker_SA_template.Rmd)
+
+## Instructor solutions
+
+[Download instructor Sick-Sicker markov model function](../../../rmds/Functions_markov_sick-sicker_sol.R)
+
+[Download instructor solutions](../../../rmds/markov_sick-sicker_SA_solutions.Rmd)
+

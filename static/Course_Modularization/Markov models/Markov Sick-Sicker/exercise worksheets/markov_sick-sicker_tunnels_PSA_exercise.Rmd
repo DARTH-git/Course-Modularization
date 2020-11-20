@@ -1,0 +1,181 @@
+---
+title: "Cost-Effectiveness and Decision Modeling in R"
+subtitle: 'Markov Model Variants Exercise'
+author: "The DARTH workgroup"
+# subtitle: Markov Model Variants Exercise
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6,7)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Division of Public Administration, Center for Research and Teaching in 
+   Economics (CIDE), Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 
+2020:1-48. http://arxiv.org/abs/2001.07824
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+# Exercise I: Variations on the Sick-Sicker Markov Model
+
+Previously, you built a Markov of the Sick-Sicker model where transition probabilities were assumed to be constant over time. In this exercise, you will expand on that model to incorporate age-dependence (time-varying probabilities) and history-dependence.
+
+**History-dependence**
+
+It has been recently discovered that the risk of progression from Sick to Sicker increases the longer a person has been sick. This increase follows a Weibull growth curve, calculated as 
+
+$p_{S1S2(t)} = \lambda_\gamma t^{(\gamma-1)}$
+
+where $t$ is the $t$-th cycle (year) that a person has been in the Sick state. $\lambda = 0.08$ and $\gamma = 1.1$ are the scale and shape parameters of the Weibull function, respectively.
+
+We will now expand the age-dependent model to include this history dependence by adding tunnel states for S1, as shown in Figure 2.
+
+```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+if (!require(here)) install.packages('here')
+if (!require(knitr)) install.packages('knitr')
+include_graphics(here::here("figures", "sick_sicker_diagram.png"))
+```
+
+```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model with tunnels states for S1', fig.align='center'}
+if (!require(here)) install.packages('knitr')
+if (!require(knitr)) install.packages('knitr')
+include_graphics(here::here("figures", "sick_sicker_tunnels_diagram.png"))
+```
+
+## Tasks
+
+1. Starting from the age-dependent Markov model in the R function “Markov_Sick-Sicker_time.R”, expand the 3D transition probability array to account for tunnels.
+
+2. Create the parameter `p_S1S2` as a Weibull function as follows:
+- `p_S1S2 <- l*g*(1:tunnel_size)^{g-1}`, where 
+- `l <- 0.08` (scale)
+- `g <- 1.1`  (shape)
+
+3.	Fill in the 3D transition probability array accounting for the tunnel states for S1
+
+4.	Plot the survival curve for the cohort under no treatment. Extra challenge: plot the survival curves for all three Markov model versions (time-homogenous, age-dependent, and history-dependent) in one graph so you can compare.
+
+|           **Parameter**            |  **R name** |   **Value**   |
+|:-----------------------------------|:------------|:-------------:|
+| Time horizon                       | `n_t`       | 30 years      |
+| Cycle length                       |             | 1 year        |
+| Names of health states             | `v_n`       | H, S1, S2, D  |
+| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Annual transition probabilities    |             |               |
+| - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
+| - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
+| - Disease progression (S1 to S2)   | `p_S1S2`    | Weibull function |
+| Annual mortality                   |             |               |
+| - All-cause mortality (H to D)     | `p_HD`      | `1 - exp(-v_r_HD)` |
+| - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |
+| - Hazard ratio of death in S2 vs H | `hr_S2`     |  10           |
+| Annual costs                       |             |               |
+| - Healthy individuals              | `c_H`       |  $2,000       |
+| - Sick individuals in S1           | `c_S1`      |  $4,000       |
+| - Sick individuals in S2           | `c_S2`      |  $15,000      |
+| - Dead individuals                 | `c_D`       |  $0           |
+| - Additional costs of sick individuals treated in S1 or S2       | `c_trt` | $12,000 |
+| Utility weights                    |             |               |
+| - Healthy individuals              | `u_H`       |  1.00         |
+| - Sick individuals in S1           | `u_S1`      |  0.75         |
+| - Sick individuals in S2           | `u_S2`      |  0.50         |
+| - Dead individuals                 | `u_D`       |  0.00         |
+| Intervention effect                |             |               |
+| - Utility for treated individuals in S1 | `u_trt` |  0.95        |
+
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$
+
+# Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
+
+This exercise continues based on the age-and-history-dependent deterministic Markov model of the Sick-Sicker model from Exercise I. In this exercise, you will do a probabilistic sensitivity analysis (PSA) with 1000 simulations `(n_sim)`. The Table describes the distributions for the variables you used in the previous exercise.
+
+**Table II: Input parameters for probabilistic analysis**
+
+|           **Parameter**            |  **Distribution** |            **Distribution values**            |
+|:-----------------------------------|------------------:|----------------------------------------------:|
+| Number of simulation               | `n_sim`           | 1000                                          |
+| Annual transition probabilities    |                   |                                               |
+| - Disease onset (H to S1)          | Beta              |  $\alpha=30, \ \beta=170$                     |
+| - Recovery (S1 to H)               | Beta              | $\alpha=60, \ \beta=60$                       |
+| - Disease progression (S1 to S2) in the time-homogeneous model | Beta | $\alpha=84, \ \beta=716$       |
+| Annual mortality                   |                   |                                               |
+| - All-cause mortality (H to D)     | Beta              |  $\alpha=10, \ \beta=1990$                    |
+| - Hazard ratio of death in S1 vs H | Lognormal         |  $\mu = log(3), \ \sigma = 0.01$              |
+| - Hazard ratio of death in S2 vs H | Lognormal         |  $\mu = log(10), \ \sigma = 0.02$             |
+| Annual costs                       |                   |                                               |
+| - Healthy individuals              | Gamma             |  shape = 100.0, scale = 20.0                  |
+| - Sick individuals in S1           | Gamma             |  shape = 177.8, scale = 22.5                  |
+| - Sick individuals in S2           | Gamma             |  shape = 225.0, scale = 66.7                  |
+| - Additional costs of sick individuals treated in S1 or S2 | Gamma | shape = 73.5, scale = 163.3       |
+| Utility weights                    |                   |                                               |
+| - Healthy individuals              | Tr. Normal        | $\mu = 1.00, \ \sigma = 0.01, \ b = 1$        |
+| - Sick individuals in S1           | Tr. Normal        | $\mu = 0.75, \ \sigma = 0.02, \ b = 1$        |
+| - Sick individuals in S2           | Tr. Normal        | $\mu = 0.50, \ \sigma = 0.03, \ b = 1$        |
+| Intervention effect                |                   |                                               |
+| - Utility for treated individuals in S1 | Tr. Normal   | $\mu = 0.95, \ \sigma = 0.02, \ b = 1$        |
+
+## Tasks
+
+5. Create the `calculate_ce_out` `R` function of the Sick-Sicker Markov model in the file “Functions_markov_sick-sicker_tunnels.R”.
+
+6. Create a function called `gen_psa` to sample values for the uncertain parameters using the appropriate distributions. 
+Hint: package `truncnorm` deals with truncated normal distributions.
+
+7. Open the file “markov_sick-sicker_tunnels_SA_template.R” and conduct a probabilistic Cost-Effectiveness analysis of treatment vs no-treatment. 
+
+8. Create histograms of model inputs.
+
+9. Create a cost-effectiveness plane to present discounted costs and QALYs.
+
+10. Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$.
+
+11. Create the expected loss curves (ELCs) plot
+
+12. Create an expected value of perfect information (EVPI) plot. 
+ 

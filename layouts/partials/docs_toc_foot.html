@@ -1,0 +1,19 @@
+<!--this adds github edit button to all posts-->
+{{ if $.File.Path }}
+
+{{ $Rmarkdown := (print $.File.BaseFileName ".Rmarkdown") }}
+
+{{ if (where (readDir (print "content/" $.File.Dir)) "Name" $Rmarkdown) }}
+  {{ $.Scratch.Set "FilePath" (print $.File.Dir $Rmarkdown) }}
+{{ else }}
+  {{ $.Scratch.Set "FilePath" $.File.Path }}
+{{ end }}
+{{ end }}
+<!--end github edit code-->
+
+<div class="connect-widget">
+  <ul class="connect-links fa-ul">
+    <li><i class="fa-li fas fa-question-circle"></i><a href="https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw" target="_blank">Get trouble-shooting help</a></li>
+    <li><i class="fa-li fas fa-comments"></i><a href="https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw" target="_blank">Ask questions</a></li>
+  </ul>
+</div>

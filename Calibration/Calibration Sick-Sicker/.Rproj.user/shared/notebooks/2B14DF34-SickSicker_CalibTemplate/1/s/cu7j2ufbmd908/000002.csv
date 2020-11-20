@@ -1,9 +1,0 @@
-"0","# - inputs are parameters to be estimated through calibration"
-"0","# - outputs correspond to the target data"
-"0",""
-"0","# creates the function run_sick_sicker_markov()"
-"0","source(here::here(""data"", ""SickSicker_MarkovModel_Function.R"")) "
-"2","cannot open file 'C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Calibration/Calibration Sick-Sicker/data/SickSicker_MarkovModel_Function.R': No such file or directory"
-"2","Error in file(filename, ""r"", encoding = encoding) : 
-  cannot open the connection
-"

@@ -1,0 +1,24 @@
+---
+title: "Welcome"
+date: "`r Sys.Date()`"
+draft: no
+type: docs
+linktitle: Welcome
+menu:
+  day1:
+    weight: 1
+---
+
+Welcome to Introduction to `R`! 
+
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473551236")
+```
+
+## Slides
+
+[Download slides](../../../rmds/00_welcome_slides.pptx)
+
+

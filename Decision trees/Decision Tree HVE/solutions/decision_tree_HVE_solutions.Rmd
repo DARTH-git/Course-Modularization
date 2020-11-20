@@ -92,7 +92,7 @@ p_HVE_comp     <- 0.71   # complications with untreated HVE
 p_OVE_comp     <- 0.01   # complications with untreated OVE
 p_HVE_comp_tx  <- 0.36   # complications with treated HVE
 p_OVE_comp_tx  <- 0.20   # complications with treated OVE
-p_biopsy_death <- 0.05  # probability of death due to biopsy
+p_biopsy_death <- 0.005  # probability of death due to biopsy
 
 # Costs
 c_VE           <- 1200   # cost of viral encephalitis care without complications

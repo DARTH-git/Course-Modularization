@@ -19,6 +19,6 @@ blogdown::shortcode("vimeo", "473551236")
 
 ## Slides
 
-[Download slides](../../../rmds/00_welcome_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/00_welcome_slides.pptx)
 
 

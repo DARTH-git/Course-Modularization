@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Decision Modeling for Public Health"
+title = "Health Economic Modelling in R"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -252,46 +252,28 @@ enableGitInfo = false
   weight = 1
 
 [[menu.main]]
-  name = "Nov 2"
+  name = "Nov 30 - Dec 1"
   weight = 3
   url = "days/day1/" 
   identifier = "day1"
   
 [[menu.main]]
-  name = "Nov 3"
+  name = "Dec 2"
   weight = 4
   url = "days/day2/" 
   identifier = "day2"
   
 [[menu.main]]
-  name = "Nov 4"
+  name = "Dec 7"
   weight = 5
   url = "days/day3/" 
   identifier = "day3"
   
 [[menu.main]]
-  name = "Nov 5"
+  name = "Dec 9"
   weight = 6
   url = "days/day4/" 
   identifier = "day4"
-  
-[[menu.main]]
-  name = "Nov 6"
-  weight = 7
-  url = "days/day5/" 
-  identifier = "day5"
-  
-[[menu.main]]
-  name = "Nov 9"
-  weight = 8
-  url = "days/day6/" 
-  identifier = "day6"
-
-[[menu.main]]
-  name = "Nov 10"
-  weight = 9
-  url = "days/day7/" 
-  identifier = "day7"
 
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"

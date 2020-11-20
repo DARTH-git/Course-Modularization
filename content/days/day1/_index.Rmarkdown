@@ -1,5 +1,5 @@
 ---
-title: Day 0 schedule
+title: "Self-study sessions"
 author: ''
 date: "`r Sys.Date()`"
 slug: day1
@@ -7,7 +7,7 @@ categories: []
 tags: []
 menu:
   day1:
-    name: "Day 0 schedule"
+    name: "Self-study sesssions"
     weight: 1
 toc: yes
 type: docs

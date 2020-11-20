@@ -1,13 +1,13 @@
 ---
-title: Day 0 schedule
+title: "Self-study sessions"
 author: ''
-date: "2020-10-30"
+date: "2020-11-20"
 slug: day1
 categories: []
 tags: []
 menu:
   day1:
-    name: "Day 0 schedule"
+    name: "Self-study sesssions"
     weight: 1
 toc: yes
 type: docs

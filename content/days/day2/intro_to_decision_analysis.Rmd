@@ -11,5 +11,5 @@ menu:
 
 ## Slides
 
-[Download slides](../../../rmds/DecisionModelingIntroSlides_CDC.pptx)
+[Download slides](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_template.html)
 

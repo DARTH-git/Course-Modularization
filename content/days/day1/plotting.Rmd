@@ -20,13 +20,15 @@ blogdown::shortcode("vimeo", "473445406")
 
 ## Slides
 
-[Download slides](../../../rmds/04_plotting_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/04_plotting_slides.pptx)
 
 ## Student templates
 
-[Download student template](../../../rmds/04_plotting_template.Rmd)
+[Download `04_plotting_template.Rmd`](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/04_plotting_template.Rmd)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd)
+Solutions will be posted later.
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/04_plotting_solutions.Rmd) -->
 

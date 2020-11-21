@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Microsim demo
-menu:
-  day4:
-    weight: 5
+# menu:
+#   day4:
+#     weight: 5
 ---
 
 ## Demo (3-state model)

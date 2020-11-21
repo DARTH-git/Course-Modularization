@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Intro to Decision Modeling
-menu:
-  day2:
-    weight: 3
+# menu:
+#   day2:
+#     weight: 3
 ---
 
 ## Slides

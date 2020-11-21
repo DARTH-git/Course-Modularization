@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Microsim exercises
-menu:
-  day4:
-    weight: 5
+# menu:
+#   day4:
+#     weight: 5
 ---
 
 ## Exercise worksheet (Sick-Sicker model)

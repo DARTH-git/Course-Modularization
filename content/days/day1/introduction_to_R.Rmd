@@ -20,13 +20,15 @@ blogdown::shortcode("vimeo", "473442290")
 
 ## Slides
 
-[Download slides](../../../rmds/02_introduction_to_R_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/02_introduction_to_R_slides.pptx)
 
 ## Student template
 
-[Download student template](../../../rmds/02_Introduction_template.Rmd)
+[Download `02_Introduction_template.Rmd`](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/02_Introduction_template.Rmd)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/02_Introduction_solutions.Rmd)
+Solutions will be posted later. 
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_template.Rmd) -->
 

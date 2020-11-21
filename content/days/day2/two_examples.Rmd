@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Two practical examples
-menu:
-  day2:
-    weight: 4
+# menu:
+#   day2:
+#     weight: 4
 ---
 
 ## COVID-19 Shiny App

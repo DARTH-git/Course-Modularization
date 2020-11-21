@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: STM videos
-menu:
-  day3:
-    weight: 4
+# menu:
+#   day3:
+#     weight: 4
 ---
 
 ## Slides

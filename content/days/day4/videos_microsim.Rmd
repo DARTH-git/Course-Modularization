@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Microsim videos
-menu:
-  day4:
-    weight: 4
+# menu:
+#   day4:
+#     weight: 4
 ---
 
 ## Slides

@@ -4,10 +4,10 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 
-linktitle: The DARTH Workgroup
-menu:
-  day2:
-    weight: 2
+linktitle: "The DARTH Workgroup"
+# menu:
+#   day2:
+#     weight: 2
 ---
 
 ## Slides

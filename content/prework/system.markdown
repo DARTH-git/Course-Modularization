@@ -1,7 +1,7 @@
 ---
 title: Install software
 author: ''
-date: "2020-10-29"
+date: "2020-11-20"
 slug: system
 categories: []
 tags: []
@@ -16,14 +16,13 @@ type: docs
 
 In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop.
 
-- If you will be using a CDC-issued computer to participate in the workshop, please work with your IT office to install R v4.0.2 and Rstudio on your computers as soon as possible. 
+- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install the latest version of R and RStudio on your computers as soon as possible.
 
 - If you will be using a personal machine, please follow the installation instructions below.
 
-
 ## Install R
 
-Download `R` version 4.0.2 from [here](https://cran.r-project.org/bin/windows/base/old/4.0.2/). Download the file `R-4.0.2-win.exe` and follow the installation procedure.
+Download the latest version of `R` from [here](https://utstat.toronto.edu/cran/).
 
 ## Install RStudio
 

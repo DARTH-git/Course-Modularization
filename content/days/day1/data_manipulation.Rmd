@@ -20,19 +20,21 @@ blogdown::shortcode("vimeo", "473042385")
 
 ## Slides
 
-[Download slides](../../../rmds/03_data_manipulation_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/03_data_manipulation_slides.pptx)
 
 ## Data
 
-[Download data](../../../rmds/framingham.csv)
+[Download `framingham.csv`](../../../Course_Modularization/Intro to R/framingham/framingham.csv)
 
-[Download data documentation](../../../rmds/Framingham Longitudinal Data Documentation.pdf)
+[Download data documentation](../../../Course_Modularization/Intro to R/framingham/Framingham Longitudinal Data Documentation.pdf)
 
 ## Student templates
 
-[Download student template](../../../rmds/03_data_manipulation_template.Rmd)
+[Download `03_data_manipulation_template.Rmd`](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/03_data_manipulation_template.Rmd)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/03_data_manipulation_solutions.Rmd)
+Solutions will be posted later.
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/03_data_manipulation_solutions.Rmd) -->
 

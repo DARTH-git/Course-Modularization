@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: STM variants
-menu:
-  day3:
-    weight: 6
+# menu:
+#   day3:
+#     weight: 6
 ---
 
 ## Demos (3-state model)

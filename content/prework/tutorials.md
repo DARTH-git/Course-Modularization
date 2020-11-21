@@ -17,7 +17,7 @@ We have published a number of modeling tutorials and methodology papers. A list 
 
 # DARTH GitHUB
 
-This is our group's [GitHub page](https://github.com/orgs/DARTH-git/dashboard) where we host different repositories for different projects, tutorials and packages like `dampack`, `darthpack`, and `darthtools`. 
+This is our group's [GitHub page](https://github.com/orgs/DARTH-git/dashboard) where we host different repositories for different projects, tutorials and packages like [`dampack`](https://github.com/DARTH-git/dampack), [`darthpack`](https://github.com/DARTH-git/darthpack), and [`darthtools`](https://github.com/DARTH-git/darthtools). 
 
 # R tutorials:
 

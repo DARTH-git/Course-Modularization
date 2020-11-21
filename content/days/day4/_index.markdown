@@ -1,41 +1,39 @@
 ---
-title: Day 3 schedule
+title: Dec 9 Agenda
 author: ''
-date: "2020-11-05"
+date: "2020-11-21"
 slug: day4
 categories: []
 tags: []
 menu:
   day4:
-    name: "Day 3 schedule"
+    name: "Dec 9 Agenda"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Thursday, Nov 5**: *Microsimulation Models*
+**Wednesday, Dec 9**: *DARTH tools and Partitioned Survival Analysis*
 
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Synchronous session is from 2:00pm - 5:00pm Central European Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 2:00pm - 11:00pm Central European Time
 
-Here is a tentative timetable for Day 3:
+Here is a tentative timetable for this day:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: cohort state-transition model exercise solutions |
-| 9:30 – 10:30| Code review: Microsimulation models in R  | 
-| 10:30 – 12:00 | Hands-on exercise: Microsimulation models |
-| 1:00pm – 4:00pm | On your own |
+| 2:00 – 2:30pm  | Questions about the lecture videos |
+| 2:30 – 3:15pm | Partitioned Survival Analysis in `R` | 
+| 3:15 – 4:00pm | Hands-on exercise: Partitioned Survival Analysis in `R` |
+| 4:00 – 4:30pm | Go over and discuss solutions to exercises |
+| 4:30 – 5:00pm | Clarity of transparency of files and file structure |
+| 5:00 – 6:00pm | Go over a HTA submission in `R` |
 
-From 1:00pm to 4:00pm, please:
+<!-- ## Synchronous session recording -->
 
-- Complete microsimulation hands-on exercise
-
-- Watch "Day 4: Sensitivity Analysis" lecture series
-
-## Synchronous session recording
-
-<!--html_preserve-->{{% vimeo "476082616" %}}<!--/html_preserve-->
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "476082616") -->
+<!-- ``` -->
 

@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/darthcoursezo-yts3767/shared_invite/zt-jarsy8dy-AS9ZqirekQwLsUIo9idkpA"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -278,7 +278,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw"
+  url = "https://join.slack.com/t/darthcoursezo-yts3767/shared_invite/zt-jarsy8dy-AS9ZqirekQwLsUIo9idkpA"
   weight = 10
   
 # Search.

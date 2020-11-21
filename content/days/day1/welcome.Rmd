@@ -9,7 +9,7 @@ menu:
     weight: 1
 ---
 
-Welcome to Introduction to `R`! 
+Welcome to "Introduction to `R`"! 
 
 ## Presentation video
 

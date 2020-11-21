@@ -11,26 +11,19 @@ Overall learning objectives for the course include;
 
 - Explain research scenarios that require decision analysis methods
 - Develop and manage data for decision analysis
-- Analyze and interpret decision trees and Markov models
-- Analyze and interpret microsimulation models
-- Perform probabilistic sensitivity analysis and model calibration
-- Develop competence in R for performing decision analytic techniques
-- Perform model calibration
-- Create a basic R shiny interface
+- Build, analyze and interpret cohort-state transition models
+- Build, analyze and interpret survival analysis models
+- Perform probabilistic sensitivity analysis 
+- Develop competence in `R` for performing decision analytic techniques
 
 We will cover the following topics:
 
-**Monday, November 2**: Introduction to `R` (Asynchronous)
+**November 30 - December 1**: Pre-workshop and Introduction to `R` (Self-study)
 
-**Tuesday, November 3**: Introduction to Decision Analysis (Day 1)
+**=December 2**: Foundations for Decision Modelling in `R`
 
-**Wednesday, November 4**: Cohort State-Transition Models (Day 2)
+**December 7**: Cohort State-Transition Models in `R` 
 
-**Thursday, November 5**: Microsimulation Models (Day 3)
+*December 9**: Survival Analysis in `R`
 
-**Friday, November 6**: Sensitivity Analysis (Day 4)
-
-**Monday, November 9**: Model Calibration (Day 5)
-
-**Tuesday, November 10**: `R` "Shiny Interface" and Wrap-up (Day 6)
 

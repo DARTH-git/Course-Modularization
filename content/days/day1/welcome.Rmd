@@ -14,7 +14,7 @@ Welcome to "Introduction to `R`"!
 ## Presentation video
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "473551236")
+blogdown::shortcode("vimeo", "482627807")
 ```
 
 ## Slides

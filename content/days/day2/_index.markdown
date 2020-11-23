@@ -1,7 +1,7 @@
 ---
 title: Dec 2 Agenda
 author: ''
-date: "2020-11-21"
+date: "2020-11-23"
 slug: day2
 categories: []
 tags: []
@@ -18,7 +18,7 @@ type: docs
 Basic agenda:
 
 - Synchronous session is from 2:00pm - 5:00pm Central European Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 2:00pm - 11:00pm Central European Time
+- Slack support available 11:00am - 8:00pm Central European Time
 
 Here is a tentative timetable for this day:
 

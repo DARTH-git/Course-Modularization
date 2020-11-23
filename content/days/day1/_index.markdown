@@ -19,7 +19,7 @@ Basic agenda:
 
 - This module is completely asynchronous
 - It will take approximately 5-6 hours to complete
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Slack support available 11:00am - 8:00pm Central European Time
 
 During the workshop:
 

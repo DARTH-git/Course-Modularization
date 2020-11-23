@@ -36,7 +36,7 @@ Before Dec 7, please:
 
 - Watch "Partitioned Survival Analysis" lecture videos
 
-- Read "Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. Pharmacoeconomics. 2019;37(11):1329-1339. doi:10.1007/s40273-019-00837-x"
+- Read ["Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. Pharmacoeconomics. 2019;37(11):1329-1339. doi:10.1007/s40273-019-00837-x"](https://rdcu.be/bRP5h)
 
 - Revisit "Cohort State-Transition in `R`" materials if needed
 

@@ -9,12 +9,13 @@ widget: custom
 
 Overall learning objectives for the course include;
 
-- Explain research scenarios that require decision analysis methods
-- Develop and manage data for decision analysis
+- Understand the foundations for decision modelling in R
+- Learn about the advantages and disadvantages of R for health economic modeling 
 - Build, analyze and interpret cohort-state transition models
 - Build, analyze and interpret survival analysis models
-- Perform probabilistic sensitivity analysis 
-- Develop competence in `R` for performing decision analytic techniques
+- Develop competence in R for performing decision analytic techniques
+- Get introduced to the DARTH framework 
+- Getting an overview of what is currently out in the field 
 
 We will cover the following topics:
 

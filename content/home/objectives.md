@@ -20,10 +20,10 @@ We will cover the following topics:
 
 **November 30 - December 1**: Pre-workshop and Introduction to `R` (Self-study)
 
-**=December 2**: Foundations for Decision Modelling in `R`
+**December 2**: Foundations for Decision Modelling in `R`
 
 **December 7**: Cohort State-Transition Models in `R` 
 
-*December 9**: Survival Analysis in `R`
+**December 9**: Survival Analysis in `R`
 
 

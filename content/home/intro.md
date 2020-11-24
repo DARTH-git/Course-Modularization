@@ -13,7 +13,7 @@ Economic evaluation often rely on decision models. As decision modelling advance
 
 In this course, participants will learn about the use of `R` in the field of health decision making, its advantages and disadvantages. We start by providing some pre-course material to get familiar with the basics of `R` for health decision modelling. During the rest of the course, participants will learn about the topic below via pre-recorded video's and live demonstration sessions. Throughout the course participants will engage in hands-on programming exercise and the instructors will be available to answer questions.  
 
-Participants will be expected to have experiences with cost-effectiveness analysis (CEA), decision modelling methods (e.g. cohort state-transition models (Markov models), individual based state-transition models (microsimulation), sensitivity analysis and a basic understanding of statistics for economic evaluations. 
+Participants will be expected to have experiences with cost-effectiveness analysis (CEA), decision modelling methods (e.g. cohort state-transition models (Markov models), sensitivity analysis and a basic understanding of statistics for economic evaluations. 
 
 Participants will need a computer with `R` and `R` studio pre-installed. Participants are also expected to have a stable internet connection and material (e.g. microphone and audio output) to participate in online education. Instructions about the required packages will follow prior to the course. This might require involving the IT department depending on the authorization and admin rights the participants have within the company. 
 

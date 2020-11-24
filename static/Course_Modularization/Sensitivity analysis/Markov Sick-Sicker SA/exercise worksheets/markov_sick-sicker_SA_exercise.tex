@@ -76,7 +76,7 @@
 
 \title{Cost-Effectiveness and Decision Modeling in R}
 \providecommand{\subtitle}[1]{}
-\subtitle{Basic Markov Model Exercise}
+\subtitle{SA Markov Model Exercise}
 \author{The DARTH workgroup}
 \date{}
 
@@ -106,8 +106,8 @@ In collaboration of:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Drug Policy Program, Center for Research and Teaching in Economics
-  (CIDE) - CONACyT, Aguascalientes, Mexico
+  Division of Public Administration, Center for Research and Teaching in
+  Economics (CIDE), Aguascalientes, Mexico
 \item
   University of Minnesota School of Public Health, Minneapolis, MN, USA
 \item
@@ -132,6 +132,11 @@ Please cite our publications when using this code:
   Making. 2017; 37(3): 735-746.
   \url{https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559}
 \item
+  Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM
+  Pechlivanoglou P, Jalal H. Cohort State-Transition Models in R: A
+  Tutorial. arXiv:200107824v2. 2020:1-48.
+  \url{http://arxiv.org/abs/2001.07824}
+\item
   Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM,
   Pechlivanoglou P. Microsimulation modeling for health decision
   sciences using R: A tutorial. Med Decis Making. 2018;38(3):400--22.
@@ -139,8 +144,8 @@ Please cite our publications when using this code:
 \item
   Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM,
   Jalal H. A Multidimensional Array Representation of State-Transition
-  Model Dynamics. BioRxiv 670612
-  2019.\url{https://www.biorxiv.org/content/10.1101/670612v1}
+  Model Dynamics. Med Decis Making. 2020 Online first.
+  \url{https://doi.org/10.1177/0272989X19893973}
 \end{itemize}
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
@@ -151,44 +156,62 @@ CHILDREN and the collaborating institutions. These materials may be
 used, reproduced, modified, distributed and adapted with proper
 attribution.
 
-\section{Exercise I: The Sick-Sicker model -- A Markov
-model}\label{exercise-i-the-sick-sicker-model-a-markov-model}
+\section{Exercise I: Construct a Markov Model of the Sick-Sicker Disease
+(COMPLETED)}\label{exercise-i-construct-a-markov-model-of-the-sick-sicker-disease-completed}
 
-A hypothetical disease affects individuals with an average age of 25
-years and results in increased mortality, increased treatment costs and
-reduced quality of life. The disease has two levels; affected
-individuals initially become sick but can subsequently progress and
-become sicker. Two alternative strategies exist for this hypothetical
-disease: a no-treatment and a treatment strategy. Under the treatment
-strategy, individuals who become sick or progress and become sicker
-receive treatment and continue doing so until they recover or die. The
-cost of the treatment is additional to the cost of being sick or sicker
-for one year. The treatment improves quality of life for those
-individuals who are sick but has no effect on the quality of life of
-those who are sicker. You are asked to evaluate the cost-effectiveness
-of the treatment.
+In this exercise, we will model a hypothetical disease that affects
+individuals with an average age of 25 years and results in increased
+mortality, increased healthcare costs, and reduced quality of life. The
+disease has two levels; affected individuals initially become sick but
+can subsequently progress and become sicker. Two alternative strategies
+exist for this hypothetical disease: a no-treatment and a treatment
+strategy. Under the treatment strategy, individuals in the sick and
+sicker states are treated until they recover (only if sick; individuals
+in the sicker state cannot recover) or die. The cost of the treatment is
+additive to the baseline healthcare costs of being sick or sicker. The
+treatment improves quality of life for those individuals who are sick
+but has no impact on the quality of life of those who are sicker.
+Unfortunately, it is not possible to reliably differentiate between
+people in the sick and sicker states, so treatment cannot be targeted to
+only those in the sick state. You are asked to evaluate the
+cost-effectiveness of the treatment.
 
 To model this disease, we will rely on a state-transition cohort model,
 called the Sick-Sicker model, first described by Enns et al. The
-Sick-Sicker model consists of four health states: healthy (H), two
-disease states sick (S1) and sicker (S2) and dead (D) (Figure 1). All
-individuals start in the healthy state. Over time, healthy individuals
+Sick-Sicker model consists of four health states: Healthy (H), two
+disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All
+individuals start in the Healthy state. Over time, healthy individuals
 may develop the disease and can progress to S1. Individuals in S1 can
 recover (return to state H), progress further to S2 or die. Individuals
 in S2 cannot recover (i.e.~cannot transition to either S1 or H).
-Individuals in H are assumed to have a fixed mortality rate and
-individuals in S1 and S2 have an increased mortality rate compared to
-healthy individuals. These rates are used to calculate the probabilities
-to die when in S1 and S2.
+Individuals in H have a baseline probability of death; individuals in S1
+and S2 experience increased mortality compared to those in the H state,
+given in terms of hazard ratios. These ratios are used to calculate the
+probabilities of dying when in S1 and S2.
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{/Users/elinekrijkamp/Documents/GitHub/Course-Modularization/static/Course_Modularization/VOI/VOI Sick-Sicker/figures/sick_sicker_diagram} 
+{\centering \includegraphics[width=1\linewidth]{sick_sicker_diagram} 
 
 }
 
 \caption{Schematic representation of the Sick-Sicker model}\label{fig:unnamed-chunk-1}
 \end{figure}
+
+\subsection{Tasks (COMPLETED)}\label{tasks-completed}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Build the cohort state transition model in \texttt{R} for no treatment
+  and treatment strategies.
+\item
+  Plot the survival curve for the cohort under no treatment.
+\item
+  Estimate the cost-effectiveness of treatment vs no-treatment.
+\item
+  Create a cost-effectiveness table with all results of interest.
+\end{enumerate}
 
 \textbf{Table I: Input parameters}
 
@@ -239,21 +262,22 @@ Annual transition probabilities\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-- Disease onset (H to S1)\strut
+- Disease onset (H to S1), conditional on surviving\strut
 \end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
 \texttt{p\_HS1}\strut
 \end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
 0.15\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-- Recovery (S1 to H)\strut
+- Recovery (S1 to H), conditional on surviving\strut
 \end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
 \texttt{p\_S1H}\strut
 \end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
 0.5\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-- Disease progression (S1 to S2) in the time-homogeneous model\strut
+- Disease progression (S1 to S2) conditional on surviving, in the
+time-homogeneous model\strut
 \end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
 \texttt{p\_S1S2}\strut
 \end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
@@ -388,6 +412,18 @@ appropriate hazard ratio; finally, convert this rate back to a
 probability. Recall that you can convert between rates and probabilities
 using the following formulas: \(r = -loga(1-p)\) and \(p = 1-e^{(-rt)}\)
 
+\newpage
+
+\section{Exercise II: Probabilistic sensitivity analysis of the
+Sick-Sicker Markov
+model}\label{exercise-ii-probabilistic-sensitivity-analysis-of-the-sick-sicker-markov-model}
+
+This exercise continues based on the time-homogeneous deterministic
+cohort state transition ``Sick-Sicker'' model from Exercise I. In this
+exercise, you will build a probabilistic sensitivity analysis (PSA) with
+1000 simulations \texttt{(n\_sim)}. Table II describes the distributions
+for the variables you used in the previous exercise.
+
 \textbf{Table II: Input parameters for probabilistic analysis}
 
 \begin{longtable}[]{@{}lrr@{}}
@@ -416,21 +452,22 @@ Annual transition probabilities\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-- Disease onset (H to S1)\strut
+- Disease onset (H to S1), conditional on surviving\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
 Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
 \(\alpha=30, \ \beta=170\)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-- Recovery (S1 to H)\strut
+- Recovery (S1 to H), conditional on surviving\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
 Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
 \(\alpha=60, \ \beta=60\)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-- Disease progression (S1 to S2) in the time-homogeneous model\strut
+- Disease progression (S1 to S2) conditional on surviving, in the
+time-homogeneous model\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
 Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
@@ -509,23 +546,23 @@ Utility weights\strut
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 - Healthy individuals\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
-Tr. Normal\strut
+Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
-\(\mu = 1.00, \ \sigma = 0.01, \ b = 1\)\strut
+\(\alpha = 200, \ \beta = 3\)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 - Sick individuals in S1\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
-Tr. Normal\strut
+Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
-\(\mu = 0.75, \ \sigma = 0.02, \ b = 1\)\strut
+\(\alpha = 130, \ \beta = 45\)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 - Sick individuals in S2\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
-Tr. Normal\strut
+Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
-\(\mu = 0.50, \ \sigma = 0.03, \ b = 1\)\strut
+\(\alpha = 230, \ \beta = 230\)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 Intervention effect\strut
@@ -537,9 +574,9 @@ Intervention effect\strut
 \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 - Utility for treated individuals in S1\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
-Tr. Normal\strut
+Beta\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
-\(\mu = 0.95, \ \sigma = 0.02, \ b = 1\)\strut
+\(\alpha = 300, \ \beta = 15\)\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -549,14 +586,40 @@ Tr. Normal\strut
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Load the PSA dataset title ``psa\_sick\_sicker.csv''.
+  Open the file \texttt{markov\_sick-sicker\_SA\_template.R} and move to
+  ``08 Deterministic Sensitivity Analysis''. Run all code before this
+  section.
 \item
-  Use the PSA dataset to compute EVPI for the overall model.
+  Create the \texttt{calculate\_ce\_out} function of the Sick-Sicker
+  Markov model in the file \texttt{Functions\_markov\_sick-sicker.R}.
+  Load this function file in to \texttt{R}.
 \item
-  Compute EVPPI for each parameter in the model, and plot your results.
+  Conduct a one-way sensitivity analysis (OWSA) on parameters
+  \texttt{p\_S1S2} {[}0.05, 0.155{]}, \texttt{c\_trt} {[}6000, 18000{]},
+  \texttt{u\_S1} {[}0.65, 0.85{]}, \texttt{u\_trt} {[}0.80, 0.98{]}. Use
+  net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA
+  optimal strategy, and 3) a Tornado plot. The {[}min, max{]} contains
+  the range of each parameter for the sensitivity analysis.
 \item
-  Compute EVSI for cost of treatment \texttt{c.trt} {[}hint n0 = shape
-  parameter of the gamma distribution{]}.
+  Conduct a two-way sensitivity analysis (TWSA) on parameters
+  \texttt{c\_trt} {[}6000, 18000{]} and \texttt{u\_trt} {[}0.80,
+  0.98{]}. Use net monetary benefit as the outcome. Plot TWSA results.
+\item
+  Create a function called \texttt{gen\_psa} to sample values for the
+  uncertain parameters using the appropriate distributions.
+\item
+  Create a histogram of the model input parameters.
+\item
+  Create a cost-effectiveness plane to present discounted costs and
+  QALYs.
+\item
+  Create the cost-effectiveness acceptability curves (CEAC) and frontier
+  (CEAF) for the treatment comparison assuming WTP thresholds of \(\$0\)
+  to \(\$200,000\).
+\item
+  Create the expected loss curves (ELCs) plot
+\item
+  Create an expected value of perfect information (EVPI) plot.
 \end{enumerate}
 
 \end{document}

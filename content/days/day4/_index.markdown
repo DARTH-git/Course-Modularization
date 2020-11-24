@@ -1,7 +1,7 @@
 ---
 title: Dec 9 Agenda
 author: ''
-date: "2020-11-23"
+date: "2020-11-24"
 slug: day4
 categories: []
 tags: []
@@ -17,19 +17,19 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 2:00pm - 5:00pm Central European Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 2:00pm - 6:00pm Central European Time and consists of a mix of review, demonstrations and hands-on exercises
 - Slack support available 11:00am - 8:00pm Central European Time
 
 Here is a tentative timetable for this day:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 2:00 – 2:30pm  | Questions about the lecture videos |
+| 2:00 – 2:30pm | Questions about the lecture videos |
 | 2:30 – 3:15pm | Partitioned Survival Analysis in `R` | 
 | 3:15 – 4:00pm | Hands-on exercise: Partitioned Survival Analysis in `R` |
 | 4:00 – 4:30pm | Go over and discuss solutions to exercises |
 | 4:30 – 5:00pm | Clarity of transparency of files and file structure |
-| 5:00 – 6:00pm | Go over a HTA submission in `R` |
+| 5:00 – 6:00pm | *Demonstration of different methods* |
 
 <!-- ## Synchronous session recording -->
 

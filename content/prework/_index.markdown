@@ -1,7 +1,7 @@
 ---
 title: Welcome
 author: ''
-date: "2020-11-20"
+date: "2020-11-24"
 slug: welcome
 categories: []
 tags: []
@@ -20,3 +20,5 @@ This site is the official home for all information related to the Health Economi
 Please use the menus to the left to guide you through all the workshop set-up instructions.
 
 We look forward to virtually meeting you all!
+
+<!--html_preserve-->{{% vimeo "482627807" %}}<!--/html_preserve-->

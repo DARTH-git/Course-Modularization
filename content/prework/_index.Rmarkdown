@@ -20,3 +20,7 @@ This site is the official home for all information related to the Health Economi
 Please use the menus to the left to guide you through all the workshop set-up instructions.
 
 We look forward to virtually meeting you all!
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "482627807")
+```

@@ -3,6 +3,11 @@
 # The entire process will take several minutes
 # Recommend running the code line by line, in the specified order below
 
+####  FOR WINDOWS USERS!!! #### 
+# Starting with R 4.0.0 (released April 2020), R for Windows uses a brand new toolchain bundle called rtools40.
+# https://cran.r-project.org/bin/windows/Rtools/
+# You might need to install this to succesfully run the code below
+
 # first download and use this package to conveniently install other packages
 install.packages('pacman')
 library(pacman) 

@@ -24,6 +24,12 @@ Install `R` packages required for this workshop by running all code in this `R` 
 
 [Download R script](../../../Course_Modularization/Intro and general/00_prep.R)
 
+## Important for Windows users
+Starting with `R` 4.0.0 (released April 2020), `R` for Windows uses a brand new toolchain bundle called rtools40. For a succesful instalation of  the packages we provide you might need to install Rtools for windows. You can find the details on the following website:
+
+[Link to Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+
+
 ## Slides
 
 [Download slides](../../../Course_Modularization/Intro to R/Slides/01_getting_ready_slides.pptx)

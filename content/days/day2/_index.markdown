@@ -1,7 +1,7 @@
 ---
 title: Dec 2 Agenda
 author: ''
-date: "2020-11-23"
+date: "2020-11-30"
 slug: day2
 categories: []
 tags: []
@@ -31,7 +31,7 @@ Here is a tentative timetable for this day:
 
 Before Dec 7, please:
 
-- Watch "Intro to state-transition cohort models (Markov)" lecture videos
+- Watch [Intro to state-transition cohort models (Markov) lecture videos](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day3/videos_markov/)
 
 - Revisit "Introduction to `R`" and "Foundations for Decision Modelling in `R`" materials if needed
 

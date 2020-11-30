@@ -1,7 +1,7 @@
 ---
 title: Dec 7 Agenda
 author: ''
-date: "2020-11-24"
+date: "2020-11-30"
 slug: day3
 categories: []
 tags: []
@@ -27,10 +27,10 @@ Here is a tentative timetable for this day:
 | 2:00 – 2:15pm  | Brief revisit of Into to `R` materials + questions about lecture videos|
 | 2:15 – 3:00pm | Cohort state-transition models in `R`  | 
 | 3:00 – 4:00pm | Hands-on exercises: cohort state-transition models in `R` |
-| 4:00 – 4:30om | Go over and discuss solutions to exercises|
+| 4:00 – 4:30pm | Go over and discuss solutions to exercises|
 | 4:30 – 5:00pm | Cohort state-transition models extensions |
 
-Before Dec 7, please:
+Before Dec 9, please:
 
 - Watch "Partitioned Survival Analysis" lecture videos
 

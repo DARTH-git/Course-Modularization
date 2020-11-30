@@ -24,8 +24,12 @@ Here is a tentative timetable for this day:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 2:00 – 3:00pm  |   Welcome and Introduction |
-| 3:00 – 5:00pm  | Discuss the "Foundations for Decision Modelling in `R`" topics| 
+| 2:00 – 2:30pm  |  The DARTH Workgroup introduction |
+| 2:30 – 3:00pm  | Why decision modeling in `R` |
+| 3:00 - 3:15pm  |  Break |
+| 3:15 - 3:30pm  |  Short round of introductions from participants  |
+| 3:30 - 4:30pm  |  Q & A about the Intro to R modules |
+| 4:30 - 5:00pm  |  Extra: demonstration of Practical example(s)   |
 
 - From 3:00 - 5:00pm we will mainly do a review of the pre-course assignments including: mathematics and statistics in `R`, data manipulation and data handling, plotting in `R`, statistical analysis in `R`, logical expressions and random sampling.
 
@@ -33,7 +37,7 @@ Before Dec 7, please:
 
 - Watch ["Intro to cohort state-transition models" lecture videos](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day3/videos_markov/)
 
-- Revisit [Introduction to `R`](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
+- Revisit ["Introduction to R"](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
 
 <!-- ## Synchronous session recording -->
 

@@ -13,7 +13,7 @@ menu:
 
 To be uploaded later.
 
-<!-- [Download slides](../../../rmds/MarkovModelSlides_CDC.pptx) -->
+[Download slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_ZIN.pdf)
 
 STM 1: Introduction
 

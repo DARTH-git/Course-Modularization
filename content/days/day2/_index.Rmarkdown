@@ -33,7 +33,7 @@ Before Dec 7, please:
 
 - Watch ["Intro to cohort state-transition models" lecture videos](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day3/videos_markov/)
 
-- Revisit ["Introduction to `R`"](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
+- Revisit [Introduction to `R`](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
 
 <!-- ## Synchronous session recording -->
 

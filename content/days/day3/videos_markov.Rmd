@@ -1,22 +1,24 @@
 ---
-title: Cohort State Transition Models (STM) - Presentation Videos
+title: Cohort State Transition Models (cSTM) - Presentation Videos
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: STM videos
-# menu:
-#   day3:
-#     weight: 4
+linktitle: cSTM videos
+menu:
+  day3:
+    weight: 4
 ---
 
 ## Slides
 
-[Download slides](../../../rmds/MarkovModelSlides_CDC.pptx)
+To be uploaded later.
+
+<!-- [Download slides](../../../rmds/MarkovModelSlides_CDC.pptx) -->
 
 STM 1: Introduction
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "474550894")
+blogdown::shortcode("vimeo", "485405325")
 ```
 
 STM 2: Overview
@@ -37,17 +39,17 @@ STM 4: Calculating Model Outcomes
 blogdown::shortcode("vimeo", "474553106")
 ```
 
-STM 5: Time-Varying State-Transition Models
+<!-- STM 5: Time-Varying State-Transition Models -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474560741")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "474560741") -->
+<!-- ``` -->
 
-STM 6: History Dependence
+<!-- STM 6: History Dependence -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474560799")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "474560799") -->
+<!-- ``` -->
 
 
 

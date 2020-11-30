@@ -3,7 +3,7 @@ title: Cohort State Transition Models
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Basic STM 
+linktitle: cSTM
 # menu:
 #   day3:
 #     weight: 5

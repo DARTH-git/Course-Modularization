@@ -123,8 +123,8 @@ n_str     <- length(v_names_str)      # Number of strategies
 n_states  <- length(v_n)              # number of states
 
 # Discount weights for costs and effects
-v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
-v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
+v_dwc     <- 1 / (1 + d_c) ^ (0:n_t) 
+v_dwe     <- 1 / (1 + d_e) ^ (0:n_t) 
 ```
 
 ## Draw the state-transition cohort model
@@ -198,7 +198,7 @@ check_transition_probability(m_P, verbose = TRUE)
 check_transition_probability(m_P_trt, verbose = TRUE)
 # Check that all rows sum to 1
 check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-check_transition_probability(m_P_trt, verbose = TRUE)
+check_sum_of_transition_array(m_P_trt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model

@@ -50,12 +50,12 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
+Med Decis Making. 2020 Feb;40(2):242-248. https://journals.sagepub.com/doi/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
 trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating 
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
@@ -117,7 +117,7 @@ c_trt     <- 800                      # cost of treatment (per cycle)
 u_H       <- 0.8                      # utility when healthy 
 u_S       <- 0.5                      # utility when sick
 u_D       <- 0                        # utility when dead
-d_e       <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%
+d_e       <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%, separate this line for countries like NL where costs and effects have different discount rates
 
 n_str     <- length(v_names_str)      # Number of strategies
 n_states  <- length(v_n)              # number of states
@@ -150,7 +150,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 ```{r}
 # create the cohort trace
 m_M <- m_M_trt <-  matrix(NA, 
-                          nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
+                          nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                             # understand Cycle 0)
                           ncol = n_states, 
                           dimnames = list(0:n_t, v_n))
@@ -165,13 +165,16 @@ m_M[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov t
 m_P  <- m_P_trt <- matrix(0,
                     nrow = n_states, ncol = n_states,
                     dimnames = list(v_n, v_n))  # name the columns and rows of the transition 
-                                                # probability matrices
-m_P
+                                               
+# print the probability matrices 
+m_P      # for standard of care
+m_P_trt  # treatment
 ```
 
 Fill in the transition probability matrix:
 
 ```{r}
+# For Standard of Care 
 # from Healthy
 m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
 m_P["Healthy", "Sick"]    <- (1 - p_HD) * p_HS
@@ -185,12 +188,13 @@ m_P["Sick", "Dead"] <- p_SD
 m_P["Dead", "Dead"] <- 1
 
 # Under treatment
-m_P_trt <- m_P
+m_P_trt <- m_P  # Assign the matrix for standard of care to the transition probability matrix for treatment
+# replace values that are different under treatment 
 m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
 m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
 ```
 
-## 04.3 Check if transition array and probabilities are valid
+## 04.3 Check if transition probability structure and probabilities are valid
 
 ```{r}
 # Check that transition probabilities are in [0, 1]
@@ -252,7 +256,7 @@ plot(v_os, type = 'l',
      ylim = c(0, 1),
      ylab = "Survival probability",
      xlab = "Cycle",
-     main = "Overall Survival")       # create a simple plot showing the OS
+     main = "Overall Survival - Standard of Care")       # create a simple plot showing the OS
 
 # add grid 
 grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
@@ -269,7 +273,7 @@ plot(v_os_trt, type = 'l',
      ylim = c(0, 1),
      ylab = "Survival probability",
      xlab = "Cycle",
-     main = "Overall Survival")       # create a simple plot showing the OS
+     main = "Overall Survival - Treatment")       # create a simple plot showing the OS
 
 # add grid 
 grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
@@ -293,7 +297,7 @@ plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",
      xlab = "Cycle",
-     main = "Disease prevalence")
+     main = "Disease prevalence - Standard of care")
 ```
 
 Treatment:
@@ -304,7 +308,7 @@ plot(v_prev_trt,
      ylim = c(0, 1),
      ylab = "Prevalence",
      xlab = "Cycle",
-     main = "Disease prevalence")
+     main = "Disease prevalence - Treatment")
 ```
 
 # 07 Compute Cost-Effectiveness Outcomes
@@ -315,9 +319,9 @@ plot(v_prev_trt,
 # per cycle
 # calculate expected costs by multiplying m_M with the cost vector for the different 
 # health states   
-v_tc     <- m_M     %*% c(c_H, c_S, c_D)          # Standard of Care
+v_tc     <- m_M     %*% c(c_H, c_S,         c_D)  # Standard of Care
 v_tc_trt <- m_M_trt %*% c(c_H, c_S + c_trt, c_D)  # Treatment
-# calculate expected QALYs  by multiplying m_M with the utilities for the different 
+# calculate expected QALYs by multiplying m_M with the utilities for the different 
 # health states   
 v_tu     <- m_M     %*% c(u_H, u_S, u_D)          # Standard of Care
 v_tu_trt <- m_M_trt %*% c(u_H, u_S, u_D)          # Treatment
@@ -340,8 +344,7 @@ v_tu_d   <- c(tu_d, tu_d_trt)
 # Dataframe with discounted costs and effectiveness
 df_ce       <- data.frame(Strategy = v_names_str,
                           Cost     = v_tc_d,
-                          Effect   = v_tu_d
-                          )
+                          Effect   = v_tu_d)
 df_ce
 ```
 
@@ -350,8 +353,7 @@ df_ce
 ```{r}
 df_cea <- calculate_icers(cost       = df_ce$Cost,
                           effect     = df_ce$Effect,
-                          strategies = df_ce$Strategy
-                          )
+                          strategies = df_ce$Strategy)
 df_cea
 ```
 
@@ -359,6 +361,8 @@ df_cea
 
 ```{r}
 plot(df_cea, effect_units = "QALYs", xlim = c(10, 12))
+
+# note: you need to adjust the xlim values to values that are covering the range of effect values in your analysis
 ```
 
 

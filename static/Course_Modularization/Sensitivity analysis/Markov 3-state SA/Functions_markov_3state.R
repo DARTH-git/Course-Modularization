@@ -15,7 +15,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     ####### INITIALIZATION ##########################################
     # create the cohort trace
     m_M <- m_M_trt <-  matrix(NA, 
-                              nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
+                              nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                               # understand Cycle 0)
                               ncol = n_states, 
                               dimnames = list(0:n_t, v_n))
@@ -28,7 +28,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                               dimnames = list(v_n, v_n))  # name the columns and rows of the transition 
     # probability matrices
 
-
+    # For Standard of Care 
     # fill in the transition probability matrix
     # from Healthy
     m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
@@ -43,12 +43,13 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     m_P["Dead", "Dead"] <- 1
     
     # Under treatment
-    m_P_trt <- m_P
+    m_P_trt <- m_P # Assign the matrix for standard of care to the transition                         probability matrix for treatment
+    # replace values that are different under treatment 
     m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
     m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
     
     # Check that transition probabilities are in [0, 1]
-    check_transition_probability(m_P, verbose = TRUE)
+    check_transition_probability(m_P,     verbose = TRUE)
     check_transition_probability(m_P_trt, verbose = TRUE)
     # Check that all rows sum to 1
     check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
@@ -67,7 +68,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                 m_P      = m_P,
                 m_P_trt  = m_P_trt)
     
-    return(out)
+    return(out) 
   }
   )
 }
@@ -79,8 +80,9 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 #'
 #' \code{calculate_ce_out} calculates costs and effects for a given vector of parameters using a simulation model.
 #' @param l_params_all List with all parameters of decision model
-#' @param n_wtp Willingness-to-pay threshold to compute net benefits
-#' @return A data frame with discounted costs, effectiveness and NMB.
+#' @param n_wtp Willingness-to-pay threshold to compute net monetary benefits (
+#' NMB)
+#' @return A dataframe with discounted costs, effectiveness and NMB.
 #' 
 calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
   with(as.list(l_params_all), {
@@ -91,6 +93,7 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     ## Run STM model at a parameter set 
     l_model_out <- decision_model(l_params_all = l_params_all)
     
+    
     ## Cohort trace 
     m_M     <- l_model_out$m_M 
     m_M_trt <- l_model_out$m_M_trt
@@ -98,9 +101,9 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     # per cycle
     # calculate expected costs by multiplying m_M with the cost vector for the different 
     # health states   
-    v_tc     <- m_M     %*% c(c_H, c_S, c_D)          # Standard of Care
+    v_tc     <- m_M     %*% c(c_H, c_S,         c_D)  # Standard of Care
     v_tc_trt <- m_M_trt %*% c(c_H, c_S + c_trt, c_D)  # Treatment
-    # calculate expected QALYs  by multiplying m_M with the utilities for the different 
+    # calculate expected QALYs by multiplying m_M with the utilities for the different 
     # health states   
     v_tu     <- m_M     %*% c(u_H, u_S, u_D)          # Standard of Care
     v_tu_trt <- m_M_trt %*% c(u_H, u_S, u_D)          # Treatment

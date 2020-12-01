@@ -4,12 +4,13 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Intro to Decision Modeling
-# menu:
-#   day2:
-#     weight: 3
+menu:
+  day2:
+    weight: 3
 ---
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html)
+[Download The DARTH Workgroup introduction slides](../../../Course_Modularization/Intro and general/DARTH Overview_ZIN.pdf)
 
+[Download Why decision modeling in `R` slides](../../../Course_Modularization/Intro and general/DecisionModelingIntroSlides_ZIN.pdf)

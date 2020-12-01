@@ -226,15 +226,33 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Strategy names}
-\NormalTok{v_names_str <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Base Case"}\NormalTok{)  }
-
-\CommentTok{# Number of strategies}
-\NormalTok{n_str <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_names_str)}
+\NormalTok{v_names_str <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Standard of Care"}\NormalTok{)  }
 
 \CommentTok{# Markov model parameters}
 \NormalTok{v_n  <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Sick"}\NormalTok{, }\StringTok{"Dead"}\NormalTok{)    }\CommentTok{# state names}
 \NormalTok{n_states  <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                }\CommentTok{# number of states}
 \NormalTok{n_t  <-}\StringTok{ }\DecValTok{60}                              \CommentTok{# number of cycles}
+
+\CommentTok{# Transition probabilities}
+\NormalTok{p_HD_min <-}\StringTok{ }\FloatTok{0.003}                       \CommentTok{# probability of dying when healthy at t = 0}
+\NormalTok{p_HD_max <-}\StringTok{ }\FloatTok{0.01}                        \CommentTok{# probability of dying when health  at t = n.t}
+\NormalTok{p_HS     <-}\StringTok{ }\FloatTok{0.05}                        \CommentTok{# probability of becoming sick when healthy, under standard of care}
+\NormalTok{p_SD     <-}\StringTok{ }\FloatTok{0.1}                         \CommentTok{# probability of dying when sick}
+
+\CommentTok{# Costs and utilities  }
+\NormalTok{c_H      <-}\StringTok{ }\DecValTok{400}                         \CommentTok{# cost of one cycle in healthy state}
+\NormalTok{c_S      <-}\StringTok{ }\DecValTok{1000}                        \CommentTok{# cost of one cycle in sick state}
+\NormalTok{c_D      <-}\StringTok{ }\DecValTok{0}                           \CommentTok{# cost of one cycle in dead state}
+\NormalTok{u_H      <-}\StringTok{ }\FloatTok{0.8}                         \CommentTok{# utility when healthy }
+\NormalTok{u_S      <-}\StringTok{ }\FloatTok{0.5}                         \CommentTok{# utility when sick}
+\NormalTok{u_D      <-}\StringTok{ }\DecValTok{0}                           \CommentTok{# utility when dead}
+\NormalTok{d_e      <-}\StringTok{ }\NormalTok{d_c <-}\StringTok{ }\FloatTok{0.03}                 \CommentTok{# equal discount of costs and QALYs by 3%}
+
+\NormalTok{p_HD <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(p_HD_min, p_HD_max, }\DataTypeTok{length.out =}\NormalTok{ n_t)  }\CommentTok{# probabilities of dying when healthy (age-dependent) - }
+                                                   \CommentTok{# this is now a sequence of numbers, officially v_p_HD}
+
+\NormalTok{n_str     <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_names_str)        }\CommentTok{# Number of strategies}
+\NormalTok{n_states  <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                }\CommentTok{# number of states}
 
 \CommentTok{# Tunnels}
 \NormalTok{n_tunnel_size <-}\StringTok{ }\NormalTok{n_t}
@@ -244,28 +262,14 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{v_n_tunnels  <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Healthy"}\NormalTok{, v_Sick_tunnels, }\StringTok{"Dead"}\NormalTok{)  }\CommentTok{# state names}
 \NormalTok{n_states_tunnels  <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n_tunnels)              }\CommentTok{# number of states}
 
-\NormalTok{p_HD <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.003}\NormalTok{, }\FloatTok{0.01}\NormalTok{, }\DataTypeTok{length.out =}\NormalTok{ n_t)  }\CommentTok{# probability of dying when sick (age-dependent) - this is a sequence - officially v_HD}
-\NormalTok{p_HS <-}\StringTok{ }\FloatTok{0.05}                                \CommentTok{# probability of becoming sick when healthy, conditioned on not dying}
-\NormalTok{p_SD <-}\StringTok{ }\FloatTok{0.1}                                 \CommentTok{# probability of dying when sick}
-
 \CommentTok{# Weibull parameters}
 \NormalTok{l <-}\StringTok{ }\FloatTok{0.08}
 \NormalTok{g <-}\StringTok{ }\FloatTok{1.1}
-\NormalTok{p_SD <-}\StringTok{ }\NormalTok{l}\OperatorTok{*}\NormalTok{g}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{n_tunnel_size)}\OperatorTok{^}\NormalTok{\{g}\DecValTok{-1}\NormalTok{\}         }\CommentTok{# probability of dying when sick (time-in-state dependent)}
+\NormalTok{p_SD <-}\StringTok{ }\NormalTok{l}\OperatorTok{*}\NormalTok{g}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{n_tunnel_size)}\OperatorTok{^}\NormalTok{\{g}\DecValTok{-1}\NormalTok{\}     }\CommentTok{# probability of dying when sick (time-in-state dependent)}
 
-\CommentTok{# Costs and utilities  }
-\NormalTok{c_H  <-}\StringTok{ }\DecValTok{400}                                 \CommentTok{# cost of one cycle in healthy state}
-\NormalTok{c_S  <-}\StringTok{ }\DecValTok{1000}                                \CommentTok{# cost of one cycle in sick state}
-\NormalTok{c_D  <-}\StringTok{ }\DecValTok{0}                                   \CommentTok{# cost of one cycle in dead state}
-\NormalTok{u_H  <-}\StringTok{ }\FloatTok{0.8}                                 \CommentTok{# utility when healthy }
-\NormalTok{u_S  <-}\StringTok{ }\FloatTok{0.5}                                 \CommentTok{# utility when sick}
-\NormalTok{u_D  <-}\StringTok{ }\DecValTok{0}                                   \CommentTok{# utility when dead}
-\NormalTok{d_e <-}\StringTok{ }\NormalTok{d_c <-}\StringTok{ }\FloatTok{0.03}                          \CommentTok{# equal discount of costs and QALYs by 3%}
-
-\CommentTok{# calculate discount weights for costs for each cycle based on discount rate d_c}
-\NormalTok{v_dwc <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
-\CommentTok{# calculate discount weights for effectiveness for each cycle based on discount rate d_e}
-\NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+\CommentTok{# Discount weights for costs and effects}
+\NormalTok{v_dwc <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+\NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -308,7 +312,7 @@ Fill in the transition probability array:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# from Healthy}
-\NormalTok{a_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Healthy"}\NormalTok{, ]  <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD)}\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HS)}
+\NormalTok{a_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Healthy"}\NormalTok{, ]  <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HS)}
 \NormalTok{a_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Sick_1Yr"}\NormalTok{, ] <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{p_HS}
 \NormalTok{a_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Dead"}\NormalTok{, ]     <-}\StringTok{ }\NormalTok{p_HD}
 
@@ -335,7 +339,7 @@ valid}\label{check-if-transition-array-and-probabilities-are-valid}}
 \CommentTok{# Check that transition probabilities are in [0, 1]}
 \KeywordTok{check_transition_probability}\NormalTok{(a_P, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
 \CommentTok{# Check that all rows sum to 1}
-\KeywordTok{check_sum_of_transition_array}\NormalTok{(a_P, }\DataTypeTok{n_states =}\NormalTok{ n_states_tunnels, }\DataTypeTok{n_cycle =}\NormalTok{ n_t, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{check_sum_of_transition_array}\NormalTok{(a_P, }\DataTypeTok{n_states =}\NormalTok{ n_states_tunnels, }\DataTypeTok{n_cycles =}\NormalTok{ n_t, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

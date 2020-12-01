@@ -7,6 +7,12 @@ weight: 15
 widget: custom
 ---
 
+**Zoom [link](https://us02web.zoom.us/j/83505714171?pwd=UFhWZ054bXBmMm5SM01HemZWbUI1Zz09) and meeting info for the workshop:**
+
+Meeting ID: 835 0571 4171
+
+Passcode: 284836
+
 Economic evaluation often rely on decision models. As decision modelling advances, more complex models are being designed to better represent the underlying clinical condition. In addition, decision models increasingly require new statistical and mathematical techniques, which cannot be easily done in software traditionally used for health economic evaluation. As a consequence, multiple software packages are used in one economic evaluation. This fragmentation of processes can be reduced by switching to the `R` software. 
 
 `R` is a freely available programming environment that can be used to implement, simulate and analysis the results of a health economic evaluation. `R` can facilitate model transparency, reproducibility and shareability, through a number of innovative ways (good coding practice, Markdown, Shiny). However, realizing this potential can be challenging given the lake of expertise and standardized use in the field of health decision analysis, and the famous "steep learning curve" of `R`. Over the past years, a number of groups around the globe have worked, in parallel, on the development of materials to conduct decision modelling in `R`, analyse the results of decision models, improve and harmonize the link between input parameters and decision models as well as standardize the use of `R` in decision analysis.

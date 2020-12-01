@@ -167,7 +167,6 @@ m_P  <- m_P_trt <- matrix(0,
                     dimnames = list(v_n, v_n))   # name the columns and rows of the transition 
                                                  # probability matrices
 m_P
-
 ```
 
 Fill in the transition probability matrix:
@@ -189,7 +188,11 @@ m_P["Dead", "Dead"] <- 1
 m_P_trt <- m_P
 m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
 m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
+```
 
+## 04.3 Check if transition array and probabilities are valid
+
+```{r}
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P, verbose = TRUE)
 check_transition_probability(m_P_trt, verbose = TRUE)

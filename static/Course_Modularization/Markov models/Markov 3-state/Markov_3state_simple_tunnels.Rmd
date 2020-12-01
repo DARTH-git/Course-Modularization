@@ -167,7 +167,7 @@ Fill in the transition probability array:
 
 ```{r}
 # from Healthy
-a_P["Healthy", "Healthy", ]  <- (1 - p_HD)* (1 - p_HS)
+a_P["Healthy", "Healthy", ]  <- (1 - p_HD) * (1 - p_HS)
 a_P["Healthy", "Sick_1Yr", ] <- (1 - p_HD) * p_HS
 a_P["Healthy", "Dead", ]     <- p_HD
 

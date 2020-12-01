@@ -20,18 +20,19 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                               ncol = n_states, 
                               dimnames = list(0:n_t, v_n))
     
-    m_M[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
+    m_M[1, ] <- m_M_trt[1, ] <- v_init         # initialize first cycle of Markov trace
     
-    # create the transition probability matrix
-    m_P  <- matrix(0,
-                   nrow = n_states, ncol = n_states,
-                   dimnames = list(v_n, v_n))   # name the columns and rows of the transition 
-                                                # probability matrix
+    # create the transition probability matrices
+    m_P  <- m_P_trt <- matrix(0,
+                              nrow = n_states, ncol = n_states,
+                              dimnames = list(v_n, v_n))  # name the columns and rows of the transition 
+    # probability matrices
+
 
     # fill in the transition probability matrix
     # from Healthy
-    m_P["Healthy", "Healthy"] <- 1 - p_HS - p_HD
-    m_P["Healthy", "Sick"]    <- p_HS
+    m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
+    m_P["Healthy", "Sick"]    <- (1 - p_HD) * p_HS
     m_P["Healthy", "Dead"]    <- p_HD
     
     # from Sick
@@ -43,8 +44,15 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     # Under treatment
     m_P_trt <- m_P
-    m_P_trt["Healthy", "Healthy"] <- 1 - p_HS_trt - p_HD
-    m_P_trt["Healthy", "Sick"]    <- p_HS_trt
+    m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
+    m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
+    
+    # Check that transition probabilities are in [0, 1]
+    check_transition_probability(m_P, verbose = TRUE)
+    check_transition_probability(m_P_trt, verbose = TRUE)
+    # Check that all rows sum to 1
+    check_sum_of_transition_array(m_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+    check_transition_probability(m_P_trt, verbose = TRUE)
 
     ############# PROCESS ###########################################
     

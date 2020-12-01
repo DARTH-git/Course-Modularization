@@ -150,12 +150,12 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 ```{r}
 # create the cohort trace
 m_M <- m_M_trt <-  matrix(NA, 
-                         nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
-                                           # understand Cycle 0)
-                         ncol = n_states, 
-                        dimnames = list(0:n_t, v_n))
+                          nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
+                                            # understand Cycle 0)
+                          ncol = n_states, 
+                          dimnames = list(0:n_t, v_n))
 
-m_M[1, ] <- m_M_trt[1, ] <- v_init         # initialize first cycle of Markov trace
+m_M[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
 ```
 
 ## 04.2 Transition probability matrix

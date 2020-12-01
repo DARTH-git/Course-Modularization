@@ -94,35 +94,37 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # Strategy names
 v_names_str <- c("Standard of Care", "Treatment")  
 
-# Number of strategies
-n_str <- length(v_names_str)
-
 # Markov model parameters
 v_n  <- c("Healthy", "Sick", "Dead")  # state names
-n_states  <- length(v_n)              # number of states
 n_t  <- 60                            # number of cycles
-v_init <- c(1, 0, 0)                  # initial cohort distribution
+
+v_init <- c("Healthy" = 1,
+            "Sick"    = 0,
+            "Dead"    = 0)            # initial cohort distribution (everyone allocated to the 
+                                      # "healthy" state)
 
 # Transition probabilities
-p_HD <- 0.02                          # probability of dying when healthy
-p_HS <- 0.05                          # probability of becoming sick when healthy, conditioned on not dying, under standard of care
-p_HS_trt <- 0.03                      # probability of becoming sick when healthy, conditioned on not dying, under treatment
-p_SD <- 0.1                           # probability of dying when sick
+p_HD      <- 0.02                     # probability of dying when healthy
+p_HS      <- 0.05                     # probability of becoming sick when healthy, under standard of care
+p_HS_trt  <- 0.03                     # probability of becoming sick when healthy, under treatment
+p_SD      <- 0.1                      # probability of dying when sick
 
 # Costs and utilities  
-c_H   <- 400                          # cost of one cycle in healthy state
-c_S   <- 1000                         # cost of one cycle in sick state
-c_D   <- 0                            # cost of one cycle in dead state
-c_trt <- 800                          # cost of treatment (per cycle)
-u_H   <- 0.8                          # utility when healthy 
-u_S   <- 0.5                          # utility when sick
-u_D   <- 0                            # utility when dead
-d_e   <- d_c <- 0.03                  # discount rate per cycle equal discount of costs and QALYs by 3%
+c_H       <- 400                      # cost of one cycle in healthy state
+c_S       <- 1000                     # cost of one cycle in sick state
+c_D       <- 0                        # cost of one cycle in dead state
+c_trt     <- 800                      # cost of treatment (per cycle)
+u_H       <- 0.8                      # utility when healthy 
+u_S       <- 0.5                      # utility when sick
+u_D       <- 0                        # utility when dead
+d_e       <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%
 
-# calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
-# calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe <- 1 / (1 + d_c) ^ (0:n_t) 
+n_str     <- length(v_names_str)      # Number of strategies
+n_states  <- length(v_n)              # number of states
+
+# Discount weights for costs and effects
+v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
+v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
 ```
 
 ## Draw the state-transition cohort model
@@ -217,9 +219,9 @@ matplot(m_M, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace - standard of care", lwd = 3)  # create a plot of the data
 legend("right", v_n, col = c("black", "red", "green"), 
-       lty = 1:3, bty = "n")                            # add a legend to the graph
+       lty = 1:3, bty = "n")                                # add a legend to the graph
 
-abline(v = which.max(m_M[, "Sick"]), col = "gray")      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
+abline(v = which.max(m_M[, "Sick"]), col = "gray")          # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 Treatment:
@@ -399,7 +401,7 @@ options(scipen = 999) # disabling scientific notation in R
 # max values of the parameters of interest 
 df_params_owsa <- data.frame(pars = c("c_trt", "c_S", "u_H"),
                              min  = c(300 , 500, 0.7),   # min parameter values
-                             max  = c(1200, 2000, 0.9)     # max parameter values
+                             max  = c(1200, 2000, 0.9)   # max parameter values
                              )
 
 owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,    # dataframe with parameters for OWSA

@@ -11,6 +11,8 @@ menu:
 
 ## Slides
 
-[Download The DARTH Workgroup introduction slides](../../../Course_Modularization/Intro and general/DARTH Overview_ZIN.pdf)
+We recommend opening these in new tabs and then download the PDFs.
 
-[Download Why decision modeling in `R` slides](../../../Course_Modularization/Intro and general/DecisionModelingIntroSlides_ZIN.pdf)
+[Download slides - The DARTH Workgroup introduction](../../../Course_Modularization/Intro and general/DARTH Overview_ZIN.pdf)
+
+[Download slides - Why decision modeling in `R`](../../../Course_Modularization/Intro and general/DecisionModelingIntroSlides_ZIN.pdf)

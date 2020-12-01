@@ -14,6 +14,8 @@ menu:
 
 ## Slides
 
+We recommend opening these in new tabs and then download the PDFs.
+
 [Download slides - Matrix Algebra](../../../Course_Modularization/Intro to R/matrix_algebra_slides.pptx)
 
 ## Matrix algebra handout

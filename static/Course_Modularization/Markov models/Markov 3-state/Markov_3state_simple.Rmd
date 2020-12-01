@@ -9,17 +9,11 @@ output:
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
 Fernando Alarid-Escudero, PhD (1) 
-
 Eva A. Enns, MS, PhD (2)	
-
 M.G. Myriam Hunink, MD, PhD (3,4)
-
 Hawre J. Jalal, MD, PhD (5) 
-
 Eline M. Krijkamp, MSc (3)	
-
 Petros Pechlivanoglou, PhD (6,7)
-
 Alan Yang, MSc (7)
 
 In collaboration of: 		
@@ -54,10 +48,7 @@ Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
+trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
 
 \newpage
 
@@ -144,7 +135,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 ```{r}
 # create the cohort trace
 m_M <- matrix(NA, 
-              nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
+              nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                 # understand Cycle 0)
               ncol = n_states, 
               dimnames = list(0:n_t, v_n))
@@ -198,11 +189,14 @@ for (t in 1:n_t){                   # loop through the number of cycles
 ## 06.1 Cohort trace
 
 ```{r}
+# create a plot of the data
 matplot(m_M, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace", lwd = 3)                 # create a plot of the data
-legend("right", v_n, col = c("black", "red", "green"), 
+        main = "Cohort Trace", 
+        lwd  = 3 , # line widths 
+        col = c(3, 1, 2))  # colors 
+legend("right", v_n, col = c("green", "black", "red"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
 abline(v = which.max(m_M[, "Sick"]), col = "gray") # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
@@ -235,6 +229,7 @@ v_le <- sum(v_os)           # summing probablity of OS over time  (i.e. life exp
 
 ```{r}
 v_prev <- m_M[, "Sick"]/v_os
+
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",
@@ -268,8 +263,8 @@ v_te_d <-  t(v_tu) %*% v_dwe
 ## 07.3 Store Results
 
 ```{r}
-df_ce <- data.frame("Total Discounted Cost" = v_tc_d, 
-                    "Life Expectancy" = v_le, 
+df_ce <- data.frame("Total Discounted Cost"  = v_tc_d, 
+                    "Life Expectancy"        = v_le, 
                     "Total Discounted QALYs" = v_te_d, 
                      check.names = F)
 df_ce

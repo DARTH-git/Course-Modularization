@@ -1,7 +1,7 @@
 ---
 title: Dec 2 Agenda
 author: ''
-date: "2020-11-30"
+date: "2020-12-01"
 slug: day2
 categories: []
 tags: []
@@ -31,7 +31,6 @@ Here is a tentative timetable for this day:
 | 3:30 - 4:30pm  |  Q & A about the Intro to R modules |
 | 4:30 - 5:00pm  |  Extra: demonstration of Practical example(s)   |
 
-- From 3:00 - 5:00pm we will mainly do a review of the pre-course assignments including: mathematics and statistics in `R`, data manipulation and data handling, plotting in `R`, statistical analysis in `R`, logical expressions and random sampling.
 
 Before Dec 7, please:
 

@@ -1,7 +1,7 @@
 ---
 title: Dec 2 Agenda
 author: ''
-date: "2020-12-01"
+date: "2020-12-02"
 slug: day2
 categories: []
 tags: []
@@ -38,11 +38,9 @@ Before Dec 7, please:
 
 - Revisit ["Introduction to R"](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "475190905") -->
-<!-- ``` -->
+<!--html_preserve-->{{% vimeo "486490337" %}}<!--/html_preserve-->
 
 
 

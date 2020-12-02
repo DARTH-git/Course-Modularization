@@ -38,11 +38,11 @@ Before Dec 7, please:
 
 - Revisit ["Introduction to R"](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day1/) and "Foundations for Decision Modelling in `R`" materials if needed
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "475190905") -->
-<!-- ``` -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "486490337")
+```
 
 
 

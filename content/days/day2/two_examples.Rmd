@@ -1,20 +1,24 @@
 ---
-title: Two practical examples
+title: Real-world Applications
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Two practical examples
-# menu:
-#   day2:
-#     weight: 4
+linktitle: Applications
+menu:
+  day2:
+    weight: 5
 ---
 
 ## COVID-19 Shiny App
 
-[COVID-19 Mod-Collab](https://www.covid-19-mc.ca/)
+[COVID-19 Mod-Collab](https://www.covid-19-mc.ca/interactive-models)
 
-## OpenTree
+## BresMed Shiny App
 
-[Download OpenTree](../../../rmds/cdc_2020_hse.zip)
+[BresMed intRface demonstration model](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
+
+<!-- ## OpenTree -->
+
+<!-- [Download OpenTree](../../../rmds/cdc_2020_hse.zip) -->
 
 

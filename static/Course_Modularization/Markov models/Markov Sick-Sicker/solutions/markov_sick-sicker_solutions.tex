@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={SA: Markov Sick-Sicker model in R},
+  pdftitle={Markov Sick-Sicker model in R},
   pdfauthor={The DARTH workgroup},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -100,7 +100,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
-\title{SA: Markov Sick-Sicker model in R}
+\title{Markov Sick-Sicker model in R}
 \author{The DARTH workgroup}
 \date{}
 
@@ -192,11 +192,11 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \begin{Highlighting}[]
 \ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(}\StringTok{'pacman'}\NormalTok{)) }\KeywordTok{install.packages}\NormalTok{(}\StringTok{'pacman'}\NormalTok{); }\KeywordTok{library}\NormalTok{(pacman) }\CommentTok{# use this package to conveniently install other packages}
 \CommentTok{# load (install if required) packages from CRAN}
-\KeywordTok{p_load}\NormalTok{(}\StringTok{"here"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"lazyeval"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"truncnorm"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"reshape2"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{)                                               }
+\KeywordTok{p_load}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"lazyeval"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"truncnorm"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"reshape2"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{, }\StringTok{"stringr"}\NormalTok{, }\StringTok{"diagram"}\NormalTok{)                                               }
 \CommentTok{# load (install if required) packages from GitHub}
 \CommentTok{# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version}
 \CommentTok{# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version}
-\KeywordTok{p_load_gh}\NormalTok{(}\StringTok{"DARTH-git/dampack"}\NormalTok{, }\StringTok{"DARTH-git/darthtools"}\NormalTok{) }
+\KeywordTok{p_load_gh}\NormalTok{(}\StringTok{"DARTH-git/dampack"}\NormalTok{, }\StringTok{"DARTH-git/darthtools"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -205,7 +205,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# No function needed}
+\CommentTok{# all functions are in the darthtools package}
 \end{Highlighting}
 \end{Shaded}
 
@@ -260,6 +260,33 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{create-a-state-transition-diagram-of-the-cohort-model}{%
+\subsection{Create a state-transition diagram of the cohort
+model}\label{create-a-state-transition-diagram-of-the-cohort-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m_P_diag <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DataTypeTok{nrow =}\NormalTok{ n_states, }\DataTypeTok{ncol =}\NormalTok{ n_states, }\DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n))}
+\NormalTok{m_P_diag[}\StringTok{"H"}\NormalTok{ , }\StringTok{"S1"}\NormalTok{] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"H"}\NormalTok{ , }\StringTok{"D"}\NormalTok{ ] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"H"}\NormalTok{ , }\StringTok{"H"}\NormalTok{ ] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S1"}\NormalTok{, }\StringTok{"H"}\NormalTok{ ] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S1"}\NormalTok{, }\StringTok{"S2"}\NormalTok{] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S1"}\NormalTok{, }\StringTok{"D"}\NormalTok{ ] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S1"}\NormalTok{, }\StringTok{"S1"}\NormalTok{] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S2"}\NormalTok{, }\StringTok{"D"}\NormalTok{ ] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"S2"}\NormalTok{, }\StringTok{"S2"}\NormalTok{] =}\StringTok{ ""} 
+\NormalTok{m_P_diag[}\StringTok{"D"}\NormalTok{, }\StringTok{"D"}\NormalTok{  ] =}\StringTok{ ""} 
+\NormalTok{layout.fig <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+
+\KeywordTok{plotmat}\NormalTok{(}\KeywordTok{t}\NormalTok{(m_P_diag), }\KeywordTok{t}\NormalTok{(layout.fig), }\DataTypeTok{self.cex =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{curve =} \DecValTok{0}\NormalTok{, }\DataTypeTok{arr.pos =} \FloatTok{0.7}\NormalTok{,  }
+        \DataTypeTok{latex =}\NormalTok{ T, }\DataTypeTok{arr.type =} \StringTok{"curved"}\NormalTok{, }\DataTypeTok{relsize =} \FloatTok{0.9}\NormalTok{, }\DataTypeTok{box.prop =} \FloatTok{0.8}\NormalTok{, }
+        \DataTypeTok{cex =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{box.cex =} \FloatTok{0.9}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-5-1.pdf}
+
 \hypertarget{define-and-initialize-matrices-and-vectors}{%
 \section{04 Define and initialize matrices and
 vectors}\label{define-and-initialize-matrices-and-vectors}}
@@ -269,16 +296,30 @@ vectors}\label{define-and-initialize-matrices-and-vectors}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# create the Markov trace matrix M capturing the proportion of the cohort }
-\CommentTok{# in each state at each cycle}
+\CommentTok{# create the markov trace matrix M capturing the proportion of the cohort in each state }
+\CommentTok{# at each cycle}
 \NormalTok{m_M_notrt <-}\StringTok{ }\NormalTok{m_M_trt <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }
-                               \DataTypeTok{nrow     =}\NormalTok{ n_t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{ncol =}\NormalTok{ n_s,}
+                               \DataTypeTok{nrow     =}\NormalTok{ n_t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{ncol =}\NormalTok{ n_states,}
                                \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"cycle"}\NormalTok{, }\DecValTok{0}\OperatorTok{:}\NormalTok{n_t, }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{), v_n))}
 
 \KeywordTok{head}\NormalTok{(m_M_notrt) }\CommentTok{# show first 6 rows of the matrix }
+\end{Highlighting}
+\end{Shaded}
 
+\begin{verbatim}
+##          H S1 S2  D
+## cycle 0 NA NA NA NA
+## cycle 1 NA NA NA NA
+## cycle 2 NA NA NA NA
+## cycle 3 NA NA NA NA
+## cycle 4 NA NA NA NA
+## cycle 5 NA NA NA NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{# The cohort starts as healthy}
-\NormalTok{m_M_notrt[}\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\NormalTok{m_M_trt[}\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{# initiate first cycle of cohort trace }
+\NormalTok{m_M_notrt[}\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\NormalTok{m_M_trt[}\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\NormalTok{v_init  }\CommentTok{# initiate first cycle of cohort trace }
 \end{Highlighting}
 \end{Shaded}
 
@@ -288,14 +329,22 @@ matrix}\label{transition-probability-matrix}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# create the transition probability matrix for NO treatment (notrt)}
+\CommentTok{# create the transition probability matrix for NO treatment}
 \NormalTok{m_P_notrt  <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}
-                     \DataTypeTok{nrow =}\NormalTok{ n_s,}
-                     \DataTypeTok{ncol =}\NormalTok{ n_s,}
+                     \DataTypeTok{nrow =}\NormalTok{ n_states,}
+                     \DataTypeTok{ncol =}\NormalTok{ n_states,}
                      \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n)) }\CommentTok{# name the columns and rows of the matrix}
 \NormalTok{m_P_notrt}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+##    H S1 S2 D
+## H  0  0  0 0
+## S1 0  0  0 0
+## S2 0  0  0 0
+## D  0  0  0 0
+\end{verbatim}
 
 Fill in the transition probability matrix:
 
@@ -332,15 +381,25 @@ Fill in the transition probability matrix:
 \begin{Shaded}
 \begin{Highlighting}[]
 \ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_t)\{     }\CommentTok{# loop through the number of cycles}
-\NormalTok{  m_M_notrt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_notrt[t, ]) }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_notrt   }\CommentTok{# estimate the Markov trace }
-                                                          \CommentTok{# for the next cycle (t + 1)}
-\NormalTok{  m_M_trt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ]   <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_trt[t, ])    }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_trt    }\CommentTok{# estimate the Markov trace }
-                                                          \CommentTok{# for the next cycle (t + 1)}
+\NormalTok{  m_M_notrt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_notrt[t, ]) }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_notrt  }\CommentTok{# estimate the Markov trace }
+                                                         \CommentTok{# for the next cycle (t + 1)}
+\NormalTok{  m_M_trt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ]    <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_trt[t, ])  }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_trt    }\CommentTok{# estimate the Markov trace }
+                                                         \CommentTok{# for the next cycle (t + 1)}
 \NormalTok{\} }\CommentTok{# close the loop}
 
 \KeywordTok{head}\NormalTok{(m_M_notrt)  }\CommentTok{# show the first 6 lines of the matrix}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+##                 H        S1         S2          D
+## cycle 0 1.0000000 0.0000000 0.00000000 0.00000000
+## cycle 1 0.8457500 0.1492500 0.00000000 0.00500000
+## cycle 2 0.7888043 0.1843020 0.01543735 0.01145632
+## cycle 3 0.7579069 0.1894418 0.03374551 0.01890581
+## cycle 4 0.7343069 0.1868303 0.05169021 0.02717260
+## cycle 5 0.7130610 0.1822918 0.06848747 0.03615973
+\end{verbatim}
 
 \hypertarget{compute-and-plot-epidemiological-outcomes}{%
 \section{06 Compute and Plot Epidemiological
@@ -357,9 +416,11 @@ Outcomes}\label{compute-and-plot-epidemiological-outcomes}}
         \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
         \DataTypeTok{main =} \StringTok{"Cohort Trace"}\NormalTok{)             }
 \CommentTok{# add a legend to the graph}
-\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, v_n, }\DataTypeTok{col =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_s, }\DataTypeTok{lty =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_s, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{) }
+\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, v_n, }\DataTypeTok{col =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_states, }\DataTypeTok{lty =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_states, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 \hypertarget{overall-survival-os}{%
 \subsection{06.2 Overall Survival (OS)}\label{overall-survival-os}}
@@ -382,12 +443,14 @@ Outcomes}\label{compute-and-plot-epidemiological-outcomes}}
 \end{Highlighting}
 \end{Shaded}
 
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-11-1.pdf}
+
 \hypertarget{life-expectancy-le}{%
 \subsection{06.2.1 Life Expectancy (LE)}\label{life-expectancy-le}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{v_le <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(v_os_notrt)     }\CommentTok{# summing probablity of OS over time  (i.e. life expectancy)}
+\NormalTok{v_le <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(v_os_notrt)  }\CommentTok{# summing probability of OS over time  (i.e. life expectancy)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -405,6 +468,8 @@ Outcomes}\label{compute-and-plot-epidemiological-outcomes}}
 \end{Highlighting}
 \end{Shaded}
 
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-13-1.pdf}
+
 \hypertarget{proportion-of-sick-in-s1-state}{%
 \subsection{06.4 Proportion of sick in S1
 state}\label{proportion-of-sick-in-s1-state}}
@@ -420,6 +485,8 @@ state}\label{proportion-of-sick-in-s1-state}}
 \end{Highlighting}
 \end{Shaded}
 
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-14-1.pdf}
+
 \hypertarget{compute-cost-effectiveness-outcomes}{%
 \section{07 Compute Cost-Effectiveness
 Outcomes}\label{compute-cost-effectiveness-outcomes}}
@@ -427,7 +494,7 @@ Outcomes}\label{compute-cost-effectiveness-outcomes}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Vectors with costs and utilities by treatment}
-\NormalTok{v_u_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_S1, u_S2, u_D)}
+\NormalTok{v_u_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_S1,  u_S2, u_D)}
 \NormalTok{v_u_trt     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_trt, u_S2, u_D)}
 
 \NormalTok{v_c_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S1, c_S2, c_D)}
@@ -468,10 +535,17 @@ QALYs}\label{discounted-mean-costs-and-qalys}}
 \CommentTok{# Dataframe with discounted costs and effectiveness}
 \NormalTok{df_ce       <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Strategy =}\NormalTok{ v_names_str,}
                           \DataTypeTok{Cost     =}\NormalTok{ v_tc_d,}
-                          \DataTypeTok{Effect   =}\NormalTok{ v_tu_d)}
+                          \DataTypeTok{Effect   =}\NormalTok{ v_tu_d}
+\NormalTok{                          )}
 \NormalTok{df_ce}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+##       Strategy      Cost   Effect
+## 1 No Treatment  75795.04 15.84802
+## 2    Treatment 141511.41 16.41446
+\end{verbatim}
 
 \hypertarget{compute-icers-of-the-markov-model}{%
 \subsection{07.3 Compute ICERs of the Markov
@@ -481,10 +555,17 @@ model}\label{compute-icers-of-the-markov-model}}
 \begin{Highlighting}[]
 \NormalTok{df_cea <-}\StringTok{ }\KeywordTok{calculate_icers}\NormalTok{(}\DataTypeTok{cost       =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Cost,}
                           \DataTypeTok{effect     =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Effect,}
-                          \DataTypeTok{strategies =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Strategy)}
+                          \DataTypeTok{strategies =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Strategy}
+\NormalTok{                          )}
 \NormalTok{df_cea}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+##       Strategy      Cost   Effect Inc_Cost Inc_Effect     ICER Status
+## 1 No Treatment  75795.04 15.84802       NA         NA       NA     ND
+## 2    Treatment 141511.41 16.41446 65716.37  0.5664367 116017.2     ND
+\end{verbatim}
 
 \hypertarget{plot-frontier-of-the-markov-model}{%
 \subsection{07.4 Plot frontier of the Markov
@@ -492,235 +573,10 @@ model}\label{plot-frontier-of-the-markov-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(df_cea, }\DataTypeTok{effect_units =} \StringTok{"Quality of Life"}\NormalTok{, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\FloatTok{15.6}\NormalTok{, }\FloatTok{16.6}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(df_cea, }\DataTypeTok{effect_units =} \StringTok{"QALYs"}\NormalTok{, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\FloatTok{15.6}\NormalTok{, }\FloatTok{16.6}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{deterministic-sensitivity-analysis}{%
-\section{08 Deterministic Sensitivity
-Analysis}\label{deterministic-sensitivity-analysis}}
-
-\hypertarget{list-of-input-parameters}{%
-\subsection{08.1 List of input
-parameters}\label{list-of-input-parameters}}
-
-Create list \texttt{l\_params\_all} with all input probabilities, cost
-and utilities.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{l_params_all <-}\StringTok{ }\KeywordTok{as.list}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{p_HD    =} \FloatTok{0.005}\NormalTok{,  }\CommentTok{# probability to die when healthy}
-  \DataTypeTok{p_HS1   =} \FloatTok{0.15}\NormalTok{,   }\CommentTok{# probability to become sick when healthy}
-  \DataTypeTok{p_S1H   =} \FloatTok{0.5}\NormalTok{,    }\CommentTok{# probability to become healthy when sick}
-  \DataTypeTok{p_S1S2  =} \FloatTok{0.105}\NormalTok{,  }\CommentTok{# probability to become sicker when sick}
-  \DataTypeTok{hr_S1   =} \DecValTok{3}\NormalTok{,      }\CommentTok{# hazard ratio of death in sick vs healthy}
-  \DataTypeTok{hr_S2   =} \DecValTok{10}\NormalTok{,     }\CommentTok{# hazard ratio of death in sicker vs healthy}
-  \DataTypeTok{c_H     =} \DecValTok{2000}\NormalTok{,   }\CommentTok{# cost of remaining one cycle in the healthy state}
-  \DataTypeTok{c_S1    =} \DecValTok{4000}\NormalTok{,   }\CommentTok{# cost of remaining one cycle in the sick state}
-  \DataTypeTok{c_S2    =} \DecValTok{15000}\NormalTok{,  }\CommentTok{# cost of remaining one cycle in the sicker state}
-  \DataTypeTok{c_trt   =} \DecValTok{12000}\NormalTok{,  }\CommentTok{# cost of treatment(per cycle)}
-  \DataTypeTok{c_D     =} \DecValTok{0}\NormalTok{,      }\CommentTok{# cost of being in the death state}
-  \DataTypeTok{u_H     =} \DecValTok{1}\NormalTok{,      }\CommentTok{# utility when healthy}
-  \DataTypeTok{u_S1    =} \FloatTok{0.75}\NormalTok{,   }\CommentTok{# utility when sick}
-  \DataTypeTok{u_S2    =} \FloatTok{0.5}\NormalTok{,    }\CommentTok{# utility when sicker}
-  \DataTypeTok{u_D     =} \DecValTok{0}\NormalTok{,      }\CommentTok{# utility when dead}
-  \DataTypeTok{u_trt   =} \FloatTok{0.95}\NormalTok{,   }\CommentTok{# utility when treated}
-  \DataTypeTok{d_e     =} \FloatTok{0.03}\NormalTok{,   }\CommentTok{# discount factor for effectiveness}
-  \DataTypeTok{d_c     =} \FloatTok{0.03}    \CommentTok{# discount factor for costs}
-\NormalTok{))}
-
-\CommentTok{# store the parameter names into a vector}
-\NormalTok{v_names_params <-}\StringTok{ }\KeywordTok{names}\NormalTok{(l_params_all)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{load-sick-sicker-markov-model-function}{%
-\subsection{08.2 Load Sick-Sicker Markov model
-function}\label{load-sick-sicker-markov-model-function}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"Functions_markov_sick-sicker.R"}\NormalTok{)}
-\CommentTok{# Test function}
-\KeywordTok{calculate_ce_out}\NormalTok{(l_params_all)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{one-way-sensitivity-analysis-owsa}{%
-\subsection{08.3 One-way sensitivity analysis
-(OWSA)}\label{one-way-sensitivity-analysis-owsa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{plot-owsa}{%
-\subsection{08.3.1 Plot OWSA}\label{plot-owsa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{optimal-strategy-with-owsa}{%
-\subsection{08.3.2 Optimal strategy with
-OWSA}\label{optimal-strategy-with-owsa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{tornado-plot}{%
-\subsection{08.3.3 Tornado plot}\label{tornado-plot}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{two-way-sensitivity-analysis-twsa}{%
-\subsection{08.4 Two-way sensitivity analysis
-(TWSA)}\label{two-way-sensitivity-analysis-twsa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{plot-twsa}{%
-\subsection{08.4.1 Plot TWSA}\label{plot-twsa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{probabilistic-sensitivity-analysis-psa}{%
-\section{09 Probabilistic Sensitivity Analysis
-(PSA)}\label{probabilistic-sensitivity-analysis-psa}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Function to generate PSA input dataset}
-\NormalTok{gen_psa <-}\StringTok{ }
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{conduct-probabilistic-sensitivity-analysis}{%
-\subsection{09.1 Conduct probabilistic sensitivity
-analysis}\label{conduct-probabilistic-sensitivity-analysis}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{create-psa-object-for-dampack}{%
-\subsection{09.2 Create PSA object for
-dampack}\label{create-psa-object-for-dampack}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{save-psa-objects}{%
-\subsection{09.2.1 Save PSA objects}\label{save-psa-objects}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{create-probabilistic-analysis-graphs}{%
-\subsection{09.3 Create probabilistic analysis
-graphs}\label{create-probabilistic-analysis-graphs}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-Vector with willingness-to-pay (WTP) thresholds.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{cost-effectiveness-scatter-plot}{%
-\subsection{09.3.1 Cost-Effectiveness Scatter
-plot}\label{cost-effectiveness-scatter-plot}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{conduct-cea-with-probabilistic-output}{%
-\subsection{09.4 Conduct CEA with probabilistic
-output}\label{conduct-cea-with-probabilistic-output}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{plot-cost-effectiveness-frontier}{%
-\subsection{09.4.1 Plot cost-effectiveness
-frontier}\label{plot-cost-effectiveness-frontier}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}{%
-\subsection{09.4.2 Cost-effectiveness acceptability curves (CEACs) and
-frontier
-(CEAF)}\label{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{expected-loss-curves-elcs}{%
-\subsection{09.4.3 Expected Loss Curves
-(ELCs)}\label{expected-loss-curves-elcs}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{expected-value-of-perfect-information-evpi}{%
-\subsection{09.4.4 Expected value of perfect information
-(EVPI)}\label{expected-value-of-perfect-information-evpi}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# your turn}
-\end{Highlighting}
-\end{Shaded}
+\includegraphics{markov_sick-sicker_solutions_files/figure-latex/unnamed-chunk-19-1.pdf}
 
 \end{document}

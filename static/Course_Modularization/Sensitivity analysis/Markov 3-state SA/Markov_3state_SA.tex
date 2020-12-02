@@ -168,14 +168,14 @@ Please cite our publications when using this code:
 \item
   Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM,
   Jalal H. A Multidimensional Array Representation of State-Transition
-  Model Dynamics. Med Decis Making. Online First
-  \url{https://doi.org/10.1177/0272989X19893973}
+  Model Dynamics. Med Decis Making. 2020 Feb;40(2):242-248.
+  \url{https://journals.sagepub.com/doi/10.1177/0272989X19893973}
 \end{itemize}
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
 INSTITUTIONS. All rights reserved in Canada, the United States and
 worldwide. Copyright, trademarks, trade names and any and all associated
-intellectual property are exclusively owned by THE HOSPITAL FOR Sick
+intellectual property are exclusively owned by THE HOSPITAL FOR SICK
 CHILDREN and the collaborating institutions. These materials may be
 used, reproduced, modified, distributed and adapted with proper
 attribution.
@@ -250,8 +250,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{n_states  <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)              }\CommentTok{# number of states}
 
 \CommentTok{# Discount weights for costs and effects}
-\NormalTok{v_dwc <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
-\NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+\NormalTok{v_dwc     <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+\NormalTok{v_dwe     <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -286,7 +286,7 @@ vectors}\label{define-and-initialize-matrices-and-vectors}}
 \begin{Highlighting}[]
 \CommentTok{# create the cohort trace}
 \NormalTok{m_M <-}\StringTok{ }\NormalTok{m_M_trt <-}\StringTok{  }\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }
-                         \DataTypeTok{nrow =}\NormalTok{ n_t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{ ,  }\CommentTok{# create Markov trace (n.t + 1 because R doesn't }
+                         \DataTypeTok{nrow =}\NormalTok{ n_t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{ ,  }\CommentTok{# create Markov trace (n_t + 1 because R doesn't }
                                            \CommentTok{# understand Cycle 0)}
                          \DataTypeTok{ncol =}\NormalTok{ n_states, }
                         \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t, v_n))}
@@ -305,8 +305,9 @@ matrix}\label{transition-probability-matrix}}
 \NormalTok{m_P  <-}\StringTok{ }\NormalTok{m_P_trt <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}
                     \DataTypeTok{nrow =}\NormalTok{ n_states, }\DataTypeTok{ncol =}\NormalTok{ n_states,}
                     \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n))   }\CommentTok{# name the columns and rows of the transition }
-                                                \CommentTok{# probability matrices}
-\NormalTok{m_P}
+\CommentTok{# print the probability matrices }
+\NormalTok{m_P      }\CommentTok{# for standard of care}
+\NormalTok{m_P_trt  }\CommentTok{# treatment}
 \end{Highlighting}
 \end{Shaded}
 
@@ -314,6 +315,7 @@ Fill in the transition probability matrix:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{# For Standard of Care }
 \CommentTok{# from Healthy}
 \NormalTok{m_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Healthy"}\NormalTok{] <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HS)}
 \NormalTok{m_P[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Sick"}\NormalTok{]    <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{p_HS}
@@ -327,16 +329,25 @@ Fill in the transition probability matrix:
 \NormalTok{m_P[}\StringTok{"Dead"}\NormalTok{, }\StringTok{"Dead"}\NormalTok{] <-}\StringTok{ }\DecValTok{1}
 
 \CommentTok{# Under treatment}
-\NormalTok{m_P_trt <-}\StringTok{ }\NormalTok{m_P}
+\NormalTok{m_P_trt <-}\StringTok{ }\NormalTok{m_P }\CommentTok{# Assign the matrix for standard of care to the transition probability matrix for treatment}
+\CommentTok{# replace values that are different under treatment }
 \NormalTok{m_P_trt[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Healthy"}\NormalTok{] <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HS_trt)}
 \NormalTok{m_P_trt[}\StringTok{"Healthy"}\NormalTok{, }\StringTok{"Sick"}\NormalTok{]    <-}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_HD) }\OperatorTok{*}\StringTok{ }\NormalTok{p_HS_trt}
+\end{Highlighting}
+\end{Shaded}
 
+\hypertarget{check-if-transition-array-and-probabilities-are-valid}{%
+\subsection{04.3 Check if transition array and probabilities are
+valid}\label{check-if-transition-array-and-probabilities-are-valid}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{# Check that transition probabilities are in [0, 1]}
 \KeywordTok{check_transition_probability}\NormalTok{(m_P, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
 \KeywordTok{check_transition_probability}\NormalTok{(m_P_trt, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
 \CommentTok{# Check that all rows sum to 1}
 \KeywordTok{check_sum_of_transition_array}\NormalTok{(m_P, }\DataTypeTok{n_states =}\NormalTok{ n_states, }\DataTypeTok{n_cycles =}\NormalTok{ n_t, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{check_transition_probability}\NormalTok{(m_P_trt, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{check_sum_of_transition_array}\NormalTok{(m_P_trt, }\DataTypeTok{n_states =}\NormalTok{ n_states, }\DataTypeTok{n_cycles =}\NormalTok{ n_t, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -366,7 +377,7 @@ Standard of Care:
 \KeywordTok{matplot}\NormalTok{(m_M, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }
         \DataTypeTok{ylab =} \StringTok{"Probability of state occupancy"}\NormalTok{,}
         \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-        \DataTypeTok{main =} \StringTok{"Cohort Trace - standard of care"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{3}\NormalTok{)  }\CommentTok{# create a plot of the data}
+        \DataTypeTok{main =} \StringTok{"Cohort Trace - Standard of care"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{3}\NormalTok{)  }\CommentTok{# create a plot of the data}
 \KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, v_n, }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{), }
        \DataTypeTok{lty =} \DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{)                                }\CommentTok{# add a legend to the graph}
 
@@ -381,7 +392,7 @@ Treatment:
 \KeywordTok{matplot}\NormalTok{(m_M_trt, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }
         \DataTypeTok{ylab =} \StringTok{"Probability of state occupancy"}\NormalTok{,}
         \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-        \DataTypeTok{main =} \StringTok{"Cohort Trace - treatment"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{3}\NormalTok{)     }\CommentTok{# create a plot of the data}
+        \DataTypeTok{main =} \StringTok{"Cohort Trace - Treatment"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{3}\NormalTok{)     }\CommentTok{# create a plot of the data}
 \KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, v_n, }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{), }
        \DataTypeTok{lty =} \DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{)                            }\CommentTok{# add a legend to the graph}
 
@@ -403,7 +414,7 @@ Standard of Care:
      \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),}
      \DataTypeTok{ylab =} \StringTok{"Survival probability"}\NormalTok{,}
      \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-     \DataTypeTok{main =} \StringTok{"Overall Survival"}\NormalTok{)       }\CommentTok{# create a simple plot showing the OS}
+     \DataTypeTok{main =} \StringTok{"Overall Survival - Standard of Care"}\NormalTok{)       }\CommentTok{# create a simple plot showing the OS}
 
 \CommentTok{# add grid }
 \KeywordTok{grid}\NormalTok{(}\DataTypeTok{nx =}\NormalTok{ n_t, }\DataTypeTok{ny =} \DecValTok{10}\NormalTok{, }\DataTypeTok{col =} \StringTok{"lightgray"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dotted"}\NormalTok{, }\DataTypeTok{lwd =} \KeywordTok{par}\NormalTok{(}\StringTok{"lwd"}\NormalTok{), }
@@ -422,7 +433,7 @@ Treatment:
      \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),}
      \DataTypeTok{ylab =} \StringTok{"Survival probability"}\NormalTok{,}
      \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-     \DataTypeTok{main =} \StringTok{"Overall Survival"}\NormalTok{)       }\CommentTok{# create a simple plot showing the OS}
+     \DataTypeTok{main =} \StringTok{"Overall Survival - Treatment"}\NormalTok{)       }\CommentTok{# create a simple plot showing the OS}
 
 \CommentTok{# add grid }
 \KeywordTok{grid}\NormalTok{(}\DataTypeTok{nx =}\NormalTok{ n_t, }\DataTypeTok{ny =} \DecValTok{10}\NormalTok{, }\DataTypeTok{col =} \StringTok{"lightgray"}\NormalTok{, }\DataTypeTok{lty =} \StringTok{"dotted"}\NormalTok{, }\DataTypeTok{lwd =} \KeywordTok{par}\NormalTok{(}\StringTok{"lwd"}\NormalTok{), }
@@ -452,7 +463,7 @@ Standard of Care:
      \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),}
      \DataTypeTok{ylab =} \StringTok{"Prevalence"}\NormalTok{,}
      \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-     \DataTypeTok{main =} \StringTok{"Disease prevalence"}\NormalTok{)}
+     \DataTypeTok{main =} \StringTok{"Disease prevalence - Standard of Care"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -465,7 +476,7 @@ Treatment:
      \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),}
      \DataTypeTok{ylab =} \StringTok{"Prevalence"}\NormalTok{,}
      \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-     \DataTypeTok{main =} \StringTok{"Disease prevalence"}\NormalTok{)}
+     \DataTypeTok{main =} \StringTok{"Disease prevalence - Treatment"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -481,7 +492,7 @@ Outcomes}\label{compute-cost-effectiveness-outcomes}}
 \CommentTok{# per cycle}
 \CommentTok{# calculate expected costs by multiplying m_M with the cost vector for the different }
 \CommentTok{# health states   }
-\NormalTok{v_tc     <-}\StringTok{ }\NormalTok{m_M     }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S, c_D)          }\CommentTok{# Standard of Care}
+\NormalTok{v_tc     <-}\StringTok{ }\NormalTok{m_M     }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S,         c_D)  }\CommentTok{# Standard of Care}
 \NormalTok{v_tc_trt <-}\StringTok{ }\NormalTok{m_M_trt }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S }\OperatorTok{+}\StringTok{ }\NormalTok{c_trt, c_D)  }\CommentTok{# Treatment}
 \CommentTok{# calculate expected QALYs  by multiplying m_M with the utilities for the different }
 \CommentTok{# health states   }
@@ -510,8 +521,7 @@ QALYs}\label{discounted-mean-costs-and-qalys}}
 \CommentTok{# Dataframe with discounted costs and effectiveness}
 \NormalTok{df_ce       <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Strategy =}\NormalTok{ v_names_str,}
                           \DataTypeTok{Cost     =}\NormalTok{ v_tc_d,}
-                          \DataTypeTok{Effect   =}\NormalTok{ v_tu_d}
-\NormalTok{                          )}
+                          \DataTypeTok{Effect   =}\NormalTok{ v_tu_d)}
 \NormalTok{df_ce}
 \end{Highlighting}
 \end{Shaded}
@@ -537,6 +547,8 @@ model}\label{plot-frontier-of-the-markov-model}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(df_cea, }\DataTypeTok{effect_units =} \StringTok{"QALYs"}\NormalTok{, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{12}\NormalTok{))}
+
+\CommentTok{# note: you need to adjust the xlim values to values that are covering the range of effect values in your analysis}
 \end{Highlighting}
 \end{Shaded}
 
@@ -581,8 +593,10 @@ function}\label{load-sick-sicker-markov-model-function}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{source}\NormalTok{(}\StringTok{"Functions_markov_3state.R"}\NormalTok{)}
-\CommentTok{# Test function}
-\KeywordTok{calculate_ce_out}\NormalTok{(l_params_all)}
+\CommentTok{# Test if the functions works}
+\KeywordTok{calculate_ce_out}\NormalTok{(l_params_all) }
+
+\CommentTok{# }\AlertTok{NOTE}\CommentTok{: the function calculate_ce_out makes use of the functions decision_model. }
 \end{Highlighting}
 \end{Shaded}
 
@@ -607,6 +621,9 @@ function}\label{load-sick-sicker-markov-model-function}}
                           \DataTypeTok{outcomes         =} \KeywordTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),          }\CommentTok{# output to do the OWSA on}
                           \DataTypeTok{strategies       =}\NormalTok{ v_names_str,       }\CommentTok{# names of the strategies}
                           \DataTypeTok{n_wtp            =} \DecValTok{2000}\NormalTok{)              }\CommentTok{# extra argument to pass to FUN}
+
+\CommentTok{#Note: the function calculate_ce_out creates the outputs Cost, Effect and NMB. Those can be selected for the outcome }
+\CommentTok{# You and also run the function for all 3 outcomes useind c("Cost", "Effect", "NMB"). Each outcome is stored in a list and can be indexed using the $ sign. }
 \end{Highlighting}
 \end{Shaded}
 
@@ -625,7 +642,7 @@ function}\label{load-sick-sicker-markov-model-function}}
 \subsection{08.3.2 Optimal strategy with
 OWSA}\label{optimal-strategy-with-owsa}}
 
-Only useful if we have more than one strategies to compare.
+Only useful if we have more than one strategie to compare.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -659,7 +676,7 @@ Only useful if we have more than one strategies to compare.
                          \DataTypeTok{params_basecase =}\NormalTok{ l_params_all,      }\CommentTok{# list with all parameters}
                          \DataTypeTok{nsamp           =} \DecValTok{40}\NormalTok{,                }\CommentTok{# number of parameter values}
                          \DataTypeTok{FUN             =}\NormalTok{ calculate_ce_out,  }\CommentTok{# function to compute outputs}
-                         \DataTypeTok{outcomes        =} \StringTok{"NMB"}\NormalTok{,             }\CommentTok{# output to do the TWSA on}
+                         \DataTypeTok{outcomes        =} \KeywordTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),             }\CommentTok{# output to do the TWSA on}
                          \DataTypeTok{strategies      =}\NormalTok{ v_names_str,       }\CommentTok{# names of the strategies}
                          \DataTypeTok{n_wtp           =} \DecValTok{2000}\NormalTok{)              }\CommentTok{# extra argument to pass to FUN}
 \end{Highlighting}
@@ -861,8 +878,8 @@ frontier
 \subsection{09.4.3 Expected Loss Curves
 (ELCs)}\label{expected-loss-curves-elcs}}
 
-The expected loss is the the quantification of the foregone benefits
-when choosing a suboptimal strategy given current evidence.
+The expected loss is the quantification of the foregone benefits when
+choosing a suboptimal strategy given current evidence.
 
 \begin{Shaded}
 \begin{Highlighting}[]

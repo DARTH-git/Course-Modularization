@@ -9,7 +9,7 @@ type: docs
 linktitle: Intro to R - Q & A
 menu:
   day2:
-    weight: 5
+    weight: 4
 ---
 
 ## Slides

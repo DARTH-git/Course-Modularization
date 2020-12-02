@@ -28,7 +28,5 @@ blogdown::shortcode("vimeo", "473442290")
 
 ## Instructor solutions
 
-Solutions will be posted later. 
-
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_template.Rmd) -->
+[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_solutions.Rmd)
 

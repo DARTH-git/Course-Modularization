@@ -30,5 +30,5 @@ blogdown::shortcode("vimeo", "473054054")
 
 Solutions will be posted later.
 
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd) -->
+[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd)
 

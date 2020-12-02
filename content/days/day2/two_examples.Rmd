@@ -6,7 +6,7 @@ type: docs
 linktitle: Applications
 menu:
   day2:
-    weight: 5
+    weight: 6
 ---
 
 ## COVID-19 Shiny App

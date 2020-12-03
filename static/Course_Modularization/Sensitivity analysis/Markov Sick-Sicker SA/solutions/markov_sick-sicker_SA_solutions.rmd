@@ -430,7 +430,7 @@ owsa_tornado(owsa = owsa_nmb)
 # dataframe containing all parameters, their basecase values, and the min and 
 # max values of the parameters of interest
 df_params_twsa <- data.frame(pars = c("c_trt", "u_trt"),
-                             min  = c(6000, 0.80),  # min parameter values
+                             min  = c(6000,  0.80),  # min parameter values
                              max  = c(18000, 0.98)  # max parameter values
                              )
 

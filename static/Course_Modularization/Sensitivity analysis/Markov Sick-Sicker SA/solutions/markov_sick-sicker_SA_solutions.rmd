@@ -48,7 +48,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
+Med Decis Making. Feb;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -98,7 +98,10 @@ max_age  <- 55                       # maximum age of follow up
 n_t      <- max_age - age            # time horizon, number of cycles
 v_n      <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                      # Sicker (S2), Dead (D)
-v_init   <- c(1, 0, 0, 0)            # initial cohort distribution
+v_init <- c("H"  = 1,
+            "S1" = 0,
+            "S2" = 0,
+            "D"  = 0)               # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities (per cycle)
 p_HD     <- 0.005                    # probability to die when healthy
@@ -117,7 +120,7 @@ p_S2D    <- 1 - exp(-r_S2D)          # probability to die in sicker
 c_H      <- 2000                     # cost of remaining one cycle in the healthy state
 c_S1     <- 4000                     # cost of remaining one cycle in the sick state
 c_S2     <- 15000                    # cost of remaining one cycle in the sicker state
-c_trt    <- 12000                    # cost of treatment(per cycle)
+c_trt    <- 12000                    # cost of treatment (per cycle)
 c_D      <- 0                        # cost of being in the death state
 u_H      <- 1                        # utility when healthy
 u_S1     <- 0.75                     # utility when sick
@@ -175,8 +178,8 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort
 ## 04.2 Transition probability matrix
 
 ```{r}
-# create the transition probability matrix for NO treatment
-m_P_notrt  <- matrix(0,
+# create the transition probability matrix for both treatment arms
+m_P_notrt <- m_P_trt <- matrix(0,
                      nrow = n_states,
                      ncol = n_states,
                      dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
@@ -206,7 +209,7 @@ check_transition_probability(m_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
 check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
 
-# create transition probability matrix for treatment same as no treatment
+# Overwrite the transition probability matrix for treatment with the no treatment values as they are the same here
 m_P_trt <- m_P_notrt
 ```
 
@@ -290,7 +293,7 @@ plot(0:n_t, v_prop_S1,
 v_u_notrt   <- c(u_H, u_S1,  u_S2, u_D)
 v_u_trt     <- c(u_H, u_trt, u_S2, u_D)
 
-v_c_notrt   <- c(c_H, c_S1, c_S2, c_D)
+v_c_notrt   <- c(c_H, c_S1,         c_S2,         c_D)
 v_c_trt     <- c(c_H, c_S1 + c_trt, c_S2 + c_trt, c_D)
 ```
 
@@ -435,7 +438,7 @@ twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with p
                          params_basecase = l_params_all,      # list with all parameters
                          nsamp           = 40,                # number of parameter values
                          FUN             = calculate_ce_out,  # function to compute outputs
-                         outcomes        = "NMB",          # output to do the TWSA on
+                         outcomes        = c("NMB"),          # output to do the TWSA on
                          strategies      = v_names_str,       # names of the strategies
                          n_wtp           = 120000)            # extra argument to pass to FUN
 ```

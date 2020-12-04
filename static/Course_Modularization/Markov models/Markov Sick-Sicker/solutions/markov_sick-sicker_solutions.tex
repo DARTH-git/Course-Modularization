@@ -163,14 +163,14 @@ Please cite our publications when using this code:
 \item
   Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM,
   Jalal H. A Multidimensional Array Representation of State-Transition
-  Model Dynamics. Med Decis Making. Online First
+  Model Dynamics. Med Decis Making. Feb;40(2):242-248.
   \url{https://doi.org/10.1177/0272989X19893973}
 \end{itemize}
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
 INSTITUTIONS. All rights reserved in Canada, the United States and
 worldwide. Copyright, trademarks, trade names and any and all associated
-intellectual property are exclusively owned by THE HOSPITAL FOR Sick
+intellectual property are exclusively owned by THE HOSPITAL FOR SICK
 CHILDREN and the collaborating institutions. These materials may be
 used, reproduced, modified, distributed and adapted with proper
 attribution.
@@ -221,9 +221,12 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{age      <-}\StringTok{ }\DecValTok{25}                       \CommentTok{# age at baseline}
 \NormalTok{max_age  <-}\StringTok{ }\DecValTok{55}                       \CommentTok{# maximum age of follow up}
 \NormalTok{n_t      <-}\StringTok{ }\NormalTok{max_age }\OperatorTok{-}\StringTok{ }\NormalTok{age            }\CommentTok{# time horizon, number of cycles}
-\NormalTok{v_n      <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{, }\StringTok{"S1"}\NormalTok{, }\StringTok{"S2"}\NormalTok{, }\StringTok{"D"}\NormalTok{)  }\CommentTok{# the 4 states of the model: Healthy (H), Sick (S1), }
-                                     \CommentTok{# Sicker (S2), Dead (D)}
-\NormalTok{v_init   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)            }\CommentTok{# initial cohort distribution}
+\NormalTok{v_n      <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{, }\StringTok{"S1"}\NormalTok{, }\StringTok{"S2"}\NormalTok{, }\StringTok{"D"}\NormalTok{)  }\CommentTok{# the 4 states of the model: Healthy (H), }
+                                     \CommentTok{# Sick (S1), Sicker (S2), Dead (D)}
+\NormalTok{v_init <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{  =}\StringTok{ }\DecValTok{1}\NormalTok{,}
+            \StringTok{"S1"}\NormalTok{ =}\StringTok{ }\DecValTok{0}\NormalTok{,                }\CommentTok{# initial cohort distribution (everyone}
+            \StringTok{"S2"}\NormalTok{ =}\StringTok{ }\DecValTok{0}\NormalTok{,                }\CommentTok{# allocated to the "healthy" state)}
+            \StringTok{"D"}\NormalTok{  =}\StringTok{ }\DecValTok{0}\NormalTok{)                }
 
 \CommentTok{# Transition probabilities (per cycle)}
 \NormalTok{p_HD     <-}\StringTok{ }\FloatTok{0.005}                    \CommentTok{# probability to die when healthy}
@@ -242,7 +245,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{c_H      <-}\StringTok{ }\DecValTok{2000}                     \CommentTok{# cost of remaining one cycle in the healthy state}
 \NormalTok{c_S1     <-}\StringTok{ }\DecValTok{4000}                     \CommentTok{# cost of remaining one cycle in the sick state}
 \NormalTok{c_S2     <-}\StringTok{ }\DecValTok{15000}                    \CommentTok{# cost of remaining one cycle in the sicker state}
-\NormalTok{c_trt    <-}\StringTok{ }\DecValTok{12000}                    \CommentTok{# cost of treatment(per cycle)}
+\NormalTok{c_trt    <-}\StringTok{ }\DecValTok{12000}                    \CommentTok{# cost of treatment (per cycle)}
 \NormalTok{c_D      <-}\StringTok{ }\DecValTok{0}                        \CommentTok{# cost of being in the death state}
 \NormalTok{u_H      <-}\StringTok{ }\DecValTok{1}                        \CommentTok{# utility when healthy}
 \NormalTok{u_S1     <-}\StringTok{ }\FloatTok{0.75}                     \CommentTok{# utility when sick}
@@ -330,11 +333,25 @@ matrix}\label{transition-probability-matrix}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# create the transition probability matrix for NO treatment}
-\NormalTok{m_P_notrt  <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}
-                     \DataTypeTok{nrow =}\NormalTok{ n_states,}
-                     \DataTypeTok{ncol =}\NormalTok{ n_states,}
-                     \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n)) }\CommentTok{# name the columns and rows of the matrix}
+\NormalTok{m_P_notrt <-}\StringTok{ }\NormalTok{m_P_trt  <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}
+                                \DataTypeTok{nrow =}\NormalTok{ n_states,}
+                                \DataTypeTok{ncol =}\NormalTok{ n_states,}
+                                \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n)) }\CommentTok{# name the columns and rows of the matrix}
 \NormalTok{m_P_notrt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    H S1 S2 D
+## H  0  0  0 0
+## S1 0  0  0 0
+## S2 0  0  0 0
+## D  0  0  0 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m_P_trt}
 \end{Highlighting}
 \end{Shaded}
 
@@ -380,10 +397,10 @@ Fill in the transition probability matrix:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_t)\{     }\CommentTok{# loop through the number of cycles}
+\ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_t)\{  }\CommentTok{# loop through the number of cycles}
 \NormalTok{  m_M_notrt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_notrt[t, ]) }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_notrt  }\CommentTok{# estimate the Markov trace }
                                                          \CommentTok{# for the next cycle (t + 1)}
-\NormalTok{  m_M_trt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ]    <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_trt[t, ])  }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_trt    }\CommentTok{# estimate the Markov trace }
+\NormalTok{  m_M_trt[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ]   <-}\StringTok{ }\KeywordTok{t}\NormalTok{(m_M_trt[t, ])   }\OperatorTok{%*%}\StringTok{ }\NormalTok{m_P_trt    }\CommentTok{# estimate the Markov trace }
                                                          \CommentTok{# for the next cycle (t + 1)}
 \NormalTok{\} }\CommentTok{# close the loop}
 
@@ -408,13 +425,16 @@ Outcomes}\label{compute-and-plot-epidemiological-outcomes}}
 \hypertarget{cohort-trace-1}{%
 \subsection{06.1 Cohort trace}\label{cohort-trace-1}}
 
+The transition probabilities are similari in both strategies. Therefore,
+the cohort trace figure applies to both strategies.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# create a plot of the data}
 \KeywordTok{matplot}\NormalTok{(m_M_notrt, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }
         \DataTypeTok{ylab =} \StringTok{"Probability of state occupancy"}\NormalTok{,}
         \DataTypeTok{xlab =} \StringTok{"Cycle"}\NormalTok{,}
-        \DataTypeTok{main =} \StringTok{"Cohort Trace"}\NormalTok{)             }
+        \DataTypeTok{main =} \StringTok{"Cohort Trace "}\NormalTok{)             }
 \CommentTok{# add a legend to the graph}
 \KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, v_n, }\DataTypeTok{col =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_states, }\DataTypeTok{lty =} \DecValTok{1}\OperatorTok{:}\NormalTok{n_states, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{) }
 \end{Highlighting}
@@ -497,7 +517,7 @@ Outcomes}\label{compute-cost-effectiveness-outcomes}}
 \NormalTok{v_u_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_S1,  u_S2, u_D)}
 \NormalTok{v_u_trt     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_trt, u_S2, u_D)}
 
-\NormalTok{v_c_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S1, c_S2, c_D)}
+\NormalTok{v_c_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S1,         c_S2,         c_D)}
 \NormalTok{v_c_trt     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S1 }\OperatorTok{+}\StringTok{ }\NormalTok{c_trt, c_S2 }\OperatorTok{+}\StringTok{ }\NormalTok{c_trt, c_D)}
 \end{Highlighting}
 \end{Shaded}

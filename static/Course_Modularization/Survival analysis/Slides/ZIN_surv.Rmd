@@ -353,156 +353,156 @@ knitr::include_graphics('figures/drummond.png')
 
 
 
-Competing Risks
-========================================================
+<!-- Competing Risks -->
+<!-- ======================================================== -->
 
-  - Underlying assumption in survival analysis: 
-    - If we could follow censored individuals long enough they would experience the event of interest.
- - Event B (progression) affecs population size at risk for the competing event C
+<!--   - Underlying assumption in survival analysis:  -->
+<!--     - If we could follow censored individuals long enough they would experience the event of interest. -->
+<!--  - Event B (progression) affecs population size at risk for the competing event C -->
 
-***
+<!-- *** -->
 
-```{r, echo = F}
+<!-- ```{r, echo = F} -->
 
-M <- matrix(c(0, 0.5, 0.5,
-              0, 0, 0,
-              0, 0, 0), nrow = 3, ncol = 3, byrow = T,
-            dimnames = list(c("A","B","C"),c("A","B","C")))
+<!-- M <- matrix(c(0, 0.5, 0.5, -->
+<!--               0, 0, 0, -->
+<!--               0, 0, 0), nrow = 3, ncol = 3, byrow = T, -->
+<!--             dimnames = list(c("A","B","C"),c("A","B","C"))) -->
 
-diagram::plotmat(t(M), c(1,2),self.cex = 1, curve = 0, 
-                 self.shiftx = c(0.08,0.08,0.08), arr.pos = 0.7,  
-                 latex=T, arr.type = "curved", ,  relsize = 1.1, cex = 0.001, box.cex= 1.7)
-```
+<!-- diagram::plotmat(t(M), c(1,2),self.cex = 1, curve = 0,  -->
+<!--                  self.shiftx = c(0.08,0.08,0.08), arr.pos = 0.7,   -->
+<!--                  latex=T, arr.type = "curved", ,  relsize = 1.1, cex = 0.001, box.cex= 1.7) -->
+<!-- ``` -->
 
-Multistate modeling 
-========================================================
- - Extended form of competing risks
- - Multivariate survival analysis
- 
-```{r, echo = F}
+<!-- Multistate modeling  -->
+<!-- ======================================================== -->
+<!--  - Extended form of competing risks -->
+<!--  - Multivariate survival analysis -->
 
-M <- matrix(c(0, 0.05, 0.15,
-              0, 0, 0.2,
-              0, 0, 0), nrow = 3, ncol = 3, byrow = T,
-            dimnames = list(c("A","B","C"),c("A","B","C")))
+<!-- ```{r, echo = F} -->
 
-diagram::plotmat(t(M), c(1,2),self.cex = 1, curve = 0, 
-                 self.shiftx = c(0.08,0.08,0.08), arr.pos = 0.7,  
-                 latex=T, arr.type = "curved",  relsize = 1.1, cex = 0.001, box.cex= 1.7)
-```
+<!-- M <- matrix(c(0, 0.05, 0.15, -->
+<!--               0, 0, 0.2, -->
+<!--               0, 0, 0), nrow = 3, ncol = 3, byrow = T, -->
+<!--             dimnames = list(c("A","B","C"),c("A","B","C"))) -->
 
-Multistate modeling 
-========================================================
-- Extended form of competing risks
-- Multivariate survival analysis
-- Can incorporate:
-  - Transition specific covariates
-  - Recurrent events 
-  
-- Can work with 
-  - Patient-level data (best)
-  - Digitized / interval censored data (...not best)
+<!-- diagram::plotmat(t(M), c(1,2),self.cex = 1, curve = 0,  -->
+<!--                  self.shiftx = c(0.08,0.08,0.08), arr.pos = 0.7,   -->
+<!--                  latex=T, arr.type = "curved",  relsize = 1.1, cex = 0.001, box.cex= 1.7) -->
+<!-- ``` -->
 
+<!-- Multistate modeling  -->
+<!-- ======================================================== -->
+<!-- - Extended form of competing risks -->
+<!-- - Multivariate survival analysis -->
+<!-- - Can incorporate: -->
+<!--   - Transition specific covariates -->
+<!--   - Recurrent events  -->
 
-Multistate modeling
-========================================================
-Fitted in two ways:
-
-1. separate models for each trasition
-  - recurrent events 
-  - covariates
-  - seperate dataset for each (non-saturating) state
-  - "naive" assumption of censoring when competing event occurs
-  - easy to fit in R `flexsurv` and `mstate`
-
-Multistate modeling
-========================================================
-Fitted in two ways:
-
-2. Joint multivariate model for all transitions - Powerfull!
-    - Mislclassification errors
-    - Latent states 
-    - Interval censoring
-    - Continuous time
-    
-Drawbacks:
- - Difficult to converge
- - Limited options wrt assumed distributions (exponential)
-
-Can be fitted through `msm` and `flexsurv`
-
- 
-Multistate modeling
-========================================================
-
-```{r, out.width='100%', echo=F}
-knitr::include_graphics('figures/jacksonflex.png')
-```
-
-Great resource for both survival fitting and multistate models
-
-Multistate & microsimulation
-========================================================
-- Multistate models allow for time-dependent transition probabilities 
-- When dependence on time-in-state partioned survival / markov models are inadequate  
-- Necessary solution: Individual level simulation modeling
-
-```{r, out.width='100%', echo=F}
-knitr::include_graphics('figures/microsim.png')
-```
+<!-- - Can work with  -->
+<!--   - Patient-level data (best) -->
+<!--   - Digitized / interval censored data (...not best) -->
 
 
-Multistate modeling
-========================================================
+<!-- Multistate modeling -->
+<!-- ======================================================== -->
+<!-- Fitted in two ways: -->
 
-```{r, out.width='100%', echo=F}
-knitr::include_graphics('figures/venn.png')
-```
+<!-- 1. separate models for each trasition -->
+<!--   - recurrent events  -->
+<!--   - covariates -->
+<!--   - seperate dataset for each (non-saturating) state -->
+<!--   - "naive" assumption of censoring when competing event occurs -->
+<!--   - easy to fit in R `flexsurv` and `mstate` -->
+
+<!-- Multistate modeling -->
+<!-- ======================================================== -->
+<!-- Fitted in two ways: -->
+
+<!-- 2. Joint multivariate model for all transitions - Powerfull! -->
+<!--     - Mislclassification errors -->
+<!--     - Latent states  -->
+<!--     - Interval censoring -->
+<!--     - Continuous time -->
+
+<!-- Drawbacks: -->
+<!--  - Difficult to converge -->
+<!--  - Limited options wrt assumed distributions (exponential) -->
+
+<!-- Can be fitted through `msm` and `flexsurv` -->
 
 
-Multistate modeling
-========================================================
+<!-- Multistate modeling -->
+<!-- ======================================================== -->
 
-```{r, out.width='100%', echo=F}
-knitr::include_graphics('figures/msmnice.png')
-```
+<!-- ```{r, out.width='100%', echo=F} -->
+<!-- knitr::include_graphics('figures/jacksonflex.png') -->
+<!-- ``` -->
+
+<!-- Great resource for both survival fitting and multistate models -->
+
+<!-- Multistate & microsimulation -->
+<!-- ======================================================== -->
+<!-- - Multistate models allow for time-dependent transition probabilities  -->
+<!-- - When dependence on time-in-state partioned survival / markov models are inadequate   -->
+<!-- - Necessary solution: Individual level simulation modeling -->
+
+<!-- ```{r, out.width='100%', echo=F} -->
+<!-- knitr::include_graphics('figures/microsim.png') -->
+<!-- ``` -->
 
 
-Mixture Cure Models - Main Points
-========================================================
+<!-- Multistate modeling -->
+<!-- ======================================================== -->
 
- - Therapies with the possibility of cure pose a modeling challenge
- - e.g. plateau on immotherapy survival curves 
- - Extrapolation challenging without external information 
- - Traditional methods: Underestimation more likely than over estimation of the effect
- 
-Mixture Cure Models - Main Points 
-========================================================
+<!-- ```{r, out.width='100%', echo=F} -->
+<!-- knitr::include_graphics('figures/venn.png') -->
+<!-- ``` -->
 
-  - extension of survival models where a proportion of the population is assumed to be "cured" 
-    - non-cured fraction at risk of progression and death informed by the trial
-    - cured fraction at risk of death informed by external data. 
-    
-```{r, echo = F, out.width='100%'}
-M <- matrix(c(0, 0.05, 0.15,   0, 0.05,
-              0,    0,    0, 0.3, 0.05,
-              0,    0,    0,   0, 0.05,
-              0,    0,    0,   0,    0,
-              0,    0,    0,   0,    0), nrow = 5, ncol = 5, byrow = T,
-            dimnames = list(c("Healthy","Progression","Cure", "Disease Death", "Other Death"),
-                            c("Healthy","Progression","Cure", "Disease Death", "Other Death ")))
 
-diagram::plotmat(t(M), c(3,2), self.cex = 1, curve = 0, 
-                 self.shiftx = c(0.08,0.08,0.08,0.08,0.08), arr.pos = 0.7,  
-                 latex=T, arr.type = "curved", relsize = 1.1, cex = 0.001, box.cex= 1.2)
-```
-    
+<!-- Multistate modeling -->
+<!-- ======================================================== -->
 
-Mixture Cure Models - Estimation
-========================================================
-- Cure rate models a promising solution but the cure faction difficult to estimate
+<!-- ```{r, out.width='100%', echo=F} -->
+<!-- knitr::include_graphics('figures/msmnice.png') -->
+<!-- ``` -->
 
-- Can be fitted in both R and SAS
 
-- Guidance is lacking but given the popularity soon to come!
+<!-- Mixture Cure Models - Main Points -->
+<!-- ======================================================== -->
+
+<!--  - Therapies with the possibility of cure pose a modeling challenge -->
+<!--  - e.g. plateau on immotherapy survival curves  -->
+<!--  - Extrapolation challenging without external information  -->
+<!--  - Traditional methods: Underestimation more likely than over estimation of the effect -->
+
+<!-- Mixture Cure Models - Main Points  -->
+<!-- ======================================================== -->
+
+<!--   - extension of survival models where a proportion of the population is assumed to be "cured"  -->
+<!--     - non-cured fraction at risk of progression and death informed by the trial -->
+<!--     - cured fraction at risk of death informed by external data.  -->
+
+<!-- ```{r, echo = F, out.width='100%'} -->
+<!-- M <- matrix(c(0, 0.05, 0.15,   0, 0.05, -->
+<!--               0,    0,    0, 0.3, 0.05, -->
+<!--               0,    0,    0,   0, 0.05, -->
+<!--               0,    0,    0,   0,    0, -->
+<!--               0,    0,    0,   0,    0), nrow = 5, ncol = 5, byrow = T, -->
+<!--             dimnames = list(c("Healthy","Progression","Cure", "Disease Death", "Other Death"), -->
+<!--                             c("Healthy","Progression","Cure", "Disease Death", "Other Death "))) -->
+
+<!-- diagram::plotmat(t(M), c(3,2), self.cex = 1, curve = 0,  -->
+<!--                  self.shiftx = c(0.08,0.08,0.08,0.08,0.08), arr.pos = 0.7,   -->
+<!--                  latex=T, arr.type = "curved", relsize = 1.1, cex = 0.001, box.cex= 1.2) -->
+<!-- ``` -->
+
+
+<!-- Mixture Cure Models - Estimation -->
+<!-- ======================================================== -->
+<!-- - Cure rate models a promising solution but the cure faction difficult to estimate -->
+
+<!-- - Can be fitted in both R and SAS -->
+
+<!-- - Guidance is lacking but given the popularity soon to come! -->
 

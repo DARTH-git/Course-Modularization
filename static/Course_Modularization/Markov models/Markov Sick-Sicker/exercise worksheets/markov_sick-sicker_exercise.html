@@ -440,9 +440,9 @@ summary {
 <li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
 <li><p>Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P, Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 2020:1-48. <a href="http://arxiv.org/abs/2001.07824" class="uri">http://arxiv.org/abs/2001.07824</a></p></li>
 <li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Med Decis Making. 2018;38(3):400–22. <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
-<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Making. Online First <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Making.2020 Feb;40(2):242-248. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
 </ul>
-<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.</p>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.</p>
 <div id="exercise-i-construct-a-markov-model-of-the-sick-sicker-disease" class="section level1">
 <h1>Exercise I: Construct a Markov Model of the Sick-Sicker Disease</h1>
 <p>In this exercise, we will model a hypothetical disease that affects individuals with an average age of 25 years and results in increased mortality, increased healthcare costs, and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: a no-treatment and a treatment strategy. Under the treatment strategy, individuals in the sick and sicker states are treated until they recover (only if sick; individuals in the sicker state cannot recover) or die. The cost of the treatment is additive to the baseline healthcare costs of being sick or sicker. The treatment improves quality of life for those individuals who are sick but has no impact on the quality of life of those who are sicker. Unfortunately, it is not possible to reliably differentiate between people in the sick and sicker states, so treatment cannot be targeted to only those in the sick state. You are asked to evaluate the cost-effectiveness of the treatment.</p>
@@ -457,8 +457,8 @@ Schematic representation of the Sick-Sicker model
 <h2>Tasks</h2>
 <p>Using the template <code>markov_sick-sicker_template.Rmd</code>, please do the following.</p>
 <ol style="list-style-type: decimal">
-<li><p>Build the Markov model in <code>R</code> for the no treatment and treatment strategies.</p></li>
-<li><p>Plot the survival curve for the cohort under no treatment.</p></li>
+<li><p>Build the Markov model in <code>R</code> for the no-treatment and treatment strategies.</p></li>
+<li><p>Plot the survival curve for the cohort under no-treatment.</p></li>
 <li><p>Estimate the cost-effectiveness of treatment vs no-treatment.</p></li>
 <li><p>Create a cost-effectiveness table with all results of interest.</p></li>
 </ol>
@@ -599,7 +599,7 @@ Schematic representation of the Sick-Sicker model
 </tr>
 </tbody>
 </table>
-<p>*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, <code>p_HD</code>, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: <span class="math inline">\(r = -log(1-p)\)</span> and <span class="math inline">\(p = 1-e^{(-rt)}\)</span></p>
+<p>*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, <code>p_HD</code>, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: <span class="math inline">\(r = -log(1-p)\)</span> and <span class="math inline">\(p = 1-e^{(-rt)}\)</span>. The package darthtools also has the functions <code>prob_to_rate</code> and <code>rate_to_prob</code> that might be of use to you.</p>
 </div>
 </div>
 

@@ -202,7 +202,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\KeywordTok{here}\NormalTok{(}\StringTok{"functions"}\NormalTok{, }\StringTok{"survival_functions.R"}\NormalTok{))}
+\KeywordTok{source}\NormalTok{(}\StringTok{"survival_functions.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -213,7 +213,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \begin{Highlighting}[]
 \NormalTok{v_n       <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"healthy"}\NormalTok{, }\StringTok{"sick"}\NormalTok{, }\StringTok{"dead"}\NormalTok{)  }\CommentTok{# state names}
 \NormalTok{n_s       <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                   }\CommentTok{# No of states }
-\NormalTok{n_i       <-}\StringTok{ }\DecValTok{500000}                          \CommentTok{# number of simulations }
+\NormalTok{n_i       <-}\StringTok{ }\DecValTok{50000}                        \CommentTok{# number of simulations }
 \NormalTok{c_l       <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\DecValTok{12}                        \CommentTok{# cycle length (a month)}
 \NormalTok{n_t       <-}\StringTok{ }\DecValTok{30}                            \CommentTok{# number of years (20 years)}
 \NormalTok{times     <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, n_t, c_l)              }\CommentTok{# the cycles in years}
@@ -242,7 +242,7 @@ Generate data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\KeywordTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"data.R"}\NormalTok{))}
+\KeywordTok{source}\NormalTok{(}\StringTok{"data.R"}\NormalTok{)}
 \KeywordTok{head}\NormalTok{(true_data)}
 \KeywordTok{head}\NormalTok{(sim_data)}
 \KeywordTok{head}\NormalTok{(status)}
@@ -257,13 +257,11 @@ Showcasing the use of packages \texttt{survival}, \texttt{flexsurv}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fit_KM   <-}\StringTok{ }\KeywordTok{survfit}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data, }
-                         \DataTypeTok{type =}\StringTok{"fleming-harrington"}\NormalTok{)}
+\NormalTok{fit_KM <-}\StringTok{ }\KeywordTok{survfit}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data, }
+                       \DataTypeTok{type =}\StringTok{"fleming-harrington"}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(fit_KM, }\DataTypeTok{mark.time =}\NormalTok{ T)}
 
-
-\CommentTok{# a prettier way of plotting!!}
-
+\CommentTok{# a prettier way of plotting}
 \KeywordTok{ggsurvplot}\NormalTok{(}
 \NormalTok{  fit_KM, }
   \DataTypeTok{data =}\NormalTok{ OS_PFS_data, }
@@ -288,16 +286,13 @@ model}\label{partitioned-survival-model}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Flexsurv allows parametric fitting of curves}
-\NormalTok{fit_weib <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data,  }\DataTypeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
+\NormalTok{fit_weib <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data,  }
+                        \DataTypeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(fit_weib)}
 
 \CommentTok{# fit all parametric models to the data and extract the AIC/BIC. }
 \CommentTok{# Select the one with the most appropriate fit}
 \CommentTok{# Repeat for PFS and OS}
-
-
-
-
 \NormalTok{fit_PFS  <-}\StringTok{ }\KeywordTok{fit.fun}\NormalTok{(}\DataTypeTok{time  =} \StringTok{"PFS_time"}\NormalTok{, }\DataTypeTok{status =} \StringTok{"PFS_status"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data, }
                     \DataTypeTok{times =}\NormalTok{ times, }\DataTypeTok{extrapolate =}\NormalTok{ T) }
 \NormalTok{fit_OS   <-}\StringTok{ }\KeywordTok{fit.fun}\NormalTok{(}\DataTypeTok{time  =} \StringTok{"OS_time"}\NormalTok{, }\DataTypeTok{status  =} \StringTok{"OS_status"}\NormalTok{ , }\DataTypeTok{data =}\NormalTok{ OS_PFS_data, }

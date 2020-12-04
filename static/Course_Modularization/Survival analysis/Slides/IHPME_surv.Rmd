@@ -1,9 +1,9 @@
 ---
 title: "Introduction to Survival analysis"
-author: "petros.pechlivanoglou@sickkids.ca"
-date: "17/3/2020"
+author: ' '
 output:
   beamer_presentation: default
+  ioslides_presentation: default
   slidy_presentation: default
 subtitle: The DARTH Workgroup
 ---
@@ -20,14 +20,6 @@ Overview
   - Mixture cure models 
   - External evidence in survival models
 
-
-Introduction
-========================================================
-So far we worked with :
-
-- continuous data (linear modeling )
-- binary/categorical/ count data (generalized linear modeling )
-- ...but what about data that measure time until an event of interest? (Survival time data /Duration data )
 
 It's all about the data!
 ========================================================
@@ -75,7 +67,7 @@ What is survival analysis
  
  Key Concepts in survival analysis
 ========================================================
- - survival time $T$: the random variable capturing time since the beginning of the event. 
+ - survival to time $T$: the random variable capturing time since the beginning of the event. 
 
  - Survival: the probability of not experiencing an event unit some time $t$
  $S(t) = Pr(T >t) = 1- Pr(T \leq t)$ 
@@ -184,7 +176,7 @@ The assumption of proportional hazards
 ```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/Churn.png')
 ```
-
+source:https://altis.com.au/a-crash-course-in-survival-analysis-customer-churn-part-iii/
 
 Assessing the proportionality assumption
 =======================================================
@@ -196,7 +188,7 @@ knitr::include_graphics('figures/prop.png')
 ```
 http://nicedsu.org.uk/wp-content/uploads/2016/03/NICE-DSU-TSD-Survival-analysis.updated-March-2013.v2.pdf
 
-Testing the non-zero slope of the Schoenfeld residuals (more in the practical session)
+Testing the non-zero slope of the Schoenfeld residuals 
 
 
 
@@ -278,6 +270,7 @@ Spline Survival models
 - Conventionally *knots* are evenly spread on the (log)-time axis
 - Overfitting with too many knots possible -sensitivity analysis
 - AIC, BIC valid GoF tests 
+- TSD 2020 
 
 
 Spline Survival models 
@@ -336,6 +329,15 @@ Drummond, et al (2015). Methods for the economic evaluation of health care progr
 ```{r, out.width='100%', echo=F}
 knitr::include_graphics('figures/drummond.png')
 ```
+
+
+
+
+
+
+
+
+
 
 
 

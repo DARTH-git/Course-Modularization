@@ -181,9 +181,9 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- v_init  # initiate first cycle of cohort trace
 ```{r}
 # create the transition probability matrix for NO treatment
 m_P_notrt <- m_P_trt  <- matrix(0,
-                     nrow = n_states,
-                     ncol = n_states,
-                     dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
+                                nrow = n_states,
+                                ncol = n_states,
+                                dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
 m_P_notrt
 m_P_trt
 ```
@@ -218,10 +218,10 @@ m_P_trt <- m_P_notrt
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){     # loop through the number of cycles
+for (t in 1:n_t){  # loop through the number of cycles
   m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt  # estimate the Markov trace 
                                                          # for the next cycle (t + 1)
-  m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])  %*% m_P_trt    # estimate the Markov trace 
+  m_M_trt[t + 1, ]   <- t(m_M_trt[t, ])   %*% m_P_trt    # estimate the Markov trace 
                                                          # for the next cycle (t + 1)
 } # close the loop
 
@@ -346,6 +346,4 @@ df_cea
 ```{r}
 plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```
-
-
 

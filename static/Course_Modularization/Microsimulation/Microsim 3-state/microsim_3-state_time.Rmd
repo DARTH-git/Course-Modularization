@@ -297,6 +297,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
 
 } # end of the `MicroSim` function  
 ```
+
 ## 06 Run Microsimulation
 
 ```{r}

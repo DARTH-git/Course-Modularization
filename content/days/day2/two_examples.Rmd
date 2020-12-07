@@ -17,8 +17,4 @@ menu:
 
 [BresMed intRface demonstration model](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
 
-<!-- ## OpenTree -->
-
-<!-- [Download OpenTree](../../../rmds/cdc_2020_hse.zip) -->
-
 

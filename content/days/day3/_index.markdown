@@ -1,13 +1,13 @@
 ---
 title: Dec 7 Agenda
 author: ''
-date: "2020-11-30"
+date: "2020-12-07"
 slug: day3
 categories: []
 tags: []
 menu:
   day3:
-    name: "Day 7 Agenda"
+    name: "Dec 7 Agenda"
     weight: 1
 toc: yes
 type: docs

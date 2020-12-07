@@ -180,11 +180,11 @@ fit.mstate <- function(time, status, trans,  data = data , add = FALSE, extrapol
   }
   
   # Progression free survival  
-  KM.fit     <-     survfit(Surv(time, status) ~ trans , data = data)                                 # fit Kaplan-Meier curve 
-  fit.llogis <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "llogis" ) # fit model with loglogistic distribution
-  fit.weib   <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "weibull") # fit model with Weibull distribution
-  fit.lnorm  <- flexsurvreg(Surv(time, status) ~ trans + sdlog(trans), data = data, dist = "lnorm"  ) # fit model with lognormal distribution
-  fit.gamma  <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "gamma"  ) # fit model with gamma distribution 
+  KM.fit        <- survfit(Surv(time, status) ~ trans , data = data)                                 # fit Kaplan-Meier curve 
+  fit.llogis    <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "llogis" ) # fit model with loglogistic distribution
+  fit.weib      <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "weibull") # fit model with Weibull distribution
+  fit.lnorm     <- flexsurvreg(Surv(time, status) ~ trans + sdlog(trans), data = data, dist = "lnorm"  ) # fit model with lognormal distribution
+  fit.gamma     <- flexsurvreg(Surv(time, status) ~ trans + shape(trans), data = data, dist = "gamma"  ) # fit model with gamma distribution 
   fit.gengamma  <- flexsurvreg(Surv(time, status) ~ trans + Q(trans) + sigma(trans), data = data, dist = "gengamma"  ) # fit model with gamma distribution 
   
   

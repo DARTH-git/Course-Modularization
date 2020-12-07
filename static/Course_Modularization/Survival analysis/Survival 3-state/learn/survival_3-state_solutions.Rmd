@@ -58,7 +58,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -173,7 +173,7 @@ m_M_PSM <- partsurv(best_PFS, best_OS, time = times)$trace
 ```{r}
 # The existing functions in R require the data in a long rather than a wide format
 # convert the data in a way that flexsurv understands using the mstate package
-data_long       <- msprep(time = sim_data, status = status, trans = tmat )
+data_long       <- msprep(time = sim_data, status = status, trans = tmat)
 data_long$trans <- as.factor(data_long$trans) # convert trans to a factor
 
 data_long$from  <- case_when(data_long$from == 1 ~ "healthy",
@@ -198,8 +198,7 @@ source(here("functions", "survival_functions_backend.R"))
 # Construct a DES model out of the simultaneously fitted multistate model
 DES_data <- sim.fmsm(best.fit, start = 1, t = n_years, trans = tmat, M = n_i)
 m_M_DES  <- trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat)
-m_M_DES1  <- trace.DES1(DES_data, n_i  = n_i , times = times, tmat = tmat)
-all(m_M_DES == m_M_DES1)
+#all(m_M_DES == m_M_DES1)
 ```
 
 ```{r}
@@ -217,7 +216,6 @@ system.time(trace.DES1(DES_data, n_i  = n_i , times = times, tmat = tmat))
 data_HS <- subset(data_long, trans == 1)
 data_HD <- subset(data_long, trans == 2)
 data_SD <- subset(data_long, trans == 3)
-
 
 # fit independent models for each transition and pick the one with the lowest AIC
 fit_HS <- fit.fun(time = "time", status = "status", data = data_HS, times = times, 

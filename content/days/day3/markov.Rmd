@@ -11,21 +11,19 @@ linktitle: cSTM
 
 ## Demo (3-state model)
 
-[Download demo](../../../rmds/Markov_3state.Rmd)
+[Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov 3-state.rmd)
 
 ## Exercise worksheet (Sick-Sicker model)
 
-[Download exercise worksheet](../../../rmds/markov_sick-sicker_exercise.pdf)
-
-## Data for the exercise
-
-[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
+[Download exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 
 ## Student template
 
-[Download student template](../../../rmds/markov_sick-sicker_template.Rmd)
+[Download student template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_template.Rmd)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd)
+Solutions will be uploaded later.
+
+<!-- [Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd) -->
 

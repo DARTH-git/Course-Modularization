@@ -1,34 +1,46 @@
-\documentclass[]{article}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage[]{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\usepackage[unicode=true]{hyperref}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={Simple 3-state microsimulation model},
-            pdfauthor={The DARTH workgroup},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+  pdftitle={Simple 3-state microsimulation model},
+  pdfauthor={The DARTH workgroup},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -39,37 +51,37 @@
 \usepackage{framed}
 \definecolor{shadecolor}{RGB}{248,248,248}
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -79,40 +91,22 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-% set default figure placement to htbp
+% Set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
+\title{Simple 3-state microsimulation model}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-
-\title{Simple 3-state microsimulation model}
-\providecommand{\subtitle}[1]{}
 \subtitle{Includes sex specific probability of dying when healthy and state
 occupation: probability of dying when sick depends on the time of being
 sick}
@@ -192,7 +186,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\section{01 Load packages}\label{load-packages}
+\hypertarget{load-packages}{%
+\section{01 Load packages}\label{load-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -207,7 +202,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\section{02 Load functions}\label{load-functions}
+\hypertarget{load-functions}{%
+\section{02 Load functions}\label{load-functions}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -215,7 +211,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\section{03 Input model parameters}\label{input-model-parameters}
+\hypertarget{input-model-parameters}{%
+\section{03 Input model parameters}\label{input-model-parameters}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -233,7 +230,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \CommentTok{# calculate discount weights for effectiveness for each cycle based on discount rate d_e}
 \NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
 
-\NormalTok{#### Deterministic analysis ####}
+\CommentTok{#### Deterministic analysis ####}
 \CommentTok{# Transition probabilities }
 \CommentTok{# (all non-dead probabilities are conditional on survival)}
 \NormalTok{p_HS        <-}\StringTok{ }\FloatTok{0.05}    \CommentTok{# probability healthy -> sick}
@@ -256,10 +253,12 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{sample-individual-level-characteristics}{%
 \section{04 Sample individual level
-characteristics}\label{sample-individual-level-characteristics}
+characteristics}\label{sample-individual-level-characteristics}}
 
-\subsection{04.1 Static characteristics}\label{static-characteristics}
+\hypertarget{static-characteristics}{%
+\subsection{04.1 Static characteristics}\label{static-characteristics}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -268,7 +267,9 @@ characteristics}\label{sample-individual-level-characteristics}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{04.2 Dynamic characteristics}\label{dynamic-characteristics}
+\hypertarget{dynamic-characteristics}{%
+\subsection{04.2 Dynamic
+characteristics}\label{dynamic-characteristics}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -279,8 +280,9 @@ characteristics}\label{sample-individual-level-characteristics}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{create-a-dataframe-with-the-individual-characteristics}{%
 \subsection{04.3 Create a dataframe with the individual
-characteristics}\label{create-a-dataframe-with-the-individual-characteristics}
+characteristics}\label{create-a-dataframe-with-the-individual-characteristics}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -291,10 +293,12 @@ characteristics}\label{create-a-dataframe-with-the-individual-characteristics}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{define-simulation-functions}{%
 \section{05 Define Simulation
-Functions}\label{define-simulation-functions}
+Functions}\label{define-simulation-functions}}
 
-\subsection{05.1 Probability function}\label{probability-function}
+\hypertarget{probability-function}{%
+\subsection{05.1 Probability function}\label{probability-function}}
 
 The \texttt{Probs} function updates the transition probabilities of
 every cycle is shown below.
@@ -338,7 +342,8 @@ every cycle is shown below.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{05.2 Cost function}\label{cost-function}
+\hypertarget{cost-function}{%
+\subsection{05.2 Cost function}\label{cost-function}}
 
 The \texttt{Costs} function estimates the costs at every cycle.
 
@@ -360,7 +365,9 @@ The \texttt{Costs} function estimates the costs at every cycle.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{05.3 Health outcome function}\label{health-outcome-function}
+\hypertarget{health-outcome-function}{%
+\subsection{05.3 Health outcome
+function}\label{health-outcome-function}}
 
 The \texttt{Effs} function to update the utilities at every cycle.
 
@@ -382,8 +389,9 @@ The \texttt{Effs} function to update the utilities at every cycle.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{microsimulation-function}{%
 \subsection{05.4 Microsimulation
-function}\label{microsimulation-function}
+function}\label{microsimulation-function}}
 
 Below we develop the microsimulation function that allows the model to
 be run.
@@ -456,7 +464,8 @@ be run.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{06 Run Microsimulation}\label{run-microsimulation}
+\hypertarget{run-microsimulation}{%
+\subsection{06 Run Microsimulation}\label{run-microsimulation}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -473,7 +482,8 @@ be run.
 \end{Highlighting}
 \end{Shaded}
 
-\section{07 Visualize results}\label{visualize-results}
+\hypertarget{visualize-results}{%
+\section{07 Visualize results}\label{visualize-results}}
 
 \begin{Shaded}
 \begin{Highlighting}[]

@@ -11,10 +11,9 @@ menu:
 
 ## Demo (3-state model)
 
-[Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov 3-state.rmd)
+[Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd)
 
 ## Exercise worksheet (Sick-Sicker model)
-
 [Download exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 
 ## Student template

@@ -134,7 +134,7 @@ title("Kaplan-Meier Curves for AML Maintenance Study")
 
 Non-Parametric models
 ========================================================
-```{r, echo = FALSE,  out.width='100%'}
+```{r, echo = FALSE,  out.width='50%'}
 summary(leukemia.surv)
 
 ```
@@ -145,7 +145,7 @@ Non-Parametric models - testing
  - long-rank test: is the difference in survival times statistically different? 
   - relying on a $\chi^2$ distribution
  
-```{r, echo = FALSE,  out.width='100%'} 
+```{r, echo = FALSE,  out.width='50%'} 
  survdiff(Surv(time, status) ~ x, data = aml) 
 
 ```
@@ -300,7 +300,7 @@ From Gibson et al (Pharacoeconomcs, 2017)
 Approaches in extrapolation
 ========================================================
 
-Modeler faced with a more decisions:
+Modeler faced with  more decisions:
  - Extrapolate using KM and "fitted" tails 
  - Extrapolate using the fitted curve
  
@@ -337,7 +337,7 @@ Extrapolating a relative treatment effect
 ========================================================
 Drummond, et al (2015). Methods for the economic evaluation of health care programmes. Oxford university press.
 
-```{r, out.width='100%', echo=F}
+```{r, out.width='60%', echo=F}
 knitr::include_graphics('figures/drummond.png')
 ```
 

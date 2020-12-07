@@ -1,10 +1,10 @@
 ---
-title: 'Introduction to Decision Modeling Using R'
+title: 'Health Economic Modeling in R'
 subtitle: 'Basic Markov Model Exercise'
 author: "The DARTH workgroup"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 <link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
@@ -21,7 +21,8 @@ output:
 <p>Alan Yang, MSc (7)</p>
 <p>In collaboration of:</p>
 <ol style="list-style-type: decimal">
-<li>Division of Public Administration, Center for Research and Teaching in Economics (CIDE), Aguascalientes, Mexico</li>
+<li>Division of Public Administration, Center for Research and Teaching in
+Economics (CIDE), Aguascalientes, Mexico</li>
 <li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
 <li>Erasmus MC, Rotterdam, The Netherlands</li>
 <li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
@@ -31,16 +32,30 @@ output:
 </ol>
 <p>Please cite our publications when using this code:</p>
 <ul>
-<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
-<li><p>Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P, Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 2020:1-48. <a href="http://arxiv.org/abs/2001.07824" class="uri">http://arxiv.org/abs/2001.07824</a></p></li>
-<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Med Decis Making. 2018;38(3):400–22. <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
-<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Making.2020 Feb;40(2):242-248. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2.
+2020:1-48. <a href="http://arxiv.org/abs/2001.07824" class="uri">http://arxiv.org/abs/2001.07824</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Making.2020 Feb;40(2):242-248. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
 </ul>
-<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.</p>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
 <div id="exercise-i-construct-a-markov-model-of-the-sick-sicker-disease" class="section level1">
 <h1>Exercise I: Construct a Markov Model of the Sick-Sicker Disease</h1>
 <p>In this exercise, we will model a hypothetical disease that affects individuals with an average age of 25 years and results in increased mortality, increased healthcare costs, and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: a no-treatment and a treatment strategy. Under the treatment strategy, individuals in the sick and sicker states are treated until they recover (only if sick; individuals in the sicker state cannot recover) or die. The cost of the treatment is additive to the baseline healthcare costs of being sick or sicker. The treatment improves quality of life for those individuals who are sick but has no impact on the quality of life of those who are sicker. Unfortunately, it is not possible to reliably differentiate between people in the sick and sicker states, so treatment cannot be targeted to only those in the sick state. You are asked to evaluate the cost-effectiveness of the treatment.</p>
-<p>To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2.</p>
+<p>To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
 <img src="sick_sicker_diagram.png" alt="Schematic representation of the Sick-Sicker model" width="100%" />
 <p class="caption">

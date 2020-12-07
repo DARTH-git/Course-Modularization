@@ -15,17 +15,17 @@ menu:
 
 [R Shiny](https://shiny.rstudio.com/)
 
-Simple Markov model Shiny App
+**Simple Markov model Shiny App**
 
 [Simple Markov model Shiny App](https://darkpeakanalytics.shinyapps.io/sadm-mk2/)
 
-COVID-19 Shiny App
+**COVID-19 Shiny App**
 
 [COVID-19 Mod-Collab](https://www.covid-19-mc.ca/interactive-models)
 
-BresMed Shiny App
+**BresMed Shiny App**
 
-[BresMed intRface demonstration model](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
+[BresMed intRface demonstration model](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics
 
 
 

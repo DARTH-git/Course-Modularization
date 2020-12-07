@@ -13,7 +13,7 @@ menu:
 
 [Download SA demo](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)
 
-[Download Functions_markov_3state.R](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
+[Download `Functions_markov_3state.R`](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
 
 ## Time-dependent Cohort State Transition Models
 

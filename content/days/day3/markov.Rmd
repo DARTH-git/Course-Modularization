@@ -14,7 +14,9 @@ menu:
 [Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd)
 
 ## Exercise worksheet (Sick-Sicker model)
+
 The exercise instructions are provided as a html webpage. You might prefer opening this in a separte tab in your browser. 
+
 [Open exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 
 ## Student template

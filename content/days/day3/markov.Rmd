@@ -14,10 +14,11 @@ menu:
 [Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd)
 
 ## Exercise worksheet (Sick-Sicker model)
-[Download exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
+The exercise instructions are provided as a html webpage. You might prefer opening this in a separte tab in your browser. 
+[Open exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 
 ## Student template
-
+Please download this Markdown file to use to complete the excercise. 
 [Download student template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_template.Rmd)
 
 ## Instructor solutions

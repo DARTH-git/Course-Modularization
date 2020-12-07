@@ -91,7 +91,7 @@ Using the template `markov_sick-sicker_template.Rmd`, please do the following.
 | Cycle length                       |             | 1 year        |
 | Names of health states             | `v_n`       | H, S1, S2, D  |
 | Annual discount rate (costs/QALYs) | `d_r`       | 3%            |
-| Annual transition probabilities    |             |               |
+| Annual transition probabilities conditional on surviving   |             |               |
 | - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
 | - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
 | - Disease progression (S1 to S2)   | `p_S1S2`    |  0.105        |

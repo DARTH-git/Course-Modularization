@@ -25,5 +25,5 @@ Please download this Markdown file to use to complete the excercise.
 
 Solutions will be uploaded later.
 
-<!-- [Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd) -->
+[Download instructor solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_solutions.Rmd)
 

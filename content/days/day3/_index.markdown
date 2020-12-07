@@ -38,11 +38,9 @@ Before Dec 9, please:
 
 - Revisit "Cohort State-Transition in `R`" materials if needed
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "475724349") -->
-<!-- ``` -->
+<!--html_preserve-->{{% vimeo "488185776" %}}<!--/html_preserve-->
 
 
 

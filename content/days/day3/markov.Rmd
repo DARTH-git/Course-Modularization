@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: cSTM
-# menu:
-#   day3:
-#     weight: 5
+menu:
+  day3:
+    weight: 5
 ---
 
 ## Demo (3-state model)

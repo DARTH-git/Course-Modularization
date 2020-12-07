@@ -1,33 +1,20 @@
 ---
-title: Cohort State Transition Models Variants
+title: Cohort State Transition Models Extensions
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: STM variants
-# menu:
-#   day3:
-#     weight: 6
+linktitle: cSTM variants
+menu:
+  day3:
+    weight: 7
 ---
 
-## Demos (3-state model)
+## Sensitivity Analysis 
 
-[Download demo 1](../../../rmds/Markov_3state_time.Rmd)
+[Download SA demo](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)
 
-[Download demo 2](../../../rmds/Markov_3state_tunnels.Rmd)
+[Download Functions_markov_3state.R](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
 
-## Exercise worksheet (Sick-Sicker model)
+## Time-dependent Cohort State Transition Models
 
-[Download exercise worksheet](../../../rmds/markov_sick-sicker_tunnels_exercise.pdf)
-
-## Data for the exercise
-
-[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
-
-## Student template
-
-[Download student template](../../../rmds/markov_sick-sicker_tunnels_template.Rmd)
-
-## Instructor solutions
-
-[Download instructor solutions](../../../rmds/markov_sick-sicker_tunnels_solutions.Rmd)
-
+[Download time-dependent demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_single_time.Rmd)

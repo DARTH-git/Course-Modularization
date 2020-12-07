@@ -10,15 +10,12 @@ subtitle: The DARTH Workgroup
 
 Overview
 =======================================================
-- Motivation and introduction in Survival analysis
+- Motivation and introduction in Survival Analysis
 - Survival modeling
-- Non-parametric modeling
+- Non-Parametric modeling
 - Semi-Parametric modeling
 - Fully Parametric modeling
 - Multistate models
-- Advanced topiics
-  - Mixture cure models 
-  - External evidence in survival models
 
 
 It's all about the data!

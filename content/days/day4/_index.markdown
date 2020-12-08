@@ -17,7 +17,7 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 2:00pm - 6:00pm Central European Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 2:00pm - 5:00pm (a bit longer if your schedule allows) Central European Time and consists of a mix of review, demonstrations and hands-on exercises
 - Slack support available 11:00am - 8:00pm Central European Time
 
 Here is a tentative timetable for this day:

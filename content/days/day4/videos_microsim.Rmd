@@ -13,7 +13,7 @@ menu:
 
 [Download slide deck 1](../../../Course_Modularization/Survival Analysis/Slides/ZIN_surv.pdf)
 
-[Download slide deck 2](../../../Course_Modularization/Survival Analysis/Slides/SMDM_surv.pdf))
+[Download slide deck 2](../../../Course_Modularization/Survival Analysis/Slides/SMDM_surv.pdf)
 
 Survival Analysis 1
 

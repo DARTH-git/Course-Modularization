@@ -559,7 +559,7 @@ for(i in 1:n_sim){
 
 ## 09.2 Create PSA object for dampack
 
-```{r, warning = FALSE}
+```{r}
 l_psa <- make_psa_obj(cost          = df_c, 
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 

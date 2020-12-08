@@ -3,7 +3,7 @@ title: Survival Analysis - Presentation Videos
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Survival videos
+linktitle: Survival Analysis videos
 menu:
   day4:
     weight: 4

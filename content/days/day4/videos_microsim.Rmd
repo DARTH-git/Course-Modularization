@@ -3,7 +3,7 @@ title: Survival Analysis - Presentation Videos
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Microsim videos
+linktitle: Survival videos
 menu:
   day4:
     weight: 4
@@ -13,7 +13,7 @@ menu:
 
 [Download slide deck 1](../../../Course_Modularization/Survival Analysis/Slides/ZIN_surv.pdf)
 
-[Download slide deck 2](../../../Course_Modularization/Survival Analysis/Slides/SMDM_surv.pdf))
+[Download slide deck 2](../../../Course_Modularization/Survival Analysis/Slides/SMDM_surv.pdf)
 
 Survival Analysis 1
 
@@ -24,9 +24,8 @@ blogdown::shortcode("vimeo", "488368064")
 Survival Analysis 2
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "473464649")
+blogdown::shortcode("vimeo", "488374427")
 ```
-
 
 
 <!-- Microsimulation - Theory  -->

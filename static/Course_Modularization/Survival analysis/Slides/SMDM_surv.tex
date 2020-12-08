@@ -1,103 +1,76 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[
-  ignorenonframetext,
-]{beamer}
-\usepackage{pgfpages}
+\documentclass[ignorenonframetext,]{beamer}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 \setbeamercolor{caption name}{fg=normal text.fg}
 \beamertemplatenavigationsymbolsempty
-% Prevent slide breaks in the middle of a paragraph
-\widowpenalties 1 10000
-\raggedbottom
-\setbeamertemplate{part page}{
-  \centering
-  \begin{beamercolorbox}[sep=16pt,center]{part title}
-    \usebeamerfont{part title}\insertpart\par
-  \end{beamercolorbox}
-}
-\setbeamertemplate{section page}{
-  \centering
-  \begin{beamercolorbox}[sep=12pt,center]{part title}
-    \usebeamerfont{section title}\insertsection\par
-  \end{beamercolorbox}
-}
-\setbeamertemplate{subsection page}{
-  \centering
-  \begin{beamercolorbox}[sep=8pt,center]{part title}
-    \usebeamerfont{subsection title}\insertsubsection\par
-  \end{beamercolorbox}
-}
-\AtBeginPart{
-  \frame{\partpage}
-}
-\AtBeginSection{
-  \ifbibliography
-  \else
-    \frame{\sectionpage}
-  \fi
-}
-\AtBeginSubsection{
-  \frame{\subsectionpage}
-}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
-% Use upquote if available, for straight quotes in verbatim environments
+% use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Survival analysis in decision modeling},
-  pdfauthor={petros.pechlivanoglou@sickkids.ca},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \newif\ifbibliography
+\hypersetup{
+            pdftitle={Survival analysis in decision modeling},
+            pdfauthor={petros.pechlivanoglou@sickkids.ca},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight0.8\textheight\else\Gin@nat@height\fi}
 \makeatother
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
-\makeatletter
-\def\fps@figure{htbp}
-\makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+% Prevent slide breaks in the middle of a paragraph:
+\widowpenalties 1 10000
+\raggedbottom
+
+\AtBeginPart{
+  \let\insertpartnumber\relax
+  \let\partname\relax
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \let\insertsectionnumber\relax
+    \let\sectionname\relax
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \let\insertsubsectionnumber\relax
+  \let\subsectionname\relax
+  \frame{\subsectionpage}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\setcounter{secnumdepth}{0}
 
 \title{Survival analysis in decision modeling}
 \subtitle{The DARTH Workgroup}
@@ -112,20 +85,15 @@
 \end{frame}
 
 \begin{frame}{Partitioned survival models}
-\protect\hypertarget{partitioned-survival-models}{}
 
 \begin{itemize}
 \tightlist
 \item
   Form of a decision model that:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Considers evidence of (usually) OS and PFS
-  \item
-    allocates the cohort across pre-progression, post-progression, death
-  \end{itemize}
+\item
+  Considers evidence of (usually) OS and PFS
+\item
+  allocates the cohort across pre-progression, post-progression, death
 \item
   PFS and OS are modeled independently
 \end{itemize}
@@ -139,22 +107,16 @@
 \end{frame}
 
 \begin{frame}{Partitioned survival models}
-\protect\hypertarget{partitioned-survival-models-1}{}
 
 \begin{itemize}
-\tightlist
 \item
   Mechanics:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Remain pre-progression: p(PFS)
-  \item
-    Remain dead: 1 -- p(OS)
-  \item
-    Progressed: p(OS) - p(PFS)
-  \end{itemize}
+\item
+  Remain pre-progression: p(PFS)
+\item
+  Remain dead: 1 -- p(OS)
+\item
+  Progressed: p(OS) - p(PFS)
 \item
   Implicit assumption: risk of dying is only a function of time
 \end{itemize}
@@ -170,7 +132,6 @@ Less problematic with less censoring
 \end{frame}
 
 \begin{frame}{Partitioned survival models - the updside}
-\protect\hypertarget{partitioned-survival-models---the-updside}{}
 
 \begin{itemize}
 \tightlist
@@ -194,7 +155,6 @@ Less problematic with less censoring
 \end{frame}
 
 \begin{frame}{Partitioned survival models - the downside}
-\protect\hypertarget{partitioned-survival-models---the-downside}{}
 
 \begin{itemize}
 \tightlist
@@ -208,22 +168,17 @@ Less problematic with less censoring
   -\textgreater{} death)
 \item
   In the presence of censoring:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Projected trajectory of state occupancy after end of follow up only
-    informed by the observed trajectory
-  \item
-    Poor performance when trends in the within trial period may not
-    continue in the extrapolation period
-  \end{itemize}
+\item
+  Projected trajectory of state occupancy after end of follow up only
+  informed by the observed trajectory
+\item
+  Poor performance when trends in the within trial period may not
+  continue in the extrapolation period
 \end{itemize}
 
 \end{frame}
 
 \begin{frame}{Partitioned survival models - the criticism}
-\protect\hypertarget{partitioned-survival-models---the-criticism}{}
 
 Woods et al 2017 (DSU 19)
 
@@ -240,7 +195,6 @@ Williams et al 2017 (MDM)
 \end{frame}
 
 \begin{frame}{Competing Risks}
-\protect\hypertarget{competing-risks}{}
 
 \begin{itemize}
 \tightlist
@@ -267,7 +221,6 @@ Williams et al 2017 (MDM)
 \end{frame}
 
 \begin{frame}{Multistate modeling}
-\protect\hypertarget{multistate-modeling}{}
 
 \begin{itemize}
 \tightlist
@@ -282,34 +235,24 @@ Williams et al 2017 (MDM)
 \end{frame}
 
 \begin{frame}{Multistate modeling}
-\protect\hypertarget{multistate-modeling-1}{}
 
 \begin{itemize}
-\tightlist
 \item
   Extended form of competing risks
 \item
   Multivariate survival analysis
 \item
   Can incorporate:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Transition specific covariates
-  \item
-    Recurrent events
-  \end{itemize}
+\item
+  Transition specific covariates
+\item
+  Recurrent events
 \item
   Can work with
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Patient-level data (best)
-  \item
-    Digitized / interval censored data (\ldots not best)
-  \end{itemize}
+\item
+  Patient-level data (best)
+\item
+  Digitized / interval censored data (\ldots{}not best)
 \end{itemize}
 
 \end{frame}

@@ -1,46 +1,34 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[
-]{article}
+\documentclass[]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
-% Use upquote if available, for straight quotes in verbatim environments
+% use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
 \hypersetup{
-  pdftitle={SA: Simple 3-state Markov model in R},
-  pdfauthor={The DARTH workgroup},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
+            pdftitle={SA: Simple 3-state Markov model in R},
+            pdfauthor={The DARTH workgroup},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -51,37 +39,37 @@
 \usepackage{framed}
 \definecolor{shadecolor}{RGB}{248,248,248}
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -91,14 +79,31 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
 
 \title{SA: Simple 3-state Markov model in R}
 \author{The DARTH workgroup}
@@ -190,8 +195,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{load-packages}{%
-\section{01 Load packages}\label{load-packages}}
+\section{01 Load packages}\label{load-packages}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -204,8 +208,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{load-functions}{%
-\section{02 Load functions}\label{load-functions}}
+\section{02 Load functions}\label{load-functions}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -213,8 +216,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{input-model-parameters}{%
-\section{03 Input model parameters}\label{input-model-parameters}}
+\section{03 Input model parameters}\label{input-model-parameters}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -255,9 +257,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{draw-the-state-transition-cohort-model}{%
 \subsection{Draw the state-transition cohort
-model}\label{draw-the-state-transition-cohort-model}}
+model}\label{draw-the-state-transition-cohort-model}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -275,12 +276,10 @@ model}\label{draw-the-state-transition-cohort-model}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{define-and-initialize-matrices-and-vectors}{%
 \section{04 Define and initialize matrices and
-vectors}\label{define-and-initialize-matrices-and-vectors}}
+vectors}\label{define-and-initialize-matrices-and-vectors}
 
-\hypertarget{cohort-trace}{%
-\subsection{04.1 Cohort trace}\label{cohort-trace}}
+\subsection{04.1 Cohort trace}\label{cohort-trace}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -295,9 +294,8 @@ vectors}\label{define-and-initialize-matrices-and-vectors}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{transition-probability-matrix}{%
 \subsection{04.2 Transition probability
-matrix}\label{transition-probability-matrix}}
+matrix}\label{transition-probability-matrix}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -337,10 +335,9 @@ Fill in the transition probability matrix:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{check-if-transition-probability-structure-and-probabilities-are-valid}{%
 \subsection{04.3 Check if transition probability structure and
 probabilities are
-valid}\label{check-if-transition-probability-structure-and-probabilities-are-valid}}
+valid}\label{check-if-transition-probability-structure-and-probabilities-are-valid}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -353,8 +350,7 @@ valid}\label{check-if-transition-probability-structure-and-probabilities-are-val
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{run-markov-model}{%
-\section{05 Run Markov model}\label{run-markov-model}}
+\section{05 Run Markov model}\label{run-markov-model}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -365,12 +361,10 @@ valid}\label{check-if-transition-probability-structure-and-probabilities-are-val
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compute-and-plot-epidemiological-outcomes}{%
 \section{06 Compute and Plot Epidemiological
-Outcomes}\label{compute-and-plot-epidemiological-outcomes}}
+Outcomes}\label{compute-and-plot-epidemiological-outcomes}
 
-\hypertarget{cohort-trace-1}{%
-\subsection{06.1 Cohort trace}\label{cohort-trace-1}}
+\subsection{06.1 Cohort trace}\label{cohort-trace-1}
 
 Standard of Care:
 
@@ -402,8 +396,7 @@ Treatment:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{overall-survival-os}{%
-\subsection{06.2 Overall Survival (OS)}\label{overall-survival-os}}
+\subsection{06.2 Overall Survival (OS)}\label{overall-survival-os}
 
 Standard of Care:
 
@@ -443,8 +436,7 @@ Treatment:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{life-expectancy-le}{%
-\subsection{06.2.1 Life Expectancy (LE)}\label{life-expectancy-le}}
+\subsection{06.2.1 Life Expectancy (LE)}\label{life-expectancy-le}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -453,8 +445,7 @@ Treatment:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{disease-prevalence}{%
-\subsection{06.3 Disease prevalence}\label{disease-prevalence}}
+\subsection{06.3 Disease prevalence}\label{disease-prevalence}
 
 Standard of Care:
 
@@ -482,12 +473,10 @@ Treatment:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compute-cost-effectiveness-outcomes}{%
 \section{07 Compute Cost-Effectiveness
-Outcomes}\label{compute-cost-effectiveness-outcomes}}
+Outcomes}\label{compute-cost-effectiveness-outcomes}
 
-\hypertarget{mean-costs-and-qalys}{%
-\subsection{07.1 Mean Costs and QALYs}\label{mean-costs-and-qalys}}
+\subsection{07.1 Mean Costs and QALYs}\label{mean-costs-and-qalys}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -503,9 +492,8 @@ Outcomes}\label{compute-cost-effectiveness-outcomes}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{discounted-mean-costs-and-qalys}{%
 \subsection{07.2 Discounted Mean Costs and
-QALYs}\label{discounted-mean-costs-and-qalys}}
+QALYs}\label{discounted-mean-costs-and-qalys}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -528,9 +516,8 @@ QALYs}\label{discounted-mean-costs-and-qalys}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compute-icers-of-the-markov-model}{%
 \subsection{07.3 Compute ICERs of the Markov
-model}\label{compute-icers-of-the-markov-model}}
+model}\label{compute-icers-of-the-markov-model}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -541,9 +528,8 @@ model}\label{compute-icers-of-the-markov-model}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot-frontier-of-the-markov-model}{%
 \subsection{07.4 Plot frontier of the Markov
-model}\label{plot-frontier-of-the-markov-model}}
+model}\label{plot-frontier-of-the-markov-model}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -553,13 +539,11 @@ model}\label{plot-frontier-of-the-markov-model}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{deterministic-sensitivity-analysis}{%
 \section{08 Deterministic Sensitivity
-Analysis}\label{deterministic-sensitivity-analysis}}
+Analysis}\label{deterministic-sensitivity-analysis}
 
-\hypertarget{list-of-input-parameters}{%
 \subsection{08.1 List of input
-parameters}\label{list-of-input-parameters}}
+parameters}\label{list-of-input-parameters}
 
 Create list \texttt{l\_params\_all} with all input probabilities, cost
 and utilities.
@@ -587,9 +571,8 @@ and utilities.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{load-sick-sicker-markov-model-function}{%
 \subsection{08.2 Load Sick-Sicker Markov model
-function}\label{load-sick-sicker-markov-model-function}}
+function}\label{load-sick-sicker-markov-model-function}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -601,9 +584,8 @@ function}\label{load-sick-sicker-markov-model-function}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{one-way-sensitivity-analysis-owsa}{%
 \subsection{08.3 One-way sensitivity analysis
-(OWSA)}\label{one-way-sensitivity-analysis-owsa}}
+(OWSA)}\label{one-way-sensitivity-analysis-owsa}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -628,8 +610,7 @@ function}\label{load-sick-sicker-markov-model-function}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot-owsa}{%
-\subsection{08.3.1 Plot OWSA}\label{plot-owsa}}
+\subsection{08.3.1 Plot OWSA}\label{plot-owsa}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -639,9 +620,8 @@ function}\label{load-sick-sicker-markov-model-function}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{optimal-strategy-with-owsa}{%
 \subsection{08.3.2 Optimal strategy with
-OWSA}\label{optimal-strategy-with-owsa}}
+OWSA}\label{optimal-strategy-with-owsa}
 
 Only useful if we have more than one strategie to compare.
 
@@ -651,8 +631,7 @@ Only useful if we have more than one strategie to compare.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{tornado-plot}{%
-\subsection{08.3.3 Tornado plot}\label{tornado-plot}}
+\subsection{08.3.3 Tornado plot}\label{tornado-plot}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -660,9 +639,8 @@ Only useful if we have more than one strategie to compare.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{two-way-sensitivity-analysis-twsa}{%
 \subsection{08.4 Two-way sensitivity analysis
-(TWSA)}\label{two-way-sensitivity-analysis-twsa}}
+(TWSA)}\label{two-way-sensitivity-analysis-twsa}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -683,8 +661,7 @@ Only useful if we have more than one strategie to compare.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot-twsa}{%
-\subsection{08.4.1 Plot TWSA}\label{plot-twsa}}
+\subsection{08.4.1 Plot TWSA}\label{plot-twsa}
 
 Only useful if we have more than one strategies to compare.
 
@@ -694,9 +671,8 @@ Only useful if we have more than one strategies to compare.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{probabilistic-sensitivity-analysis-psa}{%
 \section{09 Probabilistic Sensitivity Analysis
-(PSA)}\label{probabilistic-sensitivity-analysis-psa}}
+(PSA)}\label{probabilistic-sensitivity-analysis-psa}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -765,9 +741,8 @@ Only useful if we have more than one strategies to compare.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{conduct-probabilistic-sensitivity-analysis}{%
 \subsection{09.1 Conduct probabilistic sensitivity
-analysis}\label{conduct-probabilistic-sensitivity-analysis}}
+analysis}\label{conduct-probabilistic-sensitivity-analysis}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -784,9 +759,8 @@ analysis}\label{conduct-probabilistic-sensitivity-analysis}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{create-psa-object-for-dampack}{%
 \subsection{09.2 Create PSA object for
-dampack}\label{create-psa-object-for-dampack}}
+dampack}\label{create-psa-object-for-dampack}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -797,8 +771,7 @@ dampack}\label{create-psa-object-for-dampack}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{save-psa-objects}{%
-\subsection{09.2.1 Save PSA objects}\label{save-psa-objects}}
+\subsection{09.2.1 Save PSA objects}\label{save-psa-objects}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -815,9 +788,8 @@ Vector with willingness-to-pay (WTP) thresholds.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{cost-effectiveness-scatter-plot}{%
 \subsection{09.3.1 Cost-Effectiveness Scatter
-plot}\label{cost-effectiveness-scatter-plot}}
+plot}\label{cost-effectiveness-scatter-plot}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -825,9 +797,8 @@ plot}\label{cost-effectiveness-scatter-plot}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{conduct-cea-with-probabilistic-output}{%
 \subsection{09.4 Conduct CEA with probabilistic
-output}\label{conduct-cea-with-probabilistic-output}}
+output}\label{conduct-cea-with-probabilistic-output}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -850,9 +821,8 @@ output}\label{conduct-cea-with-probabilistic-output}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot-cost-effectiveness-frontier}{%
 \subsection{09.4.1 Plot cost-effectiveness
-frontier}\label{plot-cost-effectiveness-frontier}}
+frontier}\label{plot-cost-effectiveness-frontier}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -860,10 +830,9 @@ frontier}\label{plot-cost-effectiveness-frontier}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}{%
 \subsection{09.4.2 Cost-effectiveness acceptability curves (CEACs) and
 frontier
-(CEAF)}\label{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}}
+(CEAF)}\label{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -875,9 +844,8 @@ frontier
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{expected-loss-curves-elcs}{%
 \subsection{09.4.3 Expected Loss Curves
-(ELCs)}\label{expected-loss-curves-elcs}}
+(ELCs)}\label{expected-loss-curves-elcs}
 
 The expected loss is the quantification of the foregone benefits when
 choosing a suboptimal strategy given current evidence.
@@ -891,9 +859,8 @@ choosing a suboptimal strategy given current evidence.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{expected-value-of-perfect-information-evpi}{%
 \subsection{09.4.4 Expected value of perfect information
-(EVPI)}\label{expected-value-of-perfect-information-evpi}}
+(EVPI)}\label{expected-value-of-perfect-information-evpi}
 
 \begin{Shaded}
 \begin{Highlighting}[]

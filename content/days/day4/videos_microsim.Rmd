@@ -1,40 +1,56 @@
 ---
-title: Microsimulation Models - Presentation Videos
+title: Survival Analysis - Presentation Videos
 date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Microsim videos
-# menu:
-#   day4:
-#     weight: 4
+menu:
+  day4:
+    weight: 4
 ---
 
 ## Slides
 
-[Download slides](../../../rmds/2020_CDC_Microsimulation_Slides_toShare.pdf)
+[Download slide deck 1](../../../Course_Modularization/Survival Analysis/Slides/ZIN_surv.pdf)
 
-Microsimulation - Theory 
+[Download slide deck 2](../../../Course_Modularization/Survival Analysis/Slides/SMDM_surv.pdf))
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473484372")
-```
-
-Microsimulation - Efficiency
+Survival Analysis 1
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "473071949")
+blogdown::shortcode("vimeo", "488368064")
 ```
 
-Microsimulation - Implementation
-
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473414536")
-```
-
-Microsimulation - State-residence
+Survival Analysis 2
 
 ```{r, echo=F}
 blogdown::shortcode("vimeo", "473464649")
 ```
+
+
+
+<!-- Microsimulation - Theory  -->
+
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473484372") -->
+<!-- ``` -->
+
+<!-- Microsimulation - Efficiency -->
+
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473071949") -->
+<!-- ``` -->
+
+<!-- Microsimulation - Implementation -->
+
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473414536") -->
+<!-- ``` -->
+
+<!-- Microsimulation - State-residence -->
+
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473464649") -->
+<!-- ``` -->
 
 

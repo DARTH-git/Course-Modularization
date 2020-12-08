@@ -72,7 +72,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate",   "reshape2", "knitr", "diagram")                                                  
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate",   "reshape2", "knitr", "diagram", "abind")                                                  
 ```
 
 # 02 Load functions
@@ -85,17 +85,22 @@ source("survival_functions.R")
 
 ```{r}
 v_n       <- c("healthy", "sick", "dead")  # state names
-n_s       <- length(v_n)                   # No of states 
 n_i       <- 50000                          # number of simulations 
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
-times     <- seq(0, n_t, c_l)              # the cycles in years
 set.seed(2020)                             # set the seed
+n_sim     <- 100                           # number of simulations
+
+n_s       <- length(v_n)                   # No of states 
+times     <- seq(0, n_t, c_l)              # the cycles in years
+
+
 ```
 
 Create a transition probability matrix  with all transitions indicated and numbered.
 
 ```{r}
+
 tmat <- matrix(NA, n_s, n_s, dimnames = list(v_n,v_n))
 tmat["healthy", "sick"]  <- 1
 tmat["healthy", "dead"]  <- 2
@@ -122,8 +127,7 @@ head(OS_PFS_data)
 Showcasing the use of packages `survival`, `flexsurv`. 
 
 ```{r}
-fit_KM   <- survfit(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data, 
-                         type ="fleming-harrington")
+fit_KM   <- survfit(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data)
 plot(fit_KM, mark.time = T)
 
 
@@ -164,11 +168,34 @@ fit_PFS  <- fit.fun(time  = "PFS_time", status = "PFS_status", data = OS_PFS_dat
 fit_OS   <- fit.fun(time  = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
                     times = times, extrapolate = T) 
 
-best_PFS <- fit_PFS[["Weibull"]]  
-best_OS  <- fit_OS [["Weibull"]]
+
+GoF_OS  <- data.frame(AIC = fit_OS$AIC,  BIC = fit_OS$BIC)
+GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)
+
+#"Exponential"   "Weibull (AFT)" "Gamma"         "log-Normal"    "log-Logistic"  "Gen. Gamma"  
+
+choose_PFS = "Weibull (AFT)"
+choose_OS  = "Weibull (AFT)"
+
 
 # construct a partitioned survival model out of the fitted models
-m_M_PSM <- partsurv(best_PFS, best_OS, time = times)$trace
+m_M_PSM <- partsurv( fit_PFS, fit_OS, time = times,choose_PFS = choose_PFS,
+                     choose_OS = choose_OS,n_sim=1)
+
+
+
+# plot the results of PSM and the 
+m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
+matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
+        main = "Trace comparisons",xlim=c(0,25))
+# matlines(times, m_M_PSM$Mean,   col = 4, lty = 1)
+# matlines(times, m_M_PSM$CI[,,"low"],   col = 4, lty = 2)
+# matlines(times, m_M_PSM$CI[,,"high"],   col = 4, lty = 2)
+# legend("right", c("True Data","PSM", "Low CI", "High CI"),
+#         col = c(1,2,2,2), lty = c(1,1,2,2), bty= "n")
+
+
+
 ```
 
 ## 04.2 MultiState modeling method 1
@@ -338,11 +365,9 @@ rownames(m_M_Micro) <- paste("Cycle", times, sep = " ")
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
 
 # visually compare all methods
-matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
-        main = "Trace comparisons",xlim=c(0,25))
+
 matlines(times, m_M_DES,   col = 2, lty = 1)
 matlines(times, m_M_Micro, col = 3, lty = 1)
-matlines(times, m_M_PSM,   col = 4, lty = 1)
 legend("right", c("True Data", "DES","Microsim",  "PSM"),
         col = 1:4, lty = rep(1,4), bty= "n")
 ```

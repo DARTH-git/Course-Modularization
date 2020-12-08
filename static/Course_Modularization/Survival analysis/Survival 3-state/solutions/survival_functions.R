@@ -1,70 +1,7 @@
-## Function to fit multiple functional forms to survival data
+## Function to fit multiple functional forms to survival data using survHE
 fit.fun <- function(time, status, data = data , add = FALSE, extrapolate = FALSE, times)  
 {
-  #Extact the right data columns 
-  data$time   <-   data[,   time]  
-  data$status <-   data[, status]  
-
-    if (extrapolate == TRUE)  {
-    plot.times <- max(times)
-  } else if  (extrapolate == FALSE) {
-    plot.times <- max(data$time)
-  }
-  
-  # Progression free survival  
-  KM.fit     <-     survfit(Surv(time, status) ~ 1, data = data)                         # fit Kaplan-Meier curve 
-  fit.llogis <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "llogis" )       # fit model with loglogistic distribution
-  fit.weib   <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "weibull")       # fit model with Weibull distribution
-  fit.lnorm  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "lnorm"  )       # fit model with lognormal distribution
-  fit.gamma  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "gamma"  )       # fit model with gamma distribution 
-  fit.exp    <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "exp"    )       # fit model with exponential distribution
-  fit.gengamma  <- flexsurvreg(Surv(time, status) ~ 1, data = data, dist = "gengamma"  ) # fit model with gamma distribution  
-  
-  
-  # extarapolate all models beyond the KM curve
-  if(add){ lines(KM.fit, ylab = "Survival Probability", xlab = "Time", ylim = c(0,1), xlim = c(0, plot.times), conf.int= F)}
-  if(!add){ plot(KM.fit, ylab = "Survival Probability", xlab = "Time", ylim = c(0,1), xlim = c(0, plot.times), conf.int= F, mark.time= T)}
-  lines(fit.llogis,   t = times, col = 2, ci = F)
-  lines(fit.weib,     t = times, col = 3, ci = F)
-  lines(fit.lnorm,    t = times, col = 4, ci = F)
-  lines(fit.gamma,    t = times, col = 5, ci = F)
-  lines(fit.gengamma,    t = times, col = 6, ci = F)
-  lines(fit.exp,      t = times, col = 7, ci = F)
-  legend("topright", cex = 0.7, c("Kaplan-Meier", "Loglogistic", "Weibull", "Lognormal", "Gamma","GenGamma", "Exponential"), col = 1:7, lty = rep(1, 7), bty="n")
-  
-  # compare AIC values
-  AIC <- c(    Loglogistic = AIC(fit.llogis),                                         
-               Weibull     = AIC(fit.weib), 
-               Lognormal   = AIC(fit.lnorm), 
-               Gamma       = AIC(fit.gamma),
-               GenGamma       = AIC(fit.gengamma),
-               Exponentail = AIC(fit.exp))
-  AIC= round(AIC,3)
-  
-  # compare BIC values
-  BIC <- c(    Loglogistic = BIC(fit.llogis),                                         
-               Weibull     = BIC(fit.weib), 
-               Lognormal   = BIC(fit.lnorm), 
-               Gamma       = BIC(fit.gamma),
-               GenGamma    = BIC(fit.gengamma),
-               Exponential = BIC(fit.exp))
-  
-  BIC <- round(BIC,3)
-  
-  res <- list(Loglogistic = fit.llogis,
-              Weibull     = fit.weib,
-              Lognormal   = fit.lnorm, 
-              Gamma       = fit.gamma,
-              GenGamma       = fit.gengamma,
-              Exponential = fit.exp, 
-              AIC         = AIC,
-              BIC         = BIC)
-  res
-}
-
-## Function to fit multiple functional forms to survival data using survHE
-fit.fun1 <- function(time, status, data = data , add = FALSE, extrapolate = FALSE, times)  
-{
+  require(survHE)
   # Extract the right data columns 
   data$time   <- data[,   time]  
   data$status <- data[, status]  
@@ -80,22 +17,23 @@ fit.fun1 <- function(time, status, data = data , add = FALSE, extrapolate = FALS
   # Define the vector of models to be used
   mods <- c("exp", "weibull", "gamma", "lnorm", "llogis", "gengamma") 
   # Run the models using MLE via flexsurv
-  m1 <- fit.models(formula = Surv(time, status) ~ 1, data = data, distr = mods)
+  fit.survHE <- fit.models(formula = Surv(time, status) ~ 1, data = data, distr = mods)
   
   # Extrapolate all models beyond the KM curve and plot
-  print(plot(m1, add.km = T, t = times))
+  print(plot(fit.survHE, add.km = T, t = times))
   
   # Compare AIC values
-  AIC <- m1$model.fitting$aic
+  AIC <- fit.survHE$model.fitting$aic
   AIC <- round(AIC,3)
   
   # Compare BIC values
-  BIC <- m1$model.fitting$bic
+  BIC <- fit.survHE$model.fitting$bic
   BIC <- round(BIC,3)
-  names(AIC) <- names(BIC) <- names(m1$models)
+  names(AIC) <- names(BIC) <- names(fit.survHE$models)
   
   # Store and return results
-  res <- list(m1  = m1$models,
+  res <- list(fit.survHE  = fit.survHE,
+              models  = fit.survHE$models,
               AIC = AIC,
               BIC = BIC)
   res
@@ -186,23 +124,64 @@ trace.DES = function(msm_sim = des_sim, tmat, n_i, times )
 }
 
 
-partsurv <- function(fit.pfs, fit.os, time = times){
+partsurv <- function(pfs_survHE, os_survHE,  choose_PFS, choose_OS, time = times, n_sim = 1, seed = 421){
   # Input
-  # fit.pfs: flexsurv obj fitting pfs
-  # fit.os: flexsurv obj fitting os
-  # title:
+  # pfs_survHE: survHE obj fitting pfs
+  # os_survHE : survHE obj fitting os
+  # choose_PFS: preferred PFS distribution
+  # choose_OS: preferred OS distribution
   # time = numeric vector of time to estimate probabilities
-  # output:
+  # n_sim = number of PSA simulations
+    # output:
   #  res a list w/ one entry of a data frame w/ probabilities associated w/ stable ,prog and dead.
+  set.seed(seed)
+
+  deter <- ifelse(n_sim ==1,1,0)
+  n_sim <- ifelse(deter == 1, 1000,n_sim)
+    mod.pfs <- names(pfs_survHE$fit.survHE$models)
+    mod.os  <- names(os_survHE$fit.survHE$models)
+
+        fit_PFS   <- make.surv(pfs_survHE$fit.survHE,
+                          mod = which(mod.pfs == choose_PFS),
+                          nsim = n_sim, 
+                          t = times)
+        fit_OS    <- make.surv(os_survHE$fit.survHE,
+                               mod = which(mod.os == choose_OS),
+                               nsim = n_sim, 
+                               t = times)
+        
+    pfs.surv <- fit_PFS$mat[[1]][,-1]
+    os.surv  <- fit_OS$mat[[1]][,-1]
+
+
   
-  pfs.surv <- summary(fit.pfs, t = time, ci = F)[[1]]$est
-  os.surv  <- summary(fit.os,  t = time, ci = F)[[1]]$est
   sick                 <- os.surv - pfs.surv      # estimate the probability of remaining in the progressed state
   sick[sick < 0]       <- 0                       # in cases where the probability is negative replace with zero
   healthy              <- pfs.surv                # probability of remaining stable
   dead                 <- 1 - os.surv             # probability of being dead
-  trace <- cbind(healthy, sick, dead)
-  res   <- list(trace = trace)
+  trace <- abind( healthy,
+                  sick,
+                  dead,rev.along = 0)
+  
+  
+      trace = aperm(trace,perm = c(1,3,2))
+  #browser()
+  if(deter ==1 ){
+    trace = apply(trace,1:2,mean)
+    CI <- NULL
+    mean.trace = NULL
+    }else{  
+   CI <- apply(trace,1:2, quantile, probs = c(0.025,0.975)) 
+   mean.trace <- apply(trace,1:2,mean)
+   CI = aperm(CI,perm = c(2,3,1))
+   dimnames(CI)[[3]] = c("low", "high")
+   dimnames(CI)[[2]] <- c("healthy",   "sick",  "dead")
+   dimnames(mean.trace)[[2]] <- c("healthy",   "sick",  "dead")
+   
+    }
+      
+  dimnames(trace)[[2]] <- c("healthy",   "sick",  "dead")
+  res   <- list(trace = trace, CI = CI, Mean = mean.trace)
 
   return(res)
 }
@@ -323,49 +302,4 @@ gen_data <- function(n_pat, n_years)
         sim_data =  sim_data,      status = status, OS_PFS_data = OS_PFS_data)
 }
 
-samplev <- function(m.Probs, m) {
-  # Arguments
-  # m.Probs: matrix with probabilities (n.i * n.s)
-  # m:       number of states than need to be sampled per individual  
-  # Return
-  # ran:    n.i x m matrix filled with sampled health state(s) per individual
-  
-  d <- dim(m.Probs)  # dimensions of the matrix filled with the multinomical probabilities for the health states 
-  n <- d[1]          # first dimension - number of rows (number of individuals to sample for)
-  k <- d[2]          # second dimension - number of columns (number of health states considered)
-  lev <- dimnames(m.Probs)[[2]]  # extract the names of the health states considered for sampling
-  if (!length(lev))  # in case names for the health states are missing, use numbers to specify the health states
-    lev <- 1:k       # create a sequence from 1:k (number of health states considered)
-  # create a matrix 
-  ran <- matrix(lev[1], ncol = m, nrow = n) # create the matrix ran, filled with the first health state of the levels 
-  U <- t(m.Probs)    # transposed m.Probs matrix n.i x n.s --> n.s x n.i 
-  
-  for(i in 2:k) {    # start loop, from the 2nd health states
-    U[i, ] <- U[i, ] + U[i - 1, ] # start summing the probabilities of the different health states per individual 
-  }
-  if (any((U[k, ] - 1) > 1e-05))  # sum of all probs per individual - 1 should be 0 (use 1e-05 for rounding issues), else print the error statement
-    stop("error in multinom: probabilities do not sum to 1")
-  
-  for (j in 1:m) {   # start loop of the state that needs to be sampled (m)
-    un <- rep(runif(n), rep(k, n))       # sample from a uniform distribution of length n*k
-    ran[, j] <- lev[1 + colSums(un > U)] # store the health state at the jth column of the U matrix
-  }
-  ran # return the new health state per individual n.i x m
-} # close the function 
 
-
-#plot health state trace
-plot_m_TR <- function(m_M) {
-  # plot the distribution of the population across health states over time (trace)
-  # count the number of individuals in each health state at each cycle
-  m_TR <- t(apply(m_M, 2, function(x) table(factor(x, levels = v_n, ordered = TRUE)))) 
-  m_TR <- m_TR / n_i                                       # calculate the proportion of individuals 
-  colnames(m_TR) <- v_n                                    # name the rows of the matrix
-  rownames(m_TR) <- paste("Cycle", 0:n_t, sep = " ")       # name the columns of the matrix
-  # Plot trace of first health state
-  matplot(m_TR, type = "l", main = "Health state trace", col= 1:n_s,
-          ylim = c(0, 1), ylab = "Proportion of cohort", xlab = "Cycle")
-  legend("topright", v_n, col = 1:n_s,    # add a legend to current plot
-         lty = rep(1, 3), bty = "n", cex = 0.65)
-  
-}

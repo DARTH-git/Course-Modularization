@@ -32,11 +32,11 @@ Here is a tentative timetable for this day:
 
 Before Dec 9, please:
 
-- Watch "Partitioned Survival Analysis" lecture videos
+- Watch [Partitioned Survival Analysis](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day4/videos_microsim/) lecture videos
 
 - Read ["Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. Pharmacoeconomics. 2019;37(11):1329-1339. doi:10.1007/s40273-019-00837-x"](https://rdcu.be/bRP5h)
 
-- Revisit [Cohort State-Transition in `R`](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day3/markov/) materials if needed
+- Revisit [Cohort State-Transition in R](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day3/markov/) materials if needed
 
 ## Synchronous session recording
 

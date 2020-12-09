@@ -58,7 +58,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = F)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -72,20 +72,20 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate",   "reshape2", "knitr", "diagram", "abind")                                                  
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate",   "reshape2", "knitr", "diagram", "abind")                      
 ```
 
 # 02 Load functions
 
 ```{r}
-source("survival_functions.R")
+source("survival_functions_ZIN.R")
 ```
 
 # 03 Input model parameters
 
 ```{r}
 v_n       <- c("healthy", "sick", "dead")  # state names
-n_i       <- 50000                          # number of simulations 
+n_i       <- 50000                         # number of simulations 
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
 set.seed(2020)                             # set the seed
@@ -93,14 +93,11 @@ n_sim     <- 100                           # number of simulations
 
 n_s       <- length(v_n)                   # No of states 
 times     <- seq(0, n_t, c_l)              # the cycles in years
-
-
 ```
 
 Create a transition probability matrix  with all transitions indicated and numbered.
 
 ```{r}
-
 tmat <- matrix(NA, n_s, n_s, dimnames = list(v_n,v_n))
 tmat["healthy", "sick"]  <- 1
 tmat["healthy", "dead"]  <- 2
@@ -130,7 +127,6 @@ Showcasing the use of packages `survival`, `flexsurv`.
 fit_KM   <- survfit(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data)
 plot(fit_KM, mark.time = T)
 
-
 # a prettier way of plotting!!
 
 ggsurvplot(
@@ -152,50 +148,40 @@ ggsurvplot(
 ## 04.1 Partitioned Survival model
 
 ```{r}
-# Flexsurv allows parametric fitting of curves
+# R package flexsurv allows parametric fitting of curves
 fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data,  dist = "weibull")
 plot(fit_weib)
 
 # fit all parametric models to the data and extract the AIC/BIC. 
 # Select the one with the most appropriate fit
 # Repeat for PFS and OS
-
-
-
-
 fit_PFS  <- fit.fun(time  = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
-                    times = times, extrapolate = T) 
+                    extrapolate = TRUE, times = times)
 fit_OS   <- fit.fun(time  = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
-                    times = times, extrapolate = T) 
+                    extrapolate = TRUE, times = times) 
 
-
+# Check AIC of each model to assess goodness-of-fit
 GoF_OS  <- data.frame(AIC = fit_OS$AIC,  BIC = fit_OS$BIC)
 GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)
 
-#"Exponential"   "Weibull (AFT)" "Gamma"         "log-Normal"    "log-Logistic"  "Gen. Gamma"  
-
-choose_PFS = "Weibull (AFT)"
-choose_OS  = "Weibull (AFT)"
-
+# "Exponential", "Weibull (AFT)", "Gamma", "log-Normal", "log-Logistic", "Gen. Gamma"  
+choose_PFS <- "Weibull (AFT)"
+choose_OS  <- "Weibull (AFT)"
 
 # construct a partitioned survival model out of the fitted models
-m_M_PSM <- partsurv( fit_PFS, fit_OS, time = times,choose_PFS = choose_PFS,
-                     choose_OS = choose_OS,n_sim=1)
+m_M_PSM <- partsurv(fit_PFS, fit_OS, time = times, choose_PFS = choose_PFS,
+                    choose_OS = choose_OS, n_sim = 100)
 
-
-
-# plot the results of PSM and the 
+# plot the results of PSM and the trace
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
-matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
-        main = "Trace comparisons",xlim=c(0,25))
- matlines(times, m_M_PSM$trace,   col = 4, lty = 1)
-# matlines(times, m_M_PSM$Mean,   col = 4, lty = 1)
-# matlines(times, m_M_PSM$CI[,,"low"],   col = 4, lty = 2)
-# matlines(times, m_M_PSM$CI[,,"high"],   col = 4, lty = 2)
-# legend("right", c("True Data","PSM", "Low CI", "High CI"),
-#         col = c(1,2,2,2), lty = c(1,1,2,2), bty= "n")
-
-
-
+matplot(times, m_M_data, type='l', lty = 1, col = 1, 
+        ylab = "Proportion of cohort", xlab = "Time",
+        main = "Trace comparisons", xlim=c(0,25))
+# matlines(times, m_M_PSM$trace,  col = 4, lty = 1) # Uncomment if want to use deterministic
+matlines(times, m_M_PSM$Mean, col = 4, lty = 1)
+matlines(times, m_M_PSM$CI[,,"low"], col = 4, lty = 2)
+matlines(times, m_M_PSM$CI[,,"high"], col = 4, lty = 2)
+legend("right", c("True Data","PSM", "Low CI", "High CI"),
+        col = c(1,4,4,4), lty = c(1,1,2,2), bty= "n")
 ```
 

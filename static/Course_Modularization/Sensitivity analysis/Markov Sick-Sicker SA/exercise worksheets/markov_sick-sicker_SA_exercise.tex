@@ -1,38 +1,56 @@
-\documentclass[]{article}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage[]{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\usepackage[unicode=true]{hyperref}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={Cost-Effectiveness and Decision Modeling in R},
-            pdfauthor={The DARTH workgroup},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+  pdftitle={Cost-Effectiveness and Decision Modeling in R},
+  pdfauthor={The DARTH workgroup},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs}
-% Fix footnotes in tables (requires footnote package)
-\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -42,40 +60,22 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-% set default figure placement to htbp
+% Set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
+\title{Cost-Effectiveness and Decision Modeling in R}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-
-\title{Cost-Effectiveness and Decision Modeling in R}
-\providecommand{\subtitle}[1]{}
 \subtitle{SA Markov Model Exercise}
 \author{The DARTH workgroup}
 \date{}
@@ -156,8 +156,9 @@ CHILDREN and the collaborating institutions. These materials may be
 used, reproduced, modified, distributed and adapted with proper
 attribution.
 
+\hypertarget{exercise-i-construct-a-markov-model-of-the-sick-sicker-disease-completed}{%
 \section{Exercise I: Construct a Markov Model of the Sick-Sicker Disease
-(COMPLETED)}\label{exercise-i-construct-a-markov-model-of-the-sick-sicker-disease-completed}
+(COMPLETED)}\label{exercise-i-construct-a-markov-model-of-the-sick-sicker-disease-completed}}
 
 In this exercise, we will model a hypothetical disease that affects
 individuals with an average age of 25 years and results in increased
@@ -177,7 +178,7 @@ only those in the sick state. You are asked to evaluate the
 cost-effectiveness of the treatment.
 
 To model this disease, we will rely on a state-transition cohort model,
-called the Sick-Sicker model, first described by Enns et al. The
+called the Sick-Sicker model, first described by Enns et al.~The
 Sick-Sicker model consists of four health states: Healthy (H), two
 disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All
 individuals start in the Healthy state. Over time, healthy individuals
@@ -198,7 +199,8 @@ probabilities of dying when in S1 and S2.
 \caption{Schematic representation of the Sick-Sicker model}\label{fig:unnamed-chunk-1}
 \end{figure}
 
-\subsection{Tasks (COMPLETED)}\label{tasks-completed}
+\hypertarget{tasks-completed}{%
+\subsection{Tasks (COMPLETED)}\label{tasks-completed}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -217,189 +219,189 @@ probabilities of dying when in S1 and S2.
 
 \begin{longtable}[]{@{}llc@{}}
 \toprule
-\begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.51\columnwidth}\raggedright
 \textbf{Parameter}\strut
-\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright
 \textbf{R name}\strut
-\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\centering
 \textbf{Value}\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Time horizon\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{n\_t}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 30 years\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Cycle length\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 1 year\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Names of health states\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{v\_n}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 H, S1, S2, D\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Annual discount rate (costs/QALYs)\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{d\_r}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 3\%\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Annual transition probabilities\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Disease onset (H to S1), conditional on surviving\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{p\_HS1}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.15\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Recovery (S1 to H), conditional on surviving\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{p\_S1H}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.5\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Disease progression (S1 to S2) conditional on surviving, in the
 time-homogeneous model\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{p\_S1S2}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.105\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Annual mortality\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - All-cause mortality (H to D)\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{p\_HD}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.005\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Hazard ratio of death in S1 vs H\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{hr\_S1}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 3\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Hazard ratio of death in S2 vs H\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{hr\_S2}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 10\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Annual costs\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Healthy individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{c\_H}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \$2,000\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Sick individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{c\_S1}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \$4,000\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Sick individuals in S2\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{c\_S2}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \$15,000\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Dead individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{c\_D}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \$0\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Additional costs of sick individuals treated in S1 or S2\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{c\_trt}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \$12,000\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Utility weights\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Healthy individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{u\_H}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 1.00\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Sick individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{u\_S1}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.75\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Sick individuals in S2\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{u\_S2}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.50\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Dead individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{u\_D}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.00\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 Intervention effect\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.51\columnwidth}\raggedright
 - Utility for treated individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright
 \texttt{u\_trt}\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 0.95\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -414,9 +416,10 @@ using the following formulas: \(r = -loga(1-p)\) and \(p = 1-e^{(-rt)}\)
 
 \newpage
 
+\hypertarget{exercise-ii-probabilistic-sensitivity-analysis-of-the-sick-sicker-markov-model}{%
 \section{Exercise II: Probabilistic sensitivity analysis of the
 Sick-Sicker Markov
-model}\label{exercise-ii-probabilistic-sensitivity-analysis-of-the-sick-sicker-markov-model}
+model}\label{exercise-ii-probabilistic-sensitivity-analysis-of-the-sick-sicker-markov-model}}
 
 This exercise continues based on the time-homogeneous deterministic
 cohort state transition ``Sick-Sicker'' model from Exercise I. In this
@@ -428,160 +431,161 @@ for the variables you used in the previous exercise.
 
 \begin{longtable}[]{@{}lrr@{}}
 \toprule
-\begin{minipage}[b]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.32\columnwidth}\raggedright
 \textbf{Parameter}\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedleft
 \textbf{Distribution}\strut
-\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedleft
 \textbf{Distribution values}\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Number of simulation\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \texttt{n\_sim}\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 1000\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Annual transition probabilities\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Disease onset (H to S1), conditional on surviving\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha=30, \ \beta=170\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Recovery (S1 to H), conditional on surviving\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha=60, \ \beta=60\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Disease progression (S1 to S2) conditional on surviving, in the
 time-homogeneous model\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha=84, \ \beta=716\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Annual mortality\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - All-cause mortality (H to D)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha=10, \ \beta=1990\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Hazard ratio of death in S1 vs H\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Lognormal\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\mu = log(3), \ \sigma = 0.01\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Hazard ratio of death in S2 vs H\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Lognormal\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\mu = log(10), \ \sigma = 0.02\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Annual costs\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Healthy individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Gamma\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 shape = 100.0, scale = 20.0\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Sick individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Gamma\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 shape = 177.8, scale = 22.5\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Sick individuals in S2\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Gamma\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 shape = 225.0, scale = 66.7\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Additional costs of sick individuals treated in S1 or S2\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Gamma\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 shape = 73.5, scale = 163.3\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Utility weights\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Healthy individuals\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha = 200, \ \beta = 3\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Sick individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha = 130, \ \beta = 45\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Sick individuals in S2\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha = 230, \ \beta = 230\)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 Intervention effect\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 \strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
 - Utility for treated individuals in S1\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedleft
 Beta\strut
-\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedleft
 \(\alpha = 300, \ \beta = 15\)\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
-\subsection{Tasks}\label{tasks}
+\hypertarget{tasks}{%
+\subsection{Tasks}\label{tasks}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}

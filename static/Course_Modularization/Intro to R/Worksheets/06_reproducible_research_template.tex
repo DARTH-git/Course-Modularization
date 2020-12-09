@@ -1,0 +1,442 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Introduction to R for Health Services Research},
+  pdfauthor={SickKids and DARTH},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Introduction to R for Health Services Research}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Reproducible Research}
+\author{SickKids and DARTH}
+\date{12/09/2019}
+
+\begin{document}
+\maketitle
+
+This worksheet highlights some key settings where \texttt{R} can help
+make your research easier to reproduce and present to key stakeholder.
+This session is split into the following sections:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  R Markdown
+\item
+  R Script
+\item
+  R Shiny Applications
+\end{enumerate}
+
+Throughout the course, we will demonstrate code and leave some empty
+\emph{code chunks} for you to fill in. We will also provide solutions
+after the session.
+
+Feel free to modify this document with your own comments and
+clarifications.
+
+\hypertarget{r-markdown}{%
+\section{1. R Markdown}\label{r-markdown}}
+
+Throughout this course, we have provided all materials using R Markdown
+but we will now briefly highlight how R Markdown can improve the
+reproducibility of research. In an R Markdown document, you can store,
+comment on, and run code from \textbf{code chunks}. This document can be
+shared with collaborators or other stakeholders so people can:
+
+\begin{itemize}
+\item
+  Re-run your code and view the outputs and analysis results.
+\item
+  Read your free text that explains the analysis and the data.
+\item
+  Easily modify your code in any way they want.
+\item
+  Use your document as a template to build their own R Markdown
+  document.
+\end{itemize}
+
+You can \textbf{Knit} R Markdown documents to other file types including
+HTML, PDF and Word. These alternative outputs can be submitted to
+journals so keep you analysis and manuscript writing in the same
+document.
+
+\begin{itemize}
+\item
+  To knit to a HTML document, you will need an Internet browser
+  installed on your computer, but you do not need to connect to the
+  Internet.
+\item
+  To knit to a Word document, you will need Microsoft Office Word
+  installed on your computer.
+\item
+  To knit to a PDF document, you will need to install
+  \href{https://miktex.org/download}{\textbf{MiKTex}}, an up-to-date
+  implementation of TeX/LaTeX and related programs. You should download
+  the \textbf{Net Intaller}, not the Basic Installer. You do not need to
+  \emph{use} LaTeX.
+\end{itemize}
+
+\textbf{Inline Code Chunks}
+
+R Markdown also contains an \emph{inline} feature that allows you to run
+small pieces of code within the text. This is useful if you want to
+refer to figures from your data/statistical analysis within the main
+body of your text, e.g., 82\% of trial participants were successfully
+sedated. Inline code is specified using the following structure: 3. In
+this case, the \textbf{knited} R Markdown document will display the mean
+of the number 1 to 5 (e.g., 3) in place of the code above. You can
+\textbf{Knit} the document to see.
+
+\hypertarget{r-script}{%
+\section{2. R Script}\label{r-script}}
+
+You can also use \texttt{R} with \emph{scripts}. These \emph{scripts}
+are like a single code chunk from a Markdown document and can be used to
+write \texttt{R} code for more complex operations or to save functions
+that are reused across multiple documents. \texttt{R} scripts can be
+used to write, store and run \texttt{R} code. To open a new \texttt{R}
+script, click
+
+\textbf{File -\textgreater{} New File -\textgreater{} R Script\ldots{}}
+
+You can type code anywhere in a script. To run a line, you can click on
+that line and either hit the \textbf{Run} button on the top right corner
+of this window or hit CTRL + ENTER.
+
+\textbf{EXERCISE 1}
+
+\begin{itemize}
+\item
+  Create a new \texttt{R} script.
+\item
+  Run a few mathematical operations.
+\item
+  Type in and run \texttt{plot(iris\$Sepal.Width,iris\$Sepal.Length)}.
+  Note that \texttt{iris} is a standard dataset that is loaded whenever
+  you open \texttt{R}.
+\end{itemize}
+
+Note that when you run code from a \texttt{R} script the output
+\emph{only} displays in the console and the plots display in the bottom
+right-hand corner of the RStudio interface.
+
+\textbf{Setting a working directory}
+
+The \emph{working directory} in \texttt{R} is an important way to ensure
+that your research results are easy to find and you have loaded the
+correct dataset. The \emph{working directory} is the folder where all
+data will be imported from and where all output, scripts and Markdown
+documents should be stored. You can display the current working
+directory using the function \texttt{getwd()}. You can change the
+working directory either by clicking \textbf{Session - \textgreater{}
+Set working directory -\textgreater{} Choose Directory} and setting your
+working directory or writing the command
+\texttt{setwd("path\ of\ your\ working\ directory")}.
+
+Remember that you should use a forward slash to define your filenames
+and the path to the folder, e.g.~(``C:/'').
+
+You can also ask \texttt{R} to set the working directory to the folder
+where you have saved your Markdown document or script using
+\textbf{Session -\textgreater{} Set Working Directory -\textgreater{} To
+Source File Location}. If you data files are not in the same folder as
+your \texttt{R} script, you have to specify the full path to the data
+files (as we did in Session 3).
+
+\textbf{Cleaning the working space and the R memory}
+
+To ensure your results are reproducible and not based on previous
+analysis, it is advisable to begin each Markdown document or \texttt{R}
+script with a command that clears \texttt{R}'s memory. This removes all
+the variables that you used in your previous analysis and any
+user-defined functions you created. The command to clear you memory is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+You can also clear your \texttt{R} console (your working space) using
+type CTRL + L.
+
+\textbf{EXERCISE 2} Create a few variables with different values in the
+following \emph{code chunk}. Then clear the working space and the
+\texttt{R} memory.
+
+\textbf{Adding explanatory comments}
+
+It is good practice in any programming language to write code clearly,
+using logical steps and explaining clearly why those steps were taken.
+This helps other researchers reproduce your results and review you
+analysis. It also helps you remember what you did!
+
+In R Markdown, you can explain your analysis using text and add short
+comments to the code. We have used this method throughout the course.
+Within an \texttt{R} script, you can only use comments, indicated using
+the hashtag (\texttt{\#}) symbol. Any line with a \texttt{\#} symbol
+will be ignored by \texttt{R}, e.g.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# cleaning the memory of R}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{ ()) }
+\end{Highlighting}
+\end{Shaded}
+
+You can also add comments in the same line as your code to explain what
+analysis you are doing on each line. For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{ ()) }\CommentTok{# cleaning the memory of R}
+\end{Highlighting}
+\end{Shaded}
+
+This commenting approach reduces the lines of code and results in more
+condensed code but can be more challenging to read if the comments are
+long.
+
+\hypertarget{r-shiny-applications}{%
+\section{\texorpdfstring{3. \texttt{R} Shiny
+Applications}{3. R Shiny Applications}}\label{r-shiny-applications}}
+
+\texttt{R} Shiny is a powerful and elegant package that that allows you
+to build web-based applications using \texttt{R}. It lets you turn your
+analyses into interactive web applications without requiring JavaScript,
+CSS or HTML coding.
+
+To create a new Shiny App, click
+
+\textbf{File -\textgreater{} New File -\textgreater{} Shiny Web
+App\ldots{}}
+
+and choose a name for your App and the working directory it will be
+saved in.
+
+\textbf{EXERCISE 3} Create a new Shiny App file and name it ``demo''.
+
+After you create this app, you will see \texttt{R} has opened up a file
+name \texttt{app.R} --\textgreater{} this is the script for your App.
+
+By default, \texttt{R} provides an example of a Shiny App which you can
+use by clicking the \textbf{Run App} button on the top right corner of
+the Script Editor. This App plots a histogram of the distribution of
+waiting time to eruption of the geyser from a the Old Faithful Geyser
+dataset, which is provided by standard in \texttt{R}.
+
+This App interactively generates and displays a histogram with the
+binwidth the user selects. The user of the App does not have to write or
+run any \texttt{R} code as everything is done through clicks. This is
+what makes Shiny Apps cool and powerful!
+
+The following section briefly introduces how to build a shiny app for
+your analysis. To begin, call the \texttt{shiny} library.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(shiny)}
+\end{Highlighting}
+\end{Shaded}
+
+All shiny apps have two components: \textbf{UI} and \textbf{Server}.
+
+\begin{itemize}
+\item
+  \textbf{UI} stands for ``User Interface'', this is where you code what
+  the user can see and click on.
+\item
+  \textbf{Server} contains functions that produce the output that is
+  displayed in or used by the UI.
+\end{itemize}
+
+It is easier to start with the Server since it feeds things into the UI.
+
+In the demo App, the \textbf{Server}:
+
+\begin{itemize}
+\item
+  Contains a function that first stores the 2nd column (eruption wait
+  time) of the Old Faithful Geyser dataset into a variable called
+  \texttt{x}.
+\item
+  Then, it takes different number of bins defined in the UI (called
+  ``bins'') to create the \texttt{bins} variable.
+\item
+  Finally, it plots the histogram using the appropriate arguments
+  (\texttt{x}, \texttt{bins}, etc).
+\item
+  The entire operation is wrapped by Shiny function
+  \texttt{renderPlot()} (a function that takes plots produced in
+  \texttt{R}) and saved into a variable called
+  \texttt{output\$distPlot}.
+\item
+  \texttt{output} tells \texttt{R} that this is an output to be sent to
+  the UI and \texttt{distPlot} is the name given to this operation.
+\end{itemize}
+
+Now we switch to the \textbf{UI},
+
+\begin{itemize}
+\item
+  This UI has two parts: the side panel and the main panel.
+\item
+  The side panel contains a side bar with slider input that contains
+  different number of bins (input name is ``bins'') ranging from 1 to
+  50, with the default being 30.
+\item
+  The main panel contains a function called \texttt{plotOutput()} that
+  takes our histogram and plots it on the main panel of the App.
+\end{itemize}
+
+To finalize the App, the command
+\texttt{shinyApp(ui\ =\ ui,\ server\ =\ server)} is inserted at the very
+end.
+
+\textbf{EXERCISE 4} Follow the steps below to build a Shiny App that
+makes stratified boxplots for the Framingham data:
+
+\begin{itemize}
+\item
+  Open up the Shiny App file ``app.R'' in the ``framingham'' folder.
+\item
+  You will see that we have selected the categorical variables (the
+  \texttt{x}'s) that we wish to stratify our continuous variables (the
+  \texttt{y}'s) by.
+\item
+  \texttt{selectInput()} provides a dropdown menu with different
+  user-defined selections.
+\item
+  Create a dropdown menu for the continuous variables. Include age, sex,
+  current smoking status, diabetic status, prevalent myocardial
+  infarction status and prevalent stroke status.
+\item
+  Write the code to draw the boxplot under the comment ``draw the
+  boxplot of y stratified by x''. Make sure you have appropriate labels
+  for the axes and different colours for the boxplots.
+\item
+  Run the App and test it.
+\end{itemize}
+
+\hypertarget{further-reading}{%
+\section{4. Further Reading}\label{further-reading}}
+
+There are loads of great resources available to learn more about R:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Christopher Gandrud, Reproducible Research with R and RStudio
+\item
+  Yihui Xie, Dynamic Documents with R and knitr
+\item
+  The tidyverse website, \url{https://www.tidyverse.org/}
+\item
+  The R Markdown website, \url{https://rmarkdown.rstudio.com/}
+\item
+  Hadley Wickham, Advanced R.
+\end{enumerate}
+
+\end{document}

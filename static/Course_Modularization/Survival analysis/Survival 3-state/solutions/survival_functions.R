@@ -39,7 +39,6 @@ fit.fun <- function(time, status, data = data , add = FALSE, extrapolate = FALSE
   res
 }
 
-
 fit.mstate <- function(time, status, trans,  data = data , add = FALSE, extrapolate = FALSE, times)  
 {
   data$time  <- data[, time  ]
@@ -124,16 +123,16 @@ trace.DES = function(msm_sim = des_sim, tmat, n_i, times )
 }
 
 
-partsurv <- function(pfs_survHE, os_survHE,  choose_PFS, choose_OS, time = times, n_sim = 1, seed = 421){
+partsurv <- function(pfs_survHE, os_survHE,  choose_PFS, choose_OS, time = times, n_sim = 100, seed = 421){
   # Input
-  # pfs_survHE: survHE obj fitting pfs
-  # os_survHE : survHE obj fitting os
-  # choose_PFS: preferred PFS distribution
-  # choose_OS: preferred OS distribution
-  # time = numeric vector of time to estimate probabilities
-  # n_sim = number of PSA simulations
-    # output:
-  #  res a list w/ one entry of a data frame w/ probabilities associated w/ stable ,prog and dead.
+    # pfs_survHE: survHE obj fitting pfs
+    # os_survHE : survHE obj fitting os
+    # choose_PFS: preferred PFS distribution
+    # choose_OS: preferred OS distribution
+    # time = numeric vector of time to estimate probabilities
+    # n_sim = number of PSA simulations
+  # Output:
+    # res a list w/ one entry of a data frame w/ probabilities associated w/ stable ,prog and dead.
   set.seed(seed)
 
   deter <- ifelse(n_sim ==1,1,0)
@@ -150,15 +149,13 @@ partsurv <- function(pfs_survHE, os_survHE,  choose_PFS, choose_OS, time = times
                                nsim = n_sim, 
                                t = times)
         
-    pfs.surv <- fit_PFS$mat[[1]][,-1]
-    os.surv  <- fit_OS$mat[[1]][,-1]
-
-
+  pfs.surv <- fit_PFS$mat[[1]][,-1]
+  os.surv  <- fit_OS$mat[[1]][,-1]
   
-  sick                 <- os.surv - pfs.surv      # estimate the probability of remaining in the progressed state
-  sick[sick < 0]       <- 0                       # in cases where the probability is negative replace with zero
-  healthy              <- pfs.surv                # probability of remaining stable
-  dead                 <- 1 - os.surv             # probability of being dead
+  sick                 <- os.surv - pfs.surv  # estimate the probability of remaining in the progressed state
+  sick[sick < 0]       <- 0                   # in cases where the probability is negative replace with zero
+  healthy              <- pfs.surv            # probability of remaining stable
+  dead                 <- 1 - os.surv         # probability of being dead
   trace <- abind( healthy,
                   sick,
                   dead,rev.along = 0)

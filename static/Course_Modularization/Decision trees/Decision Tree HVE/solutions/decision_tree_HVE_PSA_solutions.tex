@@ -1,34 +1,46 @@
-\documentclass[]{article}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage[]{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\usepackage[unicode=true]{hyperref}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={PSA: Three-strategy decision tree in R - HVE},
-            pdfauthor={The DARTH workgroup},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+  pdftitle={PSA: Three-strategy decision tree in R - HVE},
+  pdfauthor={The DARTH workgroup},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -39,37 +51,37 @@
 \usepackage{framed}
 \definecolor{shadecolor}{RGB}{248,248,248}
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -79,31 +91,14 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-% set default figure placement to htbp
+% Set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
-
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
 \title{PSA: Three-strategy decision tree in R - HVE}
 \author{The DARTH workgroup}
@@ -202,7 +197,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\section{01 Load packages}\label{load-packages}
+\hypertarget{load-packages}{%
+\section{01 Load packages}\label{load-packages}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -222,7 +218,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
-\section{02 Load functions}\label{load-functions}
+\hypertarget{load-functions}{%
+\section{02 Load functions}\label{load-functions}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -230,8 +227,9 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{define-parameter-input-values}{%
 \section{03 Define parameter input
-values}\label{define-parameter-input-values}
+values}\label{define-parameter-input-values}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -256,7 +254,7 @@ values}\label{define-parameter-input-values}
 \CommentTok{# QALYs}
 \NormalTok{q_VE          <-}\StringTok{ }\DecValTok{20}    \CommentTok{# remaining QALYs for those without VE-related complications}
 \NormalTok{q_VE_comp     <-}\StringTok{ }\DecValTok{19}    \CommentTok{# remaining QALYs for those with VE-related complications}
-\NormalTok{q_loss_biopsy <-}\StringTok{ }\OperatorTok{-}\FloatTok{0.01} \CommentTok{# one-time QALY loss due to brain biopsy}
+\NormalTok{q_loss_biopsy <-}\StringTok{ }\FloatTok{-0.01} \CommentTok{# one-time QALY loss due to brain biopsy}
 
 \CommentTok{# store the parameters into a list}
 \NormalTok{l_params_all <-}\StringTok{ }\KeywordTok{list}\NormalTok{(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, }
@@ -272,8 +270,9 @@ values}\label{define-parameter-input-values}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{create-and-run-decision-tree-model}{%
 \section{04 Create and run decision tree
-model}\label{create-and-run-decision-tree-model}
+model}\label{create-and-run-decision-tree-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -379,7 +378,8 @@ model}\label{create-and-run-decision-tree-model}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{04.1 Plot the decision tree}\label{plot-the-decision-tree}
+\hypertarget{plot-the-decision-tree}{%
+\subsection{04.1 Plot the decision tree}\label{plot-the-decision-tree}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -390,8 +390,9 @@ model}\label{create-and-run-decision-tree-model}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{cost-effectiveness-analysis}{%
 \subsection{05 Cost-Effectiveness
-Analysis}\label{cost-effectiveness-analysis}
+Analysis}\label{cost-effectiveness-analysis}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -403,8 +404,9 @@ Analysis}\label{cost-effectiveness-analysis}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{plot-frontier-of-decision-tree}{%
 \subsection{05.1 Plot frontier of Decision
-Tree}\label{plot-frontier-of-decision-tree}
+Tree}\label{plot-frontier-of-decision-tree}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -412,11 +414,13 @@ Tree}\label{plot-frontier-of-decision-tree}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{deterministic-sensitivity-analysis}{%
 \section{06 Deterministic Sensitivity
-Analysis}\label{deterministic-sensitivity-analysis}
+Analysis}\label{deterministic-sensitivity-analysis}}
 
+\hypertarget{list-of-input-parameters}{%
 \subsection{06.1 List of input
-parameters}\label{list-of-input-parameters}
+parameters}\label{list-of-input-parameters}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -424,12 +428,13 @@ parameters}\label{list-of-input-parameters}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{load-decision-tree-model-function}{%
 \subsection{06.2 Load decision tree model
-function}\label{load-decision-tree-model-function}
+function}\label{load-decision-tree-model-function}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{#### We wrapped the decision tree in a function which we called calculate_ce_out }
+\CommentTok{#### We wrapped the decision tree in a function which we called calculate_ce_out }
 \CommentTok{# This function is stored in "Functions_decision_tree_HVE.R" and needes the list of parameters}
 \KeywordTok{source}\NormalTok{(}\StringTok{"Functions_decision_tree_HVE.R"}\NormalTok{)}
 \CommentTok{# Test function to see if it gives the CE results}
@@ -437,8 +442,9 @@ function}\label{load-decision-tree-model-function}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{one-way-sensitivity-analysis-owsa}{%
 \subsection{06.3 One-way sensitivity analysis
-(OWSA)}\label{one-way-sensitivity-analysis-owsa}
+(OWSA)}\label{one-way-sensitivity-analysis-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -460,7 +466,8 @@ function}\label{load-decision-tree-model-function}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{06.3.1 Plot OWSA}\label{plot-owsa}
+\hypertarget{plot-owsa}{%
+\subsection{06.3.1 Plot OWSA}\label{plot-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -471,8 +478,9 @@ function}\label{load-decision-tree-model-function}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{optimal-strategy-with-owsa}{%
 \subsection{06.3.2 Optimal strategy with
-OWSA}\label{optimal-strategy-with-owsa}
+OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -480,7 +488,8 @@ OWSA}\label{optimal-strategy-with-owsa}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{06.3.3 Tornado plot}\label{tornado-plot}
+\hypertarget{tornado-plot}{%
+\subsection{06.3.3 Tornado plot}\label{tornado-plot}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -489,8 +498,9 @@ OWSA}\label{optimal-strategy-with-owsa}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{two-way-sensitivity-analysis-twsa}{%
 \subsection{06.4 Two-way sensitivity analysis
-(TWSA)}\label{two-way-sensitivity-analysis-twsa}
+(TWSA)}\label{two-way-sensitivity-analysis-twsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -511,7 +521,8 @@ OWSA}\label{optimal-strategy-with-owsa}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{06.4.1 Plot TWSA}\label{plot-twsa}
+\hypertarget{plot-twsa}{%
+\subsection{06.4.1 Plot TWSA}\label{plot-twsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -522,8 +533,9 @@ OWSA}\label{optimal-strategy-with-owsa}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{probabilistic-sensitivity-analysis-psa}{%
 \section{07 Probabilistic Sensitivity Analysis
-(PSA)}\label{probabilistic-sensitivity-analysis-psa}
+(PSA)}\label{probabilistic-sensitivity-analysis-psa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -596,8 +608,9 @@ OWSA}\label{optimal-strategy-with-owsa}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{conduct-probabilistic-sensitivity-analysis}{%
 \subsection{07.1 Conduct probabilistic sensitivity
-analysis}\label{conduct-probabilistic-sensitivity-analysis}
+analysis}\label{conduct-probabilistic-sensitivity-analysis}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -615,8 +628,9 @@ analysis}\label{conduct-probabilistic-sensitivity-analysis}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{create-psa-object-for-dampack}{%
 \subsection{07.2 Create PSA object for
-dampack}\label{create-psa-object-for-dampack}
+dampack}\label{create-psa-object-for-dampack}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -627,7 +641,8 @@ dampack}\label{create-psa-object-for-dampack}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{07.2.1 Save PSA objects}\label{save-psa-objects}
+\hypertarget{save-psa-objects}{%
+\subsection{07.2.1 Save PSA objects}\label{save-psa-objects}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -637,8 +652,9 @@ dampack}\label{create-psa-object-for-dampack}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{create-probabilistic-analysis-graphs}{%
 \subsection{07.3 Create probabilistic analysis
-graphs}\label{create-probabilistic-analysis-graphs}
+graphs}\label{create-probabilistic-analysis-graphs}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -654,8 +670,9 @@ Vector with willingness-to-pay (WTP) thresholds.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{cost-effectiveness-scatter-plot}{%
 \subsection{07.3.1 Cost-Effectiveness Scatter
-plot}\label{cost-effectiveness-scatter-plot}
+plot}\label{cost-effectiveness-scatter-plot}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -663,8 +680,9 @@ plot}\label{cost-effectiveness-scatter-plot}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{conduct-cea-with-probabilistic-output}{%
 \subsection{07.4 Conduct CEA with probabilistic
-output}\label{conduct-cea-with-probabilistic-output}
+output}\label{conduct-cea-with-probabilistic-output}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -688,8 +706,9 @@ output}\label{conduct-cea-with-probabilistic-output}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{plot-cost-effectiveness-frontier}{%
 \subsection{07.4.1 Plot cost-effectiveness
-frontier}\label{plot-cost-effectiveness-frontier}
+frontier}\label{plot-cost-effectiveness-frontier}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -697,9 +716,10 @@ frontier}\label{plot-cost-effectiveness-frontier}
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}{%
 \subsection{07.4.2 Cost-effectiveness acceptability curves (CEACs) and
 frontier
-(CEAF)}\label{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}
+(CEAF)}\label{cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -711,8 +731,9 @@ frontier
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{expected-loss-curves-elcs}{%
 \subsection{07.4.3 Expected Loss Curves
-(ELCs)}\label{expected-loss-curves-elcs}
+(ELCs)}\label{expected-loss-curves-elcs}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -723,8 +744,9 @@ frontier
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{expected-value-of-perfect-information-evpi}{%
 \subsection{07.4.4 Expected value of perfect information
-(EVPI)}\label{expected-value-of-perfect-information-evpi}
+(EVPI)}\label{expected-value-of-perfect-information-evpi}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -734,8 +756,9 @@ frontier
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{expected-value-of-partial-perfect-information-evppi}{%
 \subsection{07.4.5 Expected value of partial perfect information
-(EVPPI)}\label{expected-value-of-partial-perfect-information-evppi}
+(EVPPI)}\label{expected-value-of-partial-perfect-information-evppi}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -745,7 +768,7 @@ frontier
                     \DataTypeTok{outcome =} \KeywordTok{c}\NormalTok{(}\StringTok{"nmb"}\NormalTok{),}
                     \DataTypeTok{type =} \KeywordTok{c}\NormalTok{(}\StringTok{"gam"}\NormalTok{, }\StringTok{"poly"}\NormalTok{),}
                     \DataTypeTok{poly.order =} \DecValTok{2}\NormalTok{,}
-                    \DataTypeTok{k =} \OperatorTok{-}\DecValTok{1}\NormalTok{,}
+                    \DataTypeTok{k =} \DecValTok{-1}\NormalTok{,}
                     \DataTypeTok{pop =} \DecValTok{1}
 \NormalTok{)}
 

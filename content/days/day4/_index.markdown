@@ -1,7 +1,7 @@
 ---
 title: Dec 9 Agenda
 author: ''
-date: "2020-12-08"
+date: "2020-12-09"
 slug: day4
 categories: []
 tags: []
@@ -31,9 +31,8 @@ Here is a tentative timetable for this day:
 | 4:00 – 4:30pm | Go over and discuss solutions to exercises |
 | 4:30 – 5:20pm | *Demonstration of different methods* |
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "476082616") -->
-<!-- ``` -->
+<!--html_preserve-->{{% vimeo "489063489" %}}<!--/html_preserve-->
 
+<!--html_preserve-->{{% vimeo "489099724" %}}<!--/html_preserve-->

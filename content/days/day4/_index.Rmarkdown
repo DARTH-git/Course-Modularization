@@ -31,9 +31,12 @@ Here is a tentative timetable for this day:
 | 4:00 – 4:30pm | Go over and discuss solutions to exercises |
 | 4:30 – 5:20pm | *Demonstration of different methods* |
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "476082616") -->
-<!-- ``` -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "489063489")
+```
 
+```{r, echo=F}
+blogdown::shortcode("vimeo", "489099724")
+```

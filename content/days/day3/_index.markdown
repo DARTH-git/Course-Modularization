@@ -1,7 +1,7 @@
 ---
 title: Dec 7 Agenda
 author: ''
-date: "2020-12-08"
+date: "2020-12-09"
 slug: day3
 categories: []
 tags: []
@@ -32,7 +32,7 @@ Here is a tentative timetable for this day:
 
 Before Dec 9, please:
 
-- Watch [Partitioned Survival Analysis](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day4/videos_microsim/) lecture videos
+- Watch [Survival Analysis](https://darth-course-zorginstituut-2020-a5630a.netlify.app/days/day4/videos_microsim/) lecture videos
 
 - Read ["Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. Pharmacoeconomics. 2019;37(11):1329-1339. doi:10.1007/s40273-019-00837-x"](https://rdcu.be/bRP5h)
 

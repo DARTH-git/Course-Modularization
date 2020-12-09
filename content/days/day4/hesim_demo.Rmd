@@ -1,0 +1,16 @@
+---
+title: Other software 
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Other software
+menu:
+  day4:
+    weight: 6
+---
+  
+## Building decision models in R with hesim
+  
+[Download demo](../../../Course_Modularization/Other software/Markov_3state_hesim.Rmd)
+
+[Download `Functions_markov_3state.R`](../../../Course_Modularization/Other software/Functions_markov_3state.R)

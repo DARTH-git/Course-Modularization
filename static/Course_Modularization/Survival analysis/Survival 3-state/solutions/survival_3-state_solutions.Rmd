@@ -1,5 +1,5 @@
 ---
-title: ' Simple 3-state Partitioned Survival model in R'
+title: 'Simple 3-state Partitioned Survival model in R'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -78,14 +78,14 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "
 # 02 Load functions
 
 ```{r}
-source("survival_functions_ZIN.R")
+source("survival_functions.R")
 ```
 
 # 03 Input model parameters
 
 ```{r}
 v_n       <- c("healthy", "sick", "dead")  # state names
-n_i       <- 50000                         # number of simulations 
+
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
 set.seed(2020)                             # set the seed
@@ -149,7 +149,8 @@ ggsurvplot(
 
 ```{r}
 # R package flexsurv allows parametric fitting of curves
-fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data,  dist = "weibull")
+fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data,
+                        dist = "weibull")
 plot(fit_weib)
 
 # fit all parametric models to the data and extract the AIC/BIC. 
@@ -169,19 +170,35 @@ choose_PFS <- "Weibull (AFT)"
 choose_OS  <- "Weibull (AFT)"
 
 # construct a partitioned survival model out of the fitted models
-m_M_PSM <- partsurv(fit_PFS, fit_OS, time = times, choose_PFS = choose_PFS,
-                    choose_OS = choose_OS, n_sim = 100)
+m_M_PSM <- partsurv( fit_PFS, fit_OS, time = times,choose_PFS = choose_PFS,
+                     choose_OS = choose_OS)
+
+# plot the results of PSM and the true data 
+m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
+matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
+        main = "Trace comparisons",xlim=c(0,25))
+matlines(times, m_M_PSM$trace, col = 4, lty = 1)
+legend("right", c("True Data","PSM"), col = c(1,4), lty = c(1,1), bty= "n")
+ 
+# construct a PSA  partitioned survival model out of the fitted models
+m_M_PSM_psa <- partsurv(fit_PFS, fit_OS, time = times, choose_PFS = choose_PFS,
+                        choose_OS = choose_OS, n_sim = 1000)
 
 # plot the results of PSM and the trace
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
-matplot(times, m_M_data, type='l', lty = 1, col = 1, 
-        ylab = "Proportion of cohort", xlab = "Time",
-        main = "Trace comparisons", xlim=c(0,25))
-# matlines(times, m_M_PSM$trace,  col = 4, lty = 1) # Uncomment if want to use deterministic
-matlines(times, m_M_PSM$Mean, col = 4, lty = 1)
-matlines(times, m_M_PSM$CI[,,"low"], col = 4, lty = 2)
-matlines(times, m_M_PSM$CI[,,"high"], col = 4, lty = 2)
-legend("right", c("True Data","PSM", "Low CI", "High CI"),
-        col = c(1,4,4,4), lty = c(1,1,2,2), bty= "n")
+matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time", main = "Trace comparisons",xlim=c(0,25))
+ matlines(times, m_M_PSM_psa$Mean, col = 4, lty = 1)
+ matlines(times, m_M_PSM_psa$CI[,,"low"], col = 4, lty = 2)
+ matlines(times, m_M_PSM_psa$CI[,,"high"], col = 4, lty = 2)
+ legend("right", c("True Data","PSM", "Low CI", "High CI"),
+         col = c(1,4,4,4), lty = c(1,1,2,2), bty= "n")
+```
+
+Let's now assume that we wanted to extract the monthly transition probabilities from  the Weibull OS curve: we could use the convenient fact that $tp(t) = 1- \frac{S(t)}{S(t-1)}$
+
+```{r}
+# create survival probabilities using trans_prob
+p_death <- trans_prob(fit_OS,choose_dist = "Weibull (AFT)", times=times)
+plot(p_death$times, p_death$t.p, type = 'l')
 ```
 

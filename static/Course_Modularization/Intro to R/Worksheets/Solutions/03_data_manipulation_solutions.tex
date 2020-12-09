@@ -257,10 +257,6 @@ You can find out the current working directory using:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] "C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/static/Course_Modularization/Intro to R/Worksheets/Solutions"
-\end{verbatim}
-
 It is possible to change the \emph{working directory}, using the command
 \texttt{setwd()} and specifying the \emph{path} to a specific folder.
 You can also set the working directory to your current file location
@@ -313,42 +309,11 @@ logical expressions from the table above.
 
 \CommentTok{# Your turn}
 \NormalTok{gender }\OperatorTok{==}\StringTok{ "male"}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1]  TRUE FALSE FALSE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{gender }\OperatorTok{!=}\StringTok{ "male"}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE  TRUE  TRUE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{age }\OperatorTok{<=}\StringTok{ }\DecValTok{40}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{age }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{30}\NormalTok{, }\DecValTok{31}\NormalTok{, }\DecValTok{32}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
 
 When comparing a vector to a single item, the logical expression returns
 TRUE or FALSE for each item in the vector depending on the logical
@@ -362,22 +327,9 @@ vectors and logical comparisons:
 \CommentTok{# Vectors and Relational Operators}
 \NormalTok{genders <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{)}
 \NormalTok{genders }\OperatorTok{==}\StringTok{ "male"}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1]  TRUE FALSE  TRUE FALSE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{) }\OperatorTok{>}\StringTok{ }\DecValTok{2}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE FALSE  TRUE  TRUE
-\end{verbatim}
 
 Comparing vectors of the same length compares the \(i^{th}\) element in
 the first vector to the \(i^{th}\) element in the second vector.
@@ -391,10 +343,6 @@ vectors and logical comparisons:
 \NormalTok{genders }\OperatorTok{==}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Bridge"}\NormalTok{, }\StringTok{"Building"}\NormalTok{, }\StringTok{"male"}\NormalTok{, }\StringTok{"Road"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE FALSE  TRUE FALSE
-\end{verbatim}
 
 We can combine the relational operators with \texttt{R}`s logical
 operators of 'and' (\texttt{\&}) and `or' (\texttt{\textbar{}}) to
@@ -416,42 +364,11 @@ understand \texttt{\&} and \texttt{\textbar{}}:
 \begin{Highlighting}[]
 \CommentTok{# Your turn}
 \OtherTok{TRUE} \OperatorTok{|}\StringTok{ }\OtherTok{FALSE}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \OtherTok{TRUE} \OperatorTok{&}\StringTok{ }\OtherTok{FALSE}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \OtherTok{TRUE} \OperatorTok{|}\StringTok{ }\OtherTok{TRUE}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \OtherTok{FALSE} \OperatorTok{&}\StringTok{ }\OtherTok{FALSE}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
 
 \textbf{Subselecting rows or columns in a dataset}
 
@@ -484,16 +401,6 @@ following code:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP
-## 1   2448   1     209  52   121
-## 2   6238   2     237  58   108
-## 3  11252   2      NA  58   155
-## 4  11263   2     220  55   180
-## 5  12806   2     320  57   110
-## 6  14367   1     280  64   168
-\end{verbatim}
-
 Remember, the Framingham dataset is stored in an \emph{object} called
 \texttt{data} that we loaded earlier.
 
@@ -511,16 +418,6 @@ only contains the first 10 columns of the Framingham dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES
-## 1   2448   1     209  52   121    66        0       0    NA        0
-## 2   6238   2     237  58   108    66        0       0 28.50        0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0
-## 4  11263   2     220  55   180   106        0       0 31.17        1
-## 5  12806   2     320  57   110    46        1      30 22.02        0
-## 6  14367   1     280  64   168   100        0       0 25.72        0
-\end{verbatim}
-
 The \texttt{data} \emph{object} is stored by \texttt{R} as a data frame.
 A data frame has columns that contains the different variables and rows
 that contain information about each subject. In the above code, we
@@ -535,15 +432,6 @@ e.g.~
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP
-## 1   2448   1     209  52   121
-## 2   6238   2     237  58   108
-## 3  11252   2      NA  58   155
-## 4  11263   2     220  55   180
-## 5  12806   2     320  57   110
-\end{verbatim}
-
 Subselects the first five columns from the first five subjects only and
 stores them in a variable called \texttt{data1}.
 
@@ -555,16 +443,6 @@ You can also subselect columns and rows by their name, e.g.
 \KeywordTok{head}\NormalTok{(data2)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   1  52    NA       69      92
-## 2   2  58 28.50       80      71
-## 3   2  58 24.61       74      NA
-## 4   2  55 31.17       86      81
-## 5   2  57 22.02       75      87
-## 6   1  64 25.72       92      82
-\end{verbatim}
 
 \textbf{EXERCISE 7} Create a new dataset named \texttt{data2\_new} that
 contains the first 10 subjects and the subject ID, sex, age, bmi, heart
@@ -591,16 +469,6 @@ glance of the new dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   2448   1  52    NA       69      92
-## 2   6238   2  58 28.50       80      71
-## 3  11252   2  58 24.61       74      NA
-## 4  11263   2  55 31.17       86      81
-## 5  12806   2  57 22.02       75      87
-## 6  14367   1  64 25.72       92      82
-\end{verbatim}
-
 It is also possible to subset with logical expressions and select the
 rows or columns of a data frame that fulfils a certain condition. For
 example, we can extract and present all rows of our \texttt{data} where
@@ -611,37 +479,6 @@ the participant is older than 30.
 \KeywordTok{head}\NormalTok{(data[data}\OperatorTok{$}\NormalTok{AGE }\OperatorTok{>}\StringTok{ }\DecValTok{30}\NormalTok{,])}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP
-## 1     6438    6438     8766    6438    8766    8766
-## 2     8766    8766     8766    8766    8766    8766
-## 3     8766    8766     8766    8766    8766    4285
-## 4     5719    5719     8766    5719    8766       0
-## 5     8766    8766     8766    8766    8766    8679
-## 6     8766    8766     8766    8766    8766       0
-\end{verbatim}
 
 \begin{itemize}
 \tightlist
@@ -665,16 +502,6 @@ subjects whose heart rate is greater than 100. Display the first 6 rows.
 \KeywordTok{head}\NormalTok{(data3)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##     RANDID SEX AGE   BMI HEARTRTE
-## 13   36459   1  53 26.43      105
-## 50  160953   2  75 25.31      110
-## 51  162207   2  74 31.45      120
-## 64  199546   2  73 28.69      105
-## 96  290692   2  59 21.10      104
-## 110 359422   2  69 33.11      110
-\end{verbatim}
 
 \hypertarget{identifying-and-replacing-data}{%
 \section{3. Identifying and replacing
@@ -701,10 +528,6 @@ are complete. For example:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] FALSE FALSE FALSE  TRUE FALSE  TRUE
-\end{verbatim}
-
 If you want to subselect subjects without missing data for heart rate.
 You could use the function \texttt{is.na()} to identify the subjects
 that have no missing values in their heart rate variable and exclude
@@ -727,16 +550,6 @@ subjects and the \texttt{RANDID} and \texttt{GLUCOSE} columns.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##    RANDID GLUCOSE
-## 3   11252      NA
-## 15  43522      NA
-## 26  77492      NA
-## 29  83398      NA
-## 33  95148      NA
-## 42 125413      NA
-\end{verbatim}
-
 \texttt{R} also has a function \texttt{na.omit()}, that removes all
 observations with missing values in any of the columns.
 
@@ -754,15 +567,6 @@ on a dataset.
 \StringTok{                }\NormalTok{(}\KeywordTok{is.na}\NormalTok{(data}\OperatorTok{$}\NormalTok{GLUCOSE) }\OperatorTok{==}\StringTok{ }\OtherTok{FALSE}\NormalTok{), }
               \KeywordTok{c}\NormalTok{(}\StringTok{"HEARTRTE"}\NormalTok{, }\StringTok{"GLUCOSE"}\NormalTok{)]}
 \KeywordTok{nrow}\NormalTok{(data3)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 2701
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{# 2nd way, using na.omit()}
 \CommentTok{# na.omit function omits NAs from your dataset.}
 \NormalTok{data_no_missing <-}\StringTok{ }\NormalTok{data[, }\KeywordTok{c}\NormalTok{(}\StringTok{'HEARTRTE'}\NormalTok{, }\StringTok{'GLUCOSE'}\NormalTok{)]}
@@ -770,10 +574,6 @@ on a dataset.
 \KeywordTok{nrow}\NormalTok{(data_no_missing)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 2701
-\end{verbatim}
 
 \textbf{Identifying and replacing values in a dataset}
 
@@ -843,10 +643,6 @@ the level.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] "female" "male"
-\end{verbatim}
-
 \hypertarget{calculating-useful-statistics}{%
 \section{4. Calculating useful
 statistics}\label{calculating-useful-statistics}}
@@ -857,22 +653,9 @@ of your Framingham sample. You can easily do this by typing:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{mean}\NormalTok{(data1}\OperatorTok{$}\NormalTok{AGE)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 56
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{var}\NormalTok{(data1}\OperatorTok{$}\NormalTok{AGE)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 6.5
-\end{verbatim}
 
 \textbf{EXERCISE 12} Calculate the mean and variance of BMI. Hint: most
 statistical functions in \texttt{R} does not automatically exclude
@@ -883,22 +666,9 @@ missing values. If your variable has missing values, you need to specify
 \begin{Highlighting}[]
 \CommentTok{# Your turn}
 \KeywordTok{mean}\NormalTok{(data}\OperatorTok{$}\NormalTok{BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 25.89478
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{var}\NormalTok{(data}\OperatorTok{$}\NormalTok{BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 16.65175
-\end{verbatim}
 
 There are several functions in \texttt{R} to compute different
 descriptive statistics:
@@ -931,11 +701,6 @@ what types of statistics it gives.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-##   14.43   23.19   25.46   25.89   28.06   56.80      17
-\end{verbatim}
-
 We can use subsetting to calculate summary statistics for different
 subgroups in our data. For example, we can compute the mean and variance
 of age for men and women:
@@ -944,42 +709,11 @@ of age for men and women:
 \begin{Highlighting}[]
 \CommentTok{# Your turn}
 \KeywordTok{mean}\NormalTok{(data}\OperatorTok{$}\NormalTok{AGE[data}\OperatorTok{$}\NormalTok{SEX_char }\OperatorTok{==}\StringTok{ "male"}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 60.34895
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{mean}\NormalTok{(data}\OperatorTok{$}\NormalTok{AGE[data}\OperatorTok{$}\NormalTok{SEX_char }\OperatorTok{==}\StringTok{ "female"}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 60.8694
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{var}\NormalTok{(data}\OperatorTok{$}\NormalTok{AGE[data}\OperatorTok{$}\NormalTok{SEX_char }\OperatorTok{==}\StringTok{ "male"}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 67.10037
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{var}\NormalTok{(data}\OperatorTok{$}\NormalTok{AGE[data}\OperatorTok{$}\NormalTok{SEX_char }\OperatorTok{==}\StringTok{ "female"}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 70.04107
-\end{verbatim}
 
 \textbf{EXERCISE 14} Calculate the median and max of BMI for those who
 are over 60 years old with a heart rate of over 100 beats/min.
@@ -989,33 +723,10 @@ are over 60 years old with a heart rate of over 100 beats/min.
 \CommentTok{# Your turn}
 \NormalTok{BMI_short <-}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{BMI[data1}\OperatorTok{$}\NormalTok{AGE }\OperatorTok{>}\StringTok{ }\DecValTok{60} \OperatorTok{&}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{HEARTRTE }\OperatorTok{>}\StringTok{ }\DecValTok{100}\NormalTok{]}
 \KeywordTok{median}\NormalTok{(BMI_short, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] NA
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{max}\NormalTok{(BMI_short, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] -Inf
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{summary}\NormalTok{(BMI_short)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## 
-\end{verbatim}
 
 We can calculate the correlation between two or more variables using the
 \texttt{cor()} function. There are three methods for calculating
@@ -1030,10 +741,6 @@ blood pressure, we use:
 \KeywordTok{cor}\NormalTok{(data}\OperatorTok{$}\NormalTok{AGE, data}\OperatorTok{$}\NormalTok{SYSBP)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 0.3420412
-\end{verbatim}
 
 If you want to calculate the correlations across several continuous
 variables in your dataset, the \texttt{cor()} function can be called on
@@ -1054,15 +761,6 @@ This can be achieved using the option
 \KeywordTok{cor}\NormalTok{(cont_vars, }\DataTypeTok{use =} \StringTok{"pairwise.complete.obs"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##                  AGE         BMI   HEARTRTE    GLUCOSE     SYSBP
-## AGE       1.00000000 -0.02845066 0.03236608 0.09174635 0.3420412
-## BMI      -0.02845066  1.00000000 0.05577924 0.06968376 0.2177946
-## HEARTRTE  0.03236608  0.05577924 1.00000000 0.16130869 0.1593737
-## GLUCOSE   0.09174635  0.06968376 0.16130869 1.00000000 0.1455470
-## SYSBP     0.34204125  0.21779458 0.15937365 0.14554702 1.0000000
-\end{verbatim}
 
 \hypertarget{data-manipulation-with-dplyr}{%
 \section{\texorpdfstring{5. Data manipulation with
@@ -1114,37 +812,6 @@ rate of over 100 beats/min:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##    RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   36459   1     162  53 152.5   101        0       0 26.43        0      0
-## 2  575116   1     209  58 121.0    77        0       0 28.07        0      1
-## 3  638453   1     250  53 160.0    98        1      40 22.48        0      1
-## 4  984473   1      NA  55 137.0    89        1      70 29.00        0      1
-## 5 1044236   1     214  62 181.0    90        0       0 31.51        1      0
-## 6 2067160   1     141  75 152.0   102        1      25 26.09        1     NA
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1      105      78    2       0      0      0        0       1 4411      3   31
-## 2      108     131    4       0      0      0        0       1 4367      3   41
-## 3      110      92    2       0      0      0        0       1 4423      3   60
-## 4      110      84    2       0      0      0        0       1 4393      3   NA
-## 5      102     151    1       0      0      0        0       1 4359      3   51
-## 6      102     172    2       0      0      0        0       1 4214      3   27
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1   91     0      0      0       0      0      0   0        1   8766   8766
-## 2  168     0      1      0       0      1      1   1        1   6236   8766
-## 3  190     0      0      0       0      0      0   0        1   8766   8766
-## 4   NA     1      0      0       1      1      0   1        1   4653   4653
-## 5  163     0      0      0       0      0      0   0        1   8766   8766
-## 6   80     1      0      0       0      1      0   1        1   6819   6819
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     8766    8766     8766    8766    8766    1469     male Not a diabetic
-## 2     8766    6236     8313    6236    8766       0     male Not a diabetic
-## 3     8766    8766     8766    8766    8766     735     male Not a diabetic
-## 4     4653    4653     4653    4653    4653       0     male Not a diabetic
-## 5     8766    8766     8766    8766    8766       0     male       Diabetic
-## 6     6819    6289     6819    6289    6819    1456     male       Diabetic
-\end{verbatim}
-
 \textbf{EXERCISE 16} Select all female participants (represented as a 2
 in the \texttt{SEX} variable) in the Framingham dataset who are over 50
 years old and have a glucose measurement of over 100 mg/dL. Only display
@@ -1157,37 +824,6 @@ the first 6 observations.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1  23727   2     159  53   124    78        0       0 26.62        0      0
-## 2  40435   2     226  54   126    75        1      40 21.59        0      0
-## 3  43770   2     283  64   159    69        0       0 32.93        1      0
-## 4  94510   2     293  53   127    77        1       3 25.68        0      0
-## 5  97026   2     206  61   112    80        0       0 21.96        0     NA
-## 6 112469   2     224  74   125    68        0       0 27.35        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       68     135    3       0      0      0        0       1 4503      3   53
-## 2       85     102    2       0      0      0        0       0 4372      3   84
-## 3       70     230    1       0      0      0        0       1 4375      3   45
-## 4       90     115    2       0      0      0        0       0 4366      3   52
-## 5       63     138    2       0      0      0        0       0 4263      3   84
-## 6       80     109    1       0      0      0        0       1 4332      3   35
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  106     1      0      0       0      0      0   0        1   5592   5592
-## 2  142     0      0      0       0      0      0   0        1   8766   8766
-## 3  238     1      0      1       1      1      0   1        1   6410   6384
-## 4  241     0      0      0       0      0      0   0        0   8766   8766
-## 5  102     0      0      0       0      0      0   0        0   8766   8766
-## 6  189     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     5592    5592     5592    5592    5592       0   female Not a diabetic
-## 2     8766    8766     8766    8766    8766    5933   female Not a diabetic
-## 3     6384    6384     6410    6384    6410     723   female       Diabetic
-## 4     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 5     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 6     8766    8766     8766    8766    8766    1463   female Not a diabetic
-\end{verbatim}
-
 \texttt{select()} allows you to select variables from a dataset based on
 the variable names. To select \texttt{SEX}, \texttt{AGE}, \texttt{BMI}
 \texttt{HEARTRTE} and \texttt{GLUCCOSE} from the Framingham dataset, the
@@ -1199,16 +835,6 @@ following command is used:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   1  52    NA       69      92
-## 2   2  58 28.50       80      71
-## 3   2  58 24.61       74      NA
-## 4   2  55 31.17       86      81
-## 5   2  57 22.02       75      87
-## 6   1  64 25.72       92      82
-\end{verbatim}
-
 It is also possible to remove variables from a dataset by including
 \texttt{-}. To remove our newly created \texttt{DIABETES} variable from
 \texttt{data} you can type:
@@ -1218,37 +844,6 @@ It is also possible to remove variables from a dataset by including
 \KeywordTok{head}\NormalTok{(}\KeywordTok{select}\NormalTok{(data, }\OperatorTok{-}\NormalTok{DIABETES))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI BPMEDS HEARTRTE
-## 1   2448   1     209  52   121    66        0       0    NA      0       69
-## 2   6238   2     237  58   108    66        0       0 28.50      0       80
-## 3  11252   2      NA  58   155    90        1      30 24.61      0       74
-## 4  11263   2     220  55   180   106        0       0 31.17      1       86
-## 5  12806   2     320  57   110    46        1      30 22.02      0       75
-## 6  14367   1     280  64   168   100        0       0 25.72      0       92
-##   GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC LDLC
-## 1      92    4       0      0      0        0       0 4628      3   31  178
-## 2      71    2       0      0      0        0       0 4344      3   54  141
-## 3      NA    3       0      0      0        0       1 4285      3   NA   NA
-## 4      81    2       0      0      0        0       1 4351      3   46  135
-## 5      87    2       0      0      0        0       0 4289      3   34  286
-## 6      82    1       0      0      0        0       1 4438      3   44  236
-##   DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI TIMEMIFC
-## 1     0      0      1       1      1      0   1        0   8766   6438     6438
-## 2     0      0      0       0      0      0   0        0   8766   8766     8766
-## 3     0      0      0       0      0      0   0        1   8766   8766     8766
-## 4     0      0      0       1      1      0   1        1   8766   8766     5719
-## 5     0      0      0       0      0      0   0        1   8766   8766     8766
-## 6     0      0      0       0      0      0   0        1   8766   8766     8766
-##   TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1    6438     8766    6438    8766    8766     male Not a diabetic
-## 2    8766     8766    8766    8766    8766   female Not a diabetic
-## 3    8766     8766    8766    8766    4285   female Not a diabetic
-## 4    5719     8766    5719    8766       0   female       Diabetic
-## 5    8766     8766    8766    8766    8679   female Not a diabetic
-## 6    8766     8766    8766    8766       0     male Not a diabetic
-\end{verbatim}
 
 Be careful, once you remove a variable from a dataset you cannot recover
 it. Therefore, you should usually make a copy of the original dataset
@@ -1263,44 +858,6 @@ command creates a new variable that is the logarithmic transformation of
 \KeywordTok{head}\NormalTok{(}\KeywordTok{mutate}\NormalTok{(data, }\DataTypeTok{log_AGE =} \KeywordTok{log}\NormalTok{(AGE)))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     6438    6438     8766    6438    8766    8766     male Not a diabetic
-## 2     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 3     8766    8766     8766    8766    8766    4285   female Not a diabetic
-## 4     5719    5719     8766    5719    8766       0   female       Diabetic
-## 5     8766    8766     8766    8766    8766    8679   female Not a diabetic
-## 6     8766    8766     8766    8766    8766       0     male Not a diabetic
-##    log_AGE
-## 1 3.951244
-## 2 4.060443
-## 3 4.060443
-## 4 4.007333
-## 5 4.043051
-## 6 4.158883
-\end{verbatim}
 
 \textbf{EXERCISE 17} Add an additional column to the dataset that is a
 logarithmic transformation of \texttt{HEARTRTE}. Display the age, log of
@@ -1323,16 +880,6 @@ overwrite the original dataset the same way. Without using
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   AGE  log_AGE HEARTRTE log_HEARTRTE
-## 1  52 3.951244       69     4.234107
-## 2  58 4.060443       80     4.382027
-## 3  58 4.060443       74     4.304065
-## 4  55 4.007333       86     4.454347
-## 5  57 4.043051       75     4.317488
-## 6  64 4.158883       92     4.521789
-\end{verbatim}
-
 When a variable is created, it becomes instantly available to use in the
 same \texttt{mutate()} function to create new variables. The following
 command takes the \texttt{log()} of \texttt{AGE} and then taking the
@@ -1345,44 +892,6 @@ value.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     6438    6438     8766    6438    8766    8766     male Not a diabetic
-## 2     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 3     8766    8766     8766    8766    8766    4285   female Not a diabetic
-## 4     5719    5719     8766    5719    8766       0   female       Diabetic
-## 5     8766    8766     8766    8766    8766    8679   female Not a diabetic
-## 6     8766    8766     8766    8766    8766       0     male Not a diabetic
-##    log_AGE AGE_new
-## 1 3.951244      52
-## 2 4.060443      58
-## 3 4.060443      58
-## 4 4.007333      55
-## 5 4.043051      57
-## 6 4.158883      64
-\end{verbatim}
-
 \textbf{EXERCISE 18} Multiply \texttt{BMI} by 2 and revert the
 muliplication to return the orginal \texttt{BMI} value. Only display the
 first 6 observations and the two BMI variables.
@@ -1394,16 +903,6 @@ first 6 observations and the two BMI variables.
                    \DataTypeTok{BMI =}\NormalTok{ BMI_twice }\OperatorTok{/}\StringTok{ }\DecValTok{2}\NormalTok{), BMI_twice, BMI))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   BMI_twice   BMI
-## 1        NA    NA
-## 2     57.00 28.50
-## 3     49.22 24.61
-## 4     62.34 31.17
-## 5     44.04 22.02
-## 6     51.44 25.72
-\end{verbatim}
 
 \texttt{summarise()} creates a summary of a dataset based on a set of
 functions provided. It returns a new dataset with columns for each
@@ -1418,11 +917,6 @@ Framingham dataset, we would use the following command:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   mean_AGE variance_AGE
-## 1 60.64818     68.83633
-\end{verbatim}
-
 \textbf{EXERCISE 19} Compute the mean and variance of \texttt{BMI} for
 the Framingham dataset.
 
@@ -1432,11 +926,6 @@ the Framingham dataset.
 \KeywordTok{summarise}\NormalTok{(data, }\DataTypeTok{mean_BMI =} \KeywordTok{mean}\NormalTok{(BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{variance_BMI =} \KeywordTok{var}\NormalTok{(BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   mean_BMI variance_BMI
-## 1 25.89478     16.65175
-\end{verbatim}
 
 \textbf{EXERCISE 20} Calculate the mean and variance of \texttt{BMI}
 whilst removing the missing values.
@@ -1448,11 +937,6 @@ whilst removing the missing values.
           \DataTypeTok{variance_BMI =} \KeywordTok{var}\NormalTok{(BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##   mean_BMI variance_BMI
-## 1 25.89478     16.65175
-\end{verbatim}
 
 We can create subgroups in our datasets, to calculate summary measures
 for different patient subgroups. Firstly, we create the groups using the
@@ -1473,14 +957,6 @@ and variance of \texttt{AGE} for men and women.
 \KeywordTok{summarise}\NormalTok{(data_grouped, }\DataTypeTok{mean_AGE =} \KeywordTok{mean}\NormalTok{(AGE), }\DataTypeTok{variance_AGE =} \KeywordTok{var}\NormalTok{(AGE))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 3
-##   SEX_char mean_AGE variance_AGE
-##   <fct>       <dbl>        <dbl>
-## 1 female       60.9         70.0
-## 2 male         60.3         67.1
-\end{verbatim}
 
 \textbf{EXERCISE 21} Group the data by \texttt{DIABETES\_char} and
 estimate the mean, median, variance and standard deviation of `BMI' for
@@ -1505,14 +981,6 @@ diabetic and non-diabetic groups. Display the summary.
           \DataTypeTok{sd_BMI =} \KeywordTok{sd}\NormalTok{(BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 5
-##   DIABETES_char  mean_BMI median_BMI variance_BMI sd_BMI
-##   <chr>             <dbl>      <dbl>        <dbl>  <dbl>
-## 1 Diabetic           27.2       26.2         27.5   5.24
-## 2 Not a diabetic     25.8       25.4         15.6   3.95
-\end{verbatim}
 
 We can also group and summarize using multiple variables. This creates a
 summary for each unique subgroup combination of the variables. For
@@ -1543,17 +1011,6 @@ the above 4 subgroups.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## # A tibble: 4 x 4
-## # Groups:   SEX_char [2]
-##   SEX_char DIABETES_char  mean_AGE variance_AGE
-##   <fct>    <chr>             <dbl>        <dbl>
-## 1 female   Diabetic           64.8         65.5
-## 2 female   Not a diabetic     60.6         69.2
-## 3 male     Diabetic           62.6         63.4
-## 4 male     Not a diabetic     60.1         67.0
-\end{verbatim}
-
 \hypertarget{data-manipulation-with-pipe}{%
 \section{\texorpdfstring{6. Data manipulation with
 \texttt{pipe}}{6. Data manipulation with pipe}}\label{data-manipulation-with-pipe}}
@@ -1579,10 +1036,6 @@ holder for the object on the left-hand side.
 \NormalTok{data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ncol}\NormalTok{(.) }
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] 41
-\end{verbatim}
 
 The benefits are more apparent when you have a bigger series of
 operations to be carried out sequentially.
@@ -1618,16 +1071,6 @@ is optional.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   RANDID AGE
-## 1  14367  64
-## 2  16799  62
-## 3  43770  64
-## 4  45464  64
-## 5  55965  72
-## 6  66472  72
-\end{verbatim}
-
 \textbf{EXERCISE 23} Subselect subjects with a heart rate of over 80
 beats/min, and among them, only keep the ones with a glucose measure of
 over 200 mg/dL. Then, only keep the ones with a BMI value. Finally,
@@ -1646,16 +1089,6 @@ first 6 subjects.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##    RANDID HEARTRTE GLUCOSE   BMI
-## 1  276073       96     265 25.77
-## 2 1304801       94     203 31.76
-## 3 1842886       90     206 22.31
-## 4 2055792      100     334 29.29
-## 5 2483517       84     380 22.58
-## 6 2976595       94     333 26.92
-\end{verbatim}
-
 The following code gives the mean BMI stratified by sex for those over
 60 years old.
 
@@ -1667,14 +1100,6 @@ The following code gives the mean BMI stratified by sex for those over
 \StringTok{     }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{Avg_BMI =} \KeywordTok{mean}\NormalTok{(BMI, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 2
-##   SEX_char Avg_BMI
-##   <fct>      <dbl>
-## 1 female      25.9
-## 2 male        25.6
-\end{verbatim}
 
 \textbf{EXTENSION EXERCISE} Give the mean, median, variance and standard
 deviation of systolic blood pressure, stratified by prevalent stroke
@@ -1688,22 +1113,9 @@ returns the 3rd argument when it is not. Try the following code:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{ifelse}\NormalTok{(}\DecValTok{2} \OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{, }\StringTok{'Correct'}\NormalTok{, }\StringTok{'Incorrect'}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "Correct"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{ifelse}\NormalTok{(}\DecValTok{1} \OperatorTok{>}\StringTok{ }\DecValTok{10}\NormalTok{, }\StringTok{'Right'}\NormalTok{, }\StringTok{'Wrong'}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] "Wrong"
-\end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1721,13 +1133,5 @@ returns the 3rd argument when it is not. Try the following code:
                \DataTypeTok{sd_SYSBP =} \KeywordTok{sd}\NormalTok{(SYSBP, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 5
-##   PREVSTRK_char mean_SYSBP median_SYSBP variance_SYSBP sd_SYSBP
-##   <fct>              <dbl>        <dbl>          <dbl>    <dbl>
-## 1 Yes                 159           155           542.     23.3
-## 2 No                  139.          135           571.     23.9
-\end{verbatim}
 
 \end{document}

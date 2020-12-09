@@ -1,29 +1,29 @@
 ---
-title: Microsimulation Models - Exercises
+title: Survival Analysis - Exercises
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Microsim exercises
-# menu:
-#   day4:
-#     weight: 5
+linktitle: Survival Analysis exercises
+menu:
+  day4:
+    weight: 5
 ---
 
-## Exercise worksheet (Sick-Sicker model)
+## Exercise worksheet (Markov 3-state Sick-Sicker model)
 
-[Download exercise worksheet](../../../rmds/microsim_sick-sicker_time_exercise.pdf)
-
-## Data for the exercise
-
-[Download `mortProb_age.csv`](../../../rmds/mortProb_age.csv)
-
-[Download `MyPopulation-AgeDistribution.csv`](../../../rmds/MyPopulation-AgeDistribution.csv)
+[Download exercise worksheet](../../../Course_Modularization/Survival Analysis/Survival Sick-Sicker/exercise worksheets/Markov_3_state_Survival_exercise.html)
 
 ## Student template
 
-[Download student template](../../../rmds/microsim_Sick-Sicker_time_template.Rmd)
+[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+
+[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+
+[Download student template](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/microsim_Sick-Sicker_time_solutions.Rmd)
+Solutions will be posted later.
+
+
 

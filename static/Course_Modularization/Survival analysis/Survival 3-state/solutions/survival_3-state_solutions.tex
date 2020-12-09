@@ -202,7 +202,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"survival_functions_ZIN.R"}\NormalTok{)}
+\KeywordTok{source}\NormalTok{(}\StringTok{"survival_functions.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -212,7 +212,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{v_n       <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"healthy"}\NormalTok{, }\StringTok{"sick"}\NormalTok{, }\StringTok{"dead"}\NormalTok{)  }\CommentTok{# state names}
-\NormalTok{n_i       <-}\StringTok{ }\DecValTok{50000}                         \CommentTok{# number of simulations }
+
 \NormalTok{c_l       <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\DecValTok{12}                        \CommentTok{# cycle length (a month)}
 \NormalTok{n_t       <-}\StringTok{ }\DecValTok{30}                            \CommentTok{# number of years (20 years)}
 \KeywordTok{set.seed}\NormalTok{(}\DecValTok{2020}\NormalTok{)                             }\CommentTok{# set the seed}
@@ -288,7 +288,8 @@ model}\label{partitioned-survival-model}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# R package flexsurv allows parametric fitting of curves}
-\NormalTok{fit_weib <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data,  }\DataTypeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
+\NormalTok{fit_weib <-}\StringTok{ }\KeywordTok{flexsurvreg}\NormalTok{(}\KeywordTok{Surv}\NormalTok{(}\DataTypeTok{time =}\NormalTok{ OS_time, }\DataTypeTok{event =}\NormalTok{ OS_status) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ OS_PFS_data,}
+                        \DataTypeTok{dist =} \StringTok{"weibull"}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(fit_weib)}
 
 \CommentTok{# fit all parametric models to the data and extract the AIC/BIC. }
@@ -308,20 +309,40 @@ model}\label{partitioned-survival-model}}
 \NormalTok{choose_OS  <-}\StringTok{ "Weibull (AFT)"}
 
 \CommentTok{# construct a partitioned survival model out of the fitted models}
-\NormalTok{m_M_PSM <-}\StringTok{ }\KeywordTok{partsurv}\NormalTok{(fit_PFS, fit_OS, }\DataTypeTok{time =}\NormalTok{ times, }\DataTypeTok{choose_PFS =}\NormalTok{ choose_PFS,}
-                    \DataTypeTok{choose_OS =}\NormalTok{ choose_OS, }\DataTypeTok{n_sim =} \DecValTok{100}\NormalTok{)}
+\NormalTok{m_M_PSM <-}\StringTok{ }\KeywordTok{partsurv}\NormalTok{( fit_PFS, fit_OS, }\DataTypeTok{time =}\NormalTok{ times,}\DataTypeTok{choose_PFS =}\NormalTok{ choose_PFS,}
+                     \DataTypeTok{choose_OS =}\NormalTok{ choose_OS)}
+
+\CommentTok{# plot the results of PSM and the true data }
+\NormalTok{m_M_data <-}\StringTok{ }\KeywordTok{transitionProbabilities}\NormalTok{(generate}\OperatorTok{$}\NormalTok{cohort, }\DataTypeTok{times =}\NormalTok{ times)}\OperatorTok{@}\NormalTok{probabilities}
+\KeywordTok{matplot}\NormalTok{(times,m_M_data, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1}\NormalTok{, }\DataTypeTok{ylab=} \StringTok{"proportion of cohort"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Time"}\NormalTok{,}
+        \DataTypeTok{main =} \StringTok{"Trace comparisons"}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{))}
+\KeywordTok{matlines}\NormalTok{(times, m_M_PSM}\OperatorTok{$}\NormalTok{trace, }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"True Data"}\NormalTok{,}\StringTok{"PSM"}\NormalTok{), }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{bty=} \StringTok{"n"}\NormalTok{)}
+ 
+\CommentTok{# construct a PSA  partitioned survival model out of the fitted models}
+\NormalTok{m_M_PSM_psa <-}\StringTok{ }\KeywordTok{partsurv}\NormalTok{(fit_PFS, fit_OS, }\DataTypeTok{time =}\NormalTok{ times, }\DataTypeTok{choose_PFS =}\NormalTok{ choose_PFS,}
+                        \DataTypeTok{choose_OS =}\NormalTok{ choose_OS, }\DataTypeTok{n_sim =} \DecValTok{1000}\NormalTok{)}
 
 \CommentTok{# plot the results of PSM and the trace}
 \NormalTok{m_M_data <-}\StringTok{ }\KeywordTok{transitionProbabilities}\NormalTok{(generate}\OperatorTok{$}\NormalTok{cohort, }\DataTypeTok{times =}\NormalTok{ times)}\OperatorTok{@}\NormalTok{probabilities}
-\KeywordTok{matplot}\NormalTok{(times, m_M_data, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1}\NormalTok{, }
-        \DataTypeTok{ylab =} \StringTok{"Proportion of cohort"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Time"}\NormalTok{,}
-        \DataTypeTok{main =} \StringTok{"Trace comparisons"}\NormalTok{, }\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{))}
-\CommentTok{# matlines(times, m_M_PSM$trace,  col = 4, lty = 1) # Uncomment if want to use deterministic}
-\KeywordTok{matlines}\NormalTok{(times, m_M_PSM}\OperatorTok{$}\NormalTok{Mean, }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{)}
-\KeywordTok{matlines}\NormalTok{(times, m_M_PSM}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"low"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
-\KeywordTok{matlines}\NormalTok{(times, m_M_PSM}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"high"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
-\KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"True Data"}\NormalTok{,}\StringTok{"PSM"}\NormalTok{, }\StringTok{"Low CI"}\NormalTok{, }\StringTok{"High CI"}\NormalTok{),}
-        \DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{bty=} \StringTok{"n"}\NormalTok{)}
+\KeywordTok{matplot}\NormalTok{(times,m_M_data, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1}\NormalTok{, }\DataTypeTok{ylab=} \StringTok{"proportion of cohort"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Time"}\NormalTok{, }\DataTypeTok{main =} \StringTok{"Trace comparisons"}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{))}
+ \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{Mean, }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{)}
+ \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"low"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
+ \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"high"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
+ \KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"True Data"}\NormalTok{,}\StringTok{"PSM"}\NormalTok{, }\StringTok{"Low CI"}\NormalTok{, }\StringTok{"High CI"}\NormalTok{),}
+         \DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{bty=} \StringTok{"n"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Let's now assume that we wanted to extract the monthly transition
+probabilities from the Weibull OS curve: we could use the convenient
+fact that \(tp(t) = 1- \frac{S(t)}{S(t-1)}\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# create survival probabilities using trans_prob}
+\NormalTok{p_death <-}\StringTok{ }\KeywordTok{trans_prob}\NormalTok{(fit_OS,}\DataTypeTok{choose_dist =} \StringTok{"Weibull (AFT)"}\NormalTok{, }\DataTypeTok{times=}\NormalTok{times)}
+\KeywordTok{plot}\NormalTok{(p_death}\OperatorTok{$}\NormalTok{times, p_death}\OperatorTok{$}\NormalTok{t.p, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

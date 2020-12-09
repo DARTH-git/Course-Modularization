@@ -15,11 +15,11 @@ menu:
 
 ## Student template
 
-[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+[Download `data_long_Sicker.csv`](../../../Course_Modularization/Survival Analysis/Survival Sick-Sicker/solutions/data_long_Sicker.csv)
 
-[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival Sick-Sicker/solutions/survival_functions.R)
 
-[Download student template](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+[Download student template](../../../Course_Modularization/Survival Analysis/Survival Sick-Sicker/solutions/Markov_3_state_Survival_template.Rmd)
 
 ## Instructor solutions
 

@@ -68,7 +68,7 @@ head(data_long)
 
 ## Tasks
 
-1. Use the `R` script `Surv_3_state_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
+1. Use the template `Markov_3_state_Survival_template.Rmd` as a starting point to code the survival analysis solution to the Sick-Sicker model.
 
 2. Load the individual level data in long form from the `data_long_Sicker.csv` file.
 

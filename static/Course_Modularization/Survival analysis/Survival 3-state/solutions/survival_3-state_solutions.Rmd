@@ -187,11 +187,11 @@ m_M_PSM_psa <- partsurv(fit_PFS, fit_OS, time = times, choose_PFS = choose_PFS,
 # plot the results of PSM and the trace
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
 matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time", main = "Trace comparisons",xlim=c(0,25))
- matlines(times, m_M_PSM_psa$Mean, col = 4, lty = 1)
- matlines(times, m_M_PSM_psa$CI[,,"low"], col = 4, lty = 2)
- matlines(times, m_M_PSM_psa$CI[,,"high"], col = 4, lty = 2)
- legend("right", c("True Data","PSM", "Low CI", "High CI"),
-         col = c(1,4,4,4), lty = c(1,1,2,2), bty= "n")
+matlines(times, m_M_PSM_psa$Mean, col = 4, lty = 1)
+matlines(times, m_M_PSM_psa$CI[,,"low"], col = 4, lty = 2)
+matlines(times, m_M_PSM_psa$CI[,,"high"], col = 4, lty = 2)
+legend("right", c("True Data","PSM", "Low CI", "High CI"),
+        col = c(1,4,4,4), lty = c(1,1,2,2), bty= "n")
 ```
 
 Let's now assume that we wanted to extract the monthly transition probabilities from  the Weibull OS curve: we could use the convenient fact that $tp(t) = 1- \frac{S(t)}{S(t-1)}$

@@ -326,11 +326,11 @@ model}\label{partitioned-survival-model}}
 \CommentTok{# plot the results of PSM and the trace}
 \NormalTok{m_M_data <-}\StringTok{ }\KeywordTok{transitionProbabilities}\NormalTok{(generate}\OperatorTok{$}\NormalTok{cohort, }\DataTypeTok{times =}\NormalTok{ times)}\OperatorTok{@}\NormalTok{probabilities}
 \KeywordTok{matplot}\NormalTok{(times,m_M_data, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1}\NormalTok{, }\DataTypeTok{ylab=} \StringTok{"proportion of cohort"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Time"}\NormalTok{, }\DataTypeTok{main =} \StringTok{"Trace comparisons"}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{))}
- \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{Mean, }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{)}
- \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"low"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
- \KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"high"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
- \KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"True Data"}\NormalTok{,}\StringTok{"PSM"}\NormalTok{, }\StringTok{"Low CI"}\NormalTok{, }\StringTok{"High CI"}\NormalTok{),}
-         \DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{bty=} \StringTok{"n"}\NormalTok{)}
+\KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{Mean, }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"low"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{matlines}\NormalTok{(times, m_M_PSM_psa}\OperatorTok{$}\NormalTok{CI[,,}\StringTok{"high"}\NormalTok{], }\DataTypeTok{col =} \DecValTok{4}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{legend}\NormalTok{(}\StringTok{"right"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"True Data"}\NormalTok{,}\StringTok{"PSM"}\NormalTok{, }\StringTok{"Low CI"}\NormalTok{, }\StringTok{"High CI"}\NormalTok{),}
+        \DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{lty =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{bty=} \StringTok{"n"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

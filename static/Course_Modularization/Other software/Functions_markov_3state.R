@@ -98,13 +98,13 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     # per cycle
     # calculate expected costs by multiplying m_M with the cost vector for the different 
     # health states   
-    v_tc_SoC <- m_M_SoC %*% c(c_H, c_S,         c_D)  # Standard of Care
-    v_tc_trt <- m_M_trt %*% c(c_H, c_S + c_trt, c_D)  # Treatment
+    v_tc_SoC <- m_M_SoC %*% c(c_H, c_S, c_D)  # Standard of Care
+    v_tc_trt <- m_M_trt %*% c(c_H, c_S, c_D)  # Treatment
+    v_tc_trt[1] <- v_tc_trt[1] + c_trt
     # calculate expected QALYs by multiplying m_M with the utilities for the different 
     # health states   
     v_tu_SoC <- m_M_SoC %*% c(u_H, u_S, u_D)          # Standard of Care
     v_tu_trt <- m_M_trt %*% c(u_H, u_S, u_D)          # Treatment
-    
     # Discount costs by multiplying the cost vector with discount weights  
     tc_d_SoC  <-  t(v_tc_SoC) %*% v_dwc  # Standard of Care
     tc_d_trt  <-  t(v_tc_trt) %*% v_dwc  # Treatment

@@ -321,6 +321,7 @@ plot(v_prev_trt,
 # health states   
 v_tc_SoC <- m_M_SoC %*% c(c_H, c_S, c_D)  # Standard of Care
 v_tc_trt <- m_M_trt %*% c(c_H, c_S, c_D)  # Treatment
+v_tc_trt[1] <- v_tc_trt[1] + c_trt
 # calculate expected QALYs by multiplying m_M with the utilities for the different 
 # health states   
 v_tu_SoC <- m_M_SoC %*% c(u_H, u_S, u_D)  # Standard of Care
@@ -380,7 +381,7 @@ l_params_all <- as.list(data.frame(
   c_H      = 400,   # cost of one cycle in healthy state
   c_S      = 1000,  # cost of one cycle in sick state
   c_D      = 0,     # cost of one cycle in dead state
-  c_trt    = 800,   # one-time cost of treatment (at first cycle)
+  c_trt    = 8000,   # one-time cost of treatment (at first cycle)
   u_H      = 0.8,   # utility when healthy 
   u_S      = 0.5,   # utility when sick
   u_D      = 0,     # utility when dead
@@ -424,7 +425,7 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
     # cost of being in the death state
     c_D      = 0, 
     # cost of treatment (per cycle)
-    c_trt    = rgamma(n_sim, shape = 64, scale = 12.5),
+    c_trt    = rgamma(n_sim, shape = 64, scale = 125),
     
     # Utility vectors with length n_sim 
     # utility when healthy

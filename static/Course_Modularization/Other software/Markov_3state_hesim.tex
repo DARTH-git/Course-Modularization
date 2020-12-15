@@ -529,6 +529,7 @@ Outcomes}\label{compute-cost-effectiveness-outcomes}}
 \CommentTok{# health states   }
 \NormalTok{v_tc_SoC <-}\StringTok{ }\NormalTok{m_M_SoC }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S, c_D)  }\CommentTok{# Standard of Care}
 \NormalTok{v_tc_trt <-}\StringTok{ }\NormalTok{m_M_trt }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(c_H, c_S, c_D)  }\CommentTok{# Treatment}
+\NormalTok{v_tc_trt[}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\NormalTok{v_tc_trt[}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{c_trt}
 \CommentTok{# calculate expected QALYs by multiplying m_M with the utilities for the different }
 \CommentTok{# health states   }
 \NormalTok{v_tu_SoC <-}\StringTok{ }\NormalTok{m_M_SoC }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(u_H, u_S, u_D)  }\CommentTok{# Standard of Care}
@@ -562,9 +563,9 @@ QALYs}\label{discounted-mean-costs-and-qalys}}
 \end{Shaded}
 
 \begin{verbatim}
-##           Strategy     Cost   Effect
-## 1 Standard of Care 8043.139 10.25087
-## 2        Treatment 8028.490 11.73928
+##           Strategy      Cost   Effect
+## 1 Standard of Care  8043.139 10.25087
+## 2        Treatment 16028.490 11.73928
 \end{verbatim}
 
 \hypertarget{compute-icers-of-the-markov-model}{%
@@ -581,9 +582,9 @@ model}\label{compute-icers-of-the-markov-model}}
 \end{Shaded}
 
 \begin{verbatim}
-##           Strategy     Cost   Effect Inc_Cost Inc_Effect ICER Status
-## 1        Treatment 8028.490 11.73928       NA         NA   NA     ND
-## 2 Standard of Care 8043.139 10.25087       NA         NA   NA      D
+##           Strategy      Cost   Effect Inc_Cost Inc_Effect     ICER Status
+## 1 Standard of Care  8043.139 10.25087       NA         NA       NA     ND
+## 2        Treatment 16028.490 11.73928 7985.351   1.488415 5365.002     ND
 \end{verbatim}
 
 \hypertarget{plot-frontier-of-the-markov-model}{%
@@ -625,7 +626,7 @@ and utilities.
   \DataTypeTok{c_H      =} \DecValTok{400}\NormalTok{,   }\CommentTok{# cost of one cycle in healthy state}
   \DataTypeTok{c_S      =} \DecValTok{1000}\NormalTok{,  }\CommentTok{# cost of one cycle in sick state}
   \DataTypeTok{c_D      =} \DecValTok{0}\NormalTok{,     }\CommentTok{# cost of one cycle in dead state}
-  \DataTypeTok{c_trt    =} \DecValTok{800}\NormalTok{,   }\CommentTok{# one-time cost of treatment (at first cycle)}
+  \DataTypeTok{c_trt    =} \DecValTok{8000}\NormalTok{,   }\CommentTok{# one-time cost of treatment (at first cycle)}
   \DataTypeTok{u_H      =} \FloatTok{0.8}\NormalTok{,   }\CommentTok{# utility when healthy }
   \DataTypeTok{u_S      =} \FloatTok{0.5}\NormalTok{,   }\CommentTok{# utility when sick}
   \DataTypeTok{u_D      =} \DecValTok{0}\NormalTok{,     }\CommentTok{# utility when dead}
@@ -653,7 +654,7 @@ function}\label{load-sick-sicker-markov-model-function}}
 \begin{verbatim}
 ##           Strategy      Cost   Effect       NMB
 ## 1 Standard of Care  8043.139 10.25087  94465.51
-## 2        Treatment 10331.262 11.73928 107061.54
+## 2        Treatment 16028.490 11.73928 101364.32
 \end{verbatim}
 
 \hypertarget{generate-psa-datasets}{%
@@ -682,7 +683,7 @@ function}\label{load-sick-sicker-markov-model-function}}
     \CommentTok{# cost of being in the death state}
     \DataTypeTok{c_D      =} \DecValTok{0}\NormalTok{, }
     \CommentTok{# cost of treatment (per cycle)}
-    \DataTypeTok{c_trt    =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \DecValTok{64}\NormalTok{, }\DataTypeTok{scale =} \FloatTok{12.5}\NormalTok{),}
+    \DataTypeTok{c_trt    =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \DecValTok{64}\NormalTok{, }\DataTypeTok{scale =} \DecValTok{125}\NormalTok{),}
     
     \CommentTok{# Utility vectors with length n_sim }
     \CommentTok{# utility when healthy}
@@ -701,16 +702,16 @@ function}\label{load-sick-sicker-markov-model-function}}
 
 \begin{verbatim}
 ##          p_HS   p_HS_trt       p_HD       p_SD      c_H       c_S c_D    c_trt
-## 1  0.05116365 0.02717469 0.02650780 0.09350365 331.7253 1001.3478   0 621.7035
-## 2  0.04095451 0.01181545 0.02787410 0.15823599 535.2239  995.9279   0 937.7706
-## 3  0.05334926 0.01972404 0.01561002 0.12357583 334.2034  955.0140   0 659.1331
-## 4  0.03627100 0.03901602 0.02620191 0.08771020 352.7561  990.4764   0 865.2337
-## 5  0.04782122 0.02128019 0.01998096 0.10799984 260.4642  943.7245   0 855.5065
-## 6  0.07206924 0.02272066 0.01521342 0.12685251 291.1215  983.1453   0 860.4577
-## 7  0.04803791 0.04457119 0.01499307 0.08911761 483.8274 1050.5295   0 994.2503
-## 8  0.04335723 0.02882206 0.02131098 0.05814786 541.4731  864.3322   0 601.8085
-## 9  0.05302297 0.03409499 0.01709267 0.15922549 551.1535 1080.4473   0 757.1225
-## 10 0.03096171 0.01553948 0.01983932 0.10406523 315.7027  984.6521   0 787.5281
+## 1  0.05116365 0.02717469 0.02650780 0.09350365 331.7253 1001.3478   0 6217.035
+## 2  0.04095451 0.01181545 0.02787410 0.15823599 535.2239  995.9279   0 9377.706
+## 3  0.05334926 0.01972404 0.01561002 0.12357583 334.2034  955.0140   0 6591.331
+## 4  0.03627100 0.03901602 0.02620191 0.08771020 352.7561  990.4764   0 8652.337
+## 5  0.04782122 0.02128019 0.01998096 0.10799984 260.4642  943.7245   0 8555.065
+## 6  0.07206924 0.02272066 0.01521342 0.12685251 291.1215  983.1453   0 8604.577
+## 7  0.04803791 0.04457119 0.01499307 0.08911761 483.8274 1050.5295   0 9942.503
+## 8  0.04335723 0.02882206 0.02131098 0.05814786 541.4731  864.3322   0 6018.085
+## 9  0.05302297 0.03409499 0.01709267 0.15922549 551.1535 1080.4473   0 7571.225
+## 10 0.03096171 0.01553948 0.01983932 0.10406523 315.7027  984.6521   0 7875.281
 ##          u_H       u_S u_D
 ## 1  0.8559721 0.4815761   0
 ## 2  0.7783084 0.5349337   0
@@ -738,12 +739,12 @@ function}\label{load-sick-sicker-markov-model-function}}
 
 \begin{verbatim}
 ##         p_HS   p_HS_trt       p_HD       p_SD      c_H       c_S c_D     c_trt
-## 1 0.05116365 0.01954245 0.02621456 0.13853135 307.8380  899.5153   0  687.5154
-## 2 0.04095451 0.04346716 0.01760834 0.13075427 466.9600 1066.1617   0  875.5292
-## 3 0.05334926 0.03357981 0.02404573 0.08454761 235.2890  955.0145   0  658.2810
-## 4 0.03627100 0.03806155 0.02716409 0.10457346 306.5100  789.6969   0  702.7446
-## 5 0.04782122 0.03737024 0.01716697 0.14474739 535.1188  868.0570   0  566.1605
-## 6 0.07206924 0.04257367 0.01710648 0.12289879 353.6715  991.6205   0 1096.0742
+## 1 0.05116365 0.01954245 0.02621456 0.13853135 307.8380  899.5153   0  6875.154
+## 2 0.04095451 0.04346716 0.01760834 0.13075427 466.9600 1066.1617   0  8755.292
+## 3 0.05334926 0.03357981 0.02404573 0.08454761 235.2890  955.0145   0  6582.810
+## 4 0.03627100 0.03806155 0.02716409 0.10457346 306.5100  789.6969   0  7027.446
+## 5 0.04782122 0.03737024 0.01716697 0.14474739 535.1188  868.0570   0  5661.605
+## 6 0.07206924 0.04257367 0.01710648 0.12289879 353.6715  991.6205   0 10960.742
 ##         u_H       u_S u_D
 ## 1 0.7965014 0.4473598   0
 ## 2 0.7659582 0.4644020   0
@@ -858,7 +859,7 @@ output}\label{conduct-cea-with-probabilistic-output}}
 \begin{verbatim}
 ##           Strategy      Cost   Effect Inc_Cost Inc_Effect     ICER Status
 ## 1 Standard.of.Care  8148.004 10.28706       NA         NA       NA     ND
-## 2        Treatment 10470.998 11.74808 2322.994   1.461028 1589.972     ND
+## 2        Treatment 16149.044 11.74808  8001.04   1.461028 5476.307     ND
 \end{verbatim}
 
 \hypertarget{plot-cost-effectiveness-frontier}{%
@@ -888,8 +889,7 @@ frontier
 
 \begin{verbatim}
 ##   range_min range_max   cost_eff_strat
-## 1         0      2000 Standard.of.Care
-## 2      2000      5000        Treatment
+## 1         0      5000 Standard.of.Care
 \end{verbatim}
 
 \begin{Shaded}
@@ -917,18 +917,18 @@ when choosing a suboptimal strategy given current evidence.
 
 \begin{verbatim}
 ##     WTP         Strategy Expected_Loss On_Frontier
-## 1     0 Standard.of.Care       1.92815        TRUE
-## 2     0        Treatment    2324.92196       FALSE
-## 3  1000 Standard.of.Care     331.23937        TRUE
-## 4  1000        Treatment    1193.20487       FALSE
-## 5  2000 Standard.of.Care    1405.42678       FALSE
-## 6  2000        Treatment     806.36395        TRUE
-## 7  3000 Standard.of.Care    2748.21166       FALSE
-## 8  3000        Treatment     688.12052        TRUE
-## 9  4000 Standard.of.Care    4173.51938       FALSE
-## 10 4000        Treatment     652.39992        TRUE
-## 11 5000 Standard.of.Care    5633.16928       FALSE
-## 12 5000        Treatment     651.02150        TRUE
+## 1     0 Standard.of.Care       0.00000        TRUE
+## 2     0        Treatment    8001.03979       FALSE
+## 3  1000 Standard.of.Care       0.00000        TRUE
+## 4  1000        Treatment    6540.01147       FALSE
+## 5  2000 Standard.of.Care      38.76766        TRUE
+## 6  2000        Treatment    5117.75081       FALSE
+## 7  3000 Standard.of.Care     322.26595        TRUE
+## 8  3000        Treatment    3940.22079       FALSE
+## 9  4000 Standard.of.Care     989.52884        TRUE
+## 10 4000        Treatment    3146.45536       FALSE
+## 11 5000 Standard.of.Care    1937.60524        TRUE
+## 12 5000        Treatment    2633.50344       FALSE
 \end{verbatim}
 
 \begin{Shaded}

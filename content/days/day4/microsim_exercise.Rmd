@@ -23,7 +23,7 @@ menu:
 
 ## Instructor solutions
 
-Solutions will be posted later.
+[Download solutions](../../../Course_Modularization/Survival Analysis/Survival Sick-Sicker/solutions/Markov_3_state_Survival_solutions.Rmd)
 
 
 

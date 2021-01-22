@@ -1,0 +1,270 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Intro to R for Decision Modeling},
+  pdfauthor={SickKids and DARTH},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Intro to R for Decision Modeling}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Getting Ready}
+\author{SickKids and DARTH}
+\date{11/2/2020}
+
+\begin{document}
+\maketitle
+
+Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
+
+\hypertarget{introduction-to-r}{%
+\section{1. Introduction to R}\label{introduction-to-r}}
+
+\texttt{R} is a specialized program for data manipulation, statistical
+analysis, plotting and programming. \texttt{R} has several advantages,
+including:
+
+\begin{itemize}
+\item
+  \texttt{R} makes it easy to store and analyze large dataset,
+\item
+  \texttt{R} can perform data cleaning and ensure that these data
+  cleaning steps are reproducible,
+\item
+  \texttt{R} includes a large, consistent, integrated collection of
+  tools for data analysis,
+\item
+  \texttt{R} can create publication-quality graphics,
+\item
+  \texttt{R} can integrate text with data analysis to create Word
+  documents and facilitate manuscript development,
+\item
+  \texttt{R} is based on a programming language that allows you to
+  develop your own personalized methods to perform analysis,
+\item
+  \texttt{R} has a large number of user-developed \emph{packages} that
+  can perform specific types of analyses, which can speed up the process
+  of analysis significantly. These packages are developed by \texttt{R}
+  users to help researchers use novel methods for presentation and
+  analysis.
+\end{itemize}
+
+\hypertarget{introduction-to-rstudio}{%
+\section{2. Introduction to RStudio}\label{introduction-to-rstudio}}
+
+RStudio is a user-friendly interface for \texttt{R} that we will be
+using throughout this course. Within RStudio, you will see that the
+screen is divided into four parts:
+
+\begin{itemize}
+\item
+  The top right hand corner contains the \emph{workspace}. The workspace
+  is your control centre and gives an at-a-glance overview of what has
+  been done so far in your \texttt{R} session.
+\item
+  The bottom right hand corner is used to load packages, view plotted
+  figures and look at help files.
+\item
+  On the bottom left is \texttt{R} itself - the console - this is the
+  machine that will crunch your data. All errors will be displayed here.
+\item
+  If a file is open in RStudio a text editor will appear in the top-left
+  corner.
+\end{itemize}
+
+\hypertarget{introduction-to-r-markdown}{%
+\section{3. Introduction to R
+Markdown}\label{introduction-to-r-markdown}}
+
+R Markdown is a convenient way to keep a record of all the analysis you
+have done. R Markdown allows you to include text, \texttt{R} code and
+output in your document. Once you are happy with your analysis you can
+then output (or \emph{knit} ) your document to a PDF, Word document, or
+HTML page. This means you can write your manuscript, perform your
+analysis and output tables and graphics all within the same program and
+then create a Word document or PDF report or a manuscript to submit to a
+journal.
+
+R markdown documents are stored by default by \texttt{R} using an
+\texttt{.rmd} extension. This document is an example of such an R
+Markdown document! To create a new R Markdown document in RStudio go to
+\textbf{File -\textgreater{} New File -\textgreater{} R Markdown}. A
+dialog box will open where you can name your \texttt{.rmd} file and
+specify the file format you would like to use as your knitted output
+(e.g.~\texttt{.doc}, \texttt{.pdf} or HTML).
+
+As you can see at the top of this document, every R Markdown document
+starts with a header surrounded by \texttt{-\/-\/-} to specify the
+title, document format, and output type. This information is called
+\emph{metadata}.
+
+Regular text (like this) can be typed directly into the document while
+\texttt{R} code is typed into and run from \emph{code chunks}. The
+following section is an R Markdown \emph{code chunk} that calculates 2 +
+2:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# test}
+\DecValTok{2} \OperatorTok{+}\StringTok{ }\DecValTok{2}
+
+\KeywordTok{message}\NormalTok{(}\StringTok{"a"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+You can include as many \emph{code chunks} as you want in your documents
+so you can intersperse the text of your manuscript with the data
+analysis. You chunks are defined using the two commands above that
+designate the beginning and end of your chunk. You can insert a new
+chunk using the \texttt{Insert} button at the top of this window or
+writing the commands to define the beginning and end of the chunks
+yourself.
+
+You can run the code in a \emph{code chunk} by clicking the
+\textbf{little green arrow} on the top right corner of the \emph{code
+chunk}. YOu can run the whole chuck y also pressing CTRL + SHIFT +
+ENTER. To only run specific lines of code in a \emph{code chunk}, you
+can select them and press CTRL + ENTER.
+
+Try running the code in the above \emph{code chunk}.
+
+It is good practice to insert \emph{comments} in your \texttt{R} code to
+explain what analysis you are doing. This makes it easier to navigate
+your analysis (and remember what you were doing!). You can make a
+\emph{comment} anywhere in the \emph{code chunk} by inserting a
+\texttt{\#} before your ``comment''. In the above \emph{code chunk}, the
+comment highlighted that we were doing a ``test''. There is a fine
+balance between comments within a chunk and text outside it. The amount
+of commenting is dependent on what you are aiming to do with the final
+document. If you are writing a manuscript then the text should include
+\emph{only} the information you wish to include in the manuscript and
+the comments should be used to explain what you are doing in the code.
+If you are using R Markdown to give a commented version of your data
+analysis then you can use the text to describe you analysis and minimize
+the number of comments within the code.
+
+When you have more \emph{code chunks} in your R Markdown document, you
+may need more flexible ways to run code and view outputs. At the top
+right corner of this window, you can see a green arrow pointing towards
+a button that says \textbf{``Run''}. If you click on this button, you
+will find ways to run multiple \emph{code chunks} in your document.
+Specifically, if you put your cursor in a block of text, you can
+\textbf{Run All Chunks Above} or \textbf{Run All Chunks Below} your
+cursor. You can also \textbf{Run All} the code chunks in your document.
+There are several keyboard shortcuts that can be used to run chunks in
+an R Markdown document. A great resource for those is the following
+webpage: \url{https://rmd4sci.njtierney.com/keyboard-shortcuts}.
+
+To knit the R Markdown document go to \textbf{File -\textgreater{} Knit
+Document} or press \textbf{Knit} at the top left-hand corner of this
+window. Try knitting this R Markdown document to a Word document.
+
+To knit a R Markdown document to a PDF document, you will need to
+download MiKTeX on your machine first. It is an up-to-date
+implementation of TeX/LaTeX and related programs. MiKTeX can be
+downloaded from the following webpage:
+\url{https://miktex.org/download}.
+
+Throughout this course, we will providing all the materials as R
+Markdown documents.
+
+\end{document}

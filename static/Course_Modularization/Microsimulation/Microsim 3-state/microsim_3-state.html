@@ -72,15 +72,11 @@ p_load_gh(&quot;DARTH-git/dampack&quot;, &quot;DARTH-git/darthtools&quot;)</code
 
 # Model structure
 v_n   &lt;- c(&quot;healthy&quot;, &quot;sick&quot;, &quot;dead&quot;)       # vector with state names
-n_states   &lt;- length(v_n)                   # number of states
 n_t   &lt;- 60                                 # number of cycles
 n_i   &lt;- 10000                              # number of individuals
 d_e &lt;- d_c &lt;- 0.03                          # equal discount of costs and QALYs by 3%
 
-# calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc &lt;- 1 / (1 + d_e) ^ (0:n_t) 
-# calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t) 
+
 
 #### Deterministic analysis ####
 
@@ -88,8 +84,8 @@ v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t)
 p_HS        &lt;- 0.05    # probability healthy -&gt; sick
 p_HD_female &lt;- 0.0382  # probability health -&gt; dead when female
 p_HD_male   &lt;- 0.0463  # probability health -&gt; dead when male
-m_p_HD      &lt;- data.frame(Sex = c(&quot;Female&quot;, &quot;Male&quot;), p_HD = c(p_HD_female, p_HD_male))
 p_SD        &lt;- 0.1     # probability sick -&gt; dead
+
 
 # Costs inputs
 c_H  &lt;- 1500      # cost of one cycle in healthy state
@@ -99,7 +95,19 @@ c_D  &lt;- 0
 # utility inputs
 u_H  &lt;- 1         # utility when healthy 
 u_S  &lt;- 0.85      # utility when sick 
-u_D  &lt;- 0         # utility when dead </code></pre>
+u_D  &lt;- 0         # utility when dead 
+
+
+
+
+n_states   &lt;- length(v_n)                   # number of states
+
+# calculate discount weights for costs for each cycle based on discount rate d_c
+v_dwc &lt;- 1 / (1 + d_e) ^ (0:n_t) 
+# calculate discount weights for effectiveness for each cycle based on discount rate d_e
+v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t) 
+
+m_p_HD      &lt;- data.frame(Sex = c(&quot;Female&quot;, &quot;Male&quot;), p_HD = c(p_HD_female, p_HD_male))</code></pre>
 </div>
 <div id="sample-individual-level-characteristics" class="section level1">
 <h1>04 Sample individual level characteristics</h1>

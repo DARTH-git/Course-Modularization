@@ -1,0 +1,229 @@
+---
+title: 'Markov Sick-Sicker model in R'
+subtitle: 'with dependency for time-since model start AND with state-residency dependency'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6,7)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1</p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;here&quot;, &quot;dplyr&quot;, &quot;devtools&quot;, &quot;scales&quot;, &quot;ellipse&quot;, &quot;ggplot2&quot;, &quot;lazyeval&quot;, &quot;igraph&quot;, &quot;truncnorm&quot;, &quot;ggraph&quot;, &quot;reshape2&quot;, &quot;knitr&quot;)                                               
+# load (install if required) packages from GitHub
+# install_github(&quot;DARTH-git/dampack&quot;, force = TRUE) Uncomment if there is a newer version
+# install_github(&quot;DARTH-git/darthtools&quot;, force = TRUE) Uncomment if there is a newer version
+p_load_gh(&quot;DARTH-git/dampack&quot;, &quot;DARTH-git/darthtools&quot;)</code></pre>
+</div>
+<div id="load-functions" class="section level1">
+<h1>02 Load functions</h1>
+<pre class="r"><code># No functions needed</code></pre>
+</div>
+<div id="input-model-parameters" class="section level1">
+<h1>03 Input model parameters</h1>
+<pre class="r"><code># Strategy names
+v_names_str &lt;- c(&quot;No Treatment&quot;, &quot;Treatment&quot;) 
+
+# Number of strategies
+n_str &lt;- length(v_names_str)
+
+# Markov model parameters
+age     &lt;- 25                       # age at baseline
+max_age &lt;- 55                       # maximum age of follow up
+n_t     &lt;- max_age - age            # time horizon, number of cycles
+v_n     &lt;- c(&quot;H&quot;, &quot;S1&quot;, &quot;S2&quot;, &quot;D&quot;)  # the 4 states of the model: Healthy (H), Sick (S1), 
+                                    # Sicker (S2), Dead (D)
+n_states &lt;- length(v_n)             # number of health states 
+
+# Tunnels
+n_tunnel_size &lt;- n_t
+# Sick state
+v_Sick_tunnels &lt;- paste(&quot;S1_&quot;, seq(1, n_tunnel_size), &quot;Yr&quot;, sep = &quot;&quot;)
+### Create variables for time-dependent model
+v_n_tunnels &lt;- c(&quot;H&quot;, v_Sick_tunnels, &quot;S2&quot;, &quot;D&quot;)  # state names
+n_s_tunnels &lt;- length(v_n_tunnels)                # number of states
+
+# Transition probabilities (per cycle) and hazard ratios
+# Read age-specific mortality rates from csv file
+lt_usa_2005 &lt;- read.csv(&quot;HMD_USA_Mx_2015.csv&quot;)
+v_r_HD &lt;- lt_usa_2005 %&gt;% 
+          filter(Age &gt;= age &amp; Age &lt;= (max_age - 1)) %&gt;%
+          select(Total) %&gt;%
+          as.matrix()
+
+p_HD    &lt;- 1 - exp(- v_r_HD)  # probability to die when healthy
+p_HS1   &lt;- 0.15                 # probability to become sick when healthy
+p_S1H   &lt;- 0.5                  # probability to become healthy when 
+
+# Weibull parameters
+l       &lt;- # &lt;-  your turn  # scale parameter
+g       &lt;- # &lt;-  your turn  # shape parameter
+# Weibull function
+p_S1S2  &lt;- l * g * (1:n_tunnel_size) ^ {g-1} # probability to become sicker when sick 
+                                             # (time-dependent)
+
+hr_S1   &lt;- 3                  # hazard ratio of death in sick vs healthy
+hr_S2   &lt;- 10                 # hazard ratio of death in sicker vs healthy 
+r_HD    &lt;- - log(1 - p_HD)  # rate of death in healthy
+r_S1D   &lt;- hr_S1 * r_HD       # rate of death in sick
+r_S2D   &lt;- hr_S2 * r_HD       # rate of death in sicker
+p_S1D   &lt;- 1 - exp(-r_S1D)  # probability to die in sick
+p_S2D   &lt;- 1 - exp(-r_S2D)  # probability to die in s
+
+# Cost and utility inputs    
+c_H     &lt;- 2000             # cost of remaining one cycle in the healthy state
+c_S1    &lt;- 4000             # cost of remaining one cycle in the sick state
+c_S2    &lt;- 15000            # cost of remaining one cycle in the sicker state
+c_trt   &lt;- 12000            # cost of treatment(per cycle)
+c_D     &lt;- 0                # cost of being in the death state
+u_H     &lt;- 1                # utility when healthy
+u_S1    &lt;- 0.75             # utility when sick
+u_S2    &lt;- 0.5              # utility when sicker
+u_D     &lt;- 0                # utility when dead
+u_trt   &lt;- 0.95             # utility when being treated
+
+d_e &lt;- d_c &lt;- 0.03          # equal discount of costs and QALYs by 3%
+
+# calculate discount weights for costs for each cycle based on discount rate d_c
+v_dwc &lt;- 1 / (1 + d_e) ^ (0:n_t) 
+# calculate discount weights for effectiveness for each cycle based on discount rate d_e
+v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t) </code></pre>
+</div>
+<div id="define-and-initialize-matrices-and-vectors" class="section level1">
+<h1>04 Define and initialize matrices and vectors</h1>
+<div id="cohort-trace" class="section level2">
+<h2>04.1 Cohort trace</h2>
+<pre class="r"><code># create the markov trace matrix M capturing the proportion of the cohort in each state 
+# at each cycle
+m_M_notrt &lt;- m_M_trt  # &lt;-  your turn
+
+
+
+
+
+head(m_M_notrt) # show first 6 rows of the matrix 
+
+# The cohort starts as healthy
+# initialize first cycle of Markov trace accounting for the tunnels
+m_M_notrt[1, ] &lt;- m_M_trt[1, ] &lt;- c(1, rep(0, n_tunnel_size), 0, 0) </code></pre>
+</div>
+<div id="transition-probability-array" class="section level2">
+<h2>04.2 Transition probability array</h2>
+<pre class="r"><code># create the transition probability array for NO treatment
+a_P_notrt # &lt;- your turn</code></pre>
+<p>Fill in the transition probability array:</p>
+<pre class="r"><code># from Healthy
+
+# from Sick
+
+# from Sicker
+
+# from Dead
+
+# create transition probability matrix for treatment same as NO treatment
+a_P_trt &lt;- a_P_notrt</code></pre>
+</div>
+</div>
+<div id="run-markov-model" class="section level1">
+<h1>05 Run Markov model</h1>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="compute-and-plot-epidemiological-outcomes" class="section level1">
+<h1>06 Compute and Plot Epidemiological Outcomes</h1>
+<div id="cohort-trace-1" class="section level2">
+<h2>06.1 Cohort trace</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="overall-survival-os" class="section level2">
+<h2>06.2 Overall Survival (OS)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="life-expectancy-le" class="section level2">
+<h2>06.2.1 Life Expectancy (LE)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="disease-prevalence" class="section level2">
+<h2>06.3 Disease prevalence</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="ratio-of-sicks1-vs-sickers2" class="section level2">
+<h2>06.4 ratio of sick(S1) vs sicker(S2)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+</div>
+<div id="compute-cost-effectiveness-outcomes" class="section level1">
+<h1>07 Compute Cost-Effectiveness Outcomes</h1>
+<div id="mean-costs-and-qalys-for-treatment-and-no-treatment" class="section level2">
+<h2>07.1 Mean Costs and QALYs for Treatment and NO Treatment</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="discounted-mean-costs-and-qalys" class="section level2">
+<h2>07.2 Discounted Mean Costs and QALYs</h2>
+<pre class="r"><code># your turn
+
+# Store discounted costs and effectiveness for each strategy in a data frame
+df_ce       &lt;- data.frame(Strategy = NA, # &lt;-- your value (strategy names)
+                          Cost     = NA, # &lt;-- your value (strategy costs)
+                          Effect   = NA  # &lt;-- your value (strategy QALYs)
+                          )</code></pre>
+</div>
+<div id="compute-icers-of-the-markov-model" class="section level2">
+<h2>07.3 Compute ICERs of the Markov model</h2>
+<pre class="r"><code># Use the function calculate_icers() from the dampack package
+df_cea &lt;- calculate_icers(cost       = df_ce$Cost,
+                          effect     = df_ce$Effect,
+                          strategies = df_ce$Strategy)
+df_cea </code></pre>
+</div>
+<div id="plot-frontier-of-the-markov-model" class="section level2">
+<h2>07.4 Plot frontier of the Markov model</h2>
+<pre class="r"><code>plot(df_cea, effect_units = &quot;QALYs&quot;)</code></pre>
+</div>
+</div>

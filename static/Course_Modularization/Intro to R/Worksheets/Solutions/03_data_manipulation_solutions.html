@@ -55,7 +55,6 @@ data &lt;- read.csv(&quot;framingham.csv&quot;, header = TRUE)</code></pre>
 <p><code>write.csv(data, file = 'framingham_export.csv')</code> exports the <code>R</code> object <code>mydata</code> back to a <code>.csv</code> file.</p>
 <p>To export to a specific file, you should use the entire <em>filepath</em> as described above. In the code above, the data would be saved to <code>R</code>’s <em>working directory</em>. This is default folder where <code>R</code> will save all your results unless you specify the filepath. You can find out the current working directory using:</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;C:/Users/Alan Yang/Desktop/GitHub local/Course-Modularization/Course_Modularization/Intro to R/Worksheets/Solutions&quot;</code></pre>
 <p>It is possible to change the <em>working directory</em>, using the command <code>setwd()</code> and specifying the <em>path</em> to a specific folder. You can also set the working directory to your current file location using <strong>Session -&gt; Set Working Directory -&gt; To Source File Location</strong>.</p>
 </div>
 <div id="subselecting-data" class="section level1">
@@ -115,27 +114,20 @@ gender &lt;- c(&quot;male&quot;,&quot;female&quot;,&quot;other&quot;)
 age &lt;- 80
 
 # Your turn
-gender == &quot;male&quot;</code></pre>
-<pre><code>## [1]  TRUE FALSE FALSE</code></pre>
-<pre class="r"><code>gender != &quot;male&quot;</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE</code></pre>
-<pre class="r"><code>age &lt;= 40</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>age %in% c(30, 31, 32)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+gender == &quot;male&quot;
+gender != &quot;male&quot;
+age &lt;= 40
+age %in% c(30, 31, 32)</code></pre>
 <p>When comparing a vector to a single item, the logical expression returns TRUE or FALSE for each item in the vector depending on the logical comparison.</p>
 <p><strong>EXERCISE 3</strong> Run the following <em>code chunk</em> to understand vectors and logical comparisons:</p>
 <pre class="r"><code># Vectors and Relational Operators
 genders &lt;- c(&quot;male&quot;,&quot;female&quot;,&quot;male&quot;,&quot;female&quot;)
-genders == &quot;male&quot;</code></pre>
-<pre><code>## [1]  TRUE FALSE  TRUE FALSE</code></pre>
-<pre class="r"><code>c(1,2,3,4) &gt; 2</code></pre>
-<pre><code>## [1] FALSE FALSE  TRUE  TRUE</code></pre>
+genders == &quot;male&quot;
+c(1,2,3,4) &gt; 2</code></pre>
 <p>Comparing vectors of the same length compares the <span class="math inline">\(i^{th}\)</span> element in the first vector to the <span class="math inline">\(i^{th}\)</span> element in the second vector.</p>
 <p><strong>EXERCISE 4</strong> Run the following <em>code chunk</em> to understand vectors and logical comparisons:</p>
 <pre class="r"><code># Vectors and Relational Operators
 genders == c(&quot;Bridge&quot;, &quot;Building&quot;, &quot;male&quot;, &quot;Road&quot;)</code></pre>
-<pre><code>## [1] FALSE FALSE  TRUE FALSE</code></pre>
 <p>We can combine the relational operators with <code>R</code>‘s logical operators of ’and’ (<code>&amp;</code>) and ‘or’ (<code>|</code>) to create more complex logical expressions.</p>
 <ul>
 <li><p><code>&amp;</code> returns TRUE when both expressions on the left and right side of the ampersand return TRUE.</p></li>
@@ -143,14 +135,10 @@ genders == c(&quot;Bridge&quot;, &quot;Building&quot;, &quot;male&quot;, &quot;R
 </ul>
 <p><strong>EXERCISE 5</strong> Use to code in the following <em>code chunk</em> to understand <code>&amp;</code> and <code>|</code>:</p>
 <pre class="r"><code># Your turn
-TRUE | FALSE</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>TRUE &amp; FALSE</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>TRUE | TRUE</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>FALSE &amp; FALSE</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+TRUE | FALSE
+TRUE &amp; FALSE
+TRUE | TRUE
+FALSE &amp; FALSE</code></pre>
 <p><strong>Subselecting rows or columns in a dataset</strong></p>
 <p>There are many cases where you will need to select specific rows or columns of your data after you load it in <code>R</code>, for example:</p>
 <ul>
@@ -162,46 +150,19 @@ TRUE | FALSE</code></pre>
 <p>If you want to create a new dataset <code>data_new</code> that only contains the first five columns of the Framingham dataset, we type the following code:</p>
 <pre class="r"><code>data_new &lt;- data[ , 1:5]
 head(data_new)</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP
-## 1   2448   1     209  52   121
-## 2   6238   2     237  58   108
-## 3  11252   2      NA  58   155
-## 4  11263   2     220  55   180
-## 5  12806   2     320  57   110
-## 6  14367   1     280  64   168</code></pre>
 <p>Remember, the Framingham dataset is stored in an <em>object</em> called <code>data</code> that we loaded earlier.</p>
 <p>In <code>R</code>, the statement <code>1:5</code> is read as ‘from 1 to 5’ and specifies that we should select columns, 1, 2, 3, 4, 5.</p>
 <p><strong>EXERCISE 6</strong> Create a new dataset named <code>data_new</code> that only contains the first 10 columns of the Framingham dataset.</p>
 <pre class="r"><code># Your turn
 data_new &lt;- data[, 1:10]
 head(data_new)</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES
-## 1   2448   1     209  52   121    66        0       0    NA        0
-## 2   6238   2     237  58   108    66        0       0 28.50        0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0
-## 4  11263   2     220  55   180   106        0       0 31.17        1
-## 5  12806   2     320  57   110    46        1      30 22.02        0
-## 6  14367   1     280  64   168   100        0       0 25.72        0</code></pre>
 <p>The <code>data</code> <em>object</em> is stored by <code>R</code> as a data frame. A data frame has columns that contains the different variables and rows that contain information about each subject. In the above code, we selected a specific subset of the <em>columns</em>. We can also select a specific subset of <em>rows</em> by placing numbers before the comma, e.g. </p>
 <pre class="r"><code>data1 &lt;- data[1:5, 1:5]
 head(data1)</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP
-## 1   2448   1     209  52   121
-## 2   6238   2     237  58   108
-## 3  11252   2      NA  58   155
-## 4  11263   2     220  55   180
-## 5  12806   2     320  57   110</code></pre>
 <p>Subselects the first five columns from the first five subjects only and stores them in a variable called <code>data1</code>.</p>
 <p>You can also subselect columns and rows by their name, e.g.</p>
 <pre class="r"><code>data2 &lt;- data[, c(&quot;SEX&quot;, &quot;AGE&quot;, &quot;BMI&quot;, &quot;HEARTRTE&quot;, &quot;GLUCOSE&quot;)]
 head(data2)</code></pre>
-<pre><code>##   SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   1  52    NA       69      92
-## 2   2  58 28.50       80      71
-## 3   2  58 24.61       74      NA
-## 4   2  55 31.17       86      81
-## 5   2  57 22.02       75      87
-## 6   1  64 25.72       92      82</code></pre>
 <p><strong>EXERCISE 7</strong> Create a new dataset named <code>data2_new</code> that contains the first 10 subjects and the subject ID, sex, age, bmi, heart rate and glucose columns from the Framingham dataset. Then, take a quick glance of the new dataset.</p>
 <ul>
 <li><p>You can see the names of the columns of a dataset using the command <code>colnames(data)</code>, you can also look at the data dictionary.</p></li>
@@ -212,43 +173,8 @@ data2_new &lt;- data[1:10,
                   c(&quot;RANDID&quot;, &quot;SEX&quot;, &quot;AGE&quot;, &quot;BMI&quot;, 
                     &quot;HEARTRTE&quot;, &quot;GLUCOSE&quot;)]
 head(data2_new)</code></pre>
-<pre><code>##   RANDID SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   2448   1  52    NA       69      92
-## 2   6238   2  58 28.50       80      71
-## 3  11252   2  58 24.61       74      NA
-## 4  11263   2  55 31.17       86      81
-## 5  12806   2  57 22.02       75      87
-## 6  14367   1  64 25.72       92      82</code></pre>
 <p>It is also possible to subset with logical expressions and select the rows or columns of a data frame that fulfils a certain condition. For example, we can extract and present all rows of our <code>data</code> where the participant is older than 30.</p>
 <pre class="r"><code>head(data[data$AGE &gt; 30,])</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP
-## 1     6438    6438     8766    6438    8766    8766
-## 2     8766    8766     8766    8766    8766    8766
-## 3     8766    8766     8766    8766    8766    4285
-## 4     5719    5719     8766    5719    8766       0
-## 5     8766    8766     8766    8766    8766    8679
-## 6     8766    8766     8766    8766    8766       0</code></pre>
 <ul>
 <li><code>data$AGE</code> is shorthand in <code>R</code> for <code>data[,"AGE"]</code>. In general, you can use the $ sign followed by the name of the variable to select a specific column of a data set. You can only use this shorthand to select a single column from a data frame.</li>
 </ul>
@@ -257,13 +183,6 @@ head(data2_new)</code></pre>
 data3 &lt;- data[data$HEARTRTE &gt; 100, 
               c(&quot;RANDID&quot;, &quot;SEX&quot;, &quot;AGE&quot;, &quot;BMI&quot;, &quot;HEARTRTE&quot;)]
 head(data3)</code></pre>
-<pre><code>##     RANDID SEX AGE   BMI HEARTRTE
-## 13   36459   1  53 26.43      105
-## 50  160953   2  75 25.31      110
-## 51  162207   2  74 31.45      120
-## 64  199546   2  73 28.69      105
-## 96  290692   2  59 21.10      104
-## 110 359422   2  69 33.11      110</code></pre>
 </div>
 <div id="identifying-and-replacing-data" class="section level1">
 <h1>3. Identifying and replacing data</h1>
@@ -273,19 +192,11 @@ head(data3)</code></pre>
 <p>To identify missing values, you can use the function <code>is.na()</code>. This function returns a logical vector or matrix (depending on the input) with the value TRUE where there is an NA and FALSE where the data are complete. For example:</p>
 <pre class="r"><code>b &lt;- c(1, 2, 10, NA, 9, NA)
 is.na(b)</code></pre>
-<pre><code>## [1] FALSE FALSE FALSE  TRUE FALSE  TRUE</code></pre>
 <p>If you want to subselect subjects without missing data for heart rate. You could use the function <code>is.na()</code> to identify the subjects that have no missing values in their heart rate variable and exclude them:</p>
 <pre class="r"><code>No_missing_heartrate_data &lt;- data[is.na(data$HEARTRTE) == FALSE, ]</code></pre>
 <p><strong>EXERCISE 9</strong> Subselect subjects without any glucose information. You do not need to store the new dataset, just display the first 6 subjects and the <code>RANDID</code> and <code>GLUCOSE</code> columns.</p>
 <pre class="r"><code># Your turn
 head(data[is.na(data$GLUCOSE) == TRUE, c(&#39;RANDID&#39;, &#39;GLUCOSE&#39;)])</code></pre>
-<pre><code>##    RANDID GLUCOSE
-## 3   11252      NA
-## 15  43522      NA
-## 26  77492      NA
-## 29  83398      NA
-## 33  95148      NA
-## 42 125413      NA</code></pre>
 <p><code>R</code> also has a function <code>na.omit()</code>, that removes all observations with missing values in any of the columns.</p>
 <p><strong>EXERCISE 10</strong> Calculate the number of observations in our data that does not have any missing values for the heart rate and glucose columns. The <code>nrow()</code> and <code>ncol()</code> functions give the total number of rows and columns of a dataset, respectively, when used on a dataset.</p>
 <pre class="r"><code># Your turn
@@ -293,14 +204,12 @@ head(data[is.na(data$GLUCOSE) == TRUE, c(&#39;RANDID&#39;, &#39;GLUCOSE&#39;)])<
 data3 &lt;- data[(is.na(data$HEARTRTE) == FALSE) &amp; 
                 (is.na(data$GLUCOSE) == FALSE), 
               c(&quot;HEARTRTE&quot;, &quot;GLUCOSE&quot;)]
-nrow(data3)</code></pre>
-<pre><code>## [1] 2701</code></pre>
-<pre class="r"><code># 2nd way, using na.omit()
+nrow(data3)
+# 2nd way, using na.omit()
 # na.omit function omits NAs from your dataset.
 data_no_missing &lt;- data[, c(&#39;HEARTRTE&#39;, &#39;GLUCOSE&#39;)]
 data_no_missing &lt;- na.omit(data_no_missing)
 nrow(data_no_missing)</code></pre>
-<pre><code>## [1] 2701</code></pre>
 <p><strong>Identifying and replacing values in a dataset</strong></p>
 <p>It is also possible to find and replace values in a dataset. For example, we may want to create a new variable named <code>SEX_char</code> for the existing Framingham dataset. We want our new varible to be equal to “male” when <code>SEX</code> is equal to 1 and “female” when <code>SEX</code> equals 2. This is achieved using the following commands.</p>
 <pre class="r"><code># Creating a new variable
@@ -322,21 +231,16 @@ data$DIABETES[is.na(data$DIABETES)] &lt;- 0</code></pre>
 <p>The following code makes <code>SEX</code> into a factor variable and display the level.</p>
 <pre class="r"><code>data$SEX_char &lt;- factor(data$SEX_char)
 levels(data$SEX_char)</code></pre>
-<pre><code>## [1] &quot;female&quot; &quot;male&quot;</code></pre>
 </div>
 <div id="calculating-useful-statistics" class="section level1">
 <h1>4. Calculating useful statistics</h1>
 <p>Assume you want to calculate the arithmetic mean and variance of the age of your Framingham sample. You can easily do this by typing:</p>
-<pre class="r"><code>mean(data1$AGE)</code></pre>
-<pre><code>## [1] 56</code></pre>
-<pre class="r"><code>var(data1$AGE)</code></pre>
-<pre><code>## [1] 6.5</code></pre>
+<pre class="r"><code>mean(data1$AGE)
+var(data1$AGE)</code></pre>
 <p><strong>EXERCISE 12</strong> Calculate the mean and variance of BMI. Hint: most statistical functions in <code>R</code> does not automatically exclude missing values. If your variable has missing values, you need to specify <code>na.rm = TRUE</code> or the result will always be <code>NA</code>.</p>
 <pre class="r"><code># Your turn
-mean(data$BMI, na.rm = TRUE)</code></pre>
-<pre><code>## [1] 25.89478</code></pre>
-<pre class="r"><code>var(data$BMI, na.rm = TRUE)</code></pre>
-<pre><code>## [1] 16.65175</code></pre>
+mean(data$BMI, na.rm = TRUE)
+var(data$BMI, na.rm = TRUE)</code></pre>
 <p>There are several functions in <code>R</code> to compute different descriptive statistics:</p>
 <ul>
 <li><code>median()</code>: Calculates the median for the data</li>
@@ -349,44 +253,27 @@ mean(data$BMI, na.rm = TRUE)</code></pre>
 <p><strong>EXERCISE 13</strong> Call the <code>summary()</code> function on BMI and see what types of statistics it gives.</p>
 <pre class="r"><code># Your turn
 summary(data$BMI)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##   14.43   23.19   25.46   25.89   28.06   56.80      17</code></pre>
 <p>We can use subsetting to calculate summary statistics for different subgroups in our data. For example, we can compute the mean and variance of age for men and women:</p>
 <pre class="r"><code># Your turn
-mean(data$AGE[data$SEX_char == &quot;male&quot;])</code></pre>
-<pre><code>## [1] 60.34895</code></pre>
-<pre class="r"><code>mean(data$AGE[data$SEX_char == &quot;female&quot;])</code></pre>
-<pre><code>## [1] 60.8694</code></pre>
-<pre class="r"><code>var(data$AGE[data$SEX_char == &quot;male&quot;])</code></pre>
-<pre><code>## [1] 67.10037</code></pre>
-<pre class="r"><code>var(data$AGE[data$SEX_char == &quot;female&quot;])</code></pre>
-<pre><code>## [1] 70.04107</code></pre>
+mean(data$AGE[data$SEX_char == &quot;male&quot;])
+mean(data$AGE[data$SEX_char == &quot;female&quot;])
+var(data$AGE[data$SEX_char == &quot;male&quot;])
+var(data$AGE[data$SEX_char == &quot;female&quot;])</code></pre>
 <p><strong>EXERCISE 14</strong> Calculate the median and max of BMI for those who are over 60 years old with a heart rate of over 100 beats/min.</p>
 <pre class="r"><code># Your turn
 BMI_short &lt;- data$BMI[data1$AGE &gt; 60 &amp; data$HEARTRTE &gt; 100]
-median(BMI_short, na.rm = TRUE)</code></pre>
-<pre><code>## [1] NA</code></pre>
-<pre class="r"><code>max(BMI_short, na.rm = TRUE)</code></pre>
-<pre><code>## [1] -Inf</code></pre>
-<pre class="r"><code>summary(BMI_short)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## </code></pre>
+median(BMI_short, na.rm = TRUE)
+max(BMI_short, na.rm = TRUE)
+summary(BMI_short)</code></pre>
 <p>We can calculate the correlation between two or more variables using the <code>cor()</code> function. There are three methods for calculating correlation supported within <code>R</code> (Pearson, Kendal or Spearman method), more information can be found by running <code>?cor</code>.</p>
 <p>To calculate the Pearson correlation coefficient for BMI and systolic blood pressure, we use:</p>
 <pre class="r"><code>cor(data$AGE, data$SYSBP)</code></pre>
-<pre><code>## [1] 0.3420412</code></pre>
 <p>If you want to calculate the correlations across several continuous variables in your dataset, the <code>cor()</code> function can be called on a data frame.</p>
 <p><strong>EXERCISE 15</strong> Create a new dataset that only contains age, BMI, heart rate, glucose and systolic blood pressure. Use the <code>cor()</code> function to find the pairwise correlations between all these variables.</p>
 <p>Note that <code>cor()</code> does not automatically exclude missing values. This can be achieved using the option <code>use = "pairwise.complete.obs"</code> in the <code>cor()</code> function.</p>
 <pre class="r"><code># Your turn
 cont_vars &lt;- dplyr::select(data, AGE, BMI, HEARTRTE, GLUCOSE, SYSBP)
 cor(cont_vars, use = &quot;pairwise.complete.obs&quot;)</code></pre>
-<pre><code>##                  AGE         BMI   HEARTRTE    GLUCOSE     SYSBP
-## AGE       1.00000000 -0.02845066 0.03236608 0.09174635 0.3420412
-## BMI      -0.02845066  1.00000000 0.05577924 0.06968376 0.2177946
-## HEARTRTE  0.03236608  0.05577924 1.00000000 0.16130869 0.1593737
-## GLUCOSE   0.09174635  0.06968376 0.16130869 1.00000000 0.1455470
-## SYSBP     0.34204125  0.21779458 0.15937365 0.14554702 1.0000000</code></pre>
 </div>
 <div id="data-manipulation-with-dplyr" class="section level1">
 <h1>5. Data manipulation with <code>dplyr</code></h1>
@@ -405,142 +292,16 @@ cor(cont_vars, use = &quot;pairwise.complete.obs&quot;)</code></pre>
 <p>The function <code>filter()</code> returns a new dataset with all the observations that satisfy a set of logical expressions.</p>
 <p>For example, we can select all the male participants (represented as 1) in the Framingham dataset who are under 40 years old and have a heart rate of over 100 beats/min:</p>
 <pre class="r"><code>head(filter(data, SEX == 1, AGE &gt; 40, HEARTRTE &gt; 100))</code></pre>
-<pre><code>##    RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   36459   1     162  53 152.5   101        0       0 26.43        0      0
-## 2  575116   1     209  58 121.0    77        0       0 28.07        0      1
-## 3  638453   1     250  53 160.0    98        1      40 22.48        0      1
-## 4  984473   1      NA  55 137.0    89        1      70 29.00        0      1
-## 5 1044236   1     214  62 181.0    90        0       0 31.51        1      0
-## 6 2067160   1     141  75 152.0   102        1      25 26.09        1     NA
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1      105      78    2       0      0      0        0       1 4411      3   31
-## 2      108     131    4       0      0      0        0       1 4367      3   41
-## 3      110      92    2       0      0      0        0       1 4423      3   60
-## 4      110      84    2       0      0      0        0       1 4393      3   NA
-## 5      102     151    1       0      0      0        0       1 4359      3   51
-## 6      102     172    2       0      0      0        0       1 4214      3   27
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1   91     0      0      0       0      0      0   0        1   8766   8766
-## 2  168     0      1      0       0      1      1   1        1   6236   8766
-## 3  190     0      0      0       0      0      0   0        1   8766   8766
-## 4   NA     1      0      0       1      1      0   1        1   4653   4653
-## 5  163     0      0      0       0      0      0   0        1   8766   8766
-## 6   80     1      0      0       0      1      0   1        1   6819   6819
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     8766    8766     8766    8766    8766    1469     male Not a diabetic
-## 2     8766    6236     8313    6236    8766       0     male Not a diabetic
-## 3     8766    8766     8766    8766    8766     735     male Not a diabetic
-## 4     4653    4653     4653    4653    4653       0     male Not a diabetic
-## 5     8766    8766     8766    8766    8766       0     male       Diabetic
-## 6     6819    6289     6819    6289    6819    1456     male       Diabetic</code></pre>
 <p><strong>EXERCISE 16</strong> Select all female participants (represented as a 2 in the <code>SEX</code> variable) in the Framingham dataset who are over 50 years old and have a glucose measurement of over 100 mg/dL. Only display the first 6 observations.</p>
 <pre class="r"><code># Your turn
 head(filter(data, SEX == 2, AGE &gt; 50, GLUCOSE &gt; 100))</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1  23727   2     159  53   124    78        0       0 26.62        0      0
-## 2  40435   2     226  54   126    75        1      40 21.59        0      0
-## 3  43770   2     283  64   159    69        0       0 32.93        1      0
-## 4  94510   2     293  53   127    77        1       3 25.68        0      0
-## 5  97026   2     206  61   112    80        0       0 21.96        0     NA
-## 6 112469   2     224  74   125    68        0       0 27.35        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       68     135    3       0      0      0        0       1 4503      3   53
-## 2       85     102    2       0      0      0        0       0 4372      3   84
-## 3       70     230    1       0      0      0        0       1 4375      3   45
-## 4       90     115    2       0      0      0        0       0 4366      3   52
-## 5       63     138    2       0      0      0        0       0 4263      3   84
-## 6       80     109    1       0      0      0        0       1 4332      3   35
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  106     1      0      0       0      0      0   0        1   5592   5592
-## 2  142     0      0      0       0      0      0   0        1   8766   8766
-## 3  238     1      0      1       1      1      0   1        1   6410   6384
-## 4  241     0      0      0       0      0      0   0        0   8766   8766
-## 5  102     0      0      0       0      0      0   0        0   8766   8766
-## 6  189     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     5592    5592     5592    5592    5592       0   female Not a diabetic
-## 2     8766    8766     8766    8766    8766    5933   female Not a diabetic
-## 3     6384    6384     6410    6384    6410     723   female       Diabetic
-## 4     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 5     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 6     8766    8766     8766    8766    8766    1463   female Not a diabetic</code></pre>
 <p><code>select()</code> allows you to select variables from a dataset based on the variable names. To select <code>SEX</code>, <code>AGE</code>, <code>BMI</code> <code>HEARTRTE</code> and <code>GLUCCOSE</code> from the Framingham dataset, the following command is used:</p>
 <pre class="r"><code>head(select(data, SEX, AGE, BMI, HEARTRTE, GLUCOSE))</code></pre>
-<pre><code>##   SEX AGE   BMI HEARTRTE GLUCOSE
-## 1   1  52    NA       69      92
-## 2   2  58 28.50       80      71
-## 3   2  58 24.61       74      NA
-## 4   2  55 31.17       86      81
-## 5   2  57 22.02       75      87
-## 6   1  64 25.72       92      82</code></pre>
 <p>It is also possible to remove variables from a dataset by including <code>-</code>. To remove our newly created <code>DIABETES</code> variable from <code>data</code> you can type:</p>
 <pre class="r"><code>head(select(data, -DIABETES))</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI BPMEDS HEARTRTE
-## 1   2448   1     209  52   121    66        0       0    NA      0       69
-## 2   6238   2     237  58   108    66        0       0 28.50      0       80
-## 3  11252   2      NA  58   155    90        1      30 24.61      0       74
-## 4  11263   2     220  55   180   106        0       0 31.17      1       86
-## 5  12806   2     320  57   110    46        1      30 22.02      0       75
-## 6  14367   1     280  64   168   100        0       0 25.72      0       92
-##   GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC LDLC
-## 1      92    4       0      0      0        0       0 4628      3   31  178
-## 2      71    2       0      0      0        0       0 4344      3   54  141
-## 3      NA    3       0      0      0        0       1 4285      3   NA   NA
-## 4      81    2       0      0      0        0       1 4351      3   46  135
-## 5      87    2       0      0      0        0       0 4289      3   34  286
-## 6      82    1       0      0      0        0       1 4438      3   44  236
-##   DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI TIMEMIFC
-## 1     0      0      1       1      1      0   1        0   8766   6438     6438
-## 2     0      0      0       0      0      0   0        0   8766   8766     8766
-## 3     0      0      0       0      0      0   0        1   8766   8766     8766
-## 4     0      0      0       1      1      0   1        1   8766   8766     5719
-## 5     0      0      0       0      0      0   0        1   8766   8766     8766
-## 6     0      0      0       0      0      0   0        1   8766   8766     8766
-##   TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1    6438     8766    6438    8766    8766     male Not a diabetic
-## 2    8766     8766    8766    8766    8766   female Not a diabetic
-## 3    8766     8766    8766    8766    4285   female Not a diabetic
-## 4    5719     8766    5719    8766       0   female       Diabetic
-## 5    8766     8766    8766    8766    8679   female Not a diabetic
-## 6    8766     8766    8766    8766       0     male Not a diabetic</code></pre>
 <p>Be careful, once you remove a variable from a dataset you cannot recover it. Therefore, you should usually make a copy of the original dataset and manipulate the copy.</p>
 <p><code>mutate()</code> creates new variables in a dataset. The following command creates a new variable that is the logarithmic transformation of <code>AGE</code>.</p>
 <pre class="r"><code>head(mutate(data, log_AGE = log(AGE)))</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     6438    6438     8766    6438    8766    8766     male Not a diabetic
-## 2     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 3     8766    8766     8766    8766    8766    4285   female Not a diabetic
-## 4     5719    5719     8766    5719    8766       0   female       Diabetic
-## 5     8766    8766     8766    8766    8766    8679   female Not a diabetic
-## 6     8766    8766     8766    8766    8766       0     male Not a diabetic
-##    log_AGE
-## 1 3.951244
-## 2 4.060443
-## 3 4.060443
-## 4 4.007333
-## 5 4.043051
-## 6 4.158883</code></pre>
 <p><strong>EXERCISE 17</strong> Add an additional column to the dataset that is a logarithmic transformation of <code>HEARTRTE</code>. Display the age, log of age, heart rate, and log of heart rate columns for the first 6 observations. If you want to save the manipulated dataset, you have to store it as a variable using <code>&lt;-</code>. You can also overwrite the original dataset the same way. Without using <code>&lt;-</code> the manipulated dataset will not be saved.</p>
 <pre class="r"><code>#Your turn
 data_e13 &lt;- mutate(data,
@@ -550,86 +311,26 @@ data_e13 &lt;- mutate(data,
 data_e13 &lt;- select(data_e13, AGE, log_AGE, HEARTRTE, log_HEARTRTE)
 
 head(data_e13) </code></pre>
-<pre><code>##   AGE  log_AGE HEARTRTE log_HEARTRTE
-## 1  52 3.951244       69     4.234107
-## 2  58 4.060443       80     4.382027
-## 3  58 4.060443       74     4.304065
-## 4  55 4.007333       86     4.454347
-## 5  57 4.043051       75     4.317488
-## 6  64 4.158883       92     4.521789</code></pre>
 <p>When a variable is created, it becomes instantly available to use in the same <code>mutate()</code> function to create new variables. The following command takes the <code>log()</code> of <code>AGE</code> and then taking the <code>exp()</code> of the new variable to return the original <code>AGE</code> value.</p>
 <pre class="r"><code>head(mutate(data, log_AGE = log(AGE), AGE_new = exp(log_AGE)))</code></pre>
-<pre><code>##   RANDID SEX TOTCHOL AGE SYSBP DIABP CURSMOKE CIGPDAY   BMI DIABETES BPMEDS
-## 1   2448   1     209  52   121    66        0       0    NA        0      0
-## 2   6238   2     237  58   108    66        0       0 28.50        0      0
-## 3  11252   2      NA  58   155    90        1      30 24.61        0      0
-## 4  11263   2     220  55   180   106        0       0 31.17        1      1
-## 5  12806   2     320  57   110    46        1      30 22.02        0      0
-## 6  14367   1     280  64   168   100        0       0 25.72        0      0
-##   HEARTRTE GLUCOSE educ PREVCHD PREVAP PREVMI PREVSTRK PREVHYP TIME PERIOD HDLC
-## 1       69      92    4       0      0      0        0       0 4628      3   31
-## 2       80      71    2       0      0      0        0       0 4344      3   54
-## 3       74      NA    3       0      0      0        0       1 4285      3   NA
-## 4       86      81    2       0      0      0        0       1 4351      3   46
-## 5       75      87    2       0      0      0        0       0 4289      3   34
-## 6       92      82    1       0      0      0        0       1 4438      3   44
-##   LDLC DEATH ANGINA HOSPMI MI_FCHD ANYCHD STROKE CVD HYPERTEN TIMEAP TIMEMI
-## 1  178     0      0      1       1      1      0   1        0   8766   6438
-## 2  141     0      0      0       0      0      0   0        0   8766   8766
-## 3   NA     0      0      0       0      0      0   0        1   8766   8766
-## 4  135     0      0      0       1      1      0   1        1   8766   8766
-## 5  286     0      0      0       0      0      0   0        1   8766   8766
-## 6  236     0      0      0       0      0      0   0        1   8766   8766
-##   TIMEMIFC TIMECHD TIMESTRK TIMECVD TIMEDTH TIMEHYP SEX_char  DIABETES_char
-## 1     6438    6438     8766    6438    8766    8766     male Not a diabetic
-## 2     8766    8766     8766    8766    8766    8766   female Not a diabetic
-## 3     8766    8766     8766    8766    8766    4285   female Not a diabetic
-## 4     5719    5719     8766    5719    8766       0   female       Diabetic
-## 5     8766    8766     8766    8766    8766    8679   female Not a diabetic
-## 6     8766    8766     8766    8766    8766       0     male Not a diabetic
-##    log_AGE AGE_new
-## 1 3.951244      52
-## 2 4.060443      58
-## 3 4.060443      58
-## 4 4.007333      55
-## 5 4.043051      57
-## 6 4.158883      64</code></pre>
 <p><strong>EXERCISE 18</strong> Multiply <code>BMI</code> by 2 and revert the muliplication to return the orginal <code>BMI</code> value. Only display the first 6 observations and the two BMI variables.</p>
 <pre class="r"><code># Your turn
 head(select(mutate(data, BMI_twice = BMI*2,
                    BMI = BMI_twice / 2), BMI_twice, BMI))</code></pre>
-<pre><code>##   BMI_twice   BMI
-## 1        NA    NA
-## 2     57.00 28.50
-## 3     49.22 24.61
-## 4     62.34 31.17
-## 5     44.04 22.02
-## 6     51.44 25.72</code></pre>
 <p><code>summarise()</code> creates a summary of a dataset based on a set of functions provided. It returns a new dataset with columns for each summary.</p>
 <p>If we wanted to compute the mean and variance of <code>AGE</code> for the Framingham dataset, we would use the following command:</p>
 <pre class="r"><code>summarise(data, mean_AGE = mean(AGE), variance_AGE = var(AGE))</code></pre>
-<pre><code>##   mean_AGE variance_AGE
-## 1 60.64818     68.83633</code></pre>
 <p><strong>EXERCISE 19</strong> Compute the mean and variance of <code>BMI</code> for the Framingham dataset.</p>
 <pre class="r"><code># Your turn
 summarise(data, mean_BMI = mean(BMI, na.rm = TRUE), variance_BMI = var(BMI, na.rm = TRUE))</code></pre>
-<pre><code>##   mean_BMI variance_BMI
-## 1 25.89478     16.65175</code></pre>
 <p><strong>EXERCISE 20</strong> Calculate the mean and variance of <code>BMI</code> whilst removing the missing values.</p>
 <pre class="r"><code># Your turn
 summarise(data, mean_BMI = mean(BMI, na.rm = TRUE), 
           variance_BMI = var(BMI, na.rm = TRUE))</code></pre>
-<pre><code>##   mean_BMI variance_BMI
-## 1 25.89478     16.65175</code></pre>
 <p>We can create subgroups in our datasets, to calculate summary measures for different patient subgroups. Firstly, we create the groups using the <code>group_by()</code> function, e.g. to group by <code>SEX_char</code>:</p>
 <pre class="r"><code>data_grouped &lt;- group_by(data, SEX_char)</code></pre>
 <p>We can then use the <code>summarise()</code> function to return a summary for each group in our new dataset. For example, we can estimate the mean and variance of <code>AGE</code> for men and women.</p>
 <pre class="r"><code>summarise(data_grouped, mean_AGE = mean(AGE), variance_AGE = var(AGE))</code></pre>
-<pre><code>## # A tibble: 2 x 3
-##   SEX_char mean_AGE variance_AGE
-##   &lt;fct&gt;       &lt;dbl&gt;        &lt;dbl&gt;
-## 1 female       60.9         70.0
-## 2 male         60.3         67.1</code></pre>
 <p><strong>EXERCISE 21</strong> Group the data by <code>DIABETES_char</code> and estimate the mean, median, variance and standard deviation of ‘BMI’ for diabetic and non-diabetic groups. Display the summary.</p>
 <ul>
 <li><code>median</code> is the <code>R</code> function to find the median</li>
@@ -642,11 +343,6 @@ summarise(data_grouped1,
           median_BMI = median(BMI, na.rm = TRUE), 
           variance_BMI = var(BMI, na.rm = TRUE), 
           sd_BMI = sd(BMI, na.rm = TRUE))</code></pre>
-<pre><code>## # A tibble: 2 x 5
-##   DIABETES_char  mean_BMI median_BMI variance_BMI sd_BMI
-##   &lt;chr&gt;             &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Diabetic           27.2       26.2         27.5   5.24
-## 2 Not a diabetic     25.8       25.4         15.6   3.95</code></pre>
 <p>We can also group and summarize using multiple variables. This creates a summary for each unique subgroup combination of the variables. For example, we could group our dataset <code>data</code> by <code>SEX_char</code> and <code>DIABETES_char</code> creating 4 subgroups:</p>
 <ul>
 <li>Males who are diabetic</li>
@@ -659,14 +355,6 @@ summarise(data_grouped1,
 data_grouped2 &lt;- group_by(data, SEX_char, DIABETES_char)
 summarise(data_grouped2, mean_AGE = mean(AGE), 
           variance_AGE = var(AGE))</code></pre>
-<pre><code>## # A tibble: 4 x 4
-## # Groups:   SEX_char [2]
-##   SEX_char DIABETES_char  mean_AGE variance_AGE
-##   &lt;fct&gt;    &lt;chr&gt;             &lt;dbl&gt;        &lt;dbl&gt;
-## 1 female   Diabetic           64.8         65.5
-## 2 female   Not a diabetic     60.6         69.2
-## 3 male     Diabetic           62.6         63.4
-## 4 male     Not a diabetic     60.1         67.0</code></pre>
 </div>
 <div id="data-manipulation-with-pipe" class="section level1">
 <h1>6. Data manipulation with <code>pipe</code></h1>
@@ -675,7 +363,6 @@ summarise(data_grouped2, mean_AGE = mean(AGE),
 <p>i.e. one can replace <code>f(x)</code> with <code>x %&gt;% f(.)</code>, where <code>f(.)</code> can be any function in <code>R</code>. For example, instead of writing <code>ncol(data)</code> we can have <code>data %&gt;% ncol(.)</code>, where <code>.</code> is a place holder for the object on the left-hand side.</p>
 <pre class="r"><code># calculate the number of columns in our dataset
 data %&gt;% ncol(.) </code></pre>
-<pre><code>## [1] 41</code></pre>
 <p>The benefits are more apparent when you have a bigger series of operations to be carried out sequentially.</p>
 <ul>
 <li><p>If you have multiple pipes, the output from the previous <em>pipe</em> operation is the input of the next <em>pipe</em> operation. An easy way to remember this is that whatever is on the left-hand side is always the input of the <em>pipe</em> that follows immediately.</p></li>
@@ -688,13 +375,6 @@ data %&gt;% ncol(.) </code></pre>
      filter(AGE &gt; 60) %&gt;%
      select(RANDID, AGE) %&gt;%
      head()</code></pre>
-<pre><code>##   RANDID AGE
-## 1  14367  64
-## 2  16799  62
-## 3  43770  64
-## 4  45464  64
-## 5  55965  72
-## 6  66472  72</code></pre>
 <p><strong>EXERCISE 23</strong> Subselect subjects with a heart rate of over 80 beats/min, and among them, only keep the ones with a glucose measure of over 200 mg/dL. Then, only keep the ones with a BMI value. Finally, display the subject ID, heart rate, glucose and BMI columns for the first 6 subjects.</p>
 <pre class="r"><code># Your turn
 data %&gt;% 
@@ -703,29 +383,15 @@ data %&gt;%
      filter(is.na(BMI) == FALSE) %&gt;% 
      select(RANDID, HEARTRTE, GLUCOSE, BMI) %&gt;%
      head()</code></pre>
-<pre><code>##    RANDID HEARTRTE GLUCOSE   BMI
-## 1  276073       96     265 25.77
-## 2 1304801       94     203 31.76
-## 3 1842886       90     206 22.31
-## 4 2055792      100     334 29.29
-## 5 2483517       84     380 22.58
-## 6 2976595       94     333 26.92</code></pre>
 <p>The following code gives the mean BMI stratified by sex for those over 60 years old.</p>
 <pre class="r"><code>data %&gt;%
      filter(AGE &gt; 60) %&gt;%
      group_by(SEX_char) %&gt;%
      summarise(Avg_BMI = mean(BMI, na.rm = TRUE))</code></pre>
-<pre><code>## # A tibble: 2 x 2
-##   SEX_char Avg_BMI
-##   &lt;fct&gt;      &lt;dbl&gt;
-## 1 female      25.9
-## 2 male        25.6</code></pre>
 <p><strong>EXTENSION EXERCISE</strong> Give the mean, median, variance and standard deviation of systolic blood pressure, stratified by prevalent stroke (<code>PREVSTRK</code>), among those who are <em>either</em> a smoker or a diabetic.</p>
 <p>The <code>ifelse()</code> function takes in an expression as its first argument, returns the 2nd argument when the expression is satisfied, and returns the 3rd argument when it is not. Try the following code:</p>
-<pre class="r"><code>ifelse(2 &lt; 3, &#39;Correct&#39;, &#39;Incorrect&#39;)</code></pre>
-<pre><code>## [1] &quot;Correct&quot;</code></pre>
-<pre class="r"><code>ifelse(1 &gt; 10, &#39;Right&#39;, &#39;Wrong&#39;)</code></pre>
-<pre><code>## [1] &quot;Wrong&quot;</code></pre>
+<pre class="r"><code>ifelse(2 &lt; 3, &#39;Correct&#39;, &#39;Incorrect&#39;)
+ifelse(1 &gt; 10, &#39;Right&#39;, &#39;Wrong&#39;)</code></pre>
 <pre class="r"><code># Your turn
 data %&gt;% 
      mutate(DIABETES_SMOKER = 
@@ -738,9 +404,4 @@ data %&gt;%
                median_SYSBP = median(SYSBP, na.rm = TRUE), 
                variance_SYSBP = var(SYSBP, na.rm = TRUE), 
                sd_SYSBP = sd(SYSBP, na.rm = TRUE))</code></pre>
-<pre><code>## # A tibble: 2 x 5
-##   PREVSTRK_char mean_SYSBP median_SYSBP variance_SYSBP sd_SYSBP
-##   &lt;fct&gt;              &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1 Yes                 159           155           542.     23.3
-## 2 No                  139.          135           571.     23.9</code></pre>
 </div>

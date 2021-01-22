@@ -33,13 +33,13 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                   dimnames = list(v_n, v_n))
     # fill in the transition probability array
     ### From Healthy
-    m_P["H", "H"]   <- 1 - (p_HS1 + p_HD)
-    m_P["H", "S1"]  <- p_HS1
+    m_P["H", "H"]   <- (1 - p_HD) * (1 - p_HS1)
+    m_P["H", "S1"]  <- (1 - p_HD) * p_HS1
     m_P["H", "D"]   <- p_HD
     ### From Sick
-    m_P["S1", "H"]  <- p_S1H
-    m_P["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
-    m_P["S1", "S2"] <- p_S1S2
+    m_P["S1", "H"]  <- (1- p_S1D)  * p_S1H
+    m_P["S1", "S1"] <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2))
+    m_P["S1", "S2"] <- (1 - p_S1D) * p_S1S2
     m_P["S1", "D"]  <- p_S1D
     ### From Sicker
     m_P["S2", "S2"] <- 1 - p_S2D
@@ -105,10 +105,10 @@ calculate_ce_out <- function(l_params_all, n_wtp = 100000){ # User defined
     m_M_trt     <- l_model_out_trt$m_M    # Treatment
     
     ## Vectors with costs and utilities by treatment
-    v_u_no_trt  <- c(u_H, u_S1, u_S2, u_D)
+    v_u_no_trt  <- c(u_H, u_S1,  u_S2, u_D)
     v_u_trt     <- c(u_H, u_trt, u_S2, u_D)
     
-    v_c_no_trt  <- c(c_H, c_S1, c_S2, c_D)
+    v_c_no_trt  <- c(c_H, c_S1,         c_S2,         c_D)
     v_c_trt     <- c(c_H, c_S1 + c_trt, c_S2 + c_trt, c_D)
     
     ## Mean Costs and QALYs for Treatment and NO Treatment

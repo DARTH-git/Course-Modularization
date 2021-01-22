@@ -1,0 +1,432 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Survival Analysis - Sick-Sicker model},
+  pdfauthor={The DARTH workgroup},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Survival Analysis - Sick-Sicker model}
+\author{The DARTH workgroup}
+\date{}
+
+\begin{document}
+\maketitle
+
+Developed by the Decision Analysis in R for Technologies in Health
+(DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1)
+
+Eva A. Enns, MS, PhD (2)
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5)
+
+Eline M. Krijkamp, MSc (3)
+
+Petros Pechlivanoglou, PhD (6)
+
+Alan Yang, MSc (7)
+
+In collaboration of:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Drug Policy Program, Center for Research and Teaching in Economics
+  (CIDE) - CONACyT, Aguascalientes, Mexico
+\item
+  University of Minnesota School of Public Health, Minneapolis, MN, USA
+\item
+  Erasmus MC, Rotterdam, The Netherlands
+\item
+  Harvard T.H. Chan School of Public Health, Boston, USA
+\item
+  University of Pittsburgh Graduate School of Public Health, Pittsburgh,
+  PA, USA
+\item
+  The Hospital for Sick Children, Toronto and University of Toronto,
+  Toronto ON, Canada
+\item
+  The Hospital for Sick Children, Toronto ON, Canada
+\end{enumerate}
+
+Please cite our publications when using this code:
+
+\begin{itemize}
+\item
+  Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E,
+  Hunink MG. An Overview of R in Health Decision Sciences. Med Decis
+  Making. 2017; 37(3): 735-746.
+  \url{https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559}
+\item
+  Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM,
+  Pechlivanoglou P. Microsimulation modeling for health decision
+  sciences using R: A tutorial. Med Decis Making. 2018;38(3):400--22.
+  \url{https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513}
+\item
+  Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM,
+  Jalal H. A Multidimensional Array Representation of State-Transition
+  Model Dynamics. BioRxiv 670612
+  2019.https://www.biorxiv.org/content/10.1101/670612v1
+\end{itemize}
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
+INSTITUTIONS. All rights reserved in Canada, the United States and
+worldwide. Copyright, trademarks, trade names and any and all associated
+intellectual property are exclusively owned by THE HOSPITAL FOR Sick
+CHILDREN and the collaborating institutions. These materials may be
+used, reproduced, modified, distributed and adapted with proper
+attribution.
+
+\newpage
+
+Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())      }\CommentTok{# clear memory (removes all the variables from the workspace)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(}\StringTok{'pacman'}\NormalTok{)) }\KeywordTok{install.packages}\NormalTok{(}\StringTok{'pacman'}\NormalTok{); }\KeywordTok{library}\NormalTok{(pacman) }\CommentTok{# use this package to conveniently install other packages}
+\CommentTok{# load (install if required) packages from CRAN}
+\KeywordTok{p_load}\NormalTok{(}\StringTok{"here"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"gems"}\NormalTok{, }\StringTok{"flexsurv"}\NormalTok{, }\StringTok{"survHE"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"msm"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"mstate"}\NormalTok{, }\StringTok{"reshape2"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{, }\StringTok{"darthtools"}\NormalTok{)  }
+\CommentTok{# load (install if required) packages from GitHub}
+\CommentTok{# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version}
+\KeywordTok{p_load_gh}\NormalTok{(}\StringTok{"DARTH-git/dampack"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{load-functions}{%
+\section{02 Load functions}\label{load-functions}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"survival_functions.R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{input-model-parameters}{%
+\section{03 Input model parameters}\label{input-model-parameters}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)                    }\CommentTok{# set the seed  }
+\NormalTok{v_n    <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"S1"}\NormalTok{, }\StringTok{"S2"}\NormalTok{, }\StringTok{"D"}\NormalTok{)   }\CommentTok{# the model states names}
+
+\CommentTok{# Model structure }
+\NormalTok{n_t    <-}\StringTok{ }\DecValTok{30}                   \CommentTok{# time horizon, 30 cycles}
+\NormalTok{c_l    <-}\StringTok{ }\DecValTok{1}
+\NormalTok{d_r    <-}\StringTok{ }\FloatTok{0.03}                 \CommentTok{# discount rate of 3% per cycle}
+
+\NormalTok{p_S2D  <-}\StringTok{ }\FloatTok{0.2}                  \CommentTok{# probability of dying in sicker state}
+
+\NormalTok{v_init <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"S1"}\NormalTok{ =}\StringTok{ }\DecValTok{1}\NormalTok{,}
+            \StringTok{"S2"}\NormalTok{ =}\StringTok{ }\DecValTok{0}\NormalTok{,}
+            \StringTok{"D"}\NormalTok{  =}\StringTok{ }\DecValTok{0}\NormalTok{)          }\CommentTok{# initial cohort distribution (everyone allocated to the }
+                               \CommentTok{# "S1" state)}
+
+\CommentTok{# Cost inputs}
+\NormalTok{c_H   <-}\StringTok{ }\DecValTok{2000}                  \CommentTok{# cost of one cycle in the healthy state}
+\NormalTok{c_S1  <-}\StringTok{ }\DecValTok{4000}                  \CommentTok{# cost of one cycle in the sick state}
+\NormalTok{c_S2  <-}\StringTok{ }\DecValTok{15000}                 \CommentTok{# cost of one cycle in the sicker state}
+\NormalTok{c_D   <-}\StringTok{ }\DecValTok{0}                     \CommentTok{# cost of one cycle in the dead state}
+\NormalTok{c_Trt <-}\StringTok{ }\DecValTok{12000}                 \CommentTok{# cost of treatment (per cycle)}
+
+\CommentTok{# Utility inputs}
+\NormalTok{u_H   <-}\StringTok{ }\DecValTok{1}                     \CommentTok{# utility when healthy }
+\NormalTok{u_S1  <-}\StringTok{ }\FloatTok{0.75}                  \CommentTok{# utility when sick }
+\NormalTok{u_S2  <-}\StringTok{ }\FloatTok{0.5}                   \CommentTok{# utility when sicker}
+\NormalTok{u_D   <-}\StringTok{ }\DecValTok{0}                     \CommentTok{# utility when dead}
+\NormalTok{u_Trt <-}\StringTok{ }\FloatTok{0.95}                  \CommentTok{# utility when sick(er) and being treated}
+
+\NormalTok{v_dw        <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{((}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_r) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t))       }\CommentTok{# discount weight }
+\NormalTok{n_states    <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                     }\CommentTok{# the number of health states}
+\NormalTok{v_names_str <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"no treatment"}\NormalTok{, }\StringTok{"treatment"}\NormalTok{)  }\CommentTok{# strategy names}
+
+\NormalTok{times       <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, n_t, c_l)                }\CommentTok{# the cycles in years}
+\end{Highlighting}
+\end{Shaded}
+
+Survival analysis component
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load the Sicker data }
+\NormalTok{data_long <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{() }\CommentTok{# Your turn}
+\KeywordTok{head}\NormalTok{(data_long)}
+
+\CommentTok{# Models can be fitted independently for each transition. This is more flexible!}
+
+\CommentTok{# Create subsets for each transition}
+\NormalTok{data_S1D   <-}\StringTok{  }\CommentTok{# Your turn}
+\NormalTok{data_S1S2  <-}\StringTok{  }\CommentTok{# Your turn}
+
+\CommentTok{# Fit independent models for each transition and pick one that fits best}
+\NormalTok{fit_S1S2 <-}\StringTok{ }\CommentTok{# Your turn}
+\NormalTok{fit_S1D  <-}\StringTok{ }\CommentTok{# Your turn}
+
+\CommentTok{# Extract the transition probabilities from the fitted survival models}
+\NormalTok{p_S1S2 <-}\StringTok{ }\KeywordTok{trans_prob}\NormalTok{(.......)}\OperatorTok{$}\NormalTok{t.p  }\CommentTok{# Your turn}
+\NormalTok{p_S1D  <-}\StringTok{ }\KeywordTok{trans_prob}\NormalTok{(.......)}\OperatorTok{$}\NormalTok{t.p  }\CommentTok{# Your turn}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{define-and-initialize-matrices-and-vectors}{%
+\section{04 Define and initialize matrices and
+vectors}\label{define-and-initialize-matrices-and-vectors}}
+
+\hypertarget{cohort-trace}{%
+\subsection{04.1 Cohort trace}\label{cohort-trace}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# create the cohort trace}
+\NormalTok{m_M <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }
+              \DataTypeTok{nrow =}\NormalTok{ n_t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{ ,  }\CommentTok{# create Markov trace (n.t + 1 because R doesn't }
+                                \CommentTok{# understand cycle 0)}
+              \DataTypeTok{ncol =}\NormalTok{ n_states, }
+              \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t, v_n))}
+
+\NormalTok{m_M[}\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\NormalTok{v_init          }\CommentTok{# initialize first cycle of Markov trace}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{transition-probability-array}{%
+\subsection{04.2 Transition probability
+array}\label{transition-probability-array}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# create the transition probability array}
+\NormalTok{a_P <-}\StringTok{ }\KeywordTok{array}\NormalTok{(}\DecValTok{0}\NormalTok{,                                      }\CommentTok{# Create 3-D array}
+             \DataTypeTok{dim =} \KeywordTok{c}\NormalTok{(n_states, n_states, n_t),}
+             \DataTypeTok{dimnames =} \KeywordTok{list}\NormalTok{(v_n, v_n, }\DecValTok{0}\OperatorTok{:}\NormalTok{(n_t }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{))) }\CommentTok{# name the dimensions of the array }
+\end{Highlighting}
+\end{Shaded}
+
+Fill in the transition probability array:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# from Sick}
+\NormalTok{a_P[}\StringTok{"S1"}\NormalTok{, }\StringTok{"S1"}\NormalTok{, ]    <-}\StringTok{  }\CommentTok{# Your turn}
+\NormalTok{a_P[}\StringTok{"S1"}\NormalTok{, }\StringTok{"S2"}\NormalTok{, ]    <-}\StringTok{  }\CommentTok{# Your turn}
+\NormalTok{a_P[}\StringTok{"S1"}\NormalTok{, }\StringTok{"D"}\NormalTok{, ]     <-}\StringTok{  }\CommentTok{# Your turn}
+
+\CommentTok{# from Sicker}
+\NormalTok{a_P[}\StringTok{"S2"}\NormalTok{, }\StringTok{"S2"}\NormalTok{, ] <-}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{p_S2D}
+\NormalTok{a_P[}\StringTok{"S2"}\NormalTok{, }\StringTok{"D"}\NormalTok{, ]  <-}\StringTok{ }\NormalTok{p_S2D}
+
+\CommentTok{# from Dead}
+\NormalTok{a_P[}\StringTok{"D"}\NormalTok{, }\StringTok{"D"}\NormalTok{, ] <-}\StringTok{ }\DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{check-if-transition-array-and-probabilities-are-valid}{%
+\subsection{04.3 Check if transition array and probabilities are
+valid}\label{check-if-transition-array-and-probabilities-are-valid}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Check that transition probabilities are in [0, 1]}
+\KeywordTok{check_transition_probability}\NormalTok{(a_P, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{# Check that all rows sum to 1}
+\KeywordTok{check_sum_of_transition_array}\NormalTok{(a_P, }\DataTypeTok{n_states =}\NormalTok{ n_states, }\DataTypeTok{n_cycles =}\NormalTok{ n_t, }\DataTypeTok{verbose =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{run-markov-model}{%
+\section{05 Run Markov model}\label{run-markov-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_t)\{ }\CommentTok{# t<-1                   # loop through the number of cycles}
+\NormalTok{  m_M[t }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, ] <-}\StringTok{ }\NormalTok{m_M[t, ] }\OperatorTok{%*%}\StringTok{ }\NormalTok{a_P[, , t]  }\CommentTok{# estimate the Markov trace for cycle t + 1 }
+                                           \CommentTok{# using the t-th matrix from the }
+                                           \CommentTok{# probability array }
+\NormalTok{\}}
+\KeywordTok{head}\NormalTok{(m_M)  }\CommentTok{# print the first lines of the matrix }
+\KeywordTok{matplot}\NormalTok{(m_M, }\DataTypeTok{type =}\StringTok{'l'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compute-cost-effectiveness-outcomes}{%
+\section{07 Compute Cost-Effectiveness
+Outcomes}\label{compute-cost-effectiveness-outcomes}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Vectors with costs and utilities by treatment}
+\NormalTok{v_u_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(u_S1,  u_S2, u_D)}
+\NormalTok{v_u_trt     <-}\StringTok{ }\KeywordTok{c}\NormalTok{( u_Trt, u_S2, u_D)}
+
+\NormalTok{v_c_notrt   <-}\StringTok{ }\KeywordTok{c}\NormalTok{( c_S1,         c_S2,         c_D)}
+\NormalTok{v_c_trt     <-}\StringTok{ }\KeywordTok{c}\NormalTok{( c_S1 }\OperatorTok{+}\StringTok{ }\NormalTok{c_Trt, c_S2 }\OperatorTok{+}\StringTok{ }\NormalTok{c_Trt, c_D)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{mean-costs-and-qalys-for-treatment-and-no-treatment}{%
+\subsection{07.1 Mean Costs and QALYs for Treatment and NO
+Treatment}\label{mean-costs-and-qalys-for-treatment-and-no-treatment}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v_tu_notrt  <-}\StringTok{ }\NormalTok{m_M   }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_u_notrt}
+\NormalTok{v_tu_trt    <-}\StringTok{ }\NormalTok{m_M  }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_u_trt}
+
+\NormalTok{v_tc_notrt  <-}\StringTok{ }\NormalTok{m_M   }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_c_notrt}
+\NormalTok{v_tc_trt    <-}\StringTok{ }\NormalTok{m_M   }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_c_trt }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{discounted-mean-costs-and-qalys}{%
+\subsection{07.2 Discounted Mean Costs and
+QALYs}\label{discounted-mean-costs-and-qalys}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tu_d_notrt  <-}\StringTok{ }\KeywordTok{t}\NormalTok{(v_tu_notrt)   }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_dw   }
+\NormalTok{tu_d_trt    <-}\StringTok{ }\KeywordTok{t}\NormalTok{(v_tu_trt)     }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_dw}
+
+\NormalTok{tc_d_notrt  <-}\StringTok{ }\KeywordTok{t}\NormalTok{(v_tc_notrt)   }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_dw}
+\NormalTok{tc_d_trt    <-}\StringTok{ }\KeywordTok{t}\NormalTok{(v_tc_trt)     }\OperatorTok{%*%}\StringTok{  }\NormalTok{v_dw}
+
+\CommentTok{# store them into a vector}
+\NormalTok{v_tc_d      <-}\StringTok{ }\KeywordTok{c}\NormalTok{(tc_d_notrt, tc_d_trt)}
+\NormalTok{v_tu_d      <-}\StringTok{ }\KeywordTok{c}\NormalTok{(tu_d_notrt, tu_d_trt)}
+
+\CommentTok{# Dataframe with discounted costs and effectiveness}
+\NormalTok{df_ce       <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Strategy =}\NormalTok{ v_names_str,}
+                          \DataTypeTok{Cost     =}\NormalTok{ v_tc_d,}
+                          \DataTypeTok{Effect   =}\NormalTok{ v_tu_d}
+\NormalTok{                          )}
+\NormalTok{df_ce}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compute-icers-of-the-markov-model}{%
+\subsection{07.3 Compute ICERs of the Markov
+model}\label{compute-icers-of-the-markov-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_cea <-}\StringTok{ }\KeywordTok{calculate_icers}\NormalTok{(}\DataTypeTok{cost       =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Cost,}
+                          \DataTypeTok{effect     =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Effect,}
+                          \DataTypeTok{strategies =}\NormalTok{ df_ce}\OperatorTok{$}\NormalTok{Strategy}
+\NormalTok{                          )}
+\NormalTok{df_cea}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{plot-frontier-of-the-markov-model}{%
+\subsection{07.4 Plot frontier of the Markov
+model}\label{plot-frontier-of-the-markov-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(df_cea, }\DataTypeTok{effect_units =} \StringTok{"QALYs"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}

@@ -1,10 +1,10 @@
 ---
-title: 'Introduction to Decision Modeling Using R'
+title: 'Health Economic Modeling in R'
 subtitle: 'Basic Markov Model Exercise'
 author: "The DARTH workgroup"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -51,12 +51,12 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics.
-Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
+Med Decis Making.2020 Feb;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
 trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating 
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
@@ -75,9 +75,9 @@ include_graphics("sick_sicker_diagram.png")
 
 Using the template `markov_sick-sicker_template.Rmd`, please do the following. 
 
-1.	Build the Markov model in `R` for the no treatment and treatment strategies.
+1.	Build the Markov model in `R` for the no-treatment and treatment strategies.
 
-2.	Plot the survival curve for the cohort under no treatment.
+2.	Plot the survival curve for the cohort under no-treatment.
 
 3.	Estimate the cost-effectiveness of treatment vs no-treatment.
 
@@ -91,10 +91,10 @@ Using the template `markov_sick-sicker_template.Rmd`, please do the following.
 | Cycle length                       |             | 1 year        |
 | Names of health states             | `v_n`       | H, S1, S2, D  |
 | Annual discount rate (costs/QALYs) | `d_r`       | 3%            |
-| Annual transition probabilities    |             |               |
+| Annual transition probabilities conditional on surviving   |             |               |
 | - Disease onset (H to S1)          | `p_HS1`     |  0.15         |
 | - Recovery (S1 to H)               | `p_S1H`     |  0.5          |
-| - Disease progression (S1 to S2)   | `p_S1S2`    | 0.105         |
+| - Disease progression (S1 to S2)   | `p_S1S2`    |  0.105        |
 | Annual mortality                   |             |               |
 | - All-cause mortality (H to D)     | `p_HD`      |  0.005        |
 | - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |
@@ -113,4 +113,4 @@ Using the template `markov_sick-sicker_template.Rmd`, please do the following.
 | Intervention effect                |             |               |
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
 
-*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package darthtools also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.

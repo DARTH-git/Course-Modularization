@@ -62,6 +62,45 @@ fit.fun <- function(time, status, data = data , add = FALSE, extrapolate = FALSE
   res
 }
 
+## Function to fit multiple functional forms to survival data using survHE
+fit.fun1 <- function(time, status, data = data , add = FALSE, extrapolate = FALSE, times)  
+{
+  # Extract the right data columns 
+  data$time   <- data[,   time]  
+  data$status <- data[, status]  
+  
+  # Specify time horizon based on whether to extrapolate
+  if (extrapolate == TRUE)  {
+    plot.times <- max(times)
+  } else if  (extrapolate == FALSE) {
+    plot.times <- max(data$time)
+  }
+  
+  # Fit parametric survival models
+  # Define the vector of models to be used
+  mods <- c("exp", "weibull", "gamma", "lnorm", "llogis", "gengamma") 
+  # Run the models using MLE via flexsurv
+  m1 <- fit.models(formula = Surv(time, status) ~ 1, data = data, distr = mods)
+  
+  # Extrapolate all models beyond the KM curve and plot
+  print(plot(m1, add.km = T, t = times))
+  
+  # Compare AIC values
+  AIC <- m1$model.fitting$aic
+  AIC <- round(AIC,3)
+  
+  # Compare BIC values
+  BIC <- m1$model.fitting$bic
+  BIC <- round(BIC,3)
+  names(AIC) <- names(BIC) <- names(m1$models)
+  
+  # Store and return results
+  res <- list(m1  = m1$models,
+              AIC = AIC,
+              BIC = BIC)
+  res
+}
+
 
 fit.mstate <- function(time, status, trans,  data = data , add = FALSE, extrapolate = FALSE, times)  
 {

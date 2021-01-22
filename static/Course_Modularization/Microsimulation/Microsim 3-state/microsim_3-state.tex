@@ -225,15 +225,11 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \CommentTok{# Model structure}
 \NormalTok{v_n   <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"healthy"}\NormalTok{, }\StringTok{"sick"}\NormalTok{, }\StringTok{"dead"}\NormalTok{)       }\CommentTok{# vector with state names}
-\NormalTok{n_states   <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                   }\CommentTok{# number of states}
 \NormalTok{n_t   <-}\StringTok{ }\DecValTok{60}                                 \CommentTok{# number of cycles}
 \NormalTok{n_i   <-}\StringTok{ }\DecValTok{10000}                              \CommentTok{# number of individuals}
 \NormalTok{d_e <-}\StringTok{ }\NormalTok{d_c <-}\StringTok{ }\FloatTok{0.03}                          \CommentTok{# equal discount of costs and QALYs by 3%}
 
-\CommentTok{# calculate discount weights for costs for each cycle based on discount rate d_c}
-\NormalTok{v_dwc <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
-\CommentTok{# calculate discount weights for effectiveness for each cycle based on discount rate d_e}
-\NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+
 
 \CommentTok{#### Deterministic analysis ####}
 
@@ -241,8 +237,8 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{p_HS        <-}\StringTok{ }\FloatTok{0.05}    \CommentTok{# probability healthy -> sick}
 \NormalTok{p_HD_female <-}\StringTok{ }\FloatTok{0.0382}  \CommentTok{# probability health -> dead when female}
 \NormalTok{p_HD_male   <-}\StringTok{ }\FloatTok{0.0463}  \CommentTok{# probability health -> dead when male}
-\NormalTok{m_p_HD      <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Sex =} \KeywordTok{c}\NormalTok{(}\StringTok{"Female"}\NormalTok{, }\StringTok{"Male"}\NormalTok{), }\DataTypeTok{p_HD =} \KeywordTok{c}\NormalTok{(p_HD_female, p_HD_male))}
 \NormalTok{p_SD        <-}\StringTok{ }\FloatTok{0.1}     \CommentTok{# probability sick -> dead}
+
 
 \CommentTok{# Costs inputs}
 \NormalTok{c_H  <-}\StringTok{ }\DecValTok{1500}      \CommentTok{# cost of one cycle in healthy state}
@@ -253,6 +249,18 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 \NormalTok{u_H  <-}\StringTok{ }\DecValTok{1}         \CommentTok{# utility when healthy }
 \NormalTok{u_S  <-}\StringTok{ }\FloatTok{0.85}      \CommentTok{# utility when sick }
 \NormalTok{u_D  <-}\StringTok{ }\DecValTok{0}         \CommentTok{# utility when dead }
+
+
+
+
+\NormalTok{n_states   <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_n)                   }\CommentTok{# number of states}
+
+\CommentTok{# calculate discount weights for costs for each cycle based on discount rate d_c}
+\NormalTok{v_dwc <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_e) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+\CommentTok{# calculate discount weights for effectiveness for each cycle based on discount rate d_e}
+\NormalTok{v_dwe <-}\StringTok{ }\DecValTok{1} \OperatorTok{/}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{+}\StringTok{ }\NormalTok{d_c) }\OperatorTok{^}\StringTok{ }\NormalTok{(}\DecValTok{0}\OperatorTok{:}\NormalTok{n_t) }
+
+\NormalTok{m_p_HD      <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Sex =} \KeywordTok{c}\NormalTok{(}\StringTok{"Female"}\NormalTok{, }\StringTok{"Male"}\NormalTok{), }\DataTypeTok{p_HD =} \KeywordTok{c}\NormalTok{(p_HD_female, p_HD_male))}
 \end{Highlighting}
 \end{Shaded}
 

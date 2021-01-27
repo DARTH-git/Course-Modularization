@@ -127,7 +127,7 @@ v_dwc     <- 1 / (1 + d_c) ^ (0:n_t)
 v_dwe     <- 1 / (1 + d_e) ^ (0:n_t)  
 ```
 
-## Draw the state-transition cohort model
+## 03.1 Draw the state-transition cohort model
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))

@@ -58,28 +58,25 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+rm(list = ls())     # clear memory (removes all the variables from the workspace)
+options(scipen=999) # disable scientific notation
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
-
-```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
-```
 
 # 01 Load packages
 
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate",
-        "reshape2", "knitr")   
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate","reshape2", "knitr")   
 ```
 
 # 02 Load functions
 
 ```{r}
-source("functions.R")
+source("survival_functions.R")
 ```
 
 # 03 Input model parameters
@@ -112,14 +109,14 @@ Use the function `digitise()` to translate the digitised OS and PFS data into pa
 
 ```{r, results="hide"}
 # Create IPD and KM data for the OS curves
-digitise("OS_Examp.txt", 
-         "OS_Examp_AtRisk.txt", 
+digitise(surv_inp   = "OS_Examp.txt", 
+         nrisk_inp  = "OS_Examp_AtRisk.txt", 
          km_output  = "KMdata_OS.txt", 
          ipd_output = "IPDdata_OS.txt")
 
 # Create IPD and KM data for the PFS curves (there have been 99 events in the cohort)
-digitise("PFS_Examp.txt", 
-         "PFS_Examp_AtRisk.txt", 
+digitise(surv_inp   = "PFS_Examp.txt", 
+         nrisk_inp  = "PFS_Examp_AtRisk.txt", 
          km_output  = "KMdata_PFS.txt", 
          ipd_output = "IPDdata_PFS.txt")
 
@@ -138,25 +135,32 @@ IPD_PFS <- make.ipd(ipd_files = c("IPDdata_PFS.txt"), ctr = 1,
 # fit all parametric models to the data and extract the AIC/BIC 
 # Select the one with the most appropriate fit
 # Repeat for PFS and OS
-fit_PFS  <- fit.fun(time ="time", status = "event", data = IPD_PFS, times = times,
+fit_PFS  <- fit.fun(time = "time", status = "event", data = IPD_PFS, times = times,
                     extrapolate = T) 
-fit_OS   <- fit.fun(time = "time", status = "event" , data = IPD_OS, times = times,
+fit_OS   <- fit.fun(time = "time", status = "event", data = IPD_OS, times = times,
                     extrapolate = T) 
 
-best_PFS <- fit_PFS[["Weibull"]]  
-best_OS  <- fit_OS [["Weibull"]]
+# Check AIC of each model to assess goodness-of-fit
+GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)
+GoF_OS  <- data.frame(AIC = fit_OS$AIC,  BIC = fit_OS$BIC)
 
-# construct a partitioned survival model out of the fitted models
-m_M_PSM <- partsurv(best_PFS,best_OS, time = times)$trace
-matplot(m_M_PSM, type="l")
-legend("right",v_n, col= 1:3, lty=1:3, bty="n")
+# "Exponential", "Weibull (AFT)", "Gamma", "log-Normal", "log-Logistic", "Gen. Gamma"  
+choose_PFS <- rownames(GoF_PFS)[which.min(GoF_PFS$AIC)]
+choose_OS  <- rownames(GoF_OS)[which.min(GoF_OS$AIC)]
+
+# construct a partitioned survival model out of the chosen models
+m_M_PSM <- partsurv(pfs_survHE = fit_PFS, os_survHE  = fit_OS,
+                    choose_PFS = choose_PFS,  choose_OS  = choose_OS, time = times)
+
+# plot the results of PSM and the true data 
+plot_trace_PSM(time = times, partsurv.model = m_M_PSM)
 ```
 
 Calculate total cost and QALYs per cycle.
 
 ```{r}
-v_c_t <- m_M_PSM   %*% v_c
-v_u_t <- m_M_PSM   %*% v_u
+v_c_t <- m_M_PSM$trace %*% v_c
+v_u_t <- m_M_PSM$trace %*% v_u
 
 tot_c <-  t(v_c_t) %*% v_dw
 tot_u <-  t(v_u_t) %*% v_dw

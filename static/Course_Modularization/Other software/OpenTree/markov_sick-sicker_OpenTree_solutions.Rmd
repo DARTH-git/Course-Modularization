@@ -154,45 +154,21 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,
         cex = 0.8, box.cex = 0.9, lwd = 1)
 ```
 
-## Use OpenTree to create the Markov model
+# 04 Create model in OpenTree
 
 ```{r}
 open_tree(file_name = "OpenTree_sick_sicker", dir_name = getwd())
 ```
 
-# 04 Define and initialize matrices and vectors
-
-## 04.1 Transitional probability matrix
-
-Use OpenTree to build the Markov model and retrieve the transition probability matrix
-
-*TASK: remove prod in opentree df*
-
-*TASK: set default params to be list = list()*
-
-*TASK: use `if` to replace `treetype` argument (e.g. if ..$P_str)*
-
-*Task: opentree_df instead of open_df$P_str*
-
-*TASK: could provide either a character value with tree name or an open tree object*
-
-*TASK: list of 2 things: transition prob and the trans prob matrix*
-
-*TASK: make checking prob matrix functions in evaluate_model*
+## 04.1 Extract and initialize matrices and vectors from OpenTree
 
 ```{r, warning = F, message = F}
-treeName <- "OpenTree_sick_sicker" # placeholder, after OpenTree is open, open model .json file
-opentree_df <- create_OpenTree_df(treeName)
-params <- list()
-m_P_notrt <- evaluate_model(opentree_df$P_str, params, treetype = "markov")
-v_s_init  <- as.numeric(opentree_df$p0_str$p0)
+# extract the transition probability matrix and the initial state vector 
+l_markov  <- evaluate_model("OpenTree_sick_sicker", n_payoffs = 2)
+m_P_notrt <- l_markov$m_P
+v_s_init  <- l_markov$v_s_init
 
-# Check that transition probabilities are in [0, 1]
-check_transition_probability(m_P_notrt, verbose = TRUE)
-# Check that all rows sum to 1
-check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-
-# create transition probability matrix for treatment same as no treatment
+# create transition probability matrix for treatment (same as no treatment)
 m_P_trt <- m_P_notrt
 ```
 

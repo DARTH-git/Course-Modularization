@@ -211,7 +211,7 @@ check_transition_probability(m_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
 check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
 
-# create transition probability matrix for treatment same as no treatment
+# create transition probability matrix for treatment (same as no treatment)
 m_P_trt <- m_P_notrt
 ```
 
@@ -232,7 +232,8 @@ head(m_M_notrt)  # show the first 6 lines of the matrix
 
 ## 06.1 Cohort trace
 
-The transition probabilities are similari in both strategies. Therefore, the cohort trace figure applies to both strategies.
+The transition probabilities are similar in both strategies. Therefore, the cohort trace figure applies to both strategies.
+
 ```{r, message = FALSE}
 # create a plot of the data
 matplot(m_M_notrt, type = 'l', 

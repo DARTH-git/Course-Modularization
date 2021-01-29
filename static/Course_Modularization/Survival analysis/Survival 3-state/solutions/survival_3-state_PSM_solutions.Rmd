@@ -267,9 +267,5 @@ Other outputs from the partitioned survival model could be explored:
 # Expected survival
 m_M_PSM$pfs.expected.surv
 m_M_PSM$os.expected.surv
-
-# Transition probabilities
-m_M_PSM$pfs.trans.prob
-m_M_PSM$os.trans.prob
 ```
 

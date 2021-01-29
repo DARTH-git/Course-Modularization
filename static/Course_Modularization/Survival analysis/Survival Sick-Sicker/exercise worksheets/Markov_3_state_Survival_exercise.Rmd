@@ -106,5 +106,3 @@ head(data_long)
 | - Dead individuals                 | `u_D`       |  0.00         |
 | Intervention effect                |             |               |
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
-
-

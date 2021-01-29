@@ -55,25 +55,22 @@ exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
-\newpage
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+rm(list = ls())     # clear memory (removes all the variables from the workspace)
+options(scipen=999) # disable scientific notation
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
 
-```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
-```
+\newpage
 
 # 01 Load packages
 
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate",
-        "reshape2", "knitr")  
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "abind", "DES")  
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack")
@@ -82,7 +79,7 @@ p_load_gh("DARTH-git/dampack")
 # 02 Load functions
 
 ```{r}
-source("functions.R")
+source("survival_functions.R")
 ```
 
 # 03 Input model parameters
@@ -106,9 +103,9 @@ p_HS1   <- 0.15                    # probability of becoming sick when healthy
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv(here::here("data", "mortProb_age.csv"))                 
+p_mort   <- read.csv("mortProb_age.csv")                
 # load age distribution
-dist_Age <- read.csv(here::here("data", "MyPopulation-AgeDistribution.csv")) 
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
 
 # Cost inputs
 c_H     <- 2000             # cost of one cycle in the healthy state
@@ -132,7 +129,7 @@ times     <- seq(0, n_t, c_l)  # the cycles in years
 ## 04.1 Static characteristics
 
 ```{r}
-set.seed(2019)    # set the seed for the simulation of individualcharacteristics
+set.seed(2019)    # set the seed for the simulation of individual characteristics
 v_x      <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline  
 
 # sample from age distribution an initial age for every individual
@@ -146,10 +143,10 @@ Survival analysis component
 
 ```{r}
 # load the Sicker data 
-data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
+data_long <- read.csv("data_long_Sicker.csv", row.names = 1)
 head(data_long)
 
-# Multistate models can be fitted independently for each transition. This is more flexible!
+# Multi-state models can be fitted independently for each transition. This is more flexible!
 
 # Create subsets for each transition
 data_S1H  <- subset(data_long, trans == 1)
@@ -158,25 +155,25 @@ data_S1D  <- subset(data_long, trans == 3)
 data_S2D  <- subset(data_long, trans == 4)
 
 # fit independent models for each transition and pick the one with the lowest AIC
-fit_S1H  <- fit.fun(time ="time", status = "status", data = data_S1H, times = times, 
+fit_S1H  <- fit.fun(time = "time", status = "status", data = data_S1H, times = times, 
                     extrapolate = F)
-fit_S1S2 <- fit.fun(time ="time", status = "status", data = data_S1S2, times = times, 
+fit_S1S2 <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times, 
                     extrapolate = F)
-fit_S1D  <- fit.fun(time ="time", status = "status", data = data_S1D, times = times, 
+fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = times, 
                     extrapolate = F)
-fit_S2D  <- fit.fun(time ="time", status = "status", data = data_S2D, times = times, 
+fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
                     extrapolate = F)
 
-best.fit_S1H <-  fit_S1H [[which.min(fit_S1H$AIC)]]
-best.fit_S1S2 <- fit_S1S2[[which.min(fit_S1S2$AIC)]]
-best.fit_S1D <-  fit_S1D [[which.min(fit_S1D$AIC)]]
-best.fit_S2D <-  fit_S2D [["Weibull"]]
+best.fit_S1H  <- fit_S1H$ models[[which.min(fit_S1H$AIC)]]
+best.fit_S1S2 <- fit_S1S2$models[[which.min(fit_S1S2$AIC)]]
+best.fit_S1D  <- fit_S1D$ models[[which.min(fit_S1D$AIC)]]
+best.fit_S2D  <- fit_S2D$ models[["Weibull (AFT)"]]
 
 # Extract transition probabilities from the best fitting models
-p_S1H  <- flexsurvreg_prob(object = best.fit_S1H, t = times)
-p_S1S2 <- flexsurvreg_prob(object = best.fit_S1S2,t = times)
-p_S1D  <- flexsurvreg_prob(object = best.fit_S1D, t = times)
-p_S2D  <- flexsurvreg_prob(object = best.fit_S2D, t = times)
+p_S1H  <- surv_prob(best.fit_S1H)
+p_S1S2 <- surv_prob(best.fit_S1S2)
+p_S1D  <- surv_prob(best.fit_S1D)
+p_S2D  <- surv_prob(best.fit_S2D)
 ```
 
 ## 04.2 Dynamic characteristics 
@@ -184,9 +181,9 @@ p_S2D  <- flexsurvreg_prob(object = best.fit_S2D, t = times)
 ```{r}
 # Specify the initial health state of the individuals 
 # everyone begins in the healthy state (in this example)
-v_M_init  <- rep("H", n_i) # a vector with the initial health state for all individuals 
-v_Ts1_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model 
-v_Ts2_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model   
+v_M_init   <- rep("H", n_i) # a vector with the initial health state for all individuals 
+v_Ts1_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model 
+v_Ts2_init <- rep(0, n_i)   # a vector with the time of being sick at the start of the model   
 ```
 
 # 05 Define Simulation Functions

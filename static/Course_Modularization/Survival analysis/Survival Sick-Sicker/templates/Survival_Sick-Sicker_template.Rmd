@@ -73,7 +73,8 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "abind", "DES")  
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack")
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack","DARTH-git/darthtools")
 ```
 
 # 02 Load functions
@@ -149,31 +150,30 @@ head(data_long)
 # Multi-state models can be fitted independently for each transition. This is more flexible!
 
 # Create subsets for each transition
-data_S1H  <- subset(data_long, trans == 1)
-data_S1S2 <- subset(data_long, trans == 2)
-data_S1D  <- subset(data_long, trans == 3)
-data_S2D  <- subset(data_long, trans == 4)
+data_S1H  <- 
+data_S1S2 <- 
+data_S1D  <- 
+data_S2D  <- 
 
-# fit independent models for each transition and pick the one with the lowest AIC
-fit_S1H  <- fit.fun(time = "time", status = "status", data = data_S1H, times = times, 
-                    extrapolate = F)
-fit_S1S2 <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times, 
-                    extrapolate = F)
-fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = times, 
-                    extrapolate = F)
-fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
-                    extrapolate = F)
+# fit independent models for each transition and pick the one that fits best
+#your turn
+fit_S1H  <- 
+fit_S1S2 <- 
+fit_S1D  <- 
+fit_S2D  <- 
+  
+  
 
-best.fit_S1H  <- fit_S1H$ models[[which.min(fit_S1H$AIC)]]
-best.fit_S1S2 <- fit_S1S2$models[[which.min(fit_S1S2$AIC)]]
-best.fit_S1D  <- fit_S1D$ models[[which.min(fit_S1D$AIC)]]
-best.fit_S2D  <- fit_S2D$ models[["Weibull (AFT)"]]
+best.fit_S1H  <- 
+best.fit_S1S2 <- 
+best.fit_S1D  <- 
+best.fit_S2D  <- 
 
 # Extract transition probabilities from the best fitting models
-p_S1H  <- surv_prob(best.fit_S1H)
-p_S1S2 <- surv_prob(best.fit_S1S2)
-p_S1D  <- surv_prob(best.fit_S1D)
-p_S2D  <- surv_prob(best.fit_S2D)
+p_S1H  <- 
+p_S1S2 <- 
+p_S1D  <- 
+p_S2D  <- 
 ```
 
 ## 04.2 Dynamic characteristics 

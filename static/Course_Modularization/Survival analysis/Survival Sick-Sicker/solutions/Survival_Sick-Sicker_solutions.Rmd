@@ -73,7 +73,7 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "abind", "DES")  
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack")
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
@@ -164,9 +164,9 @@ fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = t
 fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
                     extrapolate = F)
 
-best.fit_S1H  <- fit_S1H$ models[[which.min(fit_S1H$AIC)]]
-best.fit_S1S2 <- fit_S1S2$models[[which.min(fit_S1S2$AIC)]]
-best.fit_S1D  <- fit_S1D$ models[[which.min(fit_S1D$AIC)]]
+best.fit_S1H  <- fit_S1H$ models[["Spline"]]
+best.fit_S1S2 <- fit_S1S2$models[["log-Logistic"]]
+best.fit_S1D  <- fit_S1D$ models[["Exponential"]]
 best.fit_S2D  <- fit_S2D$ models[["Weibull (AFT)"]]
 
 # Extract transition probabilities from the best fitting models
@@ -201,7 +201,7 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
   # Returns: 
     # transition probabilities for that cycle
   
-  # create matrix of state transition probabilities
+  # create matrix of state transition probability vectors
   m_p_t           <- matrix(0, nrow = n_s, ncol = n_i) 
   rownames(m_p_t) <-  v_n  # give the state names to the rows
   
@@ -211,7 +211,10 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
   
   # update the v_p with the appropriate probabilities   
   # transition probabilities when healthy
-  m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)   
+  m_p_t[, M_t == "H"]  <- rbind((1- p_HD) (1 - p_HS1), 
+                                (1 - p_HD) * p_HS1, 
+                                    0,
+                                p_HD)   
   # transition probabilities when sick
   m_p_t[, M_t == "S1"] <- rbind(p_S1H[v_Ts1], 1 - p_S1H[v_Ts1] - p_S1S2[v_Ts1] - 
                                 p_S1D[v_Ts1], p_S1S2[v_Ts1], p_S1D[v_Ts1])  

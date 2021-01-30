@@ -106,6 +106,7 @@ c_VE           <- 1200   # cost of viral encephalitis care without complications
 c_VE_comp      <- 9000   # cost of viral encephalitis care with complications
 c_tx           <- 9500   # cost of treatment
 c_biopsy       <- 25000  # cost of brain biopsy
+c_death_biopsy <- 0      # cost of death from brain biopsy
 
 # QALYs
 q_VE           <- 20     # remaining QALYs for those without VE-related complications
@@ -221,14 +222,14 @@ Any changes made to the tree in OpenTree are automatically saved as a `.json` fi
 
 ```{r}
 #create_tree(file_name = "Helloworld", dir_name = getwd())
-open_tree(file_name = "HVE", dir_name = getwd())
+open_tree(file_name = "HVE1", dir_name = getwd())
 ```
 
 Extract probability weights and outcomes of the decision tree.
 
 ```{r, warning = F}
 # extract the probability weights and outcomes  
-df_tree <- evaluate_model("HVE", n_payoffs = 2)
+df_tree <- evaluate_model("HVE1", n_payoffs = 2)
 ```
 
 Compute total cost and QALYs.

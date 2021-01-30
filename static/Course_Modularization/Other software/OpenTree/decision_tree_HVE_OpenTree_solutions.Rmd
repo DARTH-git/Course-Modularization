@@ -75,7 +75,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph",  "ggraph", "reshape2", "knitr", "stringr", "rstudioapi")                                               
+p_load("devtools", "scales", "ellipse", "lazyeval", "igraph",  "ggraph", "reshape2", "knitr", "stringr", "jsonlite", "rstudioapi", "tidyverse")                                               
 # load (install if required) packages from GitHub
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools", "DARTH-git/OpenTree")
 ```
@@ -106,6 +106,7 @@ c_VE           <- 1200   # cost of viral encephalitis care without complications
 c_VE_comp      <- 9000   # cost of viral encephalitis care with complications
 c_tx           <- 9500   # cost of treatment
 c_biopsy       <- 25000  # cost of brain biopsy
+c_death_biopsy <- 0      # cost of death from brain biopsy
 
 # QALYs
 q_VE           <- 20     # remaining QALYs for those without VE-related complications
@@ -211,34 +212,6 @@ df_output
 
 # 04.1 Use OpenTree to create and run decision tree model
 
-Store model parameter values into a list.
-
-*TASK: grab from global*
-
-```{r}
-# params = list(
-#   # Probabilities
-#   p_HVE          <- 0.52,   # prevalence of HVE
-#   p_HVE_comp     <- 0.71,   # complications with untreated HVE
-#   p_OVE_comp     <- 0.01,   # complications with untreated OVE
-#   p_HVE_comp_tx  <- 0.36,   # complications with treated HVE
-#   p_OVE_comp_tx  <- 0.20,   # complications with treated OVE
-#   p_biopsy_death <- 0.005,  # probability of death due to biopsy
-# 
-#   # Costs
-#   c_VE           <- 1200,   # cost of viral encephalitis care without complications
-#   c_VE_comp      <- 9000,   # cost of viral encephalitis care with complications
-#   c_tx           <- 9500,   # cost of treatment
-#   c_biopsy       <- 25000,  # cost of brain biopsy
-# 
-#   # QALYs
-#   q_VE           <- 20,     # remaining QALYs for those without VE-related complications
-#   q_VE_comp      <- 19,     # remaining QALYs for those with VE-related complications
-#   q_loss_biopsy  <- 0.01,   # one-time  QALY loss due to brain biopsy
-#   q_death_biopsy <- 0       # remaining QALYs for those who died during biopsy
-# )
-```
-
 Create or open decision tree. 
 
 The function `create_tree()` creates a blank tree and the function `open_tree()` opens an existing decision tree. 
@@ -249,14 +222,14 @@ Any changes made to the tree in OpenTree are automatically saved as a `.json` fi
 
 ```{r}
 #create_tree(file_name = "Helloworld", dir_name = getwd())
-open_tree(file_name = "HVE", dir_name = getwd())
+open_tree(file_name = "HVE1", dir_name = getwd())
 ```
 
 Extract probability weights and outcomes of the decision tree.
 
 ```{r, warning = F}
 # extract the probability weights and outcomes  
-df_tree <- evaluate_model("HVE", n_payoffs = 2)
+df_tree <- evaluate_model("HVE1", n_payoffs = 2)
 ```
 
 Compute total cost and QALYs.

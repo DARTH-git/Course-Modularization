@@ -1,6 +1,6 @@
 ---
 title: 'Microsimulation Sick-Sicker model with time dependency with PSA'
-subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifier, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
+subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifier, state-residency for the sick (S1) state, increasing change of death in the first 5 years of sickness'
 author: "The DARTH workgroup"
 output:
   pdf_document: default

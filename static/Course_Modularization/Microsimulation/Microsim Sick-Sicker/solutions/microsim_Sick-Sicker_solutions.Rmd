@@ -60,20 +60,18 @@ and adapted with proper attribution.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+options(scipen = 999)  # disable scientific notation
+rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
-
-```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
-```
 
 # 01 Load packages
 
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
+p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
@@ -92,20 +90,20 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 set.seed(1)  # set the seed  
 
 # Model structure 
-n_t   <- 30                       # time horizon, 30 cycles
-n_i   <- 100000                   # number of simulated individuals
-v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)         # the number of health states
-d_r   <- 0.03                     # discount rate of 3% per cycle
-v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
-v_names_str <- c("no treatment", "treatment")  # strategy names
-n_str <- length(v_names_str)      # number of strategies
+n_t      <- 30                       # time horizon, 30 cycles
+n_i      <- 100000                   # number of simulated individuals
+v_n      <- c("H", "S1", "S2", "D")  # the model states names
+n_states <- length(v_n)              # the number of health states
+d_r      <- 0.03                     # discount rate of 3% per cycle
+v_dwe    <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))  # discount weight 
+v_names_str <- c("no treatment", "treatment")   # strategy names
+n_str    <- length(v_names_str)      # number of strategies
 
 ### Event probabilities (per cycle)
 # Annual transition probabilities
-p_HS1   <- 0.15                   # probability of becoming sick when healthy
-p_S1H   <- 0.5                    # probability of recovering to healthy when sick
-p_S1S2  <- 0.105                  # probability of becoming sicker when sick
+p_HS1    <- 0.15                     # probability of becoming sick when healthy
+p_S1H    <- 0.5                      # probability of recovering to healthy when sick
+p_S1S2   <- 0.105                    # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
@@ -113,22 +111,22 @@ p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
 dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
 
-p_S1D    <- 0.0149          # probability to die in S1 by cycle 
-p_S2D    <- 0.048           # probability to die in S2
+p_S1D    <- 0.0149  # probability to die in S1 by cycle 
+p_S2D    <- 0.048   # probability to die in S2
 
 # Cost inputs
-c_H     <- 2000             # cost of one cycle in the healthy state
-c_S1    <- 4000             # cost of one cycle in the sick state
-c_S2    <- 15000            # cost of one cycle in the sicker state
-c_D     <- 0                # cost of one cycle in the dead state
-c_Trt   <- 12000            # cost of treatment (per cycle)
+c_H      <- 2000    # cost of one cycle in the healthy state
+c_S1     <- 4000    # cost of one cycle in the sick state
+c_S2     <- 15000   # cost of one cycle in the sicker state
+c_D      <- 0       # cost of one cycle in the dead state
+c_Trt    <- 12000   # cost of treatment (per cycle)
 
 # Utility inputs
-u_H     <- 1                # utility when healthy 
-u_S1    <- 0.75             # utility when sick 
-u_S2    <- 0.5              # utility when sicker
-u_D     <- 0                # utility when dead
-u_Trt   <- 0.95             # utility when sick(er) and being treated
+u_H      <- 1       # utility when healthy 
+u_S1     <- 0.75    # utility when sick 
+u_S2     <- 0.5     # utility when sicker
+u_D      <- 0       # utility when dead
+u_Trt    <- 0.95    # utility when sick(er) and being treated
 ```
 
 # 04 Sample individual level characteristics
@@ -147,7 +145,7 @@ df_X    <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0)
 ```{r}
 # Specify the initial health state of the individuals 
 # everyone begins in the healthy state (in this example)
-v_M_init  <- rep("H", n_i)   # a vector with the initial health state for all individuals   
+v_M_init  <- rep("H", n_i)  # a vector with the initial health state for all individuals   
 ```
 
 # 05 Define Simulation Functions
@@ -159,11 +157,11 @@ The function that updates the transition probabilities of every cycle is shown b
 ```{r}
 Probs <- function(M_t, df_X) { 
   # Arguments:
-    # M_t: health state occupied by individual i at cycle t (character variable)
-    # df_X:     data frame with individual characteristics data 
-  # t:     current cycle 
-# Returns: 
-  #   transition probabilities for that cycle
+    # M_t:  health state occupied by individual i at cycle t (character variable)
+    # df_X: data frame with individual characteristics data 
+    # t:    current cycle 
+  # Returns: 
+    # transition probabilities for that cycle
   
   # create matrix of state transition probabilities  
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
@@ -176,14 +174,14 @@ Probs <- function(M_t, df_X) {
   # update the m_p with the appropriate probabilities   
   # transition probabilities when healthy
   m_p_t[, M_t == "H"]  <- rbind((1 - p_HD) * (1 - p_HS1), 
-                                (1 - p_HD) * p_HS1, 
-                                0,
-                                p_HD)                              
+                                (1 - p_HD) *      p_HS1 , 
+                                                       0,
+                                     p_HD               )                              
   # transition probabilities when sick
-  m_p_t[, M_t == "S1"] <- rbind((1 - p_S1D) *      p_S1H,
+  m_p_t[, M_t == "S1"] <- rbind((1 - p_S1D) *      p_S1H          ,
                                 (1 - p_S1D) * (1 - p_S1H - p_S1S2), 
-                                (1 - p_S1D) *              p_S1S2, 
-                                p_S1D)  
+                                (1 - p_S1D) *              p_S1S2 , 
+                                     p_S1D                        )  
   # transition probabilities when sicker
   m_p_t[, M_t == "S2"] <- rbind(0,
                                 0,
@@ -202,16 +200,19 @@ The `Costs` function estimates the costs at every cycle.
 
 ```{r}
 Costs <- function (M_t, Trt = FALSE) {
-  # M_t: health state occupied by individual i at cycle t (character variable)
-  # Trt:  is the individual being treated? (default is FALSE) 
+  # Arguments:
+    # M_t: health state occupied at cycle t (character variable)
+    # Trt: is the individual being treated? (default is FALSE) 
+  # Returns: 
+    # costs accrued in this cycle
   
-  c_t <- 0                                 # by default the cost for everyone is zero 
-  c_t[M_t == "H"]  <- c_H                  # update the cost if healthy
-  c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt   # update the cost if sick conditional on treatment
-  c_t[M_t == "S2"] <- c_S2 + c_Trt * Trt   # update the cost if sicker conditional on treatment
-  c_t[M_t == "D"]  <- c_D                  # update the cost if dead
+  c_t <- 0                                # by default the cost for everyone is zero 
+  c_t[M_t == "H"]  <- c_H                 # update the cost if healthy
+  c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt  # update the cost if sick conditional on treatment
+  c_t[M_t == "S2"] <- c_S2 + c_Trt * Trt  # update the cost if sicker conditional on treatment
+  c_t[M_t == "D"]  <- c_D                 # update the cost if dead
   
-  return(c_t)        		                   # return the costs
+  return(c_t)   # return costs accrued this cycle      		               
 }
 ```
 
@@ -221,11 +222,13 @@ The `Effs` function to update the utilities at every cycle.
 
 ```{r}
 Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
-  # M_t: health state occupied by individual i at cycle t (character variable)
-  # df_X: data frame with individual characteristics data 
-  # Trt:  is the individual treated? (default is FALSE) 
-  # cl:   cycle length (default is 1)
-  
+  # Arguments:
+    # M_t:  health state occupied by individual i at cycle t (character variable)
+    # df_X: data frame with individual characteristics data 
+    # Trt:  is the individual treated? (default is FALSE) 
+    # cl:   cycle length (default is 1)
+  # Returns: 
+    # QALYs accrued this cycle
   u_t <- 0                                 # by default the utility for everyone is zero
   u_t[M_t == "H"]  <- u_H                  # update the utility if healthy
   u_t[M_t == "S1" & Trt == FALSE] <- u_S1  # update the utility if sick
@@ -234,8 +237,8 @@ Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
   u_t[M_t == "S2"] <- u_S2                 # update the utility if sicker
   u_t[M_t == "D"]  <- u_D                  # update the utility if dead
   
-  QALYs <-  u_t * cl  # calculate the QALYs during cycle t
-  return(QALYs)       # return the QALYs
+  QALYs <- u_t * cl  # calculate the QALYs during cycle t
+  return(QALYs)      # return the QALYs accrued this cycle
 }
 ```
 
@@ -291,14 +294,14 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
     } # close the loop for the time points 
   
   # calculate  
-  tc <- m_C %*% v_dwc    # total (discounted) cost per individual
-  te <- m_E %*% v_dwe    # total (discounted) QALYs per individual 
-  tc_hat <- mean(tc)     # average (discounted) cost 
-  te_hat <- mean(te)     # average (discounted) QALYs
+  tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
+  te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
+  tc_hat  <- mean(tc)       # average (discounted) cost 
+  te_hat  <- mean(te)       # average (discounted) QALYs
   
   # store the results from the simulation in a list
-  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, 
-                  te_hat = te_hat)   
+  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te,
+                  tc_hat = tc_hat, te_hat = te_hat)   
   
   return(results)  # return the results
 
@@ -308,15 +311,13 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
 # In this example the outcomes are of the simulation are stored in the variables `outcomes_no_tr` and `outcomes_trt`.
 
 # Run the simulation for both no treatment and treatment options
-outcomes_no_trt  <- MicroSim(n_i, df_X, Trt = FALSE, seed = 1)
-outcomes_trt     <- MicroSim(n_i, df_X, Trt = TRUE,  seed = 1)
+outcomes_no_trt <- MicroSim(n_i, df_X, Trt = FALSE, seed = 1)
+outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE,  seed = 1)
 ```
 
 # 07 Visualize results
 
 ```{r}
-options(scipen = 999)
-
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
@@ -341,4 +342,5 @@ calculate_icers(cost       = v_C,
                 effect     = v_E,
                 strategies = v_names_str)
 ```
+
 

@@ -211,10 +211,10 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
   
   # update the v_p with the appropriate probabilities   
   # transition probabilities when healthy
-  m_p_t[, M_t == "H"]  <- rbind((1- p_HD) (1 - p_HS1), 
-                                (1 - p_HD) * p_HS1, 
-                                    0,
-                                p_HD)   
+  m_p_t[, M_t == "H"]  <- rbind((1 - p_HD) * (1 - p_HS1), 
+                                (1 - p_HD) *      p_HS1 , 
+                                                       0,
+                                                    p_HD)   
   # transition probabilities when sick
   m_p_t[, M_t == "S1"] <- rbind(p_S1H[v_Ts1], 1 - p_S1H[v_Ts1] - p_S1S2[v_Ts1] - 
                                 p_S1D[v_Ts1], p_S1S2[v_Ts1], p_S1D[v_Ts1])  

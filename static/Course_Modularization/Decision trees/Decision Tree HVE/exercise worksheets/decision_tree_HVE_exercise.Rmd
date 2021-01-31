@@ -67,13 +67,13 @@ The healthcare cost of a case of viral encephalitis without complications is \$1
 
 A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.
 
-Parameters are summarized in Table 1. Use the code template provided in “decisition_tree_HVE_template.Rmd” as a starting point for this exercise.
+Parameters are summarized in Table 1. Use the code template provided in the “decision_tree_HVE_template.Rmd”   example as starting points for this exercise.
 
 ## Tasks
 
-1. Sketch out the decision tree, with a particular focus on the outcome values (costs and QALYs) at terminal nodes.
+1. Access the HVE template decision tree using OpenTree (function open_tree() ).
 
-2. The code template contains calculations for the "No Treatment" strategy. Write code that calculates the expected outcomes for the two other strategies.
+2. The code template contains calculations for the "No Treatment" strategy. Use OpenTree and couple it with R code that calculates the expected outcomes for the two other strategies.
 
 3. Use the `calculate_icers()` function from the `dampack` package to calculate the incremental costs, QALYs, ICERs and Incremantal NMB of each strategy, using a willingness to pay of $100,000/QALY. Type `?calculate_icers()` to see function documentation.
 

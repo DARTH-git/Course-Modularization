@@ -58,7 +58,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 rm(list = ls())     # clear memory (removes all the variables from the workspace)
 options(scipen=999) # disable scientific notation
 ```
@@ -73,13 +73,14 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "darthtools")  
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack")
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-source("survival_functions.R")
+# No function needed
 ```
 
 # 03 Input model parameters
@@ -135,8 +136,8 @@ data_S1S2 <- data_long[data_long$from == "S1" & data_long$to == "S2",]
 data_S1D  <- data_long[data_long$from == "S1" & data_long$to == "D" ,]
 
 # Fit independent models for each transition and pick one that fits best
-fit_S1S2 <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times)
-fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D,  times = times)
+fit_S1S2  <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times)
+fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D,  times = times)
 
 # Find the best-fitting models based on AIC
 fit_S1S2$AIC
@@ -145,8 +146,8 @@ best_S1S2 <- fit_S1S2$models$`log-Logistic`
 best_S1D  <-  fit_S1D$models$Exponential
 
 # Calculate the transition probabilities from the best-fitting survival models
-p_S1S2 <- trans_prob(surv_prob(best_S1S2))
-p_S1D  <- trans_prob(surv_prob(best_S1D))
+p_S1S2    <- trans_prob(surv_prob(best_S1S2))
+p_S1D     <- trans_prob(surv_prob(best_S1D))
 ```
 
 # 04 Define and initialize matrices and vectors
@@ -186,7 +187,7 @@ a_P["S2", "S2", ] <- 1 - p_S2D
 a_P["S2", "D", ]  <- p_S2D
 
 # from Dead
-a_P["D", "D", ] <- 1
+a_P["D", "D", ]   <- 1
 ```
 
 ## 04.3 Check if transition array and probabilities are valid
@@ -234,11 +235,11 @@ v_tc_trt    <- m_M   %*%  v_c_trt
 ## 07.2 Discounted Mean Costs and QALYs
 
 ```{r}
-tu_d_notrt  <- t(v_tu_notrt)   %*%  v_dw   
-tu_d_trt    <- t(v_tu_trt)     %*%  v_dw
+tu_d_notrt  <- t(v_tu_notrt)  %*%  v_dw   
+tu_d_trt    <- t(v_tu_trt)    %*%  v_dw
 
-tc_d_notrt  <- t(v_tc_notrt)   %*%  v_dw
-tc_d_trt    <- t(v_tc_trt)     %*%  v_dw
+tc_d_notrt  <- t(v_tc_notrt)  %*%  v_dw
+tc_d_trt    <- t(v_tc_trt)    %*%  v_dw
 
 # store them into a vector
 v_tc_d      <- c(tc_d_notrt, tc_d_trt)
@@ -267,5 +268,7 @@ df_cea
 ```{r}
 plot(df_cea, effect_units = "QALYs")
 ```
+
+
 
 

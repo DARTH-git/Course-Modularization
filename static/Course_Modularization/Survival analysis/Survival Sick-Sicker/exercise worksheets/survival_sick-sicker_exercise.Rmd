@@ -74,7 +74,7 @@ head(data_long)
 
 **Part 1**
 
-1. Use the `R` script “Surv_Sick_Sicker_template.R” as a starting point to code the survival analysis solution to the Sick-Sicker model.
+1. Use the `R` script `Surv_Sick_Sicker_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
 
 2. Load the individual level data in long form from the `data_long_Sicker.csv` file.
 

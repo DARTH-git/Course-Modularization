@@ -51,9 +51,19 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       p_HD     <- p_HD_all[M_t == "H","p_HD"]
       
       # update the v_p with the appropriate probabilities   
-      m_p_t[, M_t == "H"]  <- rbind(1 - p_HS1 - p_HD, p_HS1, 0, p_HD)                             # transition probabilities when healthy
-      m_p_t[, M_t == "S1"] <- rbind(p_S1H, 1 - p_S1H - p_S1S2 - p_S1D[df_X$n_ts], p_S1S2, p_S1D[df_X$n_ts]) # transition probabilities when sick
-      m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D, p_S2D)                                       # transition probabilities when sicker
+      # transition probabilities when healthy
+      m_p_t[, M_t == "H"]  <- rbind((1 - p_HD) * (1 - p_HS1), 
+                                    (1 - p_HD) *      p_HS1 , 
+                                                          0 ,
+                                                      p_HD)                             
+      m_p_t[, M_t == "S1"] <- rbind((1 - p_S1D[df_X$n_ts]) *      p_S1H,
+                                    (1 - p_S1D[df_X$n_ts]) * (1 - p_S1H - p_S1S2),
+                                    (1 - p_S1D[df_X$n_ts]) *              p_S1S2, 
+                                         p_S1D[df_X$n_ts]) # transition probabilities when sick
+      m_p_t[, M_t == "S2"] <- rbind(0, 
+                                    0,
+                                    1 - p_S2D,
+                                        p_S2D)                                       # transition probabilities when sicker
       m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                   # transition probabilities when dead   
       return(t(m_p_t))
     }       

@@ -75,9 +75,9 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph" , "ggraph", "reshape2", "knitr", "stringr")                                               
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph" , "ggraph", "reshape2", "knitr", "stringr", "rstudioapi")                                               
 # load (install if required) packages from GitHub
-p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools", "DARTH-git/OpenTree")
 ```
 
 # 02 Load functions
@@ -89,7 +89,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Define parameter input values
 
 ```{r}
-v_names_str    <- c("No Tx", "Tx All", "Biopsy")  # names of strategies
+v_names_str    <- c('Do not treat', "Treat", "Biopsy")  # names of strategies
 n_str          <- length(v_names_str)             # number of strategies
 wtp            <- 100000                          # willingness to pay threshold
 
@@ -121,6 +121,10 @@ v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp  ,  # HVE, complications
                     p_HVE  * (1 - p_HVE_comp) ,  # HVE, no complications
                (1 - p_HVE) *      p_OVE_comp  ,  # OVE, complications
                (1 - p_HVE) * (1 - p_OVE_comp))   # OVE, no complications
+
+
+
+
   
 # v_w_tx      <-  your turn
   
@@ -149,6 +153,29 @@ v_cost_no_tx  <- c(c_VE_comp ,  # HVE, complications
   
 # v_cost_biopsy  <-  your turn 
   
+
+```
+
+
+```{r}
+### alternatively using OpenTree
+# draw the tree using OpenTree
+
+
+open_tree(file_name = "HVEtemplate", dir_name = getwd())
+
+# extract the probability weights and outcomes  
+df_tree <- evaluate_model("HVEtemplate", n_payoffs = 2)
+
+  total_qaly_no_tx <- df_tree[['Do not treat']]$prob %*% df_tree[['Do not treat']]$payoff1 
+  total_cost_no_tx <- df_tree[['Do not treat']]$prob %*% df_tree[['Do not treat']]$payoff2
+  
+  
+```
+
+
+
+```{r}
 # Calculate total utilities for each strategy ####
 total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      
 total_qaly_tx     <- v_w_tx     %*%  v_qaly_tx
@@ -175,6 +202,8 @@ df_output <- data.frame(Strategy =  v_names_str,
                         Effect   =  v_total_qaly,
                         NMB      =  v_nmb)
 ```
+
+
 
 ## 05 Cost-Effectiveness Analysis
 

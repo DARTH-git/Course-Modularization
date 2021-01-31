@@ -176,11 +176,17 @@ Probs <- function(M_t, df_X) {
   
   # update m_p_t with the appropriate probabilities   
   # transition probabilities when healthy 
-  m_p_t[, M_t == "healthy"] <- rbind(1 - p_HD - p_HS, p_HS, p_HD)  
+  m_p_t[, M_t == "healthy"] <- rbind((1 - p_HD) * (1 - p_HS),
+                                     (1 - p_HD) *      p_HS ,
+                                                       p_HD )  
   # transition probabilities when sick 
-  m_p_t[, M_t == "sick"]    <- rbind(0, 1 - p_SD, p_SD)          
+  m_p_t[, M_t == "sick"]    <- rbind(       0,
+                                     1 - p_SD,
+                                         p_SD)          
   # transition probabilities when dead
-  m_p_t[, M_t == "dead"]    <- rbind(0, 0, 1)                         
+  m_p_t[, M_t == "dead"]    <- rbind(0,
+                                     0,
+                                     1)                         
   return(t(m_p_t))
 }     
 ```

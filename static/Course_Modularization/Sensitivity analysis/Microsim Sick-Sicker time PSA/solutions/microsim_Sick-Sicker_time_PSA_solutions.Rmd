@@ -216,13 +216,13 @@ Costs <- function (M_t, Trt = FALSE) {
   # Returns:
     # costs accrued in this cycle
   
-  c_t <- 0                                 # by default the cost for everyone is zero 
-  c_t[M_t == "H"]  <- c_H                  # update the cost if healthy
-  c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt   # update the cost if sick conditional on treatment
-  c_t[M_t == "S2"] <- c_S2 + c_Trt * Trt   # update the cost if sicker conditional on treatment
-  c_t[M_t == "D"]  <- c_D                  # update the cost if dead
+  c_t <- 0                                # by default the cost for everyone is zero 
+  c_t[M_t == "H"]  <- c_H                 # update the cost if healthy
+  c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt  # update the cost if sick conditional on treatment
+  c_t[M_t == "S2"] <- c_S2 + c_Trt * Trt  # update the cost if sicker conditional on treatment
+  c_t[M_t == "D"]  <- c_D                 # update the cost if dead
   
-  return(c_t)        		                   # return the costs
+  return(c_t)  # return the costs
 }
 ```
 

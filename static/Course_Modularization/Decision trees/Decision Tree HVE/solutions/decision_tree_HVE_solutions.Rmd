@@ -105,6 +105,7 @@ c_VE           <- 1200   # cost of viral encephalitis care without complications
 c_VE_comp      <- 9000   # cost of viral encephalitis care with complications
 c_tx           <- 9500   # cost of treatment
 c_biopsy       <- 25000  # cost of brain biopsy
+c_death_biopsy <- 0      # cost of dying from brain biopsy
 
 # QALYs
 q_VE           <- 20     # remaining QALYs for those without VE-related complications
@@ -172,7 +173,7 @@ v_cost_tx     <- c_tx +                 # cost of treatment
                    c_VE)                # OVE, no complications
   
 v_cost_biopsy <- c_biopsy           +   # cost of biopsy procedure
-                 c(0                ,   # cost of death (zero)
+                 c(c_death_biopsy   ,   # cost of death (zero)
                    c_VE_comp + c_tx ,   # no biopsy comp., HVE w/tx, complications 
                    c_VE + c_tx      ,   # no biopsy comp., HVE w/tx, no complications
                    c_VE_comp        ,   # no biopsy comp., OVE, complications

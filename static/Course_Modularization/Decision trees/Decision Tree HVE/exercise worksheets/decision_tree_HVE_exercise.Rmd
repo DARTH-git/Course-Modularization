@@ -94,13 +94,15 @@ Parameters are summarized in Table 1. Use the code template provided in the “d
 | Quality-adjusted life-years (QALYs) |                   |                   |
 | - Remaining QALYs without VE complications | `q_VE`     |  20               |
 | - Remaining QALYs with VE complications | `q_VE_comp`   |  19               |
-| - QALY loss due to brain biopsy     | `q_loss_biopsy`   |  0.01            |
+| - QALY loss due to brain biopsy     | `q_loss_biopsy`   |  0.01             |
+| - QALY of death due to brain biopsy | `q_death_biopsy`  | $0                 |
 | Healthcare costs                    |                   |                   |
 | - Cost of viral encephalitis without complications | `c_VE`      | $1,200   |
 | - Cost of viral encephalitis with complications    | `c_VE_comp` | $9,000   |
 | - Vidarabine treatment              | `c_tx`            |  $9,500           |
 | - Brain biopsy                      | `c_biopsy`        |  $25,000          |
 | - Willingness-to-pay                | `wtp`             | $100,000/QALY     |
+| - Cost of death due to brain biopsy | `c_death_biopsy`  | $0                |
 
 
 

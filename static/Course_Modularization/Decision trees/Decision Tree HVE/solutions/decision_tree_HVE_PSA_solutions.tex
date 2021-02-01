@@ -5,12 +5,13 @@
 \documentclass[
 ]{article}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath}
+\usepackage{amsmath}
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
 \else % if luatex or xetex
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
@@ -82,7 +83,7 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{graphicx,grffile}
+\usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -99,6 +100,9 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 
 \title{PSA: Three-strategy decision tree in R - HVE}
 \author{The DARTH workgroup}
@@ -193,7 +197,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())      }\CommentTok{# clear memory (removes all the variables from the workspace)}
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{())      }\CommentTok{\# clear memory (removes all the variables from the workspace)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -202,19 +206,19 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(}\StringTok{'pacman'}\NormalTok{)) \{}
-  \KeywordTok{install.packages}\NormalTok{(}\StringTok{'pacman'}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{\textquotesingle{}pacman\textquotesingle{}}\NormalTok{)) \{}
+  \FunctionTok{install.packages}\NormalTok{(}\StringTok{\textquotesingle{}pacman\textquotesingle{}}\NormalTok{)}
 \NormalTok{\}}
-\KeywordTok{library}\NormalTok{(pacman) }\CommentTok{# use this package to conveniently install other packages}
-\CommentTok{# load (install if required) packages from CRAN}
-\KeywordTok{p_load}\NormalTok{(}\StringTok{"here"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"lazyeval"}\NormalTok{, }
+\FunctionTok{library}\NormalTok{(pacman) }\CommentTok{\# use this package to conveniently install other packages}
+\CommentTok{\# load (install if required) packages from CRAN}
+\FunctionTok{p\_load}\NormalTok{(}\StringTok{"here"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"lazyeval"}\NormalTok{, }
        \StringTok{"igraph"}\NormalTok{, }\StringTok{"truncnorm"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"reshape2"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{, }\StringTok{"stringr"}\NormalTok{, }\StringTok{"reshape2"}\NormalTok{)                                            }
-\CommentTok{# load (install if required) packages from GitHub}
-\CommentTok{# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version}
-\CommentTok{# install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version}
-\CommentTok{# install_github("annaheath/EVSI", force = TRUE) #Uncomment if there is a newer version}
-\KeywordTok{p_load_gh}\NormalTok{(}\StringTok{"DARTH-git/dampack"}\NormalTok{, }\StringTok{"DARTH-git/dectree"}\NormalTok{)}
-\KeywordTok{p_load_gh}\NormalTok{(}\StringTok{"annaheath/EVSI"}\NormalTok{)}
+\CommentTok{\# load (install if required) packages from GitHub}
+\CommentTok{\# install\_github("DARTH{-}git/dampack", force = TRUE) Uncomment if there is a newer version}
+\CommentTok{\# install\_github("DARTH{-}git/dectree", force = TRUE) Uncomment if there is a newer version}
+\CommentTok{\# install\_github("annaheath/EVSI", force = TRUE) \#Uncomment if there is a newer version}
+\FunctionTok{p\_load\_gh}\NormalTok{(}\StringTok{"DARTH{-}git/dampack"}\NormalTok{, }\StringTok{"DARTH{-}git/dectree"}\NormalTok{)}
+\FunctionTok{p\_load\_gh}\NormalTok{(}\StringTok{"annaheath/EVSI"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -223,7 +227,7 @@ Change \texttt{eval} to \texttt{TRUE} if you want to knit this document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"Functions.R"}\NormalTok{)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"Functions.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -233,40 +237,40 @@ values}\label{define-parameter-input-values}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{v_names_str <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"No Tx"}\NormalTok{, }\StringTok{"Tx All"}\NormalTok{, }\StringTok{"Biopsy"}\NormalTok{) }\CommentTok{# names of strategies}
-\NormalTok{n_str       <-}\StringTok{ }\KeywordTok{length}\NormalTok{(v_names_str)            }\CommentTok{# number of strategies}
-\NormalTok{wtp         <-}\StringTok{ }\DecValTok{100000}                         \CommentTok{# willingness to pay threshold}
+\NormalTok{v\_names\_str }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"No Tx"}\NormalTok{, }\StringTok{"Tx All"}\NormalTok{, }\StringTok{"Biopsy"}\NormalTok{) }\CommentTok{\# names of strategies}
+\NormalTok{n\_str       }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(v\_names\_str)            }\CommentTok{\# number of strategies}
+\NormalTok{wtp         }\OtherTok{\textless{}{-}} \DecValTok{100000}                         \CommentTok{\# willingness to pay threshold}
 
-\CommentTok{# Probabilities}
-\NormalTok{p_HVE         <-}\StringTok{ }\FloatTok{0.52} \CommentTok{# prevalence of HVE}
-\NormalTok{p_HVE_comp    <-}\StringTok{ }\FloatTok{0.71} \CommentTok{# complications with untreated HVE}
-\NormalTok{p_OVE_comp    <-}\StringTok{ }\FloatTok{0.01} \CommentTok{# complications with untreated OVE}
-\NormalTok{p_HVE_comp_tx <-}\StringTok{ }\FloatTok{0.36} \CommentTok{# complications with treated HVE}
-\NormalTok{p_OVE_comp_tx <-}\StringTok{ }\FloatTok{0.20} \CommentTok{# complications with treated OVE}
-\NormalTok{p_biopsy_comp <-}\StringTok{ }\FloatTok{0.05} \CommentTok{# probability of complications due to biopsy}
+\CommentTok{\# Probabilities}
+\NormalTok{p\_HVE         }\OtherTok{\textless{}{-}} \FloatTok{0.52} \CommentTok{\# prevalence of HVE}
+\NormalTok{p\_HVE\_comp    }\OtherTok{\textless{}{-}} \FloatTok{0.71} \CommentTok{\# complications with untreated HVE}
+\NormalTok{p\_OVE\_comp    }\OtherTok{\textless{}{-}} \FloatTok{0.01} \CommentTok{\# complications with untreated OVE}
+\NormalTok{p\_HVE\_comp\_tx }\OtherTok{\textless{}{-}} \FloatTok{0.36} \CommentTok{\# complications with treated HVE}
+\NormalTok{p\_OVE\_comp\_tx }\OtherTok{\textless{}{-}} \FloatTok{0.20} \CommentTok{\# complications with treated OVE}
+\NormalTok{p\_biopsy\_comp }\OtherTok{\textless{}{-}} \FloatTok{0.05} \CommentTok{\# probability of complications due to biopsy}
 
-\CommentTok{# Costs}
-\NormalTok{c_VE      <-}\StringTok{ }\DecValTok{1200}  \CommentTok{# cost of viral encephalitis care without complications}
-\NormalTok{c_VE_comp <-}\StringTok{ }\DecValTok{9000}  \CommentTok{# cost of viral encephalitis care with complications}
-\NormalTok{c_tx      <-}\StringTok{ }\DecValTok{9500}  \CommentTok{# cost of treatment}
-\NormalTok{c_biopsy  <-}\StringTok{ }\DecValTok{25000} \CommentTok{# cost of brain biopsy}
+\CommentTok{\# Costs}
+\NormalTok{c\_VE      }\OtherTok{\textless{}{-}} \DecValTok{1200}  \CommentTok{\# cost of viral encephalitis care without complications}
+\NormalTok{c\_VE\_comp }\OtherTok{\textless{}{-}} \DecValTok{9000}  \CommentTok{\# cost of viral encephalitis care with complications}
+\NormalTok{c\_tx      }\OtherTok{\textless{}{-}} \DecValTok{9500}  \CommentTok{\# cost of treatment}
+\NormalTok{c\_biopsy  }\OtherTok{\textless{}{-}} \DecValTok{25000} \CommentTok{\# cost of brain biopsy}
 
-\CommentTok{# QALYs}
-\NormalTok{q_VE          <-}\StringTok{ }\DecValTok{20}    \CommentTok{# remaining QALYs for those without VE-related complications}
-\NormalTok{q_VE_comp     <-}\StringTok{ }\DecValTok{19}    \CommentTok{# remaining QALYs for those with VE-related complications}
-\NormalTok{q_loss_biopsy <-}\StringTok{ }\FloatTok{-0.01} \CommentTok{# one-time QALY loss due to brain biopsy}
+\CommentTok{\# QALYs}
+\NormalTok{q\_VE          }\OtherTok{\textless{}{-}} \DecValTok{20}    \CommentTok{\# remaining QALYs for those without VE{-}related complications}
+\NormalTok{q\_VE\_comp     }\OtherTok{\textless{}{-}} \DecValTok{19}    \CommentTok{\# remaining QALYs for those with VE{-}related complications}
+\NormalTok{q\_loss\_biopsy }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FloatTok{0.01} \CommentTok{\# one{-}time QALY loss due to brain biopsy}
 
-\CommentTok{# store the parameters into a list}
-\NormalTok{l_params_all <-}\StringTok{ }\KeywordTok{list}\NormalTok{(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, }
-\NormalTok{                     p_OVE_comp_tx, p_biopsy_comp, }
-\NormalTok{                     c_VE, c_VE_comp, c_tx, c_biopsy, }
-\NormalTok{                     q_VE, q_VE_comp, q_loss_biopsy)}
-\CommentTok{# store the names of the parameters into a vector}
-\NormalTok{v_names_params <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'p_HVE'}\NormalTok{, }\StringTok{'p_HVE_comp'}\NormalTok{, }\StringTok{'p_OVE_comp'}\NormalTok{, }\StringTok{'p_HVE_comp_tx'}\NormalTok{, }
-                    \StringTok{'p_OVE_comp_tx'}\NormalTok{, }\StringTok{'p_biopsy_comp'}\NormalTok{, }
-                    \StringTok{'c_VE'}\NormalTok{, }\StringTok{'c_VE_comp'}\NormalTok{,  }\StringTok{'c_tx'}\NormalTok{, }\StringTok{'c_biopsy'}\NormalTok{, }
-                    \StringTok{'q_VE'}\NormalTok{, }\StringTok{'q_VE_comp'}\NormalTok{, }\StringTok{'q_loss_biopsy'}\NormalTok{)}
-\KeywordTok{names}\NormalTok{(l_params_all) <-}\StringTok{ }\NormalTok{v_names_params}
+\CommentTok{\# store the parameters into a list}
+\NormalTok{l\_params\_all }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(p\_HVE, p\_HVE\_comp, p\_OVE\_comp, p\_HVE\_comp\_tx, }
+\NormalTok{                     p\_OVE\_comp\_tx, p\_biopsy\_comp, }
+\NormalTok{                     c\_VE, c\_VE\_comp, c\_tx, c\_biopsy, }
+\NormalTok{                     q\_VE, q\_VE\_comp, q\_loss\_biopsy)}
+\CommentTok{\# store the names of the parameters into a vector}
+\NormalTok{v\_names\_params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}p\_HVE\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}p\_HVE\_comp\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}p\_OVE\_comp\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}p\_HVE\_comp\_tx\textquotesingle{}}\NormalTok{, }
+                    \StringTok{\textquotesingle{}p\_OVE\_comp\_tx\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}p\_biopsy\_comp\textquotesingle{}}\NormalTok{, }
+                    \StringTok{\textquotesingle{}c\_VE\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}c\_VE\_comp\textquotesingle{}}\NormalTok{,  }\StringTok{\textquotesingle{}c\_tx\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}c\_biopsy\textquotesingle{}}\NormalTok{, }
+                    \StringTok{\textquotesingle{}q\_VE\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}q\_VE\_comp\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}q\_loss\_biopsy\textquotesingle{}}\NormalTok{)}
+\FunctionTok{names}\NormalTok{(l\_params\_all) }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_params}
 \end{Highlighting}
 \end{Shaded}
 
@@ -276,105 +280,105 @@ model}\label{create-and-run-decision-tree-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{decision_tree_HVE_output <-}\StringTok{ }\KeywordTok{with}\NormalTok{(}\KeywordTok{as.list}\NormalTok{(l_params_all), \{}
+\NormalTok{decision\_tree\_HVE\_output }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(}\FunctionTok{as.list}\NormalTok{(l\_params\_all), \{}
   
-  \CommentTok{# Create vector of weights for each strategy }
+  \CommentTok{\# Create vector of weights for each strategy }
   
-\NormalTok{  v_w_no_tx  <-}\StringTok{ }\KeywordTok{c}\NormalTok{(  p_HVE  }\OperatorTok{*}\StringTok{    }\NormalTok{p_HVE_comp  ,  }\CommentTok{# HVE, complications}
-\NormalTok{                    p_HVE  }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE_comp) ,  }\CommentTok{# HVE, no complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{    }\NormalTok{p_OVE_comp  ,  }\CommentTok{# OVE, complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_OVE_comp))   }\CommentTok{# OVE, no complications}
+\NormalTok{  v\_w\_no\_tx  }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(  p\_HVE  }\SpecialCharTok{*}\NormalTok{    p\_HVE\_comp  ,  }\CommentTok{\# HVE, complications}
+\NormalTok{                    p\_HVE  }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE\_comp) ,  }\CommentTok{\# HVE, no complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{    p\_OVE\_comp  ,  }\CommentTok{\# OVE, complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_OVE\_comp))   }\CommentTok{\# OVE, no complications}
   
-\NormalTok{  v_w_tx     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(  }\DecValTok{1}\NormalTok{                          ,  }\CommentTok{# On treatment}
-\NormalTok{                    p_HVE  }\OperatorTok{*}\StringTok{    }\NormalTok{p_HVE_comp_tx  ,  }\CommentTok{# HVE w/tx, complications}
-\NormalTok{                    p_HVE  }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE_comp_tx) ,  }\CommentTok{# HVE w/tx, no complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{    }\NormalTok{p_OVE_comp_tx  ,  }\CommentTok{# OVE w/tx, complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_OVE_comp_tx))   }\CommentTok{# OVE w/tx, no complications}
+\NormalTok{  v\_w\_tx     }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(  }\DecValTok{1}\NormalTok{                          ,  }\CommentTok{\# On treatment}
+\NormalTok{                    p\_HVE  }\SpecialCharTok{*}\NormalTok{    p\_HVE\_comp\_tx  ,  }\CommentTok{\# HVE w/tx, complications}
+\NormalTok{                    p\_HVE  }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE\_comp\_tx) ,  }\CommentTok{\# HVE w/tx, no complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{    p\_OVE\_comp\_tx  ,  }\CommentTok{\# OVE w/tx, complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_OVE\_comp\_tx))   }\CommentTok{\# OVE w/tx, no complications}
   
-\NormalTok{  v_w_biopsy <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{                                     , }\CommentTok{# Undergo biopsy}
-\NormalTok{                  p_biopsy_comp                         , }\CommentTok{# biopsy complications}
-                 \CommentTok{# no biopsy comp., HVE w/tx,  complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_biopsy_comp) }\OperatorTok{*}\StringTok{    }\NormalTok{p_HVE  }\OperatorTok{*}\StringTok{    }\NormalTok{p_HVE_comp_tx ,  }
-                 \CommentTok{# no biopsy comp., HVE w/tx, no complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_biopsy_comp) }\OperatorTok{*}\StringTok{    }\NormalTok{p_HVE  }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE_comp_tx),  }
-                 \CommentTok{# no biopsy comp., OVE, complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_biopsy_comp) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{    }\NormalTok{p_OVE_comp    ,  }
-                 \CommentTok{# no biopsy comp., OVE, no complications}
-\NormalTok{                 (}\DecValTok{1}\OperatorTok{-}\NormalTok{p_biopsy_comp) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_HVE) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{p_OVE_comp))      }
+\NormalTok{  v\_w\_biopsy }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{                                     , }\CommentTok{\# Undergo biopsy}
+\NormalTok{                  p\_biopsy\_comp                         , }\CommentTok{\# biopsy complications}
+                 \CommentTok{\# no biopsy comp., HVE w/tx,  complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_biopsy\_comp) }\SpecialCharTok{*}\NormalTok{    p\_HVE  }\SpecialCharTok{*}\NormalTok{    p\_HVE\_comp\_tx ,  }
+                 \CommentTok{\# no biopsy comp., HVE w/tx, no complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_biopsy\_comp) }\SpecialCharTok{*}\NormalTok{    p\_HVE  }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE\_comp\_tx),  }
+                 \CommentTok{\# no biopsy comp., OVE, complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_biopsy\_comp) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{    p\_OVE\_comp    ,  }
+                 \CommentTok{\# no biopsy comp., OVE, no complications}
+\NormalTok{                 (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_biopsy\_comp) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_HVE) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p\_OVE\_comp))      }
   
-  \CommentTok{# Create vector of outcomes (QALYs) for each strategy }
+  \CommentTok{\# Create vector of outcomes (QALYs) for each strategy }
   
-\NormalTok{  v_qaly_no_tx  <-}\StringTok{ }\KeywordTok{c}\NormalTok{(q_VE_comp, }\CommentTok{# HVE, complications}
-\NormalTok{                     q_VE     , }\CommentTok{# HVE, no complications}
-\NormalTok{                     q_VE_comp, }\CommentTok{# OVE, complications}
-\NormalTok{                     q_VE)      }\CommentTok{# OVE, no complications}
+\NormalTok{  v\_qaly\_no\_tx  }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(q\_VE\_comp, }\CommentTok{\# HVE, complications}
+\NormalTok{                     q\_VE     , }\CommentTok{\# HVE, no complications}
+\NormalTok{                     q\_VE\_comp, }\CommentTok{\# OVE, complications}
+\NormalTok{                     q\_VE)      }\CommentTok{\# OVE, no complications}
   
-\NormalTok{  v_qaly_tx     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{         , }\CommentTok{# treatment does not directly add any QALYs }
-\NormalTok{                     q_VE_comp , }\CommentTok{# HVE, complications}
-\NormalTok{                     q_VE      , }\CommentTok{# HVE, no complications}
-\NormalTok{                     q_VE_comp , }\CommentTok{# OVE, complications}
-\NormalTok{                     q_VE)       }\CommentTok{# OVE, no complications}
-  
-  
-\NormalTok{  v_qaly_biopsy <-}\StringTok{ }\KeywordTok{c}\NormalTok{(q_loss_biopsy, }\CommentTok{# loss due to biopsy}
-\NormalTok{                     q_VE_comp    , }\CommentTok{# biopsy complications}
-\NormalTok{                     q_VE_comp    , }\CommentTok{# no biopsy comp., HVE w/tx, complications }
-\NormalTok{                     q_VE         , }\CommentTok{# no biopsy comp., HVE w/tx, no complications}
-\NormalTok{                     q_VE_comp    , }\CommentTok{# no biopsy comp., OVE, complications}
-\NormalTok{                     q_VE)          }\CommentTok{# no biopsy comp., OVE, no complications}
-  
-  \CommentTok{# Create vector of costs for each strategy }
-  
-\NormalTok{  v_cost_no_tx  <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_VE_comp , }\CommentTok{# HVE, complications}
-\NormalTok{                     c_VE      , }\CommentTok{# HVE, no complications}
-\NormalTok{                     c_VE_comp , }\CommentTok{# OVE, complications}
-\NormalTok{                     c_VE)       }\CommentTok{# OVE, no complications}
-  
-\NormalTok{  v_cost_tx     <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_tx      , }\CommentTok{# cost of treatment}
-\NormalTok{                     c_VE_comp , }\CommentTok{# HVE, complications}
-\NormalTok{                     c_VE      , }\CommentTok{# HVE, no complications}
-\NormalTok{                     c_VE_comp , }\CommentTok{# OVE, complications}
-\NormalTok{                     c_VE)       }\CommentTok{# OVE, no complications}
+\NormalTok{  v\_qaly\_tx     }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{         , }\CommentTok{\# treatment does not directly add any QALYs }
+\NormalTok{                     q\_VE\_comp , }\CommentTok{\# HVE, complications}
+\NormalTok{                     q\_VE      , }\CommentTok{\# HVE, no complications}
+\NormalTok{                     q\_VE\_comp , }\CommentTok{\# OVE, complications}
+\NormalTok{                     q\_VE)       }\CommentTok{\# OVE, no complications}
   
   
-\NormalTok{  v_cost_biopsy <-}\StringTok{ }\KeywordTok{c}\NormalTok{(c_biopsy         , }\CommentTok{# cost of biopsy procedure}
-\NormalTok{                     c_VE_comp        , }\CommentTok{# biopsy complications}
-\NormalTok{                     c_VE_comp }\OperatorTok{+}\StringTok{ }\NormalTok{c_tx , }\CommentTok{# no biopsy comp., HVE w/tx, complications }
-\NormalTok{                     c_VE }\OperatorTok{+}\StringTok{ }\NormalTok{c_tx      , }\CommentTok{# no biopsy comp., HVE w/tx, no complications}
-\NormalTok{                     c_VE_comp        , }\CommentTok{# no biopsy comp., OVE, complications}
-\NormalTok{                     c_VE)              }\CommentTok{# no biopsy comp., OVE, no complications}
+\NormalTok{  v\_qaly\_biopsy }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(q\_loss\_biopsy, }\CommentTok{\# loss due to biopsy}
+\NormalTok{                     q\_VE\_comp    , }\CommentTok{\# biopsy complications}
+\NormalTok{                     q\_VE\_comp    , }\CommentTok{\# no biopsy comp., HVE w/tx, complications }
+\NormalTok{                     q\_VE         , }\CommentTok{\# no biopsy comp., HVE w/tx, no complications}
+\NormalTok{                     q\_VE\_comp    , }\CommentTok{\# no biopsy comp., OVE, complications}
+\NormalTok{                     q\_VE)          }\CommentTok{\# no biopsy comp., OVE, no complications}
   
-  \CommentTok{# Calculate total utilities for each strategy }
-\NormalTok{  total_qaly_no_tx  <-}\StringTok{ }\NormalTok{v_w_no_tx  }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_qaly_no_tx      }
-\NormalTok{  total_qaly_tx     <-}\StringTok{ }\NormalTok{v_w_tx     }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_qaly_tx}
-\NormalTok{  total_qaly_biopsy <-}\StringTok{ }\NormalTok{v_w_biopsy }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_qaly_biopsy}
+  \CommentTok{\# Create vector of costs for each strategy }
   
-  \CommentTok{# Calculate total costs for each strategy }
-\NormalTok{  total_cost_no_tx  <-}\StringTok{ }\NormalTok{v_w_no_tx  }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_cost_no_tx    }
-\NormalTok{  total_cost_tx     <-}\StringTok{ }\NormalTok{v_w_tx     }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_cost_tx}
-\NormalTok{  total_cost_biopsy <-}\StringTok{ }\NormalTok{v_w_biopsy }\OperatorTok{%*%}\StringTok{ }\NormalTok{v_cost_biopsy}
+\NormalTok{  v\_cost\_no\_tx  }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(c\_VE\_comp , }\CommentTok{\# HVE, complications}
+\NormalTok{                     c\_VE      , }\CommentTok{\# HVE, no complications}
+\NormalTok{                     c\_VE\_comp , }\CommentTok{\# OVE, complications}
+\NormalTok{                     c\_VE)       }\CommentTok{\# OVE, no complications}
   
-  \CommentTok{# vector of total QALYs}
-\NormalTok{  v_total_qaly <-}\StringTok{ }\KeywordTok{c}\NormalTok{(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy) }
-  \CommentTok{# vector of total costs}
-\NormalTok{  v_total_cost <-}\StringTok{ }\KeywordTok{c}\NormalTok{(total_cost_no_tx, total_cost_tx, total_cost_biopsy) }
-  \CommentTok{# calculate vector of nmb}
-\NormalTok{  v_nmb        <-}\StringTok{ }\NormalTok{v_total_qaly }\OperatorTok{*}\StringTok{ }\NormalTok{wtp }\OperatorTok{-}\StringTok{ }\NormalTok{v_total_cost                      }
+\NormalTok{  v\_cost\_tx     }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(c\_tx      , }\CommentTok{\# cost of treatment}
+\NormalTok{                     c\_VE\_comp , }\CommentTok{\# HVE, complications}
+\NormalTok{                     c\_VE      , }\CommentTok{\# HVE, no complications}
+\NormalTok{                     c\_VE\_comp , }\CommentTok{\# OVE, complications}
+\NormalTok{                     c\_VE)       }\CommentTok{\# OVE, no complications}
   
-  \CommentTok{# Name outcomes}
-  \KeywordTok{names}\NormalTok{(v_total_qaly) <-}\StringTok{ }\NormalTok{v_names_str  }\CommentTok{# names for the elements of the total QALYs vector}
-  \KeywordTok{names}\NormalTok{(v_total_cost) <-}\StringTok{ }\NormalTok{v_names_str  }\CommentTok{# names for the elements of the total cost vector}
-  \KeywordTok{names}\NormalTok{(v_nmb)        <-}\StringTok{ }\NormalTok{v_names_str  }\CommentTok{# names for the elements of the nmb vector}
   
-\NormalTok{  df_output <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Strategy =}\NormalTok{ v_names_str,}
-                          \DataTypeTok{Cost     =}\NormalTok{ v_total_cost,}
-                          \DataTypeTok{Effect   =}\NormalTok{ v_total_qaly,}
-                          \DataTypeTok{NMB      =}\NormalTok{ v_nmb)}
-  \KeywordTok{return}\NormalTok{(df_output)}
+\NormalTok{  v\_cost\_biopsy }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(c\_biopsy         , }\CommentTok{\# cost of biopsy procedure}
+\NormalTok{                     c\_VE\_comp        , }\CommentTok{\# biopsy complications}
+\NormalTok{                     c\_VE\_comp }\SpecialCharTok{+}\NormalTok{ c\_tx , }\CommentTok{\# no biopsy comp., HVE w/tx, complications }
+\NormalTok{                     c\_VE }\SpecialCharTok{+}\NormalTok{ c\_tx      , }\CommentTok{\# no biopsy comp., HVE w/tx, no complications}
+\NormalTok{                     c\_VE\_comp        , }\CommentTok{\# no biopsy comp., OVE, complications}
+\NormalTok{                     c\_VE)              }\CommentTok{\# no biopsy comp., OVE, no complications}
+  
+  \CommentTok{\# Calculate total utilities for each strategy }
+\NormalTok{  total\_qaly\_no\_tx  }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_no\_tx  }\SpecialCharTok{\%*\%}\NormalTok{ v\_qaly\_no\_tx      }
+\NormalTok{  total\_qaly\_tx     }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_tx     }\SpecialCharTok{\%*\%}\NormalTok{ v\_qaly\_tx}
+\NormalTok{  total\_qaly\_biopsy }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_biopsy }\SpecialCharTok{\%*\%}\NormalTok{ v\_qaly\_biopsy}
+  
+  \CommentTok{\# Calculate total costs for each strategy }
+\NormalTok{  total\_cost\_no\_tx  }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_no\_tx  }\SpecialCharTok{\%*\%}\NormalTok{ v\_cost\_no\_tx    }
+\NormalTok{  total\_cost\_tx     }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_tx     }\SpecialCharTok{\%*\%}\NormalTok{ v\_cost\_tx}
+\NormalTok{  total\_cost\_biopsy }\OtherTok{\textless{}{-}}\NormalTok{ v\_w\_biopsy }\SpecialCharTok{\%*\%}\NormalTok{ v\_cost\_biopsy}
+  
+  \CommentTok{\# vector of total QALYs}
+\NormalTok{  v\_total\_qaly }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(total\_qaly\_no\_tx, total\_qaly\_tx, total\_qaly\_biopsy) }
+  \CommentTok{\# vector of total costs}
+\NormalTok{  v\_total\_cost }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(total\_cost\_no\_tx, total\_cost\_tx, total\_cost\_biopsy) }
+  \CommentTok{\# calculate vector of nmb}
+\NormalTok{  v\_nmb        }\OtherTok{\textless{}{-}}\NormalTok{ v\_total\_qaly }\SpecialCharTok{*}\NormalTok{ wtp }\SpecialCharTok{{-}}\NormalTok{ v\_total\_cost                      }
+  
+  \CommentTok{\# Name outcomes}
+  \FunctionTok{names}\NormalTok{(v\_total\_qaly) }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_str  }\CommentTok{\# names for the elements of the total QALYs vector}
+  \FunctionTok{names}\NormalTok{(v\_total\_cost) }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_str  }\CommentTok{\# names for the elements of the total cost vector}
+  \FunctionTok{names}\NormalTok{(v\_nmb)        }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_str  }\CommentTok{\# names for the elements of the nmb vector}
+  
+\NormalTok{  df\_output }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Strategy =}\NormalTok{ v\_names\_str,}
+                          \AttributeTok{Cost     =}\NormalTok{ v\_total\_cost,}
+                          \AttributeTok{Effect   =}\NormalTok{ v\_total\_qaly,}
+                          \AttributeTok{NMB      =}\NormalTok{ v\_nmb)}
+  \FunctionTok{return}\NormalTok{(df\_output)}
 \NormalTok{\})}
 
-\CommentTok{# model output}
-\NormalTok{decision_tree_HVE_output}
+\CommentTok{\# model output}
+\NormalTok{decision\_tree\_HVE\_output}
 \end{Highlighting}
 \end{Shaded}
 
@@ -383,10 +387,10 @@ model}\label{create-and-run-decision-tree-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# branches <- read.csv(here('data','decision_tree_HVE_branches.csv'), }
-\CommentTok{#                      stringsAsFactors = F, header = T)}
-\CommentTok{# tree     <- create_tree(branches)}
-\CommentTok{# plot_tree(tree, font.size = 5)}
+\CommentTok{\# branches \textless{}{-} read.csv(here(\textquotesingle{}data\textquotesingle{},\textquotesingle{}decision\_tree\_HVE\_branches.csv\textquotesingle{}), }
+\CommentTok{\#                      stringsAsFactors = F, header = T)}
+\CommentTok{\# tree     \textless{}{-} create\_tree(branches)}
+\CommentTok{\# plot\_tree(tree, font.size = 5)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -396,11 +400,11 @@ Analysis}\label{cost-effectiveness-analysis}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# create the transition probability matrix for NO treatment}
-\NormalTok{decision_tree_HVE_cea  <-}\StringTok{ }\KeywordTok{calculate_icers}\NormalTok{(}\DataTypeTok{cost       =}\NormalTok{ decision_tree_HVE_output}\OperatorTok{$}\NormalTok{Cost,}
-                                          \DataTypeTok{effect     =}\NormalTok{ decision_tree_HVE_output}\OperatorTok{$}\NormalTok{Effect,}
-                                          \DataTypeTok{strategies =}\NormalTok{ decision_tree_HVE_output}\OperatorTok{$}\NormalTok{Strategy)}
-\NormalTok{decision_tree_HVE_cea}
+\CommentTok{\# create the transition probability matrix for NO treatment}
+\NormalTok{decision\_tree\_HVE\_cea  }\OtherTok{\textless{}{-}} \FunctionTok{calculate\_icers}\NormalTok{(}\AttributeTok{cost       =}\NormalTok{ decision\_tree\_HVE\_output}\SpecialCharTok{$}\NormalTok{Cost,}
+                                          \AttributeTok{effect     =}\NormalTok{ decision\_tree\_HVE\_output}\SpecialCharTok{$}\NormalTok{Effect,}
+                                          \AttributeTok{strategies =}\NormalTok{ decision\_tree\_HVE\_output}\SpecialCharTok{$}\NormalTok{Strategy)}
+\NormalTok{decision\_tree\_HVE\_cea}
 \end{Highlighting}
 \end{Shaded}
 
@@ -410,7 +414,7 @@ Tree}\label{plot-frontier-of-decision-tree}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(decision_tree_HVE_cea, }\DataTypeTok{effect_units =} \StringTok{"QALYs"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(decision\_tree\_HVE\_cea, }\AttributeTok{effect\_units =} \StringTok{"QALYs"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -424,7 +428,7 @@ parameters}\label{list-of-input-parameters}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{l_params_all }
+\NormalTok{l\_params\_all }
 \end{Highlighting}
 \end{Shaded}
 
@@ -434,11 +438,11 @@ function}\label{load-decision-tree-model-function}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#### We wrapped the decision tree in a function which we called calculate_ce_out }
-\CommentTok{# This function is stored in "Functions_decision_tree_HVE.R" and needes the list of parameters}
-\KeywordTok{source}\NormalTok{(}\StringTok{"Functions_decision_tree_HVE.R"}\NormalTok{)}
-\CommentTok{# Test function to see if it gives the CE results}
-\KeywordTok{calculate_ce_out}\NormalTok{(l_params_all)}
+\DocumentationTok{\#\#\#\# We wrapped the decision tree in a function which we called calculate\_ce\_out }
+\CommentTok{\# This function is stored in "Functions\_decision\_tree\_HVE.R" and needes the list of parameters}
+\FunctionTok{source}\NormalTok{(}\StringTok{"Functions\_decision\_tree\_HVE.R"}\NormalTok{)}
+\CommentTok{\# Test function to see if it gives the CE results}
+\FunctionTok{calculate\_ce\_out}\NormalTok{(l\_params\_all)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -448,21 +452,21 @@ function}\label{load-decision-tree-model-function}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{options}\NormalTok{(}\DataTypeTok{scipen =} \DecValTok{999}\NormalTok{) }\CommentTok{# disabling scientific notation in R}
-\CommentTok{# dataframe containing all parameters, their basecase values, and the min and }
-\CommentTok{# max values of the parameters of interest }
-\NormalTok{df_params_owsa <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{pars =} \KeywordTok{c}\NormalTok{(}\StringTok{"p_HVE"}\NormalTok{, }\StringTok{"p_biopsy_comp"}\NormalTok{, }\StringTok{"c_tx"}\NormalTok{, }\StringTok{"c_biopsy"}\NormalTok{),}
-                             \DataTypeTok{min  =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\FloatTok{0.01}\NormalTok{,  }\DecValTok{1000}\NormalTok{, }\DecValTok{5000}\NormalTok{),  }\CommentTok{# min parameter values}
-                             \DataTypeTok{max  =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.99}\NormalTok{, }\FloatTok{0.50}\NormalTok{, }\DecValTok{15000}\NormalTok{, }\DecValTok{40000}\NormalTok{)  }\CommentTok{# max parameter values}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{scipen =} \DecValTok{999}\NormalTok{) }\CommentTok{\# disabling scientific notation in R}
+\CommentTok{\# dataframe containing all parameters, their basecase values, and the min and }
+\CommentTok{\# max values of the parameters of interest }
+\NormalTok{df\_params\_owsa }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{pars =} \FunctionTok{c}\NormalTok{(}\StringTok{"p\_HVE"}\NormalTok{, }\StringTok{"p\_biopsy\_comp"}\NormalTok{, }\StringTok{"c\_tx"}\NormalTok{, }\StringTok{"c\_biopsy"}\NormalTok{),}
+                             \AttributeTok{min  =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\FloatTok{0.01}\NormalTok{,  }\DecValTok{1000}\NormalTok{, }\DecValTok{5000}\NormalTok{),  }\CommentTok{\# min parameter values}
+                             \AttributeTok{max  =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.99}\NormalTok{, }\FloatTok{0.50}\NormalTok{, }\DecValTok{15000}\NormalTok{, }\DecValTok{40000}\NormalTok{)  }\CommentTok{\# max parameter values}
 \NormalTok{                             )}
 
-\NormalTok{owsa_nmb <-}\StringTok{ }\KeywordTok{run_owsa_det}\NormalTok{(}\DataTypeTok{params_range =}\NormalTok{ df_params_owsa,  }\CommentTok{# dataframe with parameters for owsa}
-                         \DataTypeTok{params_basecase =}\NormalTok{ l_params_all, }\CommentTok{# list with all parameters}
-                         \DataTypeTok{nsamp      =} \DecValTok{100}\NormalTok{,               }\CommentTok{# number of parameter values}
-                         \DataTypeTok{FUN        =}\NormalTok{ calculate_ce_out,  }\CommentTok{# function to compute outputs}
-                         \DataTypeTok{outcomes   =} \KeywordTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),          }\CommentTok{# output to do the OWSA on}
-                         \DataTypeTok{strategies =}\NormalTok{ v_names_str,       }\CommentTok{# names of the strategies}
-                         \DataTypeTok{n_wtp      =} \DecValTok{450000}\NormalTok{)            }\CommentTok{# extra argument to pass to FUN}
+\NormalTok{owsa\_nmb }\OtherTok{\textless{}{-}} \FunctionTok{run\_owsa\_det}\NormalTok{(}\AttributeTok{params\_range =}\NormalTok{ df\_params\_owsa,  }\CommentTok{\# dataframe with parameters for owsa}
+                         \AttributeTok{params\_basecase =}\NormalTok{ l\_params\_all, }\CommentTok{\# list with all parameters}
+                         \AttributeTok{nsamp      =} \DecValTok{100}\NormalTok{,               }\CommentTok{\# number of parameter values}
+                         \AttributeTok{FUN        =}\NormalTok{ calculate\_ce\_out,  }\CommentTok{\# function to compute outputs}
+                         \AttributeTok{outcomes   =} \FunctionTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),          }\CommentTok{\# output to do the OWSA on}
+                         \AttributeTok{strategies =}\NormalTok{ v\_names\_str,       }\CommentTok{\# names of the strategies}
+                         \AttributeTok{n\_wtp      =} \DecValTok{450000}\NormalTok{)            }\CommentTok{\# extra argument to pass to FUN}
 \end{Highlighting}
 \end{Shaded}
 
@@ -471,10 +475,10 @@ function}\label{load-decision-tree-model-function}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(owsa_nmb, }\DataTypeTok{txtsize =} \DecValTok{16}\NormalTok{, }\DataTypeTok{n_x_ticks =} \DecValTok{5}\NormalTok{, }\DataTypeTok{n_y_ticks =} \DecValTok{3}\NormalTok{,}
-     \DataTypeTok{facet_scales =} \StringTok{"free"}\NormalTok{) }\OperatorTok{+}
-\StringTok{     }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }
-           \DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{vjust =} \FloatTok{0.5}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(owsa\_nmb, }\AttributeTok{txtsize =} \DecValTok{16}\NormalTok{, }\AttributeTok{n\_x\_ticks =} \DecValTok{5}\NormalTok{, }\AttributeTok{n\_y\_ticks =} \DecValTok{3}\NormalTok{,}
+     \AttributeTok{facet\_scales =} \StringTok{"free"}\NormalTok{) }\SpecialCharTok{+}
+     \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }
+           \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{vjust =} \FloatTok{0.5}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -484,7 +488,7 @@ OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{owsa_opt_strat}\NormalTok{(}\DataTypeTok{owsa =}\NormalTok{ owsa_nmb)}
+\FunctionTok{owsa\_opt\_strat}\NormalTok{(}\AttributeTok{owsa =}\NormalTok{ owsa\_nmb)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -493,8 +497,8 @@ OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{owsa_tornado}\NormalTok{(}\DataTypeTok{owsa =}\NormalTok{ owsa_nmb) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{vjust =} \FloatTok{0.5}\NormalTok{))}
+\FunctionTok{owsa\_tornado}\NormalTok{(}\AttributeTok{owsa =}\NormalTok{ owsa\_nmb) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{vjust =} \FloatTok{0.5}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -504,20 +508,20 @@ OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# dataframe containing all parameters, their basecase values, and the min and }
-\CommentTok{# max values of the parameters of interest}
-\NormalTok{df_params_twsa <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{pars =} \KeywordTok{c}\NormalTok{(}\StringTok{"p_HVE"}\NormalTok{, }\StringTok{"c_biopsy"}\NormalTok{),}
-                              \DataTypeTok{min  =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{2000}\NormalTok{), }\CommentTok{# min parameter values}
-                              \DataTypeTok{max  =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.99}\NormalTok{, }\DecValTok{40000}\NormalTok{) }\CommentTok{# max parameter values}
+\CommentTok{\# dataframe containing all parameters, their basecase values, and the min and }
+\CommentTok{\# max values of the parameters of interest}
+\NormalTok{df\_params\_twsa }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{pars =} \FunctionTok{c}\NormalTok{(}\StringTok{"p\_HVE"}\NormalTok{, }\StringTok{"c\_biopsy"}\NormalTok{),}
+                              \AttributeTok{min  =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{2000}\NormalTok{), }\CommentTok{\# min parameter values}
+                              \AttributeTok{max  =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.99}\NormalTok{, }\DecValTok{40000}\NormalTok{) }\CommentTok{\# max parameter values}
 \NormalTok{                              )}
 
-\NormalTok{twsa_nmb <-}\StringTok{ }\KeywordTok{run_twsa_det}\NormalTok{(}\DataTypeTok{params_range =}\NormalTok{ df_params_twsa, }\CommentTok{# dataframe with parameters for twsa}
-                         \DataTypeTok{params_basecase =}\NormalTok{ l_params_all,}\CommentTok{# list with all parameters}
-                         \DataTypeTok{nsamp      =} \DecValTok{40}\NormalTok{,               }\CommentTok{# number of parameter values}
-                         \DataTypeTok{FUN        =}\NormalTok{ calculate_ce_out, }\CommentTok{# function to compute outputs}
-                         \DataTypeTok{outcomes   =} \KeywordTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),         }\CommentTok{# output to do the twsa on}
-                         \DataTypeTok{strategies =}\NormalTok{ v_names_str,      }\CommentTok{# names of the strategies}
-                         \DataTypeTok{n_wtp      =} \DecValTok{200000}\NormalTok{)           }\CommentTok{# extra argument to pass to FUN}
+\NormalTok{twsa\_nmb }\OtherTok{\textless{}{-}} \FunctionTok{run\_twsa\_det}\NormalTok{(}\AttributeTok{params\_range =}\NormalTok{ df\_params\_twsa, }\CommentTok{\# dataframe with parameters for twsa}
+                         \AttributeTok{params\_basecase =}\NormalTok{ l\_params\_all,}\CommentTok{\# list with all parameters}
+                         \AttributeTok{nsamp      =} \DecValTok{40}\NormalTok{,               }\CommentTok{\# number of parameter values}
+                         \AttributeTok{FUN        =}\NormalTok{ calculate\_ce\_out, }\CommentTok{\# function to compute outputs}
+                         \AttributeTok{outcomes   =} \FunctionTok{c}\NormalTok{(}\StringTok{"NMB"}\NormalTok{),         }\CommentTok{\# output to do the twsa on}
+                         \AttributeTok{strategies =}\NormalTok{ v\_names\_str,      }\CommentTok{\# names of the strategies}
+                         \AttributeTok{n\_wtp      =} \DecValTok{200000}\NormalTok{)           }\CommentTok{\# extra argument to pass to FUN}
 \end{Highlighting}
 \end{Shaded}
 
@@ -526,10 +530,10 @@ OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(twsa_nmb) }\OperatorTok{+}\StringTok{ }
-\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Two-way sensitivity analysis"}\NormalTok{, }
-          \DataTypeTok{subtitle =} \StringTok{"Net monetary benefit"}\NormalTok{) }\OperatorTok{+}
-\StringTok{          }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(twsa\_nmb) }\SpecialCharTok{+} 
+  \FunctionTok{ggtitle}\NormalTok{(}\AttributeTok{label =} \StringTok{"Two{-}way sensitivity analysis"}\NormalTok{, }
+          \AttributeTok{subtitle =} \StringTok{"Net monetary benefit"}\NormalTok{) }\SpecialCharTok{+}
+          \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -539,72 +543,72 @@ OWSA}\label{optimal-strategy-with-owsa}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Function to generate PSA input dataset}
-\NormalTok{generate_psa_params <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(}\DataTypeTok{n_sim =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{seed =} \DecValTok{071518}\NormalTok{)\{}
-  \KeywordTok{set.seed}\NormalTok{(seed)}
-  \CommentTok{# Dataframe of input parameters}
-\NormalTok{  df_psa_params   <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+\CommentTok{\# Function to generate PSA input dataset}
+\NormalTok{generate\_psa\_params }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{n\_sim =} \DecValTok{1000}\NormalTok{, }\AttributeTok{seed =} \DecValTok{071518}\NormalTok{)\{}
+  \FunctionTok{set.seed}\NormalTok{(seed)}
+  \CommentTok{\# Dataframe of input parameters}
+\NormalTok{  df\_psa\_params   }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
     
-    \CommentTok{# Transition probabilities (per cycle)}
-    \DataTypeTok{p_HVE         =} \KeywordTok{rbeta}\NormalTok{(n_sim, }\DecValTok{52}\NormalTok{, }\DecValTok{48}\NormalTok{), }\CommentTok{# prevalence of HVE}
-    \DataTypeTok{p_HVE_comp    =} \KeywordTok{rbeta}\NormalTok{(n_sim, }\DecValTok{71}\NormalTok{, }\DecValTok{29}\NormalTok{), }\CommentTok{# complications with untreated HVE}
-    \DataTypeTok{p_OVE_comp    =} \KeywordTok{rbeta}\NormalTok{(n_sim,  }\DecValTok{1}\NormalTok{, }\DecValTok{99}\NormalTok{), }\CommentTok{# complications with untreated OVE}
-    \DataTypeTok{p_HVE_comp_tx =} \KeywordTok{rbeta}\NormalTok{(n_sim, }\DecValTok{36}\NormalTok{, }\DecValTok{64}\NormalTok{), }\CommentTok{# complications with treated HVE}
-    \DataTypeTok{p_OVE_comp_tx =} \KeywordTok{rbeta}\NormalTok{(n_sim, }\DecValTok{20}\NormalTok{, }\DecValTok{80}\NormalTok{), }\CommentTok{# complications with treated OVE}
-    \DataTypeTok{p_biopsy_comp =} \KeywordTok{rbeta}\NormalTok{(n_sim,  }\DecValTok{1}\NormalTok{, }\DecValTok{19}\NormalTok{), }\CommentTok{# probability of complications due to biopsy}
+    \CommentTok{\# Transition probabilities (per cycle)}
+    \AttributeTok{p\_HVE         =} \FunctionTok{rbeta}\NormalTok{(n\_sim, }\DecValTok{52}\NormalTok{, }\DecValTok{48}\NormalTok{), }\CommentTok{\# prevalence of HVE}
+    \AttributeTok{p\_HVE\_comp    =} \FunctionTok{rbeta}\NormalTok{(n\_sim, }\DecValTok{71}\NormalTok{, }\DecValTok{29}\NormalTok{), }\CommentTok{\# complications with untreated HVE}
+    \AttributeTok{p\_OVE\_comp    =} \FunctionTok{rbeta}\NormalTok{(n\_sim,  }\DecValTok{1}\NormalTok{, }\DecValTok{99}\NormalTok{), }\CommentTok{\# complications with untreated OVE}
+    \AttributeTok{p\_HVE\_comp\_tx =} \FunctionTok{rbeta}\NormalTok{(n\_sim, }\DecValTok{36}\NormalTok{, }\DecValTok{64}\NormalTok{), }\CommentTok{\# complications with treated HVE}
+    \AttributeTok{p\_OVE\_comp\_tx =} \FunctionTok{rbeta}\NormalTok{(n\_sim, }\DecValTok{20}\NormalTok{, }\DecValTok{80}\NormalTok{), }\CommentTok{\# complications with treated OVE}
+    \AttributeTok{p\_biopsy\_comp =} \FunctionTok{rbeta}\NormalTok{(n\_sim,  }\DecValTok{1}\NormalTok{, }\DecValTok{19}\NormalTok{), }\CommentTok{\# probability of complications due to biopsy}
     
-    \CommentTok{# Costs}
-    \DataTypeTok{c_VE      =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \FloatTok{36.0}\NormalTok{, }\DataTypeTok{scale =} \FloatTok{33.33}\NormalTok{), }\CommentTok{# cost of remaining one cycle in state H}
-    \DataTypeTok{c_VE_comp =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \FloatTok{81.0}\NormalTok{, }\DataTypeTok{scale =} \FloatTok{111.1}\NormalTok{), }\CommentTok{# cost of remaining one cycle in state S1}
-    \DataTypeTok{c_tx      =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \FloatTok{74.6}\NormalTok{, }\DataTypeTok{scale =} \FloatTok{127.4}\NormalTok{), }\CommentTok{# cost of remaining one cycle in state S2}
-    \DataTypeTok{c_biopsy  =} \KeywordTok{rgamma}\NormalTok{(n_sim, }\DataTypeTok{shape =} \FloatTok{25.0}\NormalTok{, }\DataTypeTok{scale =} \DecValTok{1000}\NormalTok{) , }\CommentTok{# cost of treatment (per cycle)}
+    \CommentTok{\# Costs}
+    \AttributeTok{c\_VE      =} \FunctionTok{rgamma}\NormalTok{(n\_sim, }\AttributeTok{shape =} \FloatTok{36.0}\NormalTok{, }\AttributeTok{scale =} \FloatTok{33.33}\NormalTok{), }\CommentTok{\# cost of remaining one cycle in state H}
+    \AttributeTok{c\_VE\_comp =} \FunctionTok{rgamma}\NormalTok{(n\_sim, }\AttributeTok{shape =} \FloatTok{81.0}\NormalTok{, }\AttributeTok{scale =} \FloatTok{111.1}\NormalTok{), }\CommentTok{\# cost of remaining one cycle in state S1}
+    \AttributeTok{c\_tx      =} \FunctionTok{rgamma}\NormalTok{(n\_sim, }\AttributeTok{shape =} \FloatTok{74.6}\NormalTok{, }\AttributeTok{scale =} \FloatTok{127.4}\NormalTok{), }\CommentTok{\# cost of remaining one cycle in state S2}
+    \AttributeTok{c\_biopsy  =} \FunctionTok{rgamma}\NormalTok{(n\_sim, }\AttributeTok{shape =} \FloatTok{25.0}\NormalTok{, }\AttributeTok{scale =} \DecValTok{1000}\NormalTok{) , }\CommentTok{\# cost of treatment (per cycle)}
     
-    \CommentTok{# Utilities}
-    \DataTypeTok{q_VE          =} \KeywordTok{rnorm}\NormalTok{(n_sim, }\DataTypeTok{mean =} \DecValTok{20}\NormalTok{, }\DataTypeTok{sd =} \DecValTok{1}\NormalTok{), }\CommentTok{# utility when healthy}
-    \DataTypeTok{q_VE_comp     =} \KeywordTok{rnorm}\NormalTok{(n_sim, }\DataTypeTok{mean =} \DecValTok{19}\NormalTok{, }\DataTypeTok{sd =} \DecValTok{2}\NormalTok{), }\CommentTok{# utility when sick}
-    \DataTypeTok{q_loss_biopsy =} \OperatorTok{-}\KeywordTok{rbeta}\NormalTok{(n_sim, }\DataTypeTok{shape1 =} \DecValTok{4}\NormalTok{, }\DataTypeTok{shape2 =} \DecValTok{380}\NormalTok{)}
+    \CommentTok{\# Utilities}
+    \AttributeTok{q\_VE          =} \FunctionTok{rnorm}\NormalTok{(n\_sim, }\AttributeTok{mean =} \DecValTok{20}\NormalTok{, }\AttributeTok{sd =} \DecValTok{1}\NormalTok{), }\CommentTok{\# utility when healthy}
+    \AttributeTok{q\_VE\_comp     =} \FunctionTok{rnorm}\NormalTok{(n\_sim, }\AttributeTok{mean =} \DecValTok{19}\NormalTok{, }\AttributeTok{sd =} \DecValTok{2}\NormalTok{), }\CommentTok{\# utility when sick}
+    \AttributeTok{q\_loss\_biopsy =} \SpecialCharTok{{-}}\FunctionTok{rbeta}\NormalTok{(n\_sim, }\AttributeTok{shape1 =} \DecValTok{4}\NormalTok{, }\AttributeTok{shape2 =} \DecValTok{380}\NormalTok{)}
 \NormalTok{  )}
-  \KeywordTok{return}\NormalTok{(df_psa_params)}
+  \FunctionTok{return}\NormalTok{(df\_psa\_params)}
 \NormalTok{\}}
-\CommentTok{# Try it}
-\KeywordTok{generate_psa_params}\NormalTok{(}\DecValTok{10}\NormalTok{) }
+\CommentTok{\# Try it}
+\FunctionTok{generate\_psa\_params}\NormalTok{(}\DecValTok{10}\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Generate PSA dataset for CEA}
-\CommentTok{# Number of simulations}
-\NormalTok{n_sim <-}\StringTok{ }\DecValTok{1000}
+\CommentTok{\# Generate PSA dataset for CEA}
+\CommentTok{\# Number of simulations}
+\NormalTok{n\_sim }\OtherTok{\textless{}{-}} \DecValTok{1000}
 
-\CommentTok{# Generate PSA input dataset}
-\NormalTok{df_psa_input <-}\StringTok{ }\KeywordTok{generate_psa_params}\NormalTok{(}\DataTypeTok{n_sim =}\NormalTok{ n_sim)}
-\CommentTok{# First six observations}
-\KeywordTok{head}\NormalTok{(df_psa_input)}
+\CommentTok{\# Generate PSA input dataset}
+\NormalTok{df\_psa\_input }\OtherTok{\textless{}{-}} \FunctionTok{generate\_psa\_params}\NormalTok{(}\AttributeTok{n\_sim =}\NormalTok{ n\_sim)}
+\CommentTok{\# First six observations}
+\FunctionTok{head}\NormalTok{(df\_psa\_input)}
 
-\CommentTok{# Histogram of parameters}
-\KeywordTok{ggplot}\NormalTok{(reshape2}\OperatorTok{::}\KeywordTok{melt}\NormalTok{(df_psa_input, }\DataTypeTok{variable.name =} \StringTok{"Parameter"}\NormalTok{, }
-                      \DataTypeTok{value.name =} \StringTok{"Parameter value"}\NormalTok{), }
-                      \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \StringTok{`}\DataTypeTok{Parameter value}\StringTok{`}\NormalTok{)) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{Parameter, }\DataTypeTok{scales =} \StringTok{"free"}\NormalTok{) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{geom_histogram}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ..density..), }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{number_ticks}\NormalTok{(}\DecValTok{3}\NormalTok{)) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{theme_bw}\NormalTok{(}\DataTypeTok{base_size =} \DecValTok{14}\NormalTok{) }\OperatorTok{+}
-\StringTok{                      }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.y =} \KeywordTok{element_blank}\NormalTok{())                    }
+\CommentTok{\# Histogram of parameters}
+\FunctionTok{ggplot}\NormalTok{(reshape2}\SpecialCharTok{::}\FunctionTok{melt}\NormalTok{(df\_psa\_input, }\AttributeTok{variable.name =} \StringTok{"Parameter"}\NormalTok{, }
+                      \AttributeTok{value.name =} \StringTok{"Parameter value"}\NormalTok{), }
+                      \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{\textasciigrave{}}\AttributeTok{Parameter value}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+}
+                      \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Parameter, }\AttributeTok{scales =} \StringTok{"free"}\NormalTok{) }\SpecialCharTok{+}
+                      \FunctionTok{geom\_histogram}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ..density..), }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+                      \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{number\_ticks}\NormalTok{(}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{+}
+                      \FunctionTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+                      \FunctionTok{theme\_bw}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{14}\NormalTok{) }\SpecialCharTok{+}
+                      \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.y =} \FunctionTok{element\_blank}\NormalTok{())                    }
 
-\CommentTok{# Initialize dataframes with PSA output }
-\CommentTok{# Dataframe of costs}
-\NormalTok{df_c <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }
-                      \DataTypeTok{nrow =}\NormalTok{ n_sim,}
-                      \DataTypeTok{ncol =}\NormalTok{ n_str))}
-\KeywordTok{colnames}\NormalTok{(df_c) <-}\StringTok{ }\NormalTok{v_names_str}
+\CommentTok{\# Initialize dataframes with PSA output }
+\CommentTok{\# Dataframe of costs}
+\NormalTok{df\_c }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }
+                      \AttributeTok{nrow =}\NormalTok{ n\_sim,}
+                      \AttributeTok{ncol =}\NormalTok{ n\_str))}
+\FunctionTok{colnames}\NormalTok{(df\_c) }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_str}
 
-\CommentTok{# Dataframe of effectiveness}
-\NormalTok{df_e <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }
-                      \DataTypeTok{nrow =}\NormalTok{ n_sim,}
-                      \DataTypeTok{ncol =}\NormalTok{ n_str))}
-\KeywordTok{colnames}\NormalTok{(df_e) <-}\StringTok{ }\NormalTok{v_names_str}
+\CommentTok{\# Dataframe of effectiveness}
+\NormalTok{df\_e }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }
+                      \AttributeTok{nrow =}\NormalTok{ n\_sim,}
+                      \AttributeTok{ncol =}\NormalTok{ n\_str))}
+\FunctionTok{colnames}\NormalTok{(df\_e) }\OtherTok{\textless{}{-}}\NormalTok{ v\_names\_str}
 \end{Highlighting}
 \end{Shaded}
 
@@ -614,15 +618,15 @@ analysis}\label{conduct-probabilistic-sensitivity-analysis}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Run decision tree on each parameter set of PSA input dataset}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_sim)\{}
-\NormalTok{  l_psa_input <-}\StringTok{ }\KeywordTok{update_param_list}\NormalTok{(l_params_all, df_psa_input[i, ])}
-\NormalTok{  df_out_psa  <-}\StringTok{ }\KeywordTok{calculate_ce_out}\NormalTok{(l_psa_input)}
-\NormalTok{  df_c[i, ] <-}\StringTok{ }\NormalTok{df_out_psa}\OperatorTok{$}\NormalTok{Cost}
-\NormalTok{  df_e[i, ] <-}\StringTok{ }\NormalTok{df_out_psa}\OperatorTok{$}\NormalTok{Effect}
-  \CommentTok{# Display simulation progress}
-  \ControlFlowTok{if}\NormalTok{(i}\OperatorTok{/}\NormalTok{(n_sim}\OperatorTok{/}\DecValTok{10}\NormalTok{) }\OperatorTok{==}\StringTok{ }\KeywordTok{round}\NormalTok{(i}\OperatorTok{/}\NormalTok{(n_sim}\OperatorTok{/}\DecValTok{10}\NormalTok{),}\DecValTok{0}\NormalTok{)) \{ }\CommentTok{# display progress every 10%}
-    \KeywordTok{cat}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}r}\StringTok{'}\NormalTok{, }\KeywordTok{paste}\NormalTok{(i}\OperatorTok{/}\NormalTok{n_sim }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }\StringTok{"% done"}\NormalTok{, }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{))}
+\CommentTok{\# Run decision tree on each parameter set of PSA input dataset}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_sim)\{}
+\NormalTok{  l\_psa\_input }\OtherTok{\textless{}{-}} \FunctionTok{update\_param\_list}\NormalTok{(l\_params\_all, df\_psa\_input[i, ])}
+\NormalTok{  df\_out\_psa  }\OtherTok{\textless{}{-}} \FunctionTok{calculate\_ce\_out}\NormalTok{(l\_psa\_input)}
+\NormalTok{  df\_c[i, ] }\OtherTok{\textless{}{-}}\NormalTok{ df\_out\_psa}\SpecialCharTok{$}\NormalTok{Cost}
+\NormalTok{  df\_e[i, ] }\OtherTok{\textless{}{-}}\NormalTok{ df\_out\_psa}\SpecialCharTok{$}\NormalTok{Effect}
+  \CommentTok{\# Display simulation progress}
+  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{/}\NormalTok{(n\_sim}\SpecialCharTok{/}\DecValTok{10}\NormalTok{) }\SpecialCharTok{==} \FunctionTok{round}\NormalTok{(i}\SpecialCharTok{/}\NormalTok{(n\_sim}\SpecialCharTok{/}\DecValTok{10}\NormalTok{),}\DecValTok{0}\NormalTok{)) \{ }\CommentTok{\# display progress every 10\%}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}r}\StringTok{\textquotesingle{}}\NormalTok{, }\FunctionTok{paste}\NormalTok{(i}\SpecialCharTok{/}\NormalTok{n\_sim }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\StringTok{"\% done"}\NormalTok{, }\AttributeTok{sep =} \StringTok{" "}\NormalTok{))}
 \NormalTok{  \}}
 \NormalTok{\}}
 \end{Highlighting}
@@ -634,10 +638,10 @@ dampack}\label{create-psa-object-for-dampack}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{l_psa <-}\StringTok{ }\KeywordTok{make_psa_obj}\NormalTok{(}\DataTypeTok{cost          =}\NormalTok{ df_c, }
-                      \DataTypeTok{effectiveness =}\NormalTok{ df_e, }
-                      \DataTypeTok{parameters    =}\NormalTok{ df_psa_input, }
-                      \DataTypeTok{strategies    =}\NormalTok{ v_names_str)}
+\NormalTok{l\_psa }\OtherTok{\textless{}{-}} \FunctionTok{make\_psa\_obj}\NormalTok{(}\AttributeTok{cost          =}\NormalTok{ df\_c, }
+                      \AttributeTok{effectiveness =}\NormalTok{ df\_e, }
+                      \AttributeTok{parameters    =}\NormalTok{ df\_psa\_input, }
+                      \AttributeTok{strategies    =}\NormalTok{ v\_names\_str)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -646,9 +650,9 @@ dampack}\label{create-psa-object-for-dampack}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{save}\NormalTok{(df_psa_input, df_c, df_e, v_names_str, n_str,}
-\NormalTok{     l_psa,}
-     \DataTypeTok{file =} \StringTok{"decision_tree_HVE_PSA_dataset.RData"}\NormalTok{)}
+\FunctionTok{save}\NormalTok{(df\_psa\_input, df\_c, df\_e, v\_names\_str, n\_str,}
+\NormalTok{     l\_psa,}
+     \AttributeTok{file =} \StringTok{"decision\_tree\_HVE\_PSA\_dataset.RData"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -658,7 +662,7 @@ graphs}\label{create-probabilistic-analysis-graphs}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{load}\NormalTok{(}\DataTypeTok{file =} \StringTok{"decision_tree_HVE_PSA_dataset.RData"}\NormalTok{)}
+\FunctionTok{load}\NormalTok{(}\AttributeTok{file =} \StringTok{"decision\_tree\_HVE\_PSA\_dataset.RData"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -666,7 +670,7 @@ Vector with willingness-to-pay (WTP) thresholds.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{v_wtp <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{600000}\NormalTok{, }\DataTypeTok{by =} \DecValTok{10000}\NormalTok{)}
+\NormalTok{v\_wtp }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{600000}\NormalTok{, }\AttributeTok{by =} \DecValTok{10000}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -676,7 +680,7 @@ plot}\label{cost-effectiveness-scatter-plot}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(l_psa)}
+\FunctionTok{plot}\NormalTok{(l\_psa)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -686,23 +690,23 @@ output}\label{conduct-cea-with-probabilistic-output}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Compute expected costs and effects for each strategy from the PSA}
-\NormalTok{df_out_ce_psa <-}\StringTok{ }\KeywordTok{summary}\NormalTok{(l_psa)}
-\NormalTok{df_out_ce_psa}
+\CommentTok{\# Compute expected costs and effects for each strategy from the PSA}
+\NormalTok{df\_out\_ce\_psa }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(l\_psa)}
+\NormalTok{df\_out\_ce\_psa}
 
-\CommentTok{# Calculate incremental cost-effectiveness ratios (ICERs)}
-\NormalTok{df_cea_psa <-}\StringTok{ }\KeywordTok{calculate_icers}\NormalTok{(}\DataTypeTok{cost       =}\NormalTok{ df_out_ce_psa}\OperatorTok{$}\NormalTok{meanCost, }
-                              \DataTypeTok{effect     =}\NormalTok{ df_out_ce_psa}\OperatorTok{$}\NormalTok{meanEffect,}
-                              \DataTypeTok{strategies =}\NormalTok{ df_out_ce_psa}\OperatorTok{$}\NormalTok{Strategy)}
-\NormalTok{df_cea_psa}
+\CommentTok{\# Calculate incremental cost{-}effectiveness ratios (ICERs)}
+\NormalTok{df\_cea\_psa }\OtherTok{\textless{}{-}} \FunctionTok{calculate\_icers}\NormalTok{(}\AttributeTok{cost       =}\NormalTok{ df\_out\_ce\_psa}\SpecialCharTok{$}\NormalTok{meanCost, }
+                              \AttributeTok{effect     =}\NormalTok{ df\_out\_ce\_psa}\SpecialCharTok{$}\NormalTok{meanEffect,}
+                              \AttributeTok{strategies =}\NormalTok{ df\_out\_ce\_psa}\SpecialCharTok{$}\NormalTok{Strategy)}
+\NormalTok{df\_cea\_psa}
 
-\CommentTok{# Save CEA table with ICERs}
-\CommentTok{# As .RData}
-\KeywordTok{save}\NormalTok{(df_cea_psa, }
-     \DataTypeTok{file =} \StringTok{"decision_tree_HVE_probabilistic_CEA_results.RData"}\NormalTok{)}
-\CommentTok{# As .csv}
-\KeywordTok{write.csv}\NormalTok{(df_cea_psa, }
-          \DataTypeTok{file =} \StringTok{"decision_tree_HVE_probabilistic_CEA_results.csv"}\NormalTok{)}
+\CommentTok{\# Save CEA table with ICERs}
+\CommentTok{\# As .RData}
+\FunctionTok{save}\NormalTok{(df\_cea\_psa, }
+     \AttributeTok{file =} \StringTok{"decision\_tree\_HVE\_probabilistic\_CEA\_results.RData"}\NormalTok{)}
+\CommentTok{\# As .csv}
+\FunctionTok{write.csv}\NormalTok{(df\_cea\_psa, }
+          \AttributeTok{file =} \StringTok{"decision\_tree\_HVE\_probabilistic\_CEA\_results.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -712,7 +716,7 @@ frontier}\label{plot-cost-effectiveness-frontier}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(df_cea_psa) }
+\FunctionTok{plot}\NormalTok{(df\_cea\_psa) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -723,11 +727,11 @@ frontier
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ceac_obj <-}\StringTok{ }\KeywordTok{ceac}\NormalTok{(}\DataTypeTok{wtp =}\NormalTok{ v_wtp, }\DataTypeTok{psa =}\NormalTok{ l_psa)}
-\CommentTok{# Regions of highest probability of cost-effectiveness for each strategy}
-\KeywordTok{summary}\NormalTok{(ceac_obj)}
-\CommentTok{# CEAC & CEAF plot}
-\KeywordTok{plot}\NormalTok{(ceac_obj)}
+\NormalTok{ceac\_obj }\OtherTok{\textless{}{-}} \FunctionTok{ceac}\NormalTok{(}\AttributeTok{wtp =}\NormalTok{ v\_wtp, }\AttributeTok{psa =}\NormalTok{ l\_psa)}
+\CommentTok{\# Regions of highest probability of cost{-}effectiveness for each strategy}
+\FunctionTok{summary}\NormalTok{(ceac\_obj)}
+\CommentTok{\# CEAC \& CEAF plot}
+\FunctionTok{plot}\NormalTok{(ceac\_obj)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -737,10 +741,10 @@ frontier
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{elc_obj <-}\StringTok{ }\KeywordTok{calc_exp_loss}\NormalTok{(}\DataTypeTok{wtp =}\NormalTok{ v_wtp, }\DataTypeTok{psa =}\NormalTok{ l_psa)}
+\NormalTok{elc\_obj }\OtherTok{\textless{}{-}} \FunctionTok{calc\_exp\_loss}\NormalTok{(}\AttributeTok{wtp =}\NormalTok{ v\_wtp, }\AttributeTok{psa =}\NormalTok{ l\_psa)}
 
-\CommentTok{# ELC plot}
-\KeywordTok{plot}\NormalTok{(elc_obj, }\DataTypeTok{log_y =} \OtherTok{FALSE}\NormalTok{)}
+\CommentTok{\# ELC plot}
+\FunctionTok{plot}\NormalTok{(elc\_obj, }\AttributeTok{log\_y =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -750,9 +754,9 @@ frontier
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{evpi <-}\StringTok{ }\KeywordTok{calc_evpi}\NormalTok{(}\DataTypeTok{wtp =}\NormalTok{ v_wtp, }\DataTypeTok{psa =}\NormalTok{ l_psa)}
-\CommentTok{# EVPI plot}
-\KeywordTok{plot}\NormalTok{(evpi, }\DataTypeTok{effect_units =} \StringTok{"QALY"}\NormalTok{) }
+\NormalTok{evpi }\OtherTok{\textless{}{-}} \FunctionTok{calc\_evpi}\NormalTok{(}\AttributeTok{wtp =}\NormalTok{ v\_wtp, }\AttributeTok{psa =}\NormalTok{ l\_psa)}
+\CommentTok{\# EVPI plot}
+\FunctionTok{plot}\NormalTok{(evpi, }\AttributeTok{effect\_units =} \StringTok{"QALY"}\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -762,18 +766,19 @@ frontier
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{evppi <-}\StringTok{ }\KeywordTok{calc_evppi}\NormalTok{(}\DataTypeTok{psa =}\NormalTok{ l_psa, }
-                    \DataTypeTok{wtp =}\NormalTok{ v_wtp, }
-                    \DataTypeTok{params =} \KeywordTok{c}\NormalTok{(}\StringTok{"q_VE_comp"}\NormalTok{), }
-                    \DataTypeTok{outcome =} \KeywordTok{c}\NormalTok{(}\StringTok{"nmb"}\NormalTok{),}
-                    \DataTypeTok{type =} \KeywordTok{c}\NormalTok{(}\StringTok{"gam"}\NormalTok{, }\StringTok{"poly"}\NormalTok{),}
-                    \DataTypeTok{poly.order =} \DecValTok{2}\NormalTok{,}
-                    \DataTypeTok{k =} \DecValTok{-1}\NormalTok{,}
-                    \DataTypeTok{pop =} \DecValTok{1}
+\NormalTok{evppi }\OtherTok{\textless{}{-}} \FunctionTok{calc\_evppi}\NormalTok{(}\AttributeTok{psa =}\NormalTok{ l\_psa, }
+                    \AttributeTok{wtp =}\NormalTok{ v\_wtp, }
+                    \AttributeTok{params =} \FunctionTok{c}\NormalTok{(}\StringTok{"q\_VE\_comp"}\NormalTok{), }
+                    \AttributeTok{outcome =} \FunctionTok{c}\NormalTok{(}\StringTok{"nmb"}\NormalTok{),}
+                    \AttributeTok{type =} \FunctionTok{c}\NormalTok{(}\StringTok{"gam"}\NormalTok{, }\StringTok{"poly"}\NormalTok{),}
+                    \AttributeTok{poly.order =} \DecValTok{2}\NormalTok{,}
+                    \AttributeTok{k =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
+                    \AttributeTok{pop =} \DecValTok{1}
 \NormalTok{)}
 
-\NormalTok{dampack}\OperatorTok{:::}\KeywordTok{plot.evppi}\NormalTok{(evppi)}
+\NormalTok{dampack}\SpecialCharTok{:::}\FunctionTok{plot.evppi}\NormalTok{(evppi)}
 \end{Highlighting}
 \end{Shaded}
+
 
 \end{document}

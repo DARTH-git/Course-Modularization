@@ -105,7 +105,7 @@ v_init <- c("Healthy" = 1,
 
 # Transition probabilities
 p_HD      <- 0.02                     # probability of dying when healthy
-p_HS      <- 0.05                     # probability of becoming sick when healthy, under standard of care
+p_HS      <- 0.05                     # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_HS_trt  <- 0.03                     # probability of becoming sick when healthy, under treatment
 p_SD      <- 0.1                      # probability of dying when sick
 

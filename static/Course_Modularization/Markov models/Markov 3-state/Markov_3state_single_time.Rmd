@@ -105,8 +105,8 @@ v_init <- c("Healthy" = 1,
 
 # Transition probabilities
 p_HD_min <- 0.003                     # probability of dying when healthy at t = 0
-p_HD_max <- 0.01                      # probability of dying when health  at t = n.t
-p_HS     <- 0.05                      # probability of becoming sick when healthy, under standard of care
+p_HD_max <- 0.01                      # probability of dying when health  at t = n_t
+p_HS     <- 0.05                      # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_SD     <- 0.1                       # probability of dying when sick
 
 # Costs and utilities  
@@ -122,7 +122,7 @@ d_e      <- d_c <- 0.03               # discount rate per cycle equal discount o
 p_HD <- seq(p_HD_min, p_HD_max, length.out = n_t)  # probabilities of dying when healthy (age-dependent) - 
                                                    # this is now a sequence of numbers, officially v_p_HD
 
-n_str     <- length(v_names_str)      # Number of strategies
+n_str     <- length(v_names_str)      # number of strategies
 n_states  <- length(v_n)              # number of states
 
 # Discount weights for costs and effects
@@ -182,12 +182,12 @@ check_sum_of_transition_array(a_P, n_states = n_states, n_cycles = n_t, verbose 
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){ # t<-1                  # loop through the number of cycles
+for (t in 1:n_t){ #                       # loop through the number of cycles
   m_M[t + 1, ] <- m_M[t, ] %*% a_P[, , t] # estimate the Markov trace for cycle t + 1 
                                           # using the t-th matrix from the 
                                           # probability array 
 }
-head(m_M)  # print the first lines of the matrix 
+head(m_M)  # print the first lines of the Markov trace matrix 
 ```
 
 # 06 Compute and Plot Epidemiological Outcomes
@@ -225,7 +225,7 @@ grid(nx = n_t, ny = 10,
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os) # summing probablity of OS over time  (i.e. life expectancy)
+v_le <- sum(v_os) # summing probability of OS over time  (i.e. life expectancy)
 ```
 
 ## 06.3 Disease prevalence

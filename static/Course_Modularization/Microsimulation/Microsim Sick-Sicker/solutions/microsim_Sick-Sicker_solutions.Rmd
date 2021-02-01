@@ -59,7 +59,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -275,7 +275,11 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
     # open a loop for time running cycles 1 to n_t 
     for (t in 1:n_t) {
       # calculate the transition probabilities for the cycle based on health state t
-      m_P <- Probs(m_M[, t], df_X)             
+      m_P <- Probs(m_M[, t], df_X)            
+      # check if transition probabilities are between 0 and 1
+      check_transition_probability(m_P, verbose = TRUE)
+      # check if checks if each of the rows of the transition probabilities matrix sum to one
+      check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P)                  
       # calculate costs per individual during cycle t + 1

@@ -59,7 +59,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -364,7 +364,6 @@ df_cea <- calculate_icers(cost       = v_C,
                           effect     = v_E,
                           strategies = v_names_str)
 df_cea
-
 ```
 
 

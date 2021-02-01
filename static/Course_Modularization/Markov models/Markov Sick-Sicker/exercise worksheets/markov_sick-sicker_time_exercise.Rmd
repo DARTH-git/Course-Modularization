@@ -1,10 +1,11 @@
 ---
-title: 'Markov Sick-Sicker model'
-subtitle: 'with age dependency '
+title: "Markov Sick-Sicker model"
 author: "The DARTH workgroup"
+subtitle: 'with age dependency '
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -122,7 +123,6 @@ The code below shows you how to get the data into your R environment. We also pr
 ```{r, echo = FALSE}
 lt_usa_2005 <- read.csv("../data/HMD_USA_Mx_2015.csv")
 head(lt_usa_2005)
-
 ```
 
 ```{r, eval = FALSE}

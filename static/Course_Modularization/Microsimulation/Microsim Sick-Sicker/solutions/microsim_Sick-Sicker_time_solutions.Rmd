@@ -45,9 +45,7 @@ Microsimulation modeling for health decision sciences using R: A tutorial.
 Med Decis Making. 2018;38(3):400–22. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+- Krijkamp EM, Alarid-Escudero F, Enns EA, et al. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Mak. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -89,15 +87,19 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```{r}
 set.seed(1)  # set the seed  
 
-# Model structure 
-n_t      <- 30                       # time horizon, 30 cycles
-n_i      <- 100000                   # number of simulated individuals
+# Strategy names
+v_names_str <- c("no treatment", "treatment")  # strategy names
+n_str        <- length(v_names_str)            # number of strategies
+
+# Model structure
 v_n      <- c("H", "S1", "S2", "D")  # the model states names
 n_states <- length(v_n)              # the number of health states
+
+# Model parameters
+n_t      <- 30                       # time horizon, 30 cycles
+n_i      <- 100000                   # number of simulated individuals
 d_r      <- 0.03                     # discount rate of 3% per cycle
 v_dwe    <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t)) # discount weight 
-v_names_str <- c("no treatment", "treatment")  # strategy names
-n_str    <- length(v_names_str)      # number of strategies
 
 # Event probabilities (per cycle)
 # Annual transition probabilities
@@ -108,9 +110,9 @@ p_S1S2   <- 0.105   # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv("mortProb_age.csv")
+p_mort   <- read.csv("../data/mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
+dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
@@ -240,7 +242,7 @@ Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
     # QALYs accrued this cycle
   
   u_t <- 0                                 # by default the utility for everyone is zero
-  u_t[M_t == "H"]  <- u_H                  # update the utility if healthy
+  u_t[M_t == "H"] <- u_H                   # update the utility if healthy
   u_t[M_t == "S1" & Trt == FALSE] <- u_S1  # update the utility if sick
   # update the utility if sick but on treatment (adjust for individual effect modifier) 
   u_t[M_t == "S1" & Trt == TRUE]  <- u_trt * df_X$x[M_t == "S1"]  
@@ -293,7 +295,8 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
       # check if transition probabilities are between 0 and 1
       check_transition_probability(m_P, verbose = TRUE)
       # check if checks if each of the rows of the transition probabilities matrix sum to one
-      check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
+      ## NOTE: to make this function work n_states = n_i in a Microsimulation
+      check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE) ##
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P)                  
       # calculate costs per individual during cycle t + 1

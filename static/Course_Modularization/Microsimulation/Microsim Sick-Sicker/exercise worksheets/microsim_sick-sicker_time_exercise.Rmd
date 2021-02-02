@@ -48,7 +48,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -77,7 +77,7 @@ All model parameter values and `R` variable names are presented in Table 1.
 
 ## Tasks
 
-There are quite some steps you need to take in order to create a microsimulation reflecting this case. Start by download all the materials as a folder or collect all the files in one folder. If there is an R projects in the folder, a file ending on `.Rproj`, double click on this file to open an Rstudio environoment. Working from a Rproject avoid struggles with working directories. 
+There are quite some steps you need to take in order to create a microsimulation reflecting this case. Start by download all the materials as a folder or collect all the files in one folder. If there is an R projects in the folder, a file ending on `.Rproj`, double click on this file to open an Rstudio environment. Working from a Rproject avoid struggles with working directories. 
 
 1. Open the file `microsim_Sick-Sicker_time_template.Rmd`. This is a template to load the data for the time dependency and the necessary data. Start making the functions `Probs()`, `Costs()` and `Effs()`.
 
@@ -127,7 +127,7 @@ There are quite some steps you need to take in order to create a microsimulation
 | - Treatment effect modifier at baseline     | `v_x` | Uniform(0.95, 1.05) |
 
 
-```{r, echo = F, warning = F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics("../figures/sick_sicker_diagram_time.png")

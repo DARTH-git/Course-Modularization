@@ -45,9 +45,7 @@ Microsimulation modeling for health decision sciences using R: A tutorial.
 Med Decis Making. 2018;38(3):400–22. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+- Krijkamp EM, Alarid-Escudero F, Enns EA, et al. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Mak. https://doi.org/10.1177/0272989X19893973
 
 \newpage
 
@@ -84,15 +82,19 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```{r}
 set.seed(1)  # set the seed  
 
-# Model structure 
-n_t   <- 30                       # time horizon, 30 cycles
-n_i   <- 100000                   # number of simulated individuals
-v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states <- length(v_n)           # the number of health states
-d_r   <- 0.03                     # discount rate of 3% per cycle
-v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
+# Strategy names
 v_names_str <- c("no treatment", "treatment")  # strategy names
-n_str <- length(v_names_str)      # number of strategies
+n_str        <- length(v_names_str)            # number of strategies
+
+# Model structure
+v_n      <- c("H", "S1", "S2", "D")  # the model states names
+n_states <- length(v_n)              # the number of health states
+
+# Model parameters 
+n_t      <- 30                       # time horizon, 30 cycles
+n_i      <- 100000                   # number of simulated individuals
+d_r      <- 0.03                     # discount rate of 3% per cycle
+v_dwe    <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t)) # discount weight 
 
 # Event probabilities (per cycle)
 # Annual transition probabilities
@@ -103,9 +105,12 @@ p_S1S2  <- 0.105  # probability of becoming sicker when sick
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv("mortProb_age.csv")
+# NOTE: if you don't have a data folder but the files in the same folder as your markdown you need 
+# read.csv("mortProb_age.csv") and 
+# read.csv("MyPopulation-AgeDistribution.csv") 
+p_mort   <- read.csv("../data/mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
+dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
@@ -132,6 +137,8 @@ u_trt   <- 0.95    # utility when sick and being treated
 
 ```{r}
 v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline 
+
+# sample from age distribution an initial age for every individual
 # your turn
 
 ```
@@ -139,6 +146,9 @@ v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at bas
 ## 04.2 Dynamic characteristics 
 
 ```{r}
+# Specify the initial health state of the individuals 
+# everyone begins in the healthy state (in this example)
+
 # your turn
      
 ```
@@ -153,18 +163,17 @@ v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at bas
 
 # 05 Define Simulation Functions
 
-*HINT*: There is no need to make two functions for each strategy. We recommend to make one `Probs()`, one `Costs()` and one `Effs()` function and have a function argument `Trt` which you "switch" on and off (i.e TRUE/FALSE - or 0/1) of the strategy of interest. 
+*HINT*: There is no need to make two functions for each strategy. We recommend to make one `Probs()`, one `Costs()` and one `Effs()` function and have a function argument `Trt` which you "switch" on and off (i.e TRUE/FALSE - or 0/1) for the strategy of interest. 
 
 ## 05.1 Probability function
 
-The function that updates the transition probabilities of every cycle is shown below.
-
-Please make sure you  incorporate the time dependency
+The function that updates the transition probabilities.
+Please make sure you incorporate the time dependency
 
 ```{r}
 # your turn
-# HINT: In this function you have to incorporate age specific mortality and incorporate 
-# the change in probability of the years spend in the sick state
+# HINT: In this function you have to incorporate age specific mortality 
+# and incorporate the change in probability of the years spend in the sick state
 
 ```
 
@@ -193,7 +202,7 @@ You need to develop the main function `MicroSim()` that runs the microsimulation
 
 ```{r}
 # your turn
-# HINT: Build your own `MicroSim` function here that calls the Effs() and Costs() functions and samples the new state for the n_i individuals 
+# HINT: Build your own `MicroSim` function here that calls the Probs(),  Effs() and Costs() functions and samples the new state for the n_i individuals 
 ```
 
 # 06 Run Microsimulation
@@ -208,7 +217,7 @@ You have to run the `Microsim()` function twice. Once for the treatment strategy
 
 ```{r}
 # your turn
-# HINT: use pre-defined functions in "Functions.R" or check the example code
+# HINT: use functions from the example code
 ```
 
 # 08 Cost Effectiveness Analysis

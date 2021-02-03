@@ -312,7 +312,7 @@ model}\label{create-and-run-decision-tree-model}}
 \NormalTok{                   c\_VE)                }\CommentTok{\# OVE, no complications}
   
 \NormalTok{v\_cost\_biopsy }\OtherTok{\textless{}{-}}\NormalTok{ c\_biopsy           }\SpecialCharTok{+}   \CommentTok{\# cost of biopsy procedure}
-                 \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{                ,   }\CommentTok{\# cost of death (zero)}
+                 \FunctionTok{c}\NormalTok{(c\_death\_biopsy   ,   }\CommentTok{\# cost of death (zero)}
 \NormalTok{                   c\_VE\_comp }\SpecialCharTok{+}\NormalTok{ c\_tx ,   }\CommentTok{\# no biopsy comp., HVE w/tx, complications }
 \NormalTok{                   c\_VE }\SpecialCharTok{+}\NormalTok{ c\_tx      ,   }\CommentTok{\# no biopsy comp., HVE w/tx, no complications}
 \NormalTok{                   c\_VE\_comp        ,   }\CommentTok{\# no biopsy comp., OVE, complications}
@@ -386,7 +386,7 @@ where the R markdown document is located.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "F4412A28"
+## [1] "9A1AAC92"
 \end{verbatim}
 
 Extract probability weights and outcomes of the decision tree.

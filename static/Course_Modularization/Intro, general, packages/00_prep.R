@@ -15,7 +15,7 @@ p_load("devtools", "dplyr", "scales", "ellipse",
        "psych", "scatterplot3d", "grid", "mgcv", 
        "gridExtra", "gdata", "triangle", "flexsurv", "msm", 
        "survminer", "gems", "jsonlite", "rstudioapi", "tidyverse",
-       "shiny") 
+       "shiny", "tidyr", "purrr", "gems", "survHE", "mstate", "abind", "diagram") 
 
 # Enter an empty line to skip updates when prompted
 install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org") 
@@ -24,14 +24,13 @@ install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.
 p_load("ggrepel")
 
 # load (install if required) packages from GitHub
-install_github("DARTH-git/dampack", force = TRUE) # (Un)comment if there is a newer version
+# install_github("DARTH-git/dampack", force = TRUE) # (Un)comment if there is a newer version
 p_load_gh("DARTH-git/dampack", dependencies = F)
 
-install_github("DARTH-git/darthtools", force = TRUE) # (Un)comment if there is a newer version
+# install_github("DARTH-git/darthtools", force = TRUE) # (Un)comment if there is a newer version#
 p_load_gh("DARTH-git/darthtools")
 
-install_github("DARTH-git/DARTH-git/OpenTree", force = TRUE) # (Un)comment if there is a newer version
-
+# install_github("DARTH-git/DARTH-git/OpenTree", force = TRUE) # (Un)comment if there is a newer version
 p_load_gh("DARTH-git/OpenTree")
 
 

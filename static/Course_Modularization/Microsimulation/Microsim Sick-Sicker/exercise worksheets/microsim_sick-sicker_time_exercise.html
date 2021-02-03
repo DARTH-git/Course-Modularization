@@ -1,0 +1,249 @@
+---
+title: "Microsimulation Modeling in R"
+author: "The DARTH workgroup"
+subtitle: Exercises – Microsimulation models 
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6,7)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Mak. 2020;40(2):242-248. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div id="exercise-i-a-microsimulation-model-the-sick-sicker-model" class="section level1">
+<h1>Exercise I: A Microsimulation model – The Sick-Sicker model</h1>
+<p>In this exercise, we will model a hypothetical disease using an individual-based state-transition model, or what we often call a microsimulation model, called the “Sick-Sicker” model. This model has four health states (Figure 1): Healthy (H); two disease states, Sick (S1) and Sicker (S2); and Dead (D).</p>
+<p>Advantages of using a microsimulation implementation is the ability to incorporate variation in the baseline characteristics for every individual and to keep track of state-residence. To illustrate this, we assume that individual mortality rates depend on baseline characteristics as well as time spend in the sick health state.</p>
+<p>After you have successfully implemented the Sick-Sicker model, you can expand the model to include the possibility of treatment and evaluate whether it is cost-effective given a willingness to pay of $20,000. This hypothetical treatment improves the quality of life for those in the Sick (S1) state but not for those in the Sicker (S2) state. However, it is not possible to distinguish between individuals in the Sick state from those in the Sicker state, so under a treatment strategy, individuals in both sick states must be treated (and incur the costs of treatment), while only those in the sick state benefit from it.</p>
+<p>In summary, the model assumes the following:</p>
+<ol style="list-style-type: lower-roman">
+<li><p>The mortality rates depend on age</p></li>
+<li><p>Probability of dying when sick depends on state-residence in the Sick (S1) state.</p></li>
+<li><p>The improvement on quality of life by the treatment varies across individuals through a characteristic that acts as a treatment effect modifier.</p></li>
+</ol>
+<p>All model parameter values and <code>R</code> variable names are presented in Table 1.</p>
+<div id="tasks" class="section level2">
+<h2>Tasks</h2>
+<p>There are quite some steps you need to take in order to create a microsimulation reflecting this case. Start by download all the materials as a folder or collect all the files in one folder. If there is an R projects in the folder, a file ending on <code>.Rproj</code>, double click on this file to open an Rstudio environment. Working from a Rproject avoid struggles with working directories.</p>
+<ol style="list-style-type: decimal">
+<li><p>Open the file <code>microsim_Sick-Sicker_time_template.Rmd</code>. This is a template to load the data for the time dependency and the necessary data. Start making the functions <code>Probs()</code>, <code>Costs()</code> and <code>Effs()</code>.</p></li>
+<li><p>Build your microsimulation model (function). Then, simulate a population of 100,000 individuals and plot the resulting distributions of remaining lifetime costs and QALYs. Please be reminded that the probabilities of transitioning from one state to the other (except to the Dead state) are conditional on staying alive.</p></li>
+<li><p>Expand your microsimulation model to include the possibility of the hypothetical treatment for the disease in the Sick-Sicker model (and its impact on costs and quality of life). Remember treatment is given to both individuals in Sick and Sicker but only improved the quality of life of those in Sick. Create a new variable within the model function that can be used to turn treatment on and off in the model.</p></li>
+<li><p>Simulate a population of 100,000 individuals under a treatment strategy where anyone who is sick (in the Sick or Sicker states) receives treatment. Plot the resulting distributions of remaining lifetime costs and QALYs.</p></li>
+<li><p>Calculate the incremental cost-effectiveness ratio (ICER) of treatment compared to no treatment (see code template).</p></li>
+</ol>
+<div style="page-break-after: always;"></div>
+<p><strong>Table 1: Input parameters for the time dependent Sick-Sicker Microsimulation </strong></p>
+<table>
+<colgroup>
+<col width="56%" />
+<col width="20%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Parameter</strong></th>
+<th align="left"><strong>R name</strong></th>
+<th align="center"><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Time horizon</td>
+<td align="left"><code>n_t</code></td>
+<td align="center">30 years</td>
+</tr>
+<tr class="even">
+<td align="left">Cycle length</td>
+<td align="left"></td>
+<td align="center">1 year</td>
+</tr>
+<tr class="odd">
+<td align="left">Names of simulated individuals</td>
+<td align="left"><code>n_i</code></td>
+<td align="center">1000</td>
+</tr>
+<tr class="even">
+<td align="left">Names of health states</td>
+<td align="left"><code>v_n</code></td>
+<td align="center">H, S1, S2, D</td>
+</tr>
+<tr class="odd">
+<td align="left">Annual discount rate (costs/QALYs)</td>
+<td align="left"><code>d_e</code> <code>d_c</code></td>
+<td align="center">3%</td>
+</tr>
+<tr class="even">
+<td align="left">Population characteristics</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Age distribution</td>
+<td align="left">–</td>
+<td align="center">Range:25-55 distributed as in <code>MyPopulation-AgeDistribution.csv</code></td>
+</tr>
+<tr class="even">
+<td align="left">Annual transition probabilities conditional on survival</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Disease onset (H to S1)</td>
+<td align="left"><code>p_HS1</code></td>
+<td align="center">0.15</td>
+</tr>
+<tr class="even">
+<td align="left">- Recovery (S1 to H)</td>
+<td align="left"><code>p_S1H</code></td>
+<td align="center">0.5</td>
+</tr>
+<tr class="odd">
+<td align="left">- Disease progression (S1 to S2)</td>
+<td align="left"><code>p_S1S2</code></td>
+<td align="center">0.105</td>
+</tr>
+<tr class="even">
+<td align="left">Annual mortality</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- All-cause mortality (H to D)</td>
+<td align="left"><code>p_HD</code></td>
+<td align="center">Human Mortality Database (<code>mortProb_age.csv</code>): age dependent from 2015</td>
+</tr>
+<tr class="even">
+<td align="left">- Probability of death is S1 (S1 to D)</td>
+<td align="left"><code>p_S1D</code></td>
+<td align="center">*(in template)</td>
+</tr>
+<tr class="odd">
+<td align="left">- Probability of death in S2 (S2 to D)</td>
+<td align="left"><code>p_S2D</code></td>
+<td align="center">0.048</td>
+</tr>
+<tr class="even">
+<td align="left">Annual costs</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Healthy individuals</td>
+<td align="left"><code>c_H</code></td>
+<td align="center">$2,000</td>
+</tr>
+<tr class="even">
+<td align="left">- Sick individuals in S1</td>
+<td align="left"><code>c_S1</code></td>
+<td align="center">$4,000</td>
+</tr>
+<tr class="odd">
+<td align="left">- Sick individuals in S2</td>
+<td align="left"><code>c_S2</code></td>
+<td align="center">$15,000</td>
+</tr>
+<tr class="even">
+<td align="left">- Dead individuals</td>
+<td align="left"><code>c_D</code></td>
+<td align="center">$0</td>
+</tr>
+<tr class="odd">
+<td align="left">- Additional costs of sick individuals treated in S1 or S2</td>
+<td align="left"><code>c_trt</code></td>
+<td align="center">$12,000</td>
+</tr>
+<tr class="even">
+<td align="left">Utility weights</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Healthy individuals</td>
+<td align="left"><code>u_H</code></td>
+<td align="center">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">- Sick individuals in S1</td>
+<td align="left"><code>u_S1</code></td>
+<td align="center">0.75</td>
+</tr>
+<tr class="odd">
+<td align="left">- Sick individuals in S2</td>
+<td align="left"><code>u_S2</code></td>
+<td align="center">0.50</td>
+</tr>
+<tr class="even">
+<td align="left">- Dead individuals</td>
+<td align="left"><code>u_D</code></td>
+<td align="center">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Intervention effect</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">- Utility for treated individuals in S1</td>
+<td align="left"><code>u_trt</code></td>
+<td align="center">0.95</td>
+</tr>
+<tr class="odd">
+<td align="left">Time varying extension of Sick-Sicker model</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">- Treatment effect modifier at baseline</td>
+<td align="left"><code>v_x</code></td>
+<td align="center">Uniform(0.95, 1.05)</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="../figures/sick_sicker_diagram_time.png" alt="Schematic representation of the Sick-Sicker model" width="100%" />
+<p class="caption">
+Figure 1: Schematic representation of the Sick-Sicker model
+</p>
+</div>
+</div>
+</div>

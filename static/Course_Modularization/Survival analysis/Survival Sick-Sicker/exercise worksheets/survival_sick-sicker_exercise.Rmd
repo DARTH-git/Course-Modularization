@@ -65,8 +65,8 @@ To model this disease, we will rely on a microsimulation model, called the Sick-
 
 You were given access to individual-level data of patients with the hypothetical disease. From the data you are asked to inform the transition probabilities for the transitions from S1 to H, from S1 to S2 and from S1 to D directly from the data through the use of parametric survival functions. A snapshot of the data is presented below:
 
-```{r}
-data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
+```{r,echo=FALSE}
+data_long <- read.csv("data_long_Sicker.csv", row.names = 1)
 head(data_long)
 ```
 
@@ -88,7 +88,7 @@ head(data_long)
 
 **OPTIONAL**
 
-1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation. HINT: Depending on the distribution you choose you will need to track more time-in-state variables.
+1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation. HINT: Depending on the distribution you choose for the survival model you will need to track more time-in-state variables.
 
 2.	Run the microsimulation model and draw output from it.
 

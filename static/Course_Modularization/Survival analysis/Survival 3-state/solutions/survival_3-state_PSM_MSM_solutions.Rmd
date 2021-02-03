@@ -46,7 +46,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Mak. 2020;40(2):242-248. doi:10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -86,7 +86,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 
 ```{r}
 v_n       <- c("Healthy", "Sick", "Dead")  # state names
-n_states       <- length(v_n)                   # No of states 
+n_states  <- length(v_n)                   # No of states 
 n_i       <- 2000                          # number of simulations 
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
@@ -94,26 +94,26 @@ times     <- seq(0, n_t, c_l)              # the cycles in years
 set.seed(2020)                             # set the seed
 ```
 
-Create a transition probability matrix  with all transitions indicated and numbered.
+Create a transition probability matrix with all transitions indicated and numbered.
 
 ```{r}
-m_P_diag <- matrix(NA, n_states, n_states, dimnames = list(v_n,v_n))
+m_P_diag <- matrix(NA, n_states, n_states, dimnames = list(v_n, v_n))
 m_P_diag["Healthy", "Sick"]  <- 1
 m_P_diag["Healthy", "Dead"]  <- 2
 m_P_diag["Sick"   , "Dead"]  <- 3
 
 layout.fig <- c(2,1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,  
-        latex = T, arr.type = "curved", relsize = 0.85, box.prop=0.8, 
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
         cex = 0.1, box.cex = 0.7, lwd = 1)
 ```
-The following chink generates a hypothetical dataset from a Randomized Controlled trial. The two outcomes are Sickness(or Progression) and Death. We generate four data structures:
+The following chink generates a hypothetical dataset from a Randomized Controlled trial (RCT). The two outcomes are Sickness (or Progression) and Death. We generate four data structures:
 
 -true_data includes the true trajectory of the patients in the RCT, assuming that we have followed them until their end of life
 
 -sim_data includes the observed data within the RCT period. Patients could be censored anytime during the trial or at 5 years of follow-up (max follow-up in the trial)
 
--status includes information regarding whether the event occured or not
+-status includes information regarding whether the event occurred or not
 
 - OS_PFS_data include the data as they would typically be presented in the results of an RCT (a PFS and OS outcome with the corresponding event (0, 1) information)
 ```{r}
@@ -125,8 +125,7 @@ sim_data    <- generate$sim_data        # stores the censored data
 status      <- generate$status          # stores the censoring status
 OS_PFS_data <- generate$OS_PFS_data     # store the OS / PFS structured data
 
- 
-
+# Show the data structure
 head(true_data)
 head(sim_data)
 head(status)
@@ -170,10 +169,11 @@ fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_P
 plot(fit_weib)
 ```
 
- fit all parametric models to the data and extract the AIC/BIC. 
- Select the one with the most appropriate fit
- Repeat for PFS and OS
- As a reminder , 	AIC stands for Akaike information criterion and is a measure of goodness of fit. AIC is a method that helps us understand which model fits well on teh observed portion of the data. This might not necessarily mean that this model is the most appropriate to use when predicting  future values. We use AIC comparativel and so the best model is the one that has the lowest AIC among all the other models. So A lower AIC value indicates a better fit.
+- Fit all parametric models to the data and extract the AIC/BIC. 
+- Select the one with the most appropriate fit
+- Repeat for PFS and OS
+
+As a reminder, AIC stands for Akaike information criterion and is a measure of goodness of fit. AIC is a method that helps us understand which model fits well on the observed portion of the data. This might not necessarily mean that this model is the most appropriate to use when predicting future values. We use AIC comparative and so the best model is the one that has the lowest AIC among all the other models. So A lower AIC value indicates a better fit.
 
 
 
@@ -314,7 +314,7 @@ Probs <- function(M_t, v_Ts, t) {
 
 ## 04.3.1 Run Microsimulation
 
-```{r, results="hide"}
+```{r, results = "hide"}
 MicroSim <- function(n_i,  seed = 1) {
   # Arguments:  
   # n_i:     number of individuals
@@ -333,7 +333,7 @@ MicroSim <- function(n_i,  seed = 1) {
   v_Ts     <- v_Ts_init          # initialize time since illness onset for individual i
   
   # open a loop for time running cycles 1 to n_t 
-  for (t in 1:(length(times)-1)) {
+  for (t in 1:(length(times) - 1)) {
     # calculate the transition probabilities for the cycle based on health state t
     m_p <- Probs(m_M[, t], v_Ts, t)  
     # sample the current health state and store that state in matrix m_M 
@@ -370,18 +370,17 @@ head(m_M_Micro)
 
 # 05 Compare all methods 
 
-```{r}
+```{r, }
 # Calculate trace for the real data
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
 
 # visually compare all methods
-matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
-        main = "Trace comparisons",xlim=c(0,25))
-matlines(times, m_M_DES,   col = 2, lty = 1)
-matlines(times, m_M_Micro, col = 3, lty = 1)
-# matlines(times, m_M_PSM$trace,   col = 4, lty = 1)
-legend("right", c("True Data", "DES","Microsim",  "PSM"),
-       col = 1:3, lty = rep(1,3), bty= "n")
+matplot(times, m_M_data, type = 'l', lty = 1, col = 1, ylab = "proportion of cohort", xlab = "Time", main = "Trace comparisons", xlim = c(0, 25))
+#matlines(times, m_M_DES,   col = 2, lty = 1)
+matlines(times, m_M_Micro, col = 2, lty = 1)
+matlines(times, m_M_PSM$trace, col = 3, lty = 1)
+legend("right", c("True Data", "Microsim",  "PSM"),
+       col = 1:3, lty = rep(1, 3), bty = "n")
 ```
 
 

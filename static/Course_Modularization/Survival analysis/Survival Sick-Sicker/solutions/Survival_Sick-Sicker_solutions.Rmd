@@ -102,6 +102,7 @@ p_HS1    <- 0.15                   # probability of becoming sick when healthy
 
 # Annual probabilities of death
 # load age dependent probability
+# or use "../data/" if you have a datafolder
 p_mort   <- read.csv("mortProb_age.csv")                
 # load age distribution
 dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 

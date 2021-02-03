@@ -3,9 +3,9 @@ title: "Cost-Effectiveness and Decision Modeling in R"
 author: "The DARTH workgroup"
 subtitle: Exercises – Survival analysis in Decision modeling   
 output:
-  html_document: default
-  word_document: default
   pdf_document: default
+  word_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -72,7 +72,7 @@ head(data_long)
 
 **Part 1**
 
-1. Use the `R` script `Surv_Sick_Sicker_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
+1. Use the `R` script `Survival_Sick_Sicker_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
 
 2. Load the individual level data in long form from the `data_long_Sicker.csv` file.
 
@@ -123,7 +123,7 @@ head(data_long)
 | - Treatment effect modifier at baseline     | `v_x` | Uniform(0.95, 1.05) |
 
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+```{r, echo=F, warning =F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_diagram.png"))

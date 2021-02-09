@@ -56,7 +56,7 @@ institutions. These materials may be used, reproduced, modified, distributed
 and adapted with proper attribution.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
 rm(list = ls())     # clear memory (removes all the variables from the workspace)
 options(scipen=999) # disable scientific notation
 ```
@@ -165,7 +165,7 @@ fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = t
 fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
                     extrapolate = F)
 
-best.fit_S1H  <- fit_S1H$ models[["Spline"]]
+best.fit_S1H  <- fit_S1H$ models[["Royston-Parmar"]]
 best.fit_S1S2 <- fit_S1S2$models[["log-Logistic"]]
 best.fit_S1D  <- fit_S1D$ models[["Exponential"]]
 best.fit_S2D  <- fit_S2D$ models[["Weibull (AFT)"]]
@@ -354,12 +354,12 @@ outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE, seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_no_trt$m_M)  # health state trace
+plot_trace_microsim(outcomes_no_trt$m_M, v_n = v_n)  # health state trace
 
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_trt$m_M)     # health state trace
+plot_trace_microsim(outcomes_trt$m_M, v_n = v_n)     # health state trace
 ```
 
 # 08 Cost Effectiveness Analysis

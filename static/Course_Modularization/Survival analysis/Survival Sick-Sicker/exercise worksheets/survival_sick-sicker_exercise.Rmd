@@ -46,9 +46,7 @@ Microsimulation modeling for health decision sciences using R: A tutorial.
 Med Decis Making. 2018;38(3):400–22. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Mak. 2020;40(2):242-248. doi:10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -65,8 +63,8 @@ To model this disease, we will rely on a microsimulation model, called the Sick-
 
 You were given access to individual-level data of patients with the hypothetical disease. From the data you are asked to inform the transition probabilities for the transitions from S1 to H, from S1 to S2 and from S1 to D directly from the data through the use of parametric survival functions. A snapshot of the data is presented below:
 
-```{r}
-data_long <- read.csv(here::here("data", "data_long_Sicker.csv"), row.names = 1)
+```{r,echo=FALSE}
+data_long <- read.csv("data_long_Sicker.csv")
 head(data_long)
 ```
 
@@ -74,7 +72,7 @@ head(data_long)
 
 **Part 1**
 
-1. Use the `R` script `Surv_Sick_Sicker_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
+1. Use the `R` script `Survival_Sick_Sicker_template.R` as a starting point to code the survival analysis solution to the Sick-Sicker model.
 
 2. Load the individual level data in long form from the `data_long_Sicker.csv` file.
 
@@ -88,7 +86,7 @@ head(data_long)
 
 **OPTIONAL**
 
-1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation. HINT: Depending on the distribution you choose you will need to track more time-in-state variables.
+1.	Incorporate the transition probabilities extracted from the survival analysis model to the Sick Sicker time microsimulation. HINT: Depending on the distribution you choose for the survival model you will need to track more time-in-state variables.
 
 2.	Run the microsimulation model and draw output from it.
 
@@ -125,7 +123,7 @@ head(data_long)
 | - Treatment effect modifier at baseline     | `v_x` | Uniform(0.95, 1.05) |
 
 
-```{r, echo=F, warning=F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
+```{r, echo=F, warning =F, message=F, out.width='100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align='center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
 include_graphics(here::here("figures", "sick_sicker_diagram.png"))

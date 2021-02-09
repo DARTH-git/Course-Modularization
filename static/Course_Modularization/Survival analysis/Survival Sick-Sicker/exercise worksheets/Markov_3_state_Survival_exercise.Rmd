@@ -48,18 +48,18 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
 trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the collaborating 
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
 
 # Exercise: A 3-state Markov model
 
-You were given access to individual-level data of patients with the hypothetical disease. Individuals are Sick(S1) and can transition to a Sicker state (S2) or die (D). From the data you are asked to inform the transition probabilities for the transitions from  S1 to S2 and from S1 to D directly from the data through the use of parametric survival functions. A snapshot of the data is presented below:
+You were given access to individual-level data of patients with the hypothetical disease. Individuals are Sick (S1) and can transition to a Sicker state (S2) or die (D). From the data you are asked to inform the transition probabilities for the transitions from  S1 to S2 and from S1 to D directly from the data through the use of parametric survival functions. A snapshot of the data is presented below:
 
 ```{r}
 data_long <- read.csv("data_long_Sicker.csv")
@@ -82,7 +82,7 @@ head(data_long)
 
 **OPTIONAL**
 
-1. Incorporate the transition probabilities extracted from the survival analysis model to a Sick Sicker time-dependent cohort state transition model.
+1. Incorporate the transition probabilities extracted from the survival analysis model to a Sick-Sicker time-dependent cohort state transition model.
 
 2. Run the model and draw output from it.
 

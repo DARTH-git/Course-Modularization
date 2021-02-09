@@ -46,7 +46,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1
+Med Decis Mak. 2020;40(2):242-248. doi:10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -70,7 +70,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind", "DES")    
+p_load( "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind", "DES")    
  #install_github("DARTH-git/dampack", force = TRUE) #Uncomment if there is a newer version
  #install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
@@ -85,8 +85,8 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-v_n       <- c("healthy", "sick", "dead")  # state names
-n_s       <- length(v_n)                   # No of states 
+v_n       <- c("Healthy", "Sick", "Dead")  # state names
+n_states  <- length(v_n)                   # No of states 
 n_i       <- 2000                          # number of simulations 
 c_l       <- 1 / 12                        # cycle length (a month)
 n_t       <- 30                            # number of years (20 years)
@@ -94,22 +94,28 @@ times     <- seq(0, n_t, c_l)              # the cycles in years
 set.seed(2020)                             # set the seed
 ```
 
-Create a transition probability matrix  with all transitions indicated and numbered.
+Create a transition probability matrix with all transitions indicated and numbered.
 
 ```{r}
-tmat <- matrix(NA, n_s, n_s, dimnames = list(v_n,v_n))
-tmat["healthy", "sick"]  <- 1
-tmat["healthy", "dead"]  <- 2
-tmat["sick"   , "dead"]  <- 3
+m_P_diag <- matrix(NA, n_states, n_states, dimnames = list(v_n, v_n))
+m_P_diag["Healthy", "Sick"]  <- 1
+m_P_diag["Healthy", "Dead"]  <- 2
+m_P_diag["Sick"   , "Dead"]  <- 3
 
 layout.fig <- c(2,1)
-plotmat(t(tmat), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,  
-        latex = T, arr.type = "curved", relsize = 0.85, box.prop=0.8, 
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,  
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
         cex = 0.1, box.cex = 0.7, lwd = 1)
 ```
+The following chink generates a hypothetical dataset from a Randomized Controlled trial (RCT). The two outcomes are Sickness (or Progression) and Death. We generate four data structures:
 
-Generate data.
+-true_data includes the true trajectory of the patients in the RCT, assuming that we have followed them until their end of life
 
+-sim_data includes the observed data within the RCT period. Patients could be censored anytime during the trial or at 5 years of follow-up (max follow-up in the trial)
+
+-status includes information regarding whether the event occurred or not
+
+- OS_PFS_data include the data as they would typically be presented in the results of an RCT (a PFS and OS outcome with the corresponding event (0, 1) information)
 ```{r}
 n_pat       <- 550                      # cohort size
 n_years     <- 30                       # number of years 
@@ -119,6 +125,7 @@ sim_data    <- generate$sim_data        # stores the censored data
 status      <- generate$status          # stores the censoring status
 OS_PFS_data <- generate$OS_PFS_data     # store the OS / PFS structured data
 
+# Show the data structure
 head(true_data)
 head(sim_data)
 head(status)
@@ -160,10 +167,17 @@ Fit parametric survival models.
 fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data,
                         dist = "weibull")
 plot(fit_weib)
+```
 
-# fit all parametric models to the data and extract the AIC/BIC. 
-# Select the one with the most appropriate fit
-# Repeat for PFS and OS
+- Fit all parametric models to the data and extract the AIC/BIC. 
+- Select the one with the most appropriate fit
+- Repeat for PFS and OS
+
+As a reminder, AIC stands for Akaike information criterion and is a measure of goodness of fit. AIC is a method that helps us understand which model fits well on the observed portion of the data. This might not necessarily mean that this model is the most appropriate to use when predicting future values. We use AIC comparative and so the best model is the one that has the lowest AIC among all the other models. So A lower AIC value indicates a better fit.
+
+
+
+```{r}
 fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
                    extrapolate = TRUE, times = times)
 fit_OS  <- fit.fun(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
@@ -186,7 +200,8 @@ m_M_PSM <- partsurv(pfs_survHE = fit_PFS,
                     os_survHE  = fit_OS,
                     choose_PFS = choose_PFS, 
                     choose_OS  = choose_OS,
-                    time = times)
+                    time = times,
+                    v_n = v_n)
 head(m_M_PSM$trace)
 ```
 
@@ -197,35 +212,35 @@ head(m_M_PSM$trace)
 ```{r}
 # The existing functions in R require the data in a long rather than a wide format
 # convert the data in a way that flexsurv understands using the mstate package
-data_long       <- msprep(time = sim_data, status = status, trans = tmat)
+data_long       <- msprep(time = sim_data, status = status, trans = m_P_diag)
 data_long$trans <- as.factor(data_long$trans) # convert trans to a factor
 
-data_long$from  <- case_when(data_long$from == 1 ~ "healthy",
-                             data_long$from == 2 ~ "sick",
-                             data_long$from == 3 ~ "dead")
+data_long$from  <- case_when(data_long$from == 1 ~ "Healthy",
+                             data_long$from == 2 ~ "Sick",
+                             data_long$from == 3 ~ "Dead")
 
-data_long$to    <- case_when(data_long$to == 1 ~ "healthy",
-                             data_long$to == 2 ~ "sick",
-                             data_long$to == 3 ~ "dead")
-
-# fit all parametric multistate models simultaneously to the data and extract the AIC/BIC
-# Select the one with the lowest AIC
-fits <- fit.mstate(time ="time", status = "status", trans, data = data_long,
-                   times = times, extrapolate = T)
-# Check AIC of each model to assess goodness-of-fit
-GoF_MSM1 <- data.frame(AIC = fits$AIC, BIC = fits$BIC)
-
-# Choose best-fitting model
-best.fit <- fits$Loglogistic 
+data_long$to    <- case_when(data_long$to == 1 ~ "Healthy",
+                             data_long$to == 2 ~ "Sick",
+                             data_long$to == 3 ~ "Dead")
+# 
+# # fit all parametric multistate models simultaneously to the data and extract the AIC/BIC
+# # Select the one with the lowest AIC
+# fits <- fit.mstate(time ="time", status = "status", trans, data = data_long,
+#                    times = times, extrapolate = T)
+# # Check AIC of each model to assess goodness-of-fit
+# GoF_MSM1 <- data.frame(AIC = fits$AIC, BIC = fits$BIC)
+# 
+# # Choose best-fitting model
+# best.fit <- fits$Loglogistic 
 ```
 
 - Construct a DES model out of the simultaneously fitted multistate model.
 
 ```{R}
 # Construct a DES model out of the simultaneously fitted multistate model
-DES_data <- sim.fmsm(best.fit, start = 1, t = n_years, trans = tmat, M = n_i)
-m_M_DES  <- trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat)
-head(m_M_DES)
+# DES_data <- sim.fmsm(best.fit, start = 1, t = n_years, trans = tmat, M = n_i)
+# m_M_DES  <- trace.DES(DES_data, n_i  = n_i , times = times, tmat = tmat)
+# head(m_M_DES)
 ```
 
 ## 04.3 MultiState modeling method 2
@@ -264,42 +279,42 @@ p_HS <- trans_prob(surv_prob(best.fit_HS))
 p_HD <- trans_prob(surv_prob(best.fit_HD))
 p_SD <- trans_prob(surv_prob(best.fit_SD))
 
-# everyone starts in the "healthy" state and therefore has not spent time in "sick"
-v_M_init  <- rep("healthy", times = n_i)   
-v_Ts_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model 
+# everyone starts in the "Healthy" state and therefore has not spent time in "Sick"
+v_M_init  <- rep("Healthy", times = n_i)   
+v_Ts_init <- rep(0, n_i)  # a vector with the time of being Sick at the start of the model 
 
 # function that generates the transition probabilities per cycle
 Probs <- function(M_t, v_Ts, t) { 
   # Arguments:
     # M_t: health state occupied by at cycle t (character variable)
-    # v_Ts: vector with the duration of being sick
+    # v_Ts: vector with the duration of being Sick
     # t:     current cycle 
   # Returns: 
     # transition probabilities for that cycle
   
   # create matrix of state transition probabilities
-  m_p_t           <- matrix(0, nrow = n_s, ncol = n_i) 
+  m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
   # give the state names to the rows
   rownames(m_p_t) <-  v_n                              
   
   # update m_p_t with the appropriate probabilities   
-  # transition probabilities when healthy 
-  m_p_t[, M_t == "healthy"] <- rbind( (1 - p_HD[t]) * (1 - p_HS[t]),
+  # transition probabilities when Healthy 
+  m_p_t[, M_t == "Healthy"] <- rbind( (1 - p_HD[t]) * (1 - p_HS[t]),
                                       (1 - p_HD[t]) *      p_HS[t],
                                                            p_HD[t])    
-  # transition probabilities when sick 
-  m_p_t[, M_t == "sick"]    <- rbind(0,
+  # transition probabilities when Sick 
+  m_p_t[, M_t == "Sick"]    <- rbind(0,
                                      1 - p_SD[v_Ts],
                                          p_SD[v_Ts])  
-  # transition probabilities when dead     
-  m_p_t[, M_t == "dead"]    <- rbind(0, 0, 1)                            
+  # transition probabilities when Dead     
+  m_p_t[, M_t == "Dead"]    <- rbind(0, 0, 1)                            
   return(t(m_p_t))
 }       
 ```
 
 ## 04.3.1 Run Microsimulation
 
-```{r, results="hide"}
+```{r, results = "hide"}
 MicroSim <- function(n_i,  seed = 1) {
   # Arguments:  
   # n_i:     number of individuals
@@ -318,14 +333,14 @@ MicroSim <- function(n_i,  seed = 1) {
   v_Ts     <- v_Ts_init          # initialize time since illness onset for individual i
   
   # open a loop for time running cycles 1 to n_t 
-  for (t in 1:(length(times)-1)) {
+  for (t in 1:(length(times) - 1)) {
     # calculate the transition probabilities for the cycle based on health state t
     m_p <- Probs(m_M[, t], v_Ts, t)  
     # sample the current health state and store that state in matrix m_M 
     m_M[, t + 1]  <- samplev(m_p) 
     
     # update time since illness onset for t + 1 
-    v_Ts <- ifelse(m_M[, t + 1] == "sick", v_Ts + 1, 0) 
+    v_Ts <- ifelse(m_M[, t + 1] == "Sick", v_Ts + 1, 0) 
     
     # Display simulation progress
     if(t %in% seq(1,(length(times)),10)) { # display progress every 10%
@@ -355,18 +370,17 @@ head(m_M_Micro)
 
 # 05 Compare all methods 
 
-```{r}
+```{r, }
 # Calculate trace for the real data
 m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilities
 
 # visually compare all methods
-matplot(times,m_M_data, type='l', lty = 1, col = 1, ylab= "proportion of cohort", xlab = "Time",
-        main = "Trace comparisons",xlim=c(0,25))
-matlines(times, m_M_DES,   col = 2, lty = 1)
-matlines(times, m_M_Micro, col = 3, lty = 1)
-matlines(times, m_M_PSM$trace,   col = 4, lty = 1)
-legend("right", c("True Data", "DES","Microsim",  "PSM"),
-       col = 1:4, lty = rep(1,4), bty= "n")
+matplot(times, m_M_data, type = 'l', lty = 1, col = 1, ylab = "proportion of cohort", xlab = "Time", main = "Trace comparisons", xlim = c(0, 25))
+#matlines(times, m_M_DES,   col = 2, lty = 1)
+matlines(times, m_M_Micro, col = 2, lty = 1)
+matlines(times, m_M_PSM$trace, col = 3, lty = 1)
+legend("right", c("True Data", "Microsim",  "PSM"),
+       col = 1:3, lty = rep(1, 3), bty = "n")
 ```
 
 

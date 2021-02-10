@@ -18,14 +18,14 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                                   nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                   # understand Cycle 0)
                                   ncol = n_states, 
-                                  dimnames = list(0:n_t, v_n))
+                                  dimnames = list(0:n_t, v_names_states))
     
     m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
     
     # create the transition probability matrices
     m_P_SoC  <- m_P_trt <- matrix(0,
                                   nrow = n_states, ncol = n_states,
-                                  dimnames = list(v_n, v_n))  # name the columns and rows of the matrix 
+                                  dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the matrix 
 
     # For Standard of Care 
     # from Healthy
@@ -50,8 +50,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     check_transition_probability(m_P_SoC, verbose = TRUE)
     check_transition_probability(m_P_trt, verbose = TRUE)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P_SoC, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-    check_sum_of_transition_array(m_P_trt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P_SoC, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P_trt, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
 
     ############# PROCESS ###########################################
     

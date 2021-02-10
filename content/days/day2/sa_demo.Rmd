@@ -1,0 +1,16 @@
+---
+title: Sensitivity Analysis - Demo
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: SA demo
+menu:
+  day2:
+    weight: 5
+---
+
+## Demo (SA: 3-state Markov model)
+
+[Download 3-state Markov model function](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.Rmd)
+
+[Download demo](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)

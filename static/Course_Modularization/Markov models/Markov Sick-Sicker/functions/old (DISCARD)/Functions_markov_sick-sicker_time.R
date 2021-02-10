@@ -19,95 +19,75 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     p_S2D   = 1 - exp(-r_S2D)          # probability to die in sicker
     
     ########################################## INITIALIZATION ##########################################
-    ### create the markov trace matrix M capturing the proportion of the cohort in each state at each cycle
+    # create the markov trace matrix M capturing the proportion of the cohort in each state at each cycle
     m_M_no_trt <- m_M_trt <- matrix(NA, 
-                                    nrow = n_t + 1, ncol = n_s_td, # Update!
-                                    dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n_td)) # Update!
-    
-    head(m_M_no_trt) # show first 6 rows of the matrix 
+                                    nrow = n_t + 1, ncol = n_s,
+                                    dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
     
     # The cohort starts as healthy
-    m_M_no_trt[1, ] <- m_M_trt[1, ] <- c(1, rep(0, tunnel_size), 0, 0) # initialize first cycle of Markov trace accounting for the tunnels
+    m_M_no_trt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
     
-    ### create transition probability array for NO treatment
-    a_P_no_trt <- array(0,                                          # Create 3-D array
-                       dim = c(n_s_td, n_s_td, n_t),
-                       dimnames = list(v_n_td, v_n_td, 0:(n_t-1)))  # name dimensions of the transition probability array
+    #### Transition probability ARRAY ####
+    # create transition probability array for NO treatment
+    a_P_no_trt <- array(0,                                   # Create 3-D array
+                       dim      = c(n_s, n_s, n_t),
+                       dimnames = list(v_names_states, v_names_states, 0:(n_t-1))) # name dimensions of the transition probability array
     
     ### fill in the transition probability array
     # From Healthy
-    a_P_no_trt["H", "H", ]            <- 1 - (p_HS1 + p_HD)
-    a_P_no_trt["H", Sick_tunnel[1], ] <- p_HS1
-    a_P_no_trt["H", "D", ]            <- p_HD
-    
+    a_P_no_trt["H", "H", ]   <- 1 - (p_HS1 + p_HD)
+    a_P_no_trt["H", "S1", ]  <- p_HS1
+    a_P_no_trt["H", "D", ]   <- p_HD
     # From Sick
-    for(i in 1:(tunnel_size - 1)){
-      a_P_no_trt[Sick_tunnel[i], "H", ]  <- p_S1H
-      a_P_no_trt[Sick_tunnel[i], Sick_tunnel[i + 1], ] <- 1 - (p_S1H + p_S1S2[i] + p_S1D)
-      a_P_no_trt[Sick_tunnel[i], "S2", ] <- p_S1S2[i]
-      a_P_no_trt[Sick_tunnel[i], "D", ]  <- p_S1D
-    }
-    a_P_no_trt[Sick_tunnel[tunnel_size], "H", ]  <- p_S1H
-    a_P_no_trt[Sick_tunnel[tunnel_size], Sick_tunnel[tunnel_size], ] <- 1 - (p_S1H + p_S1S2[tunnel_size] + p_S1D)
-    a_P_no_trt[Sick_tunnel[tunnel_size], "S2", ] <- p_S1S2[tunnel_size]
-    a_P_no_trt[Sick_tunnel[tunnel_size], "D", ]  <- p_S1D
-    
+    a_P_no_trt["S1", "H", ]  <- p_S1H
+    a_P_no_trt["S1", "S1", ] <- 1 - (p_S1H + p_S1S2 + p_S1D)
+    a_P_no_trt["S1", "S2", ] <- p_S1S2
+    a_P_no_trt["S1", "D", ]  <- p_S1D
     # From Sicker
     a_P_no_trt["S2", "S2", ] <- 1 - p_S2D
     a_P_no_trt["S2", "D", ]  <- p_S2D
-    
     # From Dead
     a_P_no_trt["D", "D", ]   <- 1
     
-    ### Check if transition matrix is valid (i_e_, each row should add up to 1)
-    valid <- apply(a_P_no_trt, 3, function(x) sum(rowSums(x))==n_s_td)
-    if (!isTRUE(all.equal(as.numeric(sum(valid)), as.numeric(n_t)))) {
-      stop("This is not a valid transition Matrix")
-    }
-    
-    ### create transition probability matrix for treatment same as NO treatment
+    # create transition probability matrix for treatment same as NO treatment
     a_P_trt <- a_P_no_trt
+    
+    # create the markov trace matrix M capturing the proportion of the cohort in each state at each cycle
+    m_M_no_trt <- m_M_trt <- matrix(NA, 
+                                    nrow = n_t + 1, ncol = n_s,
+                                    dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
+    
+    # The cohort starts as healthy
+    m_M_no_trt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate the Markov trace 
     
     ########################################## PROCESS ##########################################
     
-    for (t in 1:n_t){                                                   # loop through the number of cycles
-      m_M_no_trt[t + 1, ] <- t(m_M_no_trt[t, ]) %*% a_P_no_trt[ , , t]  # estimate the Markov trace for cycle the next cycle (t + 1)
-      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[, , t]      # estimate the Markov trace for cycle the next cycle (t + 1)
-    } # lose the loop
-    
-    ### create aggregated traces
-    m_M_td_no_trt <- cbind(H  = m_M_no_trt[, "H"], 
-                           S1 = rowSums(m_M_no_trt[, 2:(tunnel_size +1)]), 
-                           S2 = m_M_no_trt[, "S2"],
-                           D  = m_M_no_trt[, "D"])
-    head(m_M_td_no_trt)
-    m_M_td_trt    <- cbind(H  = m_M_trt[, "H"], 
-                           S1 = rowSums(m_M_trt[, 2:(tunnel_size +1)]), 
-                           S2 = m_M_trt[, "S2"],
-                           D  = m_M_trt[, "D"])
+    for (t in 1:n_t){                                                 # loop through the number of cycles
+      m_M_no_trt[t + 1, ] <- t(m_M_no_trt[t, ]) %*% a_P_no_trt[,, t]  # estimate the Markov trace for cycle the next cycle (t + 1)
+      m_M_trt[t + 1, ]    <- t(m_M_trt[t, ])    %*% a_P_trt[,, t]     # estimate the Markov trace for cycle the next cycle (t + 1)
+    } # close the loop
     
     ########################################## EPIDEMIOLOGICAL OUTPUT  ##########################################
     #### Overall Survival (OS) ####
-    v_os_no_trt_tunnels <- 1 - m_M_no_trt[, "D"]       # calculate the overall survival (OS) probability for no treatment
-    v_os_no_trt_tunnels <- rowSums(m_M_no_trt[, 1:3])  # alternative way of calculating the OS probability   
+    v_os_no_trt_td  <- 1 - m_M_no_trt[, "D"]       # calculate the overall survival (OS) probability for no treatment
+    v_os_no_trt_td  <- rowSums(m_M_no_trt[, 1:3])  # alternative way of calculating the OS probability   
     
-    #### Life Expectancy (LE) ####
-    v_le_tunnels <- sum(v_os_no_trt_tunnels)           # summing probablity of OS over time  (i_e_ life expectancy)
+    #### Life Expectancy (LE) #####
     
-    #### Disease prevalence ####
-    v_prev_tunnels <- rowSums(m_M_td_no_trt[, c("S1", "S2")]) / v_os_no_trt_tunnels
+    #### Disease prevalence #####
+    v_prev_td       <- rowSums(m_M_no_trt[, c("S1", "S2")]) / v_os_no_trt_td
     
-    #### ratio of sick(S1) vs sicker(S2) ####
-    v_ratio_S1S2_tunnels <- m_M_td_no_trt[, "S1"] / m_M_td_no_trt[, "S2"]
+    #### ratio of sick(S1) vs sicker(S2) #####
+    v_ratio_S1S2_td <- m_M_no_trt[, "S1"] / m_M_no_trt[, "S2"]
     
     ########################################## RETURN OUTPUT  ##########################################
-    out <- list(m_M_td_no_trt = m_M_td_no_trt,
-                m_M_td_trt    = m_M_td_trt,
-                a_P_no_trt    = a_P_no_trt,
-                a_P_trt       = a_P_trt,
-                Surv          = v_os_no_trt_tunnels[-1],
-                Prev          = v_prev_tunnels[-1],
-                Ratio_S1S2    = v_ratio_S1S2_tunnels)
+    out <- list(m_M_no_trt = m_M_no_trt,
+                m_M_trt = m_M_trt,
+                a_P_no_trt = a_P_no_trt,
+                a_P_trt = a_P_trt,
+                Surv = v_os_no_trt_td[-1],
+                Prev = v_prev_td[-1],
+                Ratio_S1S2 = v_ratio_S1S2_td)
     
     return(out)
   }
@@ -135,8 +115,8 @@ calculate_ce_out <- function(l_params_all, n_wtp = 100000){ # User defined
     l_model_out_trt    <- decision_model(l_params_all = l_params_all)
     
     ## Cohort trace by treatment
-    m_M_no_trt  <- l_model_out_no_trt$m_M_td_no_trt # No treatment
-    m_M_trt     <- l_model_out_trt$m_M_td_trt    # Treatment
+    m_M_no_trt  <- l_model_out_no_trt$m_M_no_trt # No treatment
+    m_M_trt     <- l_model_out_trt$m_M_trt    # Treatment
     
     ## Vectors with costs and utilities by treatment
     v_u_no_trt  <- c(u_H, u_S1, u_S2, u_D)

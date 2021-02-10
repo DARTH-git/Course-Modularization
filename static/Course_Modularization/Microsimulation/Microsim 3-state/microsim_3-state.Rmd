@@ -59,7 +59,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -90,11 +90,11 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 set.seed(1)  # set the seed  
 
 # Model structure
-v_n         <- c("Healthy", "Sick", "Dead")  # vector with state names
-n_states    <- length(v_n)                   # number of states
-n_t         <- 60                            # number of cycles
-n_i         <- 10000                         # number of individuals
-d_e         <- d_c <- 0.03                   # equal discount of costs and QALYs b%
+v_names_states <- c("Healthy", "Sick", "Dead")  # vector with state names
+n_states    <- length(v_names_states)  # number of states
+n_t         <- 60                      # number of cycles
+n_i         <- 10000                   # number of individuals
+d_e         <- d_c <- 0.03             # equal discount of costs and QALYs 
 
 #### Deterministic analysis ####
 
@@ -156,7 +156,7 @@ Probs <- function(M_t, df_X) {
   
   # create matrix of state transition probabilities
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  
-  rownames(m_p_t) <-  v_n  # give the state names to the rows
+  rownames(m_p_t) <-  v_names_states  # give the state names to the rows
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, m_p_HD, by = c("Sex"))

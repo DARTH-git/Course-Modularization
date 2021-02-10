@@ -23,7 +23,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     # in each state at each cycle
     m_M_notrt <- m_M_trt <- matrix(NA, 
                                    nrow     = n_t + 1, ncol = n_states,
-                                   dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
+                                   dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
     
     # The cohort starts as healthy
     m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
@@ -32,7 +32,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     m_P_notrt  <- matrix(0,
                          nrow = n_states,
                          ncol = n_states,
-                         dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
+                         dimnames = list(v_names_states, v_names_states)) # name the columns and rows of the matrix
 
     # fill in the transition probability matrix
     # from Healthy
@@ -53,7 +53,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     # Check that transition probabilities are in [0, 1]
     check_transition_probability(m_P_notrt, verbose = TRUE)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P_notrt, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
     
     # create transition probability matrix for treatment same as no treatment
     m_P_trt <- m_P_notrt

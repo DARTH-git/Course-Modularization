@@ -1,6 +1,6 @@
 ---
 title: 'Simple 3-state microsimulation model'
-subtitle: 'Includes age and sex specific probability of dying when healthy'
+subtitle: 'Includes age and sex specific probability of dying when Healthy'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -41,9 +41,9 @@ Med Decis Making. 2018;38(3):400–22.
 <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
 <li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
 A Multidimensional Array Representation of State-Transition Model Dynamics.
-Med Decis Making. 2020 Online first. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+Med Decis Mak. 2020;40(2):242-248. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
 </ul>
-<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+<p>Copyright 2017, THE HOSPITAL FOR Sick CHILDREN AND THE COLLABORATING INSTITUTIONS.
 All rights reserved in Canada, the United States and worldwide. Copyright,
 trademarks, trade names and any and all associated intellectual property are
 exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
@@ -51,7 +51,6 @@ institutions. These materials may be used, reproduced, modified, distributed
 and adapted with proper attribution.</p>
 <div style="page-break-after: always;"></div>
 <p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
-<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
 <div id="load-packages" class="section level1">
 <h1>01 Load packages</h1>
 <pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
@@ -71,41 +70,34 @@ p_load_gh(&quot;DARTH-git/dampack&quot;, &quot;DARTH-git/darthtools&quot;)</code
 <pre class="r"><code>set.seed(1)  # set the seed  
 
 # Model structure
-v_n   &lt;- c(&quot;healthy&quot;, &quot;sick&quot;, &quot;dead&quot;)       # vector with state names
-n_t   &lt;- 60                                 # number of cycles
-n_i   &lt;- 10000                              # number of individuals
-d_e &lt;- d_c &lt;- 0.03                          # equal discount of costs and QALYs by 3%
-
-
+v_names_states &lt;- c(&quot;Healthy&quot;, &quot;Sick&quot;, &quot;Dead&quot;)  # vector with state names
+n_states    &lt;- length(v_names_states)  # number of states
+n_t         &lt;- 60                      # number of cycles
+n_i         &lt;- 10000                   # number of individuals
+d_e         &lt;- d_c &lt;- 0.03             # equal discount of costs and QALYs 
 
 #### Deterministic analysis ####
 
 # Transition probabilities
-p_HS        &lt;- 0.05    # probability healthy -&gt; sick
-p_HD_female &lt;- 0.0382  # probability health -&gt; dead when female
-p_HD_male   &lt;- 0.0463  # probability health -&gt; dead when male
-p_SD        &lt;- 0.1     # probability sick -&gt; dead
-
+p_HS        &lt;- 0.05    # probability Healthy -&gt; Sick
+p_HD_female &lt;- 0.0382  # probability health -&gt; Dead when female
+p_HD_male   &lt;- 0.0463  # probability health -&gt; Dead when male
+p_SD        &lt;- 0.1     # probability Sick -&gt; Dead
 
 # Costs inputs
-c_H  &lt;- 1500      # cost of one cycle in healthy state
-c_S  &lt;- 5000      # cost of one cycle in sick state
-c_D  &lt;- 0
+c_H         &lt;- 1500    # cost of one cycle in Healthy state
+c_S         &lt;- 5000    # cost of one cycle in Sick state
+c_D         &lt;- 0       # cost of one cycle in Dead state
 
 # utility inputs
-u_H  &lt;- 1         # utility when healthy 
-u_S  &lt;- 0.85      # utility when sick 
-u_D  &lt;- 0         # utility when dead 
-
-
-
-
-n_states   &lt;- length(v_n)                   # number of states
+u_H         &lt;- 1       # utility when Healthy 
+u_S         &lt;- 0.85    # utility when Sick 
+u_D         &lt;- 0       # utility when Dead 
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc &lt;- 1 / (1 + d_e) ^ (0:n_t) 
+v_dwc       &lt;- 1 / (1 + d_e) ^ (0:n_t) 
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe &lt;- 1 / (1 + d_c) ^ (0:n_t) 
+v_dwe       &lt;- 1 / (1 + d_c) ^ (0:n_t) 
 
 m_p_HD      &lt;- data.frame(Sex = c(&quot;Female&quot;, &quot;Male&quot;), p_HD = c(p_HD_female, p_HD_male))</code></pre>
 </div>
@@ -120,8 +112,8 @@ df_X  &lt;- data.frame(ID = 1:n_i, Sex = v_sex)</code></pre>
 <div id="dynamic-characteristics" class="section level2">
 <h2>04.2 Dynamic characteristics</h2>
 <pre class="r"><code># Specify the initial health state of the individuals 
-# everyone begins in the healthy state (in this example)
-v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
+# everyone begins in the Healthy state (in this example)
+v_M_init  &lt;- rep(&quot;Healthy&quot;, times = n_i)   </code></pre>
 </div>
 </div>
 <div id="define-simulation-functions" class="section level1">
@@ -138,19 +130,25 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
   
   # create matrix of state transition probabilities
   m_p_t           &lt;- matrix(0, nrow = n_states, ncol = n_i)  
-  rownames(m_p_t) &lt;-  v_n  # give the state names to the rows
+  rownames(m_p_t) &lt;-  v_names_states  # give the state names to the rows
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all &lt;- inner_join(df_X, m_p_HD, by = c(&quot;Sex&quot;))
-  p_HD     &lt;- p_HD_all[M_t == &quot;healthy&quot;, &quot;p_HD&quot;]
+  p_HD     &lt;- p_HD_all[M_t == &quot;Healthy&quot;, &quot;p_HD&quot;]
   
   # update m_p_t with the appropriate probabilities   
-  # transition probabilities when healthy 
-  m_p_t[, M_t == &quot;healthy&quot;] &lt;- rbind(1 - p_HD - p_HS, p_HS, p_HD)  
-  # transition probabilities when sick 
-  m_p_t[, M_t == &quot;sick&quot;]    &lt;- rbind(0, 1 - p_SD, p_SD)          
-  # transition probabilities when dead
-  m_p_t[, M_t == &quot;dead&quot;]    &lt;- rbind(0, 0, 1)                         
+  # transition probabilities when Healthy 
+  m_p_t[, M_t == &quot;Healthy&quot;] &lt;- rbind((1 - p_HD) * (1 - p_HS),
+                                     (1 - p_HD) *      p_HS ,
+                                          p_HD              )  
+  # transition probabilities when Sick 
+  m_p_t[, M_t == &quot;Sick&quot;]    &lt;- rbind(       0,
+                                     1 - p_SD,
+                                         p_SD)          
+  # transition probabilities when Dead
+  m_p_t[, M_t == &quot;Dead&quot;]    &lt;- rbind(0,
+                                     0,
+                                     1)                         
   return(t(m_p_t))
 }     </code></pre>
 </div>
@@ -158,11 +156,15 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
 <h2>05.2 Cost function</h2>
 <p>The <code>Costs</code> function estimates the costs at every cycle.</p>
 <pre class="r"><code>Costs &lt;- function (M_t) {
-  # M_t: current health state
+  # Arguments:
+    # M_t: health state occupied at cycle t (character variable)
+  # Returns: 
+    # costs accrued in this cycle
+  
   c_t &lt;- c()
-  c_t[M_t == &quot;dead&quot;]    &lt;- c_D     # costs at dead state
-  c_t[M_t == &quot;healthy&quot;] &lt;- c_H     # costs accrued by being healthy this cycle
-  c_t[M_t == &quot;sick&quot;]    &lt;- c_S     # costs accrued by being sick this cycle
+  c_t[M_t == &quot;Dead&quot;]    &lt;- c_D  # costs at Dead state
+  c_t[M_t == &quot;Healthy&quot;] &lt;- c_H  # costs accrued by being Healthy this cycle
+  c_t[M_t == &quot;Sick&quot;]    &lt;- c_S  # costs accrued by being Sick this cycle
   
   return(c_t)  # return costs accrued this cycle
 }</code></pre>
@@ -171,11 +173,15 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
 <h2>05.3 Health outcome function</h2>
 <p>The <code>Effs</code> function to update the utilities at every cycle.</p>
 <pre class="r"><code>Effs &lt;- function (M_t) {
-  # M_t: current health state
+  # Arguments:
+    # M_t: health state occupied at cycle t (character variable)
+  # Returns: 
+    # QALYs accrued this cycle
+  
   q_t &lt;- c() 
-  q_t[M_t == &quot;dead&quot;]    &lt;- u_D     # QALYs at dead state
-  q_t[M_t == &quot;healthy&quot;] &lt;- u_H     # QALYs accrued by being healthy this cycle
-  q_t[M_t == &quot;sick&quot;]    &lt;- u_S     # QALYs accrued by being sick this cycle
+  q_t[M_t == &quot;Dead&quot;]    &lt;- u_D  # QALYs at Dead state
+  q_t[M_t == &quot;Healthy&quot;] &lt;- u_H  # QALYs accrued by being Healthy this cycle
+  q_t[M_t == &quot;Sick&quot;]    &lt;- u_S  # QALYs accrued by being Sick this cycle
   
   return(q_t)  # return the QALYs accrued this cycle
 }</code></pre>
@@ -205,9 +211,9 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
                                        dimnames = list(paste(&quot;ind&quot;  , 1:n_i, sep = &quot; &quot;), 
                                                        paste(&quot;cycle&quot;, 0:n_t, sep = &quot; &quot;)))  
  
-  m_M[, 1] &lt;- v_M_init          # initial health state 
-  m_C[, 1] &lt;- Costs(m_M[, 1])   # costs accrued during cycle 0
-  m_E[, 1] &lt;- Effs(m_M[, 1])    # QALYs accrued during cycle 0
+  m_M[, 1] &lt;- v_M_init         # initial health state 
+  m_C[, 1] &lt;- Costs(m_M[, 1])  # costs accrued during cycle 0
+  m_E[, 1] &lt;- Effs(m_M[, 1])   # QALYs accrued during cycle 0
   
   # open a loop for time running cycles 1 to n_t 
   for (t in 1:n_t) {
@@ -215,8 +221,8 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
     m_P &lt;- Probs(m_M[, t], df_X)        
     # sample the current health state and store that state in matrix m_M 
     m_M[, t + 1]  &lt;- samplev(m_P)       
-    m_C[, t + 1]  &lt;- Costs(m_M[, t + 1])   # calculate costs 
-    m_E[, t + 1]  &lt;- Effs (m_M[, t + 1])   # calculate QALYs 
+    m_C[, t + 1]  &lt;- Costs(m_M[, t + 1])  # calculate costs 
+    m_E[, t + 1]  &lt;- Effs (m_M[, t + 1])  # calculate QALYs 
     
     # Display simulation progress
     if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
@@ -226,10 +232,10 @@ v_M_init  &lt;- rep(&quot;healthy&quot;, times = n_i)   </code></pre>
   } # close the loop for the time points 
   
   # calculate  
-  tc &lt;- m_C %*% v_dwc    # total (discounted) cost per individual
-  te &lt;- m_E %*% v_dwe    # total (discounted) QALYs per individual 
-  tc_hat &lt;- mean(tc)     # average (discounted) cost 
-  te_hat &lt;- mean(te)     # average (discounted) QALYs
+  tc      &lt;- m_C %*% v_dwc  # total (discounted) cost per individual
+  te      &lt;- m_E %*% v_dwe  # total (discounted) QALYs per individual 
+  tc_hat  &lt;- mean(tc)       # average (discounted) cost 
+  te_hat  &lt;- mean(te)       # average (discounted) QALYs
   
   # store the results from the simulation in a list
   results &lt;- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, 
@@ -250,8 +256,8 @@ results</code></pre>
 </div>
 <div id="visualize-results" class="section level1">
 <h1>07 Visualize results</h1>
-<pre class="r"><code>options(scipen = 999)
-plot(density(outcomes$tc), main = paste(&quot;Total cost per person&quot;), xlab = &quot;Cost ($)&quot;)
+<pre class="r"><code>plot(density(outcomes$tc), main = paste(&quot;Total cost per person&quot;), xlab = &quot;Cost ($)&quot;)
 plot(density(outcomes$te), main = paste(&quot;Total QALYs per person&quot;), xlab = &quot;QALYs&quot;)
-plot_m_TR(outcomes$m_M)    # health state trace</code></pre>
+plot_m_TR(outcomes$m_M)  # health state trace</code></pre>
+<p>Small note: The difference between <code>paste()</code> and <code>paste0()</code> is that the argument sep by default is ” ” (<code>paste</code>) and “” (<code>paste0</code>). In conclusion, <code>paste0()</code> is faster than <code>paste()</code> if our objective is concatenate strings without spaces because we don’t have to specify the argument sep.</p>
 </div>

@@ -85,19 +85,19 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-v_n       <- c("Healthy", "Sick", "Dead")  # state names
-n_states  <- length(v_n)                   # No of states 
-n_i       <- 2000                          # number of simulations 
-c_l       <- 1 / 12                        # cycle length (a month)
-n_t       <- 30                            # number of years (20 years)
-times     <- seq(0, n_t, c_l)              # the cycles in years
-set.seed(2020)                             # set the seed
+v_names_states <- c("Healthy", "Sick", "Dead")  # state names
+n_states  <- length(v_names_states)  # No of states 
+n_i       <- 2000                    # number of simulations 
+c_l       <- 1 / 12                  # cycle length (a month)
+n_t       <- 30                      # number of years (20 years)
+times     <- seq(0, n_t, c_l)        # the cycles in years
+set.seed(2020)                       # set the seed
 ```
 
 Create a transition probability matrix with all transitions indicated and numbered.
 
 ```{r}
-m_P_diag <- matrix(NA, n_states, n_states, dimnames = list(v_n, v_n))
+m_P_diag <- matrix(NA, n_states, n_states, dimnames = list(v_names_states, v_names_states))
 m_P_diag["Healthy", "Sick"]  <- 1
 m_P_diag["Healthy", "Dead"]  <- 2
 m_P_diag["Sick"   , "Dead"]  <- 3
@@ -117,13 +117,13 @@ The following chink generates a hypothetical dataset from a Randomized Controlle
 
 - OS_PFS_data include the data as they would typically be presented in the results of an RCT (a PFS and OS outcome with the corresponding event (0, 1) information)
 ```{r}
-n_pat       <- 550                      # cohort size
-n_years     <- 30                       # number of years 
-generate    <- gen_data(n_pat, n_years) # generates true, censored and OS/PFS data 
-true_data   <- generate$true_data       # stores the true data
-sim_data    <- generate$sim_data        # stores the censored data
-status      <- generate$status          # stores the censoring status
-OS_PFS_data <- generate$OS_PFS_data     # store the OS / PFS structured data
+n_pat       <- 550                       # cohort size
+n_years     <- 30                        # number of years 
+generate    <- gen_data(n_pat, n_years)  # generates true, censored and OS/PFS data 
+true_data   <- generate$true_data        # stores the true data
+sim_data    <- generate$sim_data         # stores the censored data
+status      <- generate$status           # stores the censoring status
+OS_PFS_data <- generate$OS_PFS_data      # store the OS / PFS structured data
 
 # Show the data structure
 head(true_data)
@@ -201,7 +201,7 @@ m_M_PSM <- partsurv(pfs_survHE = fit_PFS,
                     choose_PFS = choose_PFS, 
                     choose_OS  = choose_OS,
                     time = times,
-                    v_n = v_n)
+                    v_names_states = v_names_states)
 head(m_M_PSM$trace)
 ```
 
@@ -295,7 +295,7 @@ Probs <- function(M_t, v_Ts, t) {
   # create matrix of state transition probabilities
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
   # give the state names to the rows
-  rownames(m_p_t) <-  v_n                              
+  rownames(m_p_t) <-  v_names_states                              
   
   # update m_p_t with the appropriate probabilities   
   # transition probabilities when Healthy 
@@ -360,10 +360,10 @@ MicroSim <- function(n_i,  seed = 1) {
 Micro_data <- MicroSim(n_i, seed = 1)
 
 # create the microsimulation trace
-m_M_Micro <- t(apply(Micro_data$m_M, 2, function(x) table(factor(x, levels = v_n, 
+m_M_Micro <- t(apply(Micro_data$m_M, 2, function(x) table(factor(x, levels = v_names_states, 
                                                                  ordered = TRUE)))) 
 m_M_Micro <- m_M_Micro / n_i    # calculate the proportion of individuals 
-colnames(m_M_Micro) <- v_n      
+colnames(m_M_Micro) <- v_names_states      
 rownames(m_M_Micro) <- paste("Cycle", times, sep = " ")  
 head(m_M_Micro)
 ```

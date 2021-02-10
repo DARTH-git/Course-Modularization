@@ -82,25 +82,25 @@ source("survival_functions.R")
 # 03 Input model parameters
 
 ```{r}
-v_n       <- c("healthy", "sick", "dead")  # state names
-n_s       <- length(v_n)                   # No of states 
-c_l       <- 1 / 12                        # cycle length (a month)
-n_t       <- 20                            # number of years (20 years)
-times     <- seq(0, n_t, c_l)              # the cycles in years
-d_r       <- 0.03                          # discount rate
-set.seed(2009)                             # set the seed
+v_names_states <- c("healthy", "sick", "dead")  # state names
+n_states  <- length(v_names_states)   # No of states 
+c_l       <- 1 / 12                   # cycle length (a month)
+n_t       <- 20                       # number of years (20 years)
+times     <- seq(0, n_t, c_l)         # the cycles in years
+d_r       <- 0.03                     # discount rate
+set.seed(2009)                        # set the seed
 
-c_H       <- 200                           # cost of remaining one cycle healthy
-c_S       <- 500                           # cost of remaining one cycle sick
-c_D       <- 0                             # cost of remaining one cycle dead
-v_c       <- c(c_H, c_S, c_D)              # store in a vector
+c_H       <- 200                      # cost of remaining one cycle healthy
+c_S       <- 500                      # cost of remaining one cycle sick
+c_D       <- 0                        # cost of remaining one cycle dead
+v_c       <- c(c_H, c_S, c_D)         # store in a vector
 
-u_H       <- 0.75                          # utility when healthy 
-u_S       <- 0.30                          # utility when sick
-u_D       <- 0                             # utility when dead
-v_u       <- c(u_H, u_S, u_D)              # store in a vector
+u_H       <- 0.75                     # utility when healthy 
+u_S       <- 0.30                     # utility when sick
+u_D       <- 0                        # utility when dead
+v_u       <- c(u_H, u_S, u_D)         # store in a vector
 
-v_dw      <- 1 / (1 + d_r) ^ (times)       # discount weight 
+v_dw      <- 1 / (1 + d_r) ^ (times)  # discount weight 
 ```
 
 # 04 Digitized Data

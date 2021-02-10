@@ -85,16 +85,16 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 
 ```{r}
 set.seed(1)                        # set the seed  
-v_n   <- c("H", "S1", "S2", "D")   # the model states names
+v_names_states   <- c("H", "S1", "S2", "D")  # the model states names
 
 # Model structure 
 n_t   <- 30                        # time horizon, 30 cycles
 c_l   <- 1
 n_i   <- 100000                    # number of simulated individuals
-n_s   <- length(v_n)               # the number of health states
+n_s   <- length(v_names_states)    # the number of health states
 d_r   <- 0.03                      # discount rate of 3% per cycle
 v_dw  <- 1 / ((1 + d_r) ^ (0:n_t)) # discount weight 
-v_names_str <- c("no treatment", "treatment") # strategy names
+v_names_str <- c("no treatment", "treatment")  # strategy names
 
 # Event probabilities (per cycle)
 # Annual transition probabilities
@@ -203,7 +203,7 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
   
   # create matrix of state transition probability vectors
   m_p_t           <- matrix(0, nrow = n_s, ncol = n_i) 
-  rownames(m_p_t) <-  v_n  # give the state names to the rows
+  rownames(m_p_t) <-  v_names_states  # give the state names to the rows
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, p_mort, by = c("Age"))
@@ -284,7 +284,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   
   set.seed(seed)     # set the seed
   
-  n_s <- length(v_n) # the number of health states
+  n_s <- length(v_names_states) # the number of health states
   
   # create three matrices called m_M, m_C and m_E
   # number of rows is equal to the n_i, the number of columns is equal to n_t  
@@ -353,12 +353,12 @@ outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE, seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_no_trt$m_M, v_n = v_n)  # health state trace
+plot_trace_microsim(outcomes_no_trt$m_M, v_names_states = v_names_states)  # health state trace
 
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_trt$m_M, v_n = v_n)     # health state trace
+plot_trace_microsim(outcomes_trt$m_M, v_names_states = v_names_states)     # health state trace
 ```
 
 # 08 Cost Effectiveness Analysis

@@ -99,17 +99,17 @@ n_str <- length(v_names_str)
 age     <- 25                       # age at baseline
 max_age <- 55                       # maximum age of follow up
 n_t     <- max_age - age            # time horizon, number of cycles
-v_n     <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
-                                    # Sicker (S2), Dead (D)
-n_states <- length(v_n)             # number of health states 
+v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
+                                           # Sicker (S2), Dead (D)
+n_states <- length(v_names_states)  # number of health states 
 
 # Tunnels
 n_tunnel_size <- n_t
 # Sick state
 v_Sick_tunnels <- paste("S1_", seq(1, n_tunnel_size), "Yr", sep = "")
 ### Create variables for time-dependent model
-v_n_tunnels <- c("H", v_Sick_tunnels, "S2", "D")  # state names
-n_s_tunnels <- length(v_n_tunnels)                # number of states
+v_names_states_tunnels <- c("H", v_Sick_tunnels, "S2", "D")  # state names
+n_states_tunnels <- length(v_names_states_tunnels)           # number of states
 
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file

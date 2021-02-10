@@ -53,7 +53,7 @@ Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -87,11 +87,11 @@ set.seed(1)  # set the seed
 v_names_str <- c("Standard of care") 
 
 # Model structure
-v_n         <- c("Healthy", "Sick", "Dead")  # vector with state names
-n_states    <- length(v_n)                   # number of states
-n_t         <- 60                            # number of cycles
-n_i         <- 10000                         # number of individuals
-d_e <- d_c  <- 0.03                          # equal discount of costs and QALYs by 3%
+v_names_states <- c("Healthy", "Sick", "Dead")  # vector with state names
+n_states    <- length(v_names_states)  # number of states
+n_t         <- 60                      # number of cycles
+n_i         <- 10000                   # number of individuals
+d_e <- d_c  <- 0.03                    # equal discount of costs and QALYs by 3%
 
 #### Deterministic analysis ####
 
@@ -167,7 +167,7 @@ Probs <- function(M_t, df_X, v_Ts) {
   # create matrix of state transition probabilities
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  
   # give the state names to the rows
-  rownames(m_p_t) <-  v_n                               
+  rownames(m_p_t) <-  v_names_states                               
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, m_p_HD, by = c("Sex"))
@@ -270,10 +270,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
     # check if transition probabilities are between 0 and 1
     check_transition_probability(m_P, verbose = TRUE)
     # check if each of the rows of the transition probabilities matrix sum to one
-    
-    ## NOTE: in the microsimulation, the n_states is n_i to make it work. ##
-    check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
-    ## n_states is the number of rows in the functions 
+    check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
     
     # sample the next health state and store that state in matrix m_M
     m_M[, t + 1]  <- samplev(m_P)    

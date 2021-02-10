@@ -96,12 +96,12 @@ v_names_str <- c("No Treatment", "Treatment")
 age      <- 25                       # age at baseline
 max_age  <- 55                       # maximum age of follow up
 n_t      <- max_age - age            # time horizon, number of cycles
-v_n      <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
+v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                      # Sicker (S2), Dead (D)
 v_init <- c("H"  = 1,
             "S1" = 0,
             "S2" = 0,
-            "D"  = 0)               # initial cohort distribution (everyone allocated to the "healthy" state)
+            "D"  = 0)                # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities (per cycle)
 p_HD     <- 0.005                    # probability to die when healthy
@@ -130,7 +130,7 @@ u_trt    <- 0.95                     # utility when being treated
 d_e      <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%
 
 n_str     <- length(v_names_str)     # Number of strategies
-n_states  <- length(v_n)             # number of states
+n_states  <- length(v_names_states)  # number of states
 
 # Discount weights for costs and effects
 v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
@@ -140,7 +140,7 @@ v_dwe <- 1 / (1 + d_e) ^ (0:n_t)
 ## Create a state-transition diagram of the cohort model
 
 ```{r}
-m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
 m_P_diag["H" , "S1"] = "" 
 m_P_diag["H" , "D" ] = "" 
 m_P_diag["H" , "H" ] = "" 
@@ -167,7 +167,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,
 # at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
                                nrow     = n_t + 1, ncol = n_states,
-                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_n))
+                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
@@ -180,9 +180,9 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort
 ```{r}
 # create the transition probability matrix for both treatment arms
 m_P_notrt <- m_P_trt <- matrix(0,
-                     nrow = n_states,
-                     ncol = n_states,
-                     dimnames = list(v_n, v_n)) # name the columns and rows of the matrix
+                               nrow = n_states,
+                               ncol = n_states,
+                               dimnames = list(v_names_states, v_names_states)) # name the columns and rows of the matrix
 m_P_notrt
 ```
 
@@ -207,7 +207,7 @@ m_P_notrt["D", "D"  ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_notrt, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
 
 # Overwrite the transition probability matrix for treatment with the no treatment values as they are the same here
 m_P_trt <- m_P_notrt
@@ -237,7 +237,7 @@ matplot(m_M_notrt, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace")             
 # add a legend to the graph
-legend("topright", v_n, col = 1:n_states, lty = 1:n_states, bty = "n") 
+legend("topright", v_names_states, col = 1:n_states, lty = 1:n_states, bty = "n") 
 ```
 
 ## 06.2 Overall Survival (OS)

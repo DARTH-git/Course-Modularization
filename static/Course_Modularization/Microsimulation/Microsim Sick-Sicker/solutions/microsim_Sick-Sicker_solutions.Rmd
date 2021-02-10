@@ -59,7 +59,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -92,8 +92,8 @@ set.seed(1)  # set the seed
 # Model structure 
 n_t      <- 30                       # time horizon, 30 cycles
 n_i      <- 100000                   # number of simulated individuals
-v_n      <- c("H", "S1", "S2", "D")  # the model states names
-n_states <- length(v_n)              # the number of health states
+v_names_states <- c("H", "S1", "S2", "D")  # the model states names
+n_states <- length(v_names_states)   # the number of health states
 d_r      <- 0.03                     # discount rate of 3% per cycle
 v_dwe    <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))  # discount weight 
 v_names_str <- c("no treatment", "treatment")   # strategy names
@@ -165,7 +165,7 @@ Probs <- function(M_t, df_X) {
   
   # create matrix of state transition probabilities  
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
-  rownames(m_p_t) <-  v_n  # give the state names to the rows
+  rownames(m_p_t) <-  v_names_states  # give the state names to the rows
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, p_mort, by = c("Age"))
@@ -279,7 +279,7 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
       # check if transition probabilities are between 0 and 1
       check_transition_probability(m_P, verbose = TRUE)
       # check if checks if each of the rows of the transition probabilities matrix sum to one
-      check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
+      check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P)                  
       # calculate costs per individual during cycle t + 1

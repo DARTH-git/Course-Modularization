@@ -2,11 +2,11 @@
 run_sick_sicker_markov <- function(v_params) {
   with(as.list(v_params), {
     ## Markov model parameters
-    age     <- 25                   # age at baseline
-    max_age <- 55                   # maximum age of follow up
-    n_t  <- max_age - age           # time horizon, number of cycles
-    v_n  <- c("H", "S1", "S2", "D") # the 4 states of the model: Healthy (H), Sick (S1), Sicker (S2), Dead (D)
-    n_s <- length(v_n)              # number of health states 
+    age     <- 25             # age at baseline
+    max_age <- 55             # maximum age of follow up
+    n_t     <- max_age - age  # time horizon, number of cycles
+    v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), Sicker (S2), Dead (D)
+    n_s     <- length(v_names_states)          # number of health states 
     
     # Transition probabilities and hazard ratios
     p_HD    = 0.005 # probability to die when healthy
@@ -26,15 +26,15 @@ run_sick_sicker_markov <- function(v_params) {
     # create the cohort trace
     m_M <- matrix(NA, nrow = n_t + 1 , 
                   ncol = n_s,
-                  dimnames = list(0:n_t, v_n))     # create Markov trace (n_t + 1 because R doesn't understand  Cycle 0)
+                  dimnames = list(0:n_t, v_names_states))  # create Markov trace (n_t + 1 because R doesn't understand  Cycle 0)
     
-    m_M[1, ] <- c(1, 0, 0, 0)                      # initialize Markov trace
+    m_M[1, ] <- c(1, 0, 0, 0) # initialize Markov trace
     
     # create transition probability matrix for NO treatment
     m_P <- matrix(0,
                   nrow = n_s, 
                   ncol = n_s,
-                  dimnames = list(v_n, v_n))
+                  dimnames = list(v_names_states, v_names_states))
     # fill in the transition probability array
     ### From Healthy
     m_P["H", "H"]  <- 1 - (p_HS1 + p_HD)

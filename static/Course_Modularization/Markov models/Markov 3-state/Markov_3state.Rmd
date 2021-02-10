@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALS
 Change `eval` to `TRUE` if you want to knit this document.
 
 ```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
+rm(list = ls())  # clear memory (removes all the variables from the workspace)
 ```
 
 # 01 Load packages
@@ -95,32 +95,32 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 v_names_str <- c("Standard of Care", "Treatment")  
 
 # Markov model parameters
-v_n  <- c("Healthy", "Sick", "Dead")  # state names
-n_t  <- 60                            # number of cycles
+v_names_states <- c("Healthy", "Sick", "Dead")  # state names
+n_t  <- 60                  # number of cycles
 
 v_init <- c("Healthy" = 1,
             "Sick"    = 0,
-            "Dead"    = 0)            # initial cohort distribution (everyone allocated to the 
-                                      # "healthy" state)
+            "Dead"    = 0)  # initial cohort distribution (everyone allocated to the 
+                            # "healthy" state)
 
 # Transition probabilities
-p_HD      <- 0.02                     # probability of dying when healthy
-p_HS      <- 0.05                     # probability of becoming sick when healthy, conditional on surviving, under standard of care
-p_HS_trt  <- 0.03                     # probability of becoming sick when healthy, under treatment
-p_SD      <- 0.1                      # probability of dying when sick
+p_HD      <- 0.02           # probability of dying when healthy
+p_HS      <- 0.05           # probability of becoming sick when healthy, conditional on surviving, under standard of care
+p_HS_trt  <- 0.03           # probability of becoming sick when healthy, under treatment
+p_SD      <- 0.1            # probability of dying when sick
 
 # Costs and utilities  
-c_H       <- 400                      # cost of one cycle in healthy state
-c_S       <- 1000                     # cost of one cycle in sick state
-c_D       <- 0                        # cost of one cycle in dead state
-c_trt     <- 800                      # cost of treatment (per cycle)
-u_H       <- 0.8                      # utility when healthy 
-u_S       <- 0.5                      # utility when sick
-u_D       <- 0                        # utility when dead
-d_e       <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%, separate this line for countries like NL where costs and effects have different discount rates
+c_H       <- 400            # cost of one cycle in healthy state
+c_S       <- 1000           # cost of one cycle in sick state
+c_D       <- 0              # cost of one cycle in dead state
+c_trt     <- 800            # cost of treatment (per cycle)
+u_H       <- 0.8            # utility when healthy 
+u_S       <- 0.5            # utility when sick
+u_D       <- 0              # utility when dead
+d_e       <- d_c <- 0.03    # discount rate per cycle equal discount of costs and QALYs by 3%, separate this line for countries like NL where costs and effects have different discount rates
 
-n_str     <- length(v_names_str)      # Number of strategies
-n_states  <- length(v_n)              # number of states
+n_str     <- length(v_names_str)     # Number of strategies
+n_states  <- length(v_names_states)  # number of states
 
 # Discount weights for costs and effects
 v_dwc     <- 1 / (1 + d_c) ^ (0:n_t) 
@@ -130,7 +130,7 @@ v_dwe     <- 1 / (1 + d_e) ^ (0:n_t)
 ## 03.1 Draw the state-transition cohort model
 
 ```{r}
-m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
 m_P_diag["Healthy", "Sick" ]     = "" 
 m_P_diag["Healthy", "Dead" ]     = ""
 m_P_diag["Healthy", "Healthy" ]  = ""
@@ -153,7 +153,7 @@ m_M_SoC <- m_M_trt <-  matrix(NA,
                               nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                                 # understand Cycle 0)
                               ncol = n_states, 
-                              dimnames = list(0:n_t, v_n))
+                              dimnames = list(0:n_t, v_names_states))
 
 m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
 ```
@@ -164,7 +164,7 @@ m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Mark
 # create the transition probability matrices
 m_P_SoC  <- m_P_trt <- matrix(0,
                               nrow = n_states, ncol = n_states,
-                              dimnames = list(v_n, v_n))  # name the columns and rows of the matrix 
+                              dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the matrix 
                                                
 # print the probability matrices 
 m_P_SoC  # for standard of care
@@ -201,8 +201,8 @@ m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
 check_transition_probability(m_P_SoC, verbose = TRUE)
 check_transition_probability(m_P_trt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(m_P_SoC, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-check_sum_of_transition_array(m_P_trt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_SoC, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_trt, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -225,8 +225,8 @@ matplot(m_M_SoC, type = 'l',
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
         main = "Cohort Trace - standard of care", lwd = 3)  # create a plot of the data
-legend("right", v_n, col = c("black", "red", "green"), 
-       lty = 1:3, bty = "n")                            # add a legend to the graph
+legend("right", v_names_states, col = c("black", "red", "green"), 
+       lty = 1:3, bty = "n")                                # add a legend to the graph
 
 abline(v = which.max(m_M_SoC[, "Sick"]), col = "gray")      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
@@ -238,10 +238,10 @@ matplot(m_M_trt, type = 'l',
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
         main = "Cohort Trace - treatment", lwd = 3)     # create a plot of the data
-legend("right", v_n, col = c("black", "red", "green"), 
+legend("right", v_names_states, col = c("black", "red", "green"), 
        lty = 1:3, bty = "n")                            # add a legend to the graph
 
-abline(v = which.max(m_M_trt[, "Sick"]), col = "gray")      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
+abline(v = which.max(m_M_trt[, "Sick"]), col = "gray")  # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 ## 06.2 Overall Survival (OS)

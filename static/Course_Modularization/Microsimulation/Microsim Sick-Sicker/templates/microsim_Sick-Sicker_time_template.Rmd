@@ -87,8 +87,8 @@ v_names_str <- c("no treatment", "treatment")  # strategy names
 n_str        <- length(v_names_str)            # number of strategies
 
 # Model structure
-v_n      <- c("H", "S1", "S2", "D")  # the model states names
-n_states <- length(v_n)              # the number of health states
+v_names_states <- c("H", "S1", "S2", "D")  # the model states names
+n_states <- length(v_names_states)         # the number of health states
 
 # Model parameters 
 n_t      <- 30                       # time horizon, 30 cycles
@@ -108,9 +108,9 @@ p_S1S2  <- 0.105  # probability of becoming sicker when sick
 # NOTE: if you don't have a data folder but the files in the same folder as your markdown you need 
 # read.csv("mortProb_age.csv") and 
 # read.csv("MyPopulation-AgeDistribution.csv") 
-p_mort   <- read.csv("../data/mortProb_age.csv")
+p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
+dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 

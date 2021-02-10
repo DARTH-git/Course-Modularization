@@ -98,8 +98,8 @@ set.seed(1)  # set the seed
 # Model structure 
 n_t   <- 30                       # time horizon, 30 cycles
 n_i   <- 100000                   # number of simulated individuals
-v_n   <- c("H", "S1", "S2", "D")  # the model states names
-n_states   <- length(v_n)         # the number of health states
+v_names_states <- c("H", "S1", "S2", "D")  # the model states names
+n_states <- length(v_names_states)         # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t))    # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names

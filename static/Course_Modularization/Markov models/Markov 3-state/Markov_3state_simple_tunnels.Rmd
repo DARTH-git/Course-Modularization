@@ -98,17 +98,17 @@ v_names_str <- c("Base Case")
 n_str <- length(v_names_str)
 
 # Markov model parameters
-v_n  <- c("Healthy", "Sick", "Dead")    # state names
-n_states  <- length(v_n)                # number of states
-n_t  <- 60                              # number of cycles
+v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+n_states        <- length(v_names_states)        # number of states
+n_t             <- 60                            # number of cycles
 
 # Tunnels
-n_tunnel_size <- n_t
+n_tunnel_size   <- n_t
 # Sick state
-v_Sick_tunnels <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
+v_Sick_tunnels  <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for time-dependent model
-v_n_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")  # state names
-n_states_tunnels  <- length(v_n_tunnels)              # number of states
+v_names_states_tunnels  <- c("Healthy", v_Sick_tunnels, "Dead")  # state names
+n_states_tunnels        <- length(v_names_states_tunnels)        # number of states
 
 p_HD <- seq(0.003, 0.01, length.out = n_t)  # probability of dying when sick (age-dependent) - this is a sequence - officially v_HD
 p_HS <- 0.05                                # probability of becoming sick when healthy, conditioned on not dying
@@ -126,7 +126,7 @@ c_D  <- 0                                   # cost of one cycle in dead state
 u_H  <- 0.8                                 # utility when healthy 
 u_S  <- 0.5                                 # utility when sick
 u_D  <- 0                                   # utility when dead
-d_e <- d_c <- 0.03                          # equal discount of costs and QALYs by 3%
+d_e  <- d_c <- 0.03                         # equal discount of costs and QALYs by 3%
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
 v_dwc <- 1 / (1 + d_e) ^ (0:n_t) 
@@ -143,7 +143,7 @@ m_M <- matrix(NA,
               nrow = n_t + 1,  # create Markov trace (n_t + 1) because R doesn't understand 
                                # Cycle 0)
               ncol = n_states_tunnels,                  
-              dimnames = list(0:n_t, v_n_tunnels)) 
+              dimnames = list(0:n_t, v_names_states_tunnels)) 
 
 # The cohort starts as healthy
 # initialize first cycle of Markov trace accounting for the tunnels
@@ -154,9 +154,9 @@ m_M[1, ] <- c(1, rep(0, n_tunnel_size), 0)
 
 ```{r}
 # create the transition probability array
-a_P <- array(0,                                          # Create 3-D array
+a_P <- array(0,  # Create 3-D array
              dim = c(n_states_tunnels, n_states_tunnels, n_t),               
-             dimnames = list(v_n_tunnels, v_n_tunnels, 0:(n_t-1)))  
+             dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:(n_t-1)))  
 ```
 
 Fill in the transition probability array:
@@ -186,7 +186,7 @@ a_P["Dead", "Dead", ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P, n_states = n_states_tunnels, n_t = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P, n_rows = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -204,9 +204,9 @@ Create aggregated trace.
 
 ```{r}
 m_M_tunnels <- cbind(Healthy = m_M[, "Healthy"], 
-                Sick = rowSums(m_M[, 2:(n_tunnel_size + 1)]), 
-                Dead = m_M[, "Dead"])
-head(m_M_tunnels) # show the first rows of the aggregated Markov trace
+                        Sick = rowSums(m_M[, 2:(n_tunnel_size + 1)]), 
+                        Dead = m_M[, "Dead"])
+head(m_M_tunnels)  # show the first rows of the aggregated Markov trace
 ```
 
 # 06 Compute and Plot Epidemiological Outcomes
@@ -220,7 +220,7 @@ matplot(m_M_tunnels, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace", lwd = 2)              
 # add a legend to the graph
-legend("right", v_n, col = c("black", "red", "green"), lty = 1:3, bty = "n")  
+legend("right", v_names_states, col = c("black", "red", "green"), lty = 1:3, bty = "n")  
 ```
 
 ## 06.2 Overall Survival (OS)

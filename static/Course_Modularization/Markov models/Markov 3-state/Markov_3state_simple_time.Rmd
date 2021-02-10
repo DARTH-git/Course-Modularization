@@ -95,36 +95,36 @@ p_load_gh("DARTH-git/darthtools")
 v_names_str <- c("Standard of Care")  
 
 # Markov model parameters
-v_n  <- c("Healthy", "Sick", "Dead")  # state names
-n_t  <- 60                            # number of cycles
+v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+n_t  <- 60                                       # number of cycles
 
 v_init <- c("Healthy" = 1,
             "Sick"    = 0,
-            "Dead"    = 0)                  # initial cohort distribution (everyone allocated to the "healthy" state)
+            "Dead"    = 0)  # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities
-p_HD_min <- 0.003                     # probability of dying when healthy at t = 0
+p_HD_min <- 0.003           # probability of dying when healthy at t = 0
 
-p_HD_max <- 0.01                      # probability of dying when health  at t = n.t
-p_HS <- 0.05                          # probability of becoming sick when healthy, under standard of care
-p_HS_trt <- 0.03                      # probability of becoming sick when healthy, under treatment
-p_SD <- 0.1                           # probability of dying when sick
+p_HD_max <- 0.01            # probability of dying when health  at t = n.t
+p_HS <- 0.05                # probability of becoming sick when healthy, under standard of care
+p_HS_trt <- 0.03            # probability of becoming sick when healthy, under treatment
+p_SD <- 0.1                 # probability of dying when sick
 
 # Costs and utilities  
-c_H   <- 400                          # cost of one cycle in healthy state
-c_S   <- 1000                         # cost of one cycle in sick state
-c_D   <- 0                            # cost of one cycle in dead state
-c_trt <- 800                          # cost of treatment (per cycle)
-u_H   <- 0.8                          # utility when healthy 
-u_S   <- 0.5                          # utility when sick
-u_D   <- 0                            # utility when dead
-d_e   <- d_c <- 0.03                  # discount rate per cycle equal discount of costs and QALYs by 3%
+c_H   <- 400                # cost of one cycle in healthy state
+c_S   <- 1000               # cost of one cycle in sick state
+c_D   <- 0                  # cost of one cycle in dead state
+c_trt <- 800                # cost of treatment (per cycle)
+u_H   <- 0.8                # utility when healthy 
+u_S   <- 0.5                # utility when sick
+u_D   <- 0                  # utility when dead
+d_e   <- d_c <- 0.03        # discount rate per cycle equal discount of costs and QALYs by 3%
 
+# probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers, officially v_p_HD
+p_HD <- seq(p_HD_min, p_HD_max, length.out = n_t)  
 
-p_HD <- seq(p_HD_min, p_HD_max, length.out = n_t)  # probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers, officially v_p_HD
-
-n_str     <- length(v_names_str)      # Number of strategies
-n_states  <- length(v_n)              # number of states
+n_str     <- length(v_names_str)     # Number of strategies
+n_states  <- length(v_names_states)  # number of states
 
 #discount weights for costs and effects
 v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
@@ -141,18 +141,18 @@ m_M <- matrix(NA,
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
                                 # understand cycle 0)
               ncol = n_states, 
-              dimnames = list(0:n_t, v_n))
+              dimnames = list(0:n_t, v_names_states))
 
-m_M[1, ] <- v_init          # initialize first cycle of Markov trace
+m_M[1, ] <- v_init              # initialize first cycle of Markov trace
 ```
 
 ## 04.2 Transition probability array
 
 ```{r}
 # create the transition probability array
-a_P <- array(0,                                      # Create 3-D array
+a_P <- array(0,  # Create 3-D array
              dim = c(n_states, n_states, n_t),
-             dimnames = list(v_n, v_n, 0:(n_t - 1))) # name the dimensions of the array 
+             dimnames = list(v_names_states, v_names_states, 0:(n_t - 1))) # name the dimensions of the array 
 ```
 
 Fill in the transition probability array:
@@ -177,16 +177,16 @@ a_P["Dead", "Dead", ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){ # t<-1                  # loop through the number of cycles
-  m_M[t + 1, ] <- m_M[t, ] %*% a_P[, , t] # estimate the Markov trace for cycle t + 1 
-                                          # using the t-th matrix from the 
-                                          # probability array 
+for (t in 1:n_t){ # t<-1                   # loop through the number of cycles
+  m_M[t + 1, ] <- m_M[t, ] %*% a_P[, , t]  # estimate the Markov trace for cycle t + 1 
+                                           # using the t-th matrix from the 
+                                           # probability array 
 }
 head(m_M)  # print the first lines of the matrix 
 ```
@@ -202,14 +202,14 @@ matplot(m_M, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace", lwd = 2)              
 # add a legend to the graph
-legend("right", v_n, col = c("black", "red", "green"), lty = 1:3, bty = "n")  
+legend("right", v_names_states, col = c("black", "red", "green"), lty = 1:3, bty = "n")  
 ```
 
 ## 06.2 Overall Survival (OS)
 
 ```{r}
-v_os <- 1 - m_M[, "Dead"]   # calculate the overall survival (OS) probability
-v_os <- rowSums(m_M[, 1:2]) # alternative way of calculating the OS probability   
+v_os <- 1 - m_M[, "Dead"]    # calculate the overall survival (OS) probability
+v_os <- rowSums(m_M[, 1:2])  # alternative way of calculating the OS probability   
 
 # create a simple plot showing the OS
 plot(v_os, type = 'l', 

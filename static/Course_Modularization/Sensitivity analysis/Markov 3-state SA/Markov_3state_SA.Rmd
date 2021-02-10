@@ -95,7 +95,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 v_names_str <- c("Standard of Care", "Treatment")  
 
 # Markov model parameters
-v_n  <- c("Healthy", "Sick", "Dead")  # state names
+v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
 n_t  <- 60                            # number of cycles
 
 v_init <- c("Healthy" = 1,
@@ -120,7 +120,7 @@ u_D       <- 0                        # utility when dead
 d_e       <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%, separate this line for countries like NL where costs and effects have different discount rates
 
 n_str     <- length(v_names_str)      # Number of strategies
-n_states  <- length(v_n)              # number of states
+n_states  <- length(v_names_states)   # number of states
 
 # Discount weights for costs and effects
 v_dwc     <- 1 / (1 + d_c) ^ (0:n_t) 
@@ -130,7 +130,7 @@ v_dwe     <- 1 / (1 + d_e) ^ (0:n_t)
 ## Draw the state-transition cohort model
 
 ```{r}
-m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_n, v_n))
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
 m_P_diag["Healthy", "Sick" ]     = "" 
 m_P_diag["Healthy", "Dead" ]     = ""
 m_P_diag["Healthy", "Healthy" ]  = ""
@@ -153,7 +153,7 @@ m_M_SoC <- m_M_trt <-  matrix(NA,
                               nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                                 # understand Cycle 0)
                               ncol = n_states, 
-                              dimnames = list(0:n_t, v_n))
+                              dimnames = list(0:n_t, v_names_states))
 
 m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
 ```
@@ -164,7 +164,7 @@ m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Mark
 # create the transition probability matrices
 m_P_SoC  <- m_P_trt <- matrix(0,
                               nrow = n_states, ncol = n_states,
-                              dimnames = list(v_n, v_n))  # name the columns and rows of the matrix 
+                              dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the matrix 
                                                
 # print the probability matrices 
 m_P_SoC  # for standard of care
@@ -201,8 +201,8 @@ m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
 check_transition_probability(m_P_SoC, verbose = TRUE)
 check_transition_probability(m_P_trt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(m_P_SoC, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-check_sum_of_transition_array(m_P_trt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_SoC, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_trt, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -225,10 +225,9 @@ matplot(m_M_SoC, type = 'l',
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
         main = "Cohort Trace - standard of care", lwd = 3)  # create a plot of the data
-legend("right", v_n, col = c("black", "red", "green"), 
-       lty = 1:3, bty = "n")                            # add a legend to the graph
-
-abline(v = which.max(m_M_SoC[, "Sick"]), col = "gray")      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
+legend("right", v_names_states, col = c("black", "red", "green"), 
+       lty = 1:3, bty = "n")  # add a legend to the graph
+abline(v = which.max(m_M_SoC[, "Sick"]), col = "gray")  # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 Treatment:
@@ -237,11 +236,10 @@ Treatment:
 matplot(m_M_trt, type = 'l', 
         ylab = "Probability of state occupancy",
         xlab = "Cycle",
-        main = "Cohort Trace - treatment", lwd = 3)     # create a plot of the data
-legend("right", v_n, col = c("black", "red", "green"), 
-       lty = 1:3, bty = "n")                            # add a legend to the graph
-
-abline(v = which.max(m_M_trt[, "Sick"]), col = "gray")      # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
+        main = "Cohort Trace - treatment", lwd = 3)  # create a plot of the data
+legend("right", v_names_states, col = c("black", "red", "green"), 
+       lty = 1:3, bty = "n")  # add a legend to the graph
+abline(v = which.max(m_M_trt[, "Sick"]), col = "gray")  # plot a vertical line that helps identifying at which cycle the prevalence of sick is highest.  
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -409,8 +407,8 @@ options(scipen = 999) # disabling scientific notation in R
 # dataframe containing all parameters, their base case values, and the min and 
 # max values of the parameters of interest 
 df_params_owsa <- data.frame(pars = c("c_trt", "c_S", "u_H"),
-                             min  = c(300 , 500, 0.7),   # min parameter values
-                             max  = c(1200, 2000, 0.9)   # max parameter values
+                             min  = c(300 , 500, 0.7),  # min parameter values
+                             max  = c(1200, 2000, 0.9)  # max parameter values
                              )
 
 owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,    # dataframe with parameters for OWSA
@@ -640,8 +638,5 @@ evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
 plot(evpi, effect_units = "QALY")
 ```
-
-
-
 
 

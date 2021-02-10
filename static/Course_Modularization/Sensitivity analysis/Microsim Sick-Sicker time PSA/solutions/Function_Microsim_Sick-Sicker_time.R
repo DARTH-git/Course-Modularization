@@ -51,7 +51,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       
       # create matrix of state transition probabilities  
       m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
-      rownames(m_p_t) <-  v_n  # give the state names to the rows
+      rownames(m_p_t) <-  v_names_states  # give the state names to the rows
       
       # look up baseline probability and rate of dying based on individual characteristics
       p_HD_all <- inner_join(df_X, p_mort, by = c("Age"))
@@ -130,7 +130,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       
       set.seed(seed) # set the seed
       
-      n_states <- length(v_n) # the number of health states
+      n_states <- length(v_names_states) # the number of health states
       
       # create three matrices called m_M, m_C and m_E
       # number of rows is equal to the n_i, the number of columns is equal to n_t  
@@ -157,7 +157,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
         # check if transition probabilities are between 0 and 1
         check_transition_probability(m_P, verbose = TRUE)
         # check if checks if each of the rows of the transition probabilities matrix sum to one
-        check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
+        check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
         # sample the current health state and store that state in matrix m_M 
         m_M[, t + 1]  <- samplev(m_P)                  
         # calculate costs per individual during cycle t + 1

@@ -251,7 +251,11 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   # open a loop for time running cycles 1 to n_t 
   for (t in 1:n_t) {
     # calculate the transition probabilities for the cycle based on health state t
-    m_P <- Probs(m_M[, t], df_X)        
+    m_P <- Probs(m_M[, t], df_X) 
+    # check if transition probabilities are between 0 and 1
+    check_transition_probability(m_P, verbose = TRUE)
+    # check if each of the rows of the transition probabilities matrix sum to one
+    check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
     # sample the current health state and store that state in matrix m_M 
     m_M[, t + 1]  <- samplev(m_P)       
     m_C[, t + 1]  <- Costs(m_M[, t + 1])  # calculate costs 
@@ -293,7 +297,7 @@ results
 ```{r}
 plot(density(outcomes$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes$m_M)  # health state trace
+plot_trace_microsim(outcomes$m_M)  # health state trace
 ```
 
 Small note: The difference between `paste()` and `paste0()` is that the argument sep by default is ” ” (`paste`) and “” (`paste0`). In conclusion, `paste0()` is faster than `paste()` if our objective is concatenate strings without spaces because we don't have to specify the argument sep.

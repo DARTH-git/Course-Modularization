@@ -323,7 +323,7 @@ results
 ```{r}
 plot(density(outcomes$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes$m_M)  # health state trace
+plot_trace_microsim(outcomes$m_M)  # health state trace
 ```
 
 Small note: The difference between `paste()` and `paste0()` is that the argument sep by default is ” ” (`paste`) and “” (`paste0`). In conclusion, `paste0()` is faster than `paste()` if our objective is concatenate strings without spaces because we don't have to specify the argument sep.

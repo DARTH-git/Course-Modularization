@@ -175,8 +175,6 @@ plot(fit_weib)
 
 As a reminder, AIC stands for Akaike information criterion and is a measure of goodness of fit. AIC is a method that helps us understand which model fits well on the observed portion of the data. This might not necessarily mean that this model is the most appropriate to use when predicting future values. We use AIC comparative and so the best model is the one that has the lowest AIC among all the other models. So A lower AIC value indicates a better fit.
 
-
-
 ```{r}
 fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
                    extrapolate = TRUE, times = times)
@@ -262,9 +260,9 @@ fit_HD <- fit.fun(time = "time", status = "status", data = data_HD, times = time
 fit_SD <- fit.fun(time = "time", status = "status", data = data_SD, times = times, 
                   extrapolate = T)
 
-best.fit_HS <- fit_HS$models$`log-Normal`
-best.fit_HD <- fit_HD$models$`Gompertz`
-best.fit_SD <- fit_SD$models$`Spline`
+best.fit_HS <- fit_HS$model.objects$models$`log-Normal`
+best.fit_HD <- fit_HD$model.objects$models$`Gompertz`
+best.fit_SD <- fit_SD$model.objects$models$`Royston-Parmar`
 ```
 
 - A microsimulation can be fitted instead of a DES.

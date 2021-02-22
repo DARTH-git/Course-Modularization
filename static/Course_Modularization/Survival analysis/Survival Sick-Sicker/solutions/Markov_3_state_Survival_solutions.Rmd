@@ -142,8 +142,8 @@ fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D,  times =
 # Find the best-fitting models based on AIC
 fit_S1S2$AIC
 fit_S1D$AIC
-best_S1S2 <- fit_S1S2$models$`log-Logistic`
-best_S1D  <-  fit_S1D$models$Exponential
+best_S1S2 <- fit_S1S2$model.objects$models$`log-Logistic`
+best_S1D  <-  fit_S1D$model.objects$models$Exponential
 
 # Calculate the transition probabilities from the best-fitting survival models
 p_S1S2    <- trans_prob(surv_prob(best_S1S2))
@@ -216,10 +216,10 @@ matplot(m_M, type ='l')
 ```{r}
 # Vectors with costs and utilities by treatment
 v_u_notrt   <- c(u_S1,  u_S2, u_D)
-v_u_trt     <- c( u_Trt, u_S2, u_D)
+v_u_trt     <- c(u_Trt, u_S2, u_D)
 
-v_c_notrt   <- c( c_S1,         c_S2,         c_D)
-v_c_trt     <- c( c_S1 + c_Trt, c_S2 + c_Trt, c_D)
+v_c_notrt   <- c(c_S1,         c_S2,         c_D)
+v_c_trt     <- c(c_S1 + c_Trt, c_S2 + c_Trt, c_D)
 ```
 
 ## 07.1 Mean Costs and QALYs for Treatment and No Treatment

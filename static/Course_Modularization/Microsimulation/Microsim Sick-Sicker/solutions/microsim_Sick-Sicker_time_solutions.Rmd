@@ -347,11 +347,11 @@ outcomes_trt    <- MicroSim(n_i = n_i, df_X = df_X, Trt = TRUE,  seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes_no_trt$m_M)  # health state trace
+plot_trace_microsim(outcomes_no_trt$m_M)  # health state trace
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes_trt$m_M)     # health state trace
+plot_trace_microsim(outcomes_trt$m_M)     # health state trace
 ```
 
 # 08 Cost-Effectiveness Analysis

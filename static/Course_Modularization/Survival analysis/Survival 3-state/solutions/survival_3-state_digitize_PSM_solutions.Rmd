@@ -85,7 +85,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-v_names_states <- c("healthy", "sick", "dead")  # state names
+v_names_states <- c("Healthy", "Sick", "Dead")  # state names
 n_states  <- length(v_names_states)   # No of states 
 c_l       <- 1 / 12                   # cycle length (a month)
 n_t       <- 20                       # number of years (20 years)
@@ -153,10 +153,11 @@ choose_OS  <- rownames(GoF_OS)[which.min(GoF_OS$AIC)]
 
 # construct a partitioned survival model out of the chosen models
 m_M_PSM <- partsurv(pfs_survHE = fit_PFS, os_survHE  = fit_OS,
-                    choose_PFS = choose_PFS,  choose_OS  = choose_OS, time = times)
+                    choose_PFS = choose_PFS,  choose_OS  = choose_OS, 
+                    time = times, v_names_states = v_names_states)
 
 # plot the results of PSM and the true data 
-plot_trace_PSM(time = times, partsurv.model = m_M_PSM)
+plot_trace_PSM(time = times, partsurv.model = m_M_PSM, v_names_states = v_names_states)
 ```
 
 Calculate total cost and QALYs per cycle.

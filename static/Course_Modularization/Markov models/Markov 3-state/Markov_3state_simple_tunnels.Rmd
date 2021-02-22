@@ -186,7 +186,7 @@ a_P["Dead", "Dead", ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P, n_rows = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P, n_states = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
 ```
 
 # 05 Run Markov model

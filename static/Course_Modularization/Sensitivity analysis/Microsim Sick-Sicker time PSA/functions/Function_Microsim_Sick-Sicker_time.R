@@ -67,12 +67,12 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       m_p_t[, M_t == "S1"] <- rbind((1 - p_S1D[df_X$n_ts]) * p_S1H,
                                     (1 - p_S1D[df_X$n_ts]) * (1 - p_S1H - p_S1S2),
                                     (1 - p_S1D[df_X$n_ts]) *              p_S1S2 , 
-                                    p_S1D[df_X$n_ts]                        )  
+                                         p_S1D[df_X$n_ts]                        )  
       # transition probabilities when sicker
       m_p_t[, M_t == "S2"] <- rbind(0, 
                                     0, 
                                     1 - p_S2D, 
-                                    p_S2D)                                            
+                                        p_S2D)                                            
       # transition probabilities when dead   
       m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                        
       
@@ -159,7 +159,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
         # check if checks if each of the rows of the transition probabilities matrix sum to one
         check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
         # sample the current health state and store that state in matrix m_M 
-        m_M[, t + 1]  <- samplev(m_P)                  
+        m_M[, t + 1]  <- samplev(m_P, 1)                  
         # calculate costs per individual during cycle t + 1
         m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         
         # calculate QALYs per individual during cycle t + 1

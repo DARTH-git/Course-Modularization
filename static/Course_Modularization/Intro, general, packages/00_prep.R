@@ -15,7 +15,7 @@ p_load("devtools", "dplyr", "scales", "ellipse",
        "psych", "scatterplot3d", "grid", "mgcv", 
        "gridExtra", "gdata", "triangle", "flexsurv", "msm", 
        "survminer", "gems", "jsonlite", "rstudioapi", "tidyverse",
-       "shiny", "tidyr", "purrr", "gems", "survHE", "mstate", "abind", "diagram") 
+       "shiny", "tidyr", "purrr", "survHE", "mstate", "abind", "diagram") 
 
 # Enter an empty line to skip updates when prompted
 install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org") 

@@ -84,13 +84,13 @@ p_load_gh("DARTH-git/dampack","DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-set.seed(1)                    # set the seed  
+set.seed(1)            # set the seed  
 v_names_states    <- c("S1", "S2", "D")   # the model states names
 
 # Model structure 
-n_t    <- 30                   # time horizon, 30 cycles
+n_t    <- 30           # time horizon, 30 cycles
 c_l    <- 1
-d_r    <- 0.03         # discount rate of 3% per cycle
+d_r    <- 0.015        # discount rate of 1.5% per cycle
 
 p_S2D  <- 0.2          # probability of dying in sicker state
 
@@ -176,16 +176,16 @@ Fill in the transition probability array:
 
 ```{r}
 # from Sick
-a_P["S1", "S1", ] <-  # Your turn
-a_P["S1", "S2", ] <-  # Your turn
-a_P["S1", "D", ]  <-  # Your turn
+a_P["S1", "S1", ] <- (1 - p_S1D) * (1 - p_S1S2)
+a_P["S1", "S2", ] <- (1 - p_S1D) * p_S1S2
+a_P["S1", "D", ]  <-  p_S1D
 
 # from Sicker
 a_P["S2", "S2", ] <- 1 - p_S2D
 a_P["S2", "D", ]  <- p_S2D
 
 # from Dead
-a_P["D", "D", ] <- 1
+a_P["D", "D", ]   <- 1
 ```
 
 ## 04.3 Check if transition array and probabilities are valid

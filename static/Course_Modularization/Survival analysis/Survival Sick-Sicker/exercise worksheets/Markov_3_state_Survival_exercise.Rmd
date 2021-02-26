@@ -93,7 +93,7 @@ head(data_long)
 | Time horizon                       | `n_t`       | 30 years      |
 | Cycle length                       |             | 1 year        |
 | Names of health states             | `v_n`       | H, S1, S2, D  |
-| Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
+| Annual discount rate (costs/QALYs) | `d_r`       |  1.5%         |
 | Annual transition probabilities    |             |               |
 | - Sick individuals in S1           | `c_S1`      |  $4,000       |
 | - Sick individuals in S2           | `c_S2`      |  $15,000      |

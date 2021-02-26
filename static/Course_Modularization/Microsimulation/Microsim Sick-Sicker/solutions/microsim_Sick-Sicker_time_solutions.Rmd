@@ -298,7 +298,7 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
       ## NOTE: to make this function work n_states = n_i in a Microsimulation
       check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE) ##
       # sample the current health state and store that state in matrix m_M 
-      m_M[, t + 1]  <- samplev(m_P)                  
+      m_M[, t + 1]  <- samplev(m_P, 1)                  
       # calculate costs per individual during cycle t + 1
       m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         
       # calculate QALYs per individual during cycle t + 1
@@ -347,11 +347,11 @@ outcomes_trt    <- MicroSim(n_i = n_i, df_X = df_X, Trt = TRUE,  seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes_no_trt$m_M)  # health state trace
+plot_trace_microsim(outcomes_no_trt$m_M)  # health state trace
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_m_TR(outcomes_trt$m_M)     # health state trace
+plot_trace_microsim(outcomes_trt$m_M)     # health state trace
 ```
 
 # 08 Cost-Effectiveness Analysis

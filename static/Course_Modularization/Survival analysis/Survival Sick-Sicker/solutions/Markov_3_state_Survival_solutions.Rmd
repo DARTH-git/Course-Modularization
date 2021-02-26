@@ -86,15 +86,15 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-set.seed(1)                   # set the seed  
-v_n    <- c("S1", "S2", "D")  # the model states names
+set.seed(1)            # set the seed  
+v_names_states    <- c("S1", "S2", "D")   # the model states names
 
 # Model structure 
-n_t    <- 30    # time horizon, 30 cycles
+n_t    <- 30           # time horizon, 30 cycles
 c_l    <- 1
-d_r    <- 0.03  # discount rate of 3% per cycle
+d_r    <- 0.015        # discount rate of 1.5% per cycle
 
-p_S2D  <- 0.2   # probability of dying in sicker state
+p_S2D  <- 0.2          # probability of dying in sicker state
 
 v_init <- c("S1" = 1,
             "S2" = 0,
@@ -116,7 +116,7 @@ u_D   <- 0             # utility when dead
 u_Trt <- 0.95          # utility when sick(er) and being treated
 
 v_dw        <- 1 / ((1 + d_r) ^ (0:n_t))       # discount weight 
-n_states    <- length(v_n)                     # the number of health states
+n_states    <- length(v_names_states)          # the number of health states
 v_names_str <- c("no treatment", "treatment")  # strategy names
 
 times       <- seq(0, n_t, c_l)                # the cycles in years
@@ -142,8 +142,8 @@ fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D,  times =
 # Find the best-fitting models based on AIC
 fit_S1S2$AIC
 fit_S1D$AIC
-best_S1S2 <- fit_S1S2$models$`log-Logistic`
-best_S1D  <-  fit_S1D$models$Exponential
+best_S1S2 <- fit_S1S2$model.objects$models$`log-Logistic`
+best_S1D  <-  fit_S1D$model.objects$models$Exponential
 
 # Calculate the transition probabilities from the best-fitting survival models
 p_S1S2    <- trans_prob(surv_prob(best_S1S2))
@@ -160,7 +160,7 @@ m_M <- matrix(NA,
               nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
                                 # understand cycle 0)
               ncol = n_states, 
-              dimnames = list(0:n_t, v_n))
+              dimnames = list(0:n_t, v_names_states))
 
 m_M[1, ] <- v_init  # initialize first cycle of Markov trace
 ```
@@ -171,7 +171,7 @@ m_M[1, ] <- v_init  # initialize first cycle of Markov trace
 # create the transition probability array
 a_P <- array(0,                                      # Create 3-D array
              dim = c(n_states, n_states, n_t),
-             dimnames = list(v_n, v_n, 0:(n_t - 1))) # name the dimensions of the array 
+             dimnames = list(v_names_states, v_names_states, 0:(n_t - 1))) # name the dimensions of the array 
 ```
 
 Fill in the transition probability array:
@@ -216,10 +216,10 @@ matplot(m_M, type ='l')
 ```{r}
 # Vectors with costs and utilities by treatment
 v_u_notrt   <- c(u_S1,  u_S2, u_D)
-v_u_trt     <- c( u_Trt, u_S2, u_D)
+v_u_trt     <- c(u_Trt, u_S2, u_D)
 
-v_c_notrt   <- c( c_S1,         c_S2,         c_D)
-v_c_trt     <- c( c_S1 + c_Trt, c_S2 + c_Trt, c_D)
+v_c_notrt   <- c(c_S1,         c_S2,         c_D)
+v_c_trt     <- c(c_S1 + c_Trt, c_S2 + c_Trt, c_D)
 ```
 
 ## 07.1 Mean Costs and QALYs for Treatment and No Treatment

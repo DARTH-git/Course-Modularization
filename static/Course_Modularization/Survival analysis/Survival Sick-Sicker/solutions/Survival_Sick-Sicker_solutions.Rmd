@@ -54,7 +54,7 @@ institutions. These materials may be used, reproduced, modified, distributed
 and adapted with proper attribution.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 rm(list = ls())     # clear memory (removes all the variables from the workspace)
 options(scipen=999) # disable scientific notation
 ```
@@ -84,21 +84,21 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-set.seed(1)                        # set the seed  
+set.seed(1)                          # set the seed  
 v_names_states   <- c("H", "S1", "S2", "D")  # the model states names
 
 # Model structure 
-n_t   <- 30                        # time horizon, 30 cycles
+n_t   <- 30                          # time horizon, 30 cycles
 c_l   <- 1
-n_i   <- 100000                    # number of simulated individuals
-n_s   <- length(v_names_states)    # the number of health states
-d_r   <- 0.03                      # discount rate of 3% per cycle
-v_dw  <- 1 / ((1 + d_r) ^ (0:n_t)) # discount weight 
+n_i   <- 100000                      # number of simulated individuals
+n_states   <- length(v_names_states) # the number of health states
+d_r   <- 0.03                        # discount rate of 3% per cycle
+v_dw  <- 1 / ((1 + d_r) ^ (0:n_t))   # discount weight 
 v_names_str <- c("no treatment", "treatment")  # strategy names
 
 # Event probabilities (per cycle)
 # Annual transition probabilities
-p_HS1    <- 0.15                   # probability of becoming sick when healthy
+p_HS1 <- 0.15  # probability of becoming sick when healthy
 
 # Annual probabilities of death
 # load age dependent probability
@@ -164,10 +164,10 @@ fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = t
 fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
                     extrapolate = F)
 
-best.fit_S1H  <- fit_S1H$ models[["Royston-Parmar"]]
-best.fit_S1S2 <- fit_S1S2$models[["log-Logistic"]]
-best.fit_S1D  <- fit_S1D$ models[["Exponential"]]
-best.fit_S2D  <- fit_S2D$ models[["Weibull (AFT)"]]
+best.fit_S1H  <- fit_S1H$model.objects$models[["Royston-Parmar"]]
+best.fit_S1S2 <- fit_S1S2$model.objects$models[["log-Logistic"]]
+best.fit_S1D  <- fit_S1D$model.objects$models[["Exponential"]]
+best.fit_S2D  <- fit_S2D$model.objects$models[["Weibull (AFT)"]]
 
 # Extract transition probabilities from the best fitting models
 p_S1H  <- trans_prob(surv_prob(best.fit_S1H))
@@ -202,7 +202,7 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
     # transition probabilities for that cycle
   
   # create matrix of state transition probability vectors
-  m_p_t           <- matrix(0, nrow = n_s, ncol = n_i) 
+  m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
   rownames(m_p_t) <-  v_names_states  # give the state names to the rows
   
   # lookup baseline probability and rate of dying based on individual characteristics
@@ -284,7 +284,7 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   
   set.seed(seed)     # set the seed
   
-  n_s <- length(v_names_states) # the number of health states
+  n_states <- length(v_names_states) # the number of health states
   
   # create three matrices called m_M, m_C and m_E
   # number of rows is equal to the n_i, the number of columns is equal to n_t  
@@ -301,13 +301,13 @@ MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
   v_Ts1      <- v_Ts1_init  # initialize time since illnes onset for individual i
   v_Ts2      <- v_Ts2_init  # initialize time since illnes onset for individual i
   
-  m_C[, 1]  <- Costs(m_M[, 1], Trt)        # calculate costs per individual during cycle 0
-  m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt)  # calculate QALYs per individual during cycle 0
+  m_C[, 1]   <- Costs(m_M[, 1], Trt)        # calculate costs per individual during cycle 0
+  m_E[, 1]   <- Effs (m_M[, 1], df_X, Trt)  # calculate QALYs per individual during cycle 0
   
   # open a loop for time running cycles 1 to n_t 
   for (t in 1:n_t) {
     # calculate the transition probabilities for the cycle based on  health state t
-    m_p <- Probs(m_M[, t], df_X, v_Ts1,v_Ts2, t)      
+    m_p <- Probs(m_M[, t], df_X, v_Ts1, v_Ts2, t)      
     # sample the current health state and store that state in matrix m_M 
     m_M[, t + 1]  <- samplev(m_p)                  
     # calculate costs per individual during cycle t + 1
@@ -353,12 +353,12 @@ outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE, seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_no_trt$m_M, v_names_states = v_names_states)  # health state trace
+plot_trace_microsim(outcomes_no_trt$m_M)  # health state trace
 
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_trt$m_M, v_names_states = v_names_states)     # health state trace
+plot_trace_microsim(outcomes_trt$m_M)     # health state trace
 ```
 
 # 08 Cost Effectiveness Analysis

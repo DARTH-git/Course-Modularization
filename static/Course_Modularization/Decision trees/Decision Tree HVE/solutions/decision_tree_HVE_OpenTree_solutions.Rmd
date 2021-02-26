@@ -61,7 +61,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.

@@ -58,7 +58,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
 rm(list = ls())     # clear memory (removes all the variables from the workspace)
 options(scipen=999) # disable scientific notation
 ```
@@ -70,7 +70,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind")   
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind")   
 # install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
@@ -88,7 +88,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 v_names_states <- c("Healthy", "Sick", "Dead")  # state names
 
 c_l       <- 1 / 12                  # cycle length (a month)
-n_t       <- 30                      # number of years (30 years)
+n_t       <- 10                      # number of years (10 years)
 set.seed(2020)                       # set the seed
 n_sim     <- 100                     # number of simulations
 
@@ -99,10 +99,10 @@ times     <- seq(0, n_t, c_l)        # the cycles in years
 Create a transition probability matrix  with all transitions indicated and numbered.
 
 ```{r}
-tmat <- matrix(NA, n_states, n_states, dimnames = list(v_names_states,v_names_states))
-tmat["healthy", "sick"]  <- 1
-tmat["healthy", "dead"]  <- 2
-tmat["sick"   , "dead"]  <- 3
+tmat <- matrix(NA, n_states, n_states, dimnames = list(v_names_states, v_names_states))
+tmat["Healthy", "Sick"]  <- 1
+tmat["Healthy", "Dead"]  <- 2
+tmat["Sick"   , "Dead"]  <- 3
 
 layout.fig <- c(2,1)
 plotmat(t(tmat), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,  
@@ -116,14 +116,7 @@ Generate data.
 n_pat       <- 550                       # cohort size
 n_years     <- 30                        # number of years 
 generate    <- gen_data(n_pat, n_years)  # generates true, censored and OS/PFS data 
-true_data   <- generate$true_data        # stores the true data
-sim_data    <- generate$sim_data         # stores the censored data
-status      <- generate$status           # stores the censoring status
 OS_PFS_data <- generate$OS_PFS_data      # store the OS / PFS structured data
-
-head(true_data)
-head(sim_data)
-head(status)
 head(OS_PFS_data)
 ```
 
@@ -152,6 +145,28 @@ ggsurvplot(
 ) 
 ```
 
+Cumulative hazards:
+
+```{r}
+# plot cumulative hazards
+ggsurvplot(
+  fit_KM_OS, 
+  data = OS_PFS_data, 
+  size = 1,                  # change line size
+  palette = c("blue3"),      # custom color palettes
+  conf.int = TRUE,           # Add confidence interval
+  pval = FALSE,              # Add p-value
+  risk.table = TRUE,         # Add risk table
+  risk.table.height = 0.25,  # Useful to change when you have multiple groups
+  ggtheme = theme_bw(),      # Change ggplot2 theme
+  xlab = 'Time in years',    # Change X-axis label
+  ylab = 'Cumulative hazard', 
+  title    = "Cumulative hazard for Overall Survival (OS)", 
+  subtitle = "Based on Nelson–Aalen estimates",
+  fun = "cumhaz"
+) 
+```
+
 ## 04.1 Survival Analysis
 
 Fit different parametric survival models and choose the best fitting ones.
@@ -161,7 +176,11 @@ Fit different parametric survival models and choose the best fitting ones.
 fit_weib <- flexsurvreg(Surv(time = OS_time, event = OS_status) ~ 1, data = OS_PFS_data,
                         dist = "weibull")
 plot(fit_weib)
+```
 
+We developed a function `fit.fun` that allows you to fit several parametric survival models at once. The function utilizes functionality from another `R` package - `survHE`. 
+
+```{r}
 # fit all parametric models to the data and extract the AIC/BIC. 
 # Select the one with the most appropriate fit
 # Repeat for PFS and OS
@@ -169,14 +188,30 @@ fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data,
                    extrapolate = TRUE, times = times)
 fit_OS  <- fit.fun(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
                    extrapolate = TRUE, times = times) 
+```
 
+We also developed a function `fit.fun.cure` that allows you to fit several parametric mixture cure models at once.
+
+```{r}
+# fit all parametric mixture cure models to the data and extract the AIC/BIC. 
+# Select the one with the most appropriate fit
+# Repeat for PFS and OS
+fit_PFS_cure <- fit.fun.cure(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
+                             extrapolate = TRUE, times = times)
+fit_OS_cure  <- fit.fun.cure(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
+                             extrapolate = TRUE, times = times)
+```
+
+Select the best-fitting model for OS and PFS based on goodness-of-fit measures like AIC and BIC.
+
+```{r}
 # Check AIC of each model to assess goodness-of-fit
-GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)
-GoF_OS  <- data.frame(AIC = fit_OS$AIC,  BIC = fit_OS$BIC)
-
-# "Exponential", "Weibull (AFT)", "Gamma", "log-Normal", "log-Logistic", "Gen. Gamma"  
-choose_PFS <- rownames(GoF_PFS)[which.min(GoF_PFS$AIC)]
-choose_OS  <- rownames(GoF_OS)[which.min(GoF_OS$AIC)]
+GoF_PFS <- data.frame(AIC = c(fit_PFS$AIC, fit_PFS_cure$AIC),
+                      BIC = c(fit_PFS$BIC, fit_PFS_cure$BIC))
+GoF_OS  <- data.frame(AIC = c( fit_OS$AIC,  fit_OS_cure$AIC),
+                      BIC = c( fit_OS$BIC,  fit_OS_cure$BIC))
+choose_PFS <- rownames(GoF_PFS)[which.min(GoF_PFS$AIC)]; choose_PFS
+choose_OS  <- rownames(GoF_OS)[which.min(GoF_OS$AIC)]; choose_OS
 ```
 
 Superimpose the best-fitting survival curves on the Kaplan-Meier curves.
@@ -185,7 +220,7 @@ Superimpose the best-fitting survival curves on the Kaplan-Meier curves.
 # PFS
 fit_KM_PFS   <- survfit(Surv(time = PFS_time, event = PFS_status) ~ 1, data = OS_PFS_data)
 # Select the best fitted survivor function based on the smallest AIC
-best_PFS <- fit_PFS$models[[choose_PFS]]  
+best_PFS <- fit_PFS$model.objects$models[[choose_PFS]]  
 # plot KM for PFS
 PFS_superimpose <- ggsurvplot(
   fit_KM_PFS, 
@@ -204,19 +239,19 @@ PFS_superimpose <- ggsurvplot(
 # extract the estimated survival probabilities and the confidence intervals
 summary_best_PFS <- as.data.frame(summary(best_PFS)) 
 # superimpose the survival probabilities
-PFS_superimpose  <- PFS_superimpose$plot + 
+PFS_superimpose$plot  <- PFS_superimpose$plot + 
   geom_line(aes(x=time, y=est), size=0.55, alpha=0.65, data=summary_best_PFS)
 # superimpose the lower bound of the confidence interval
-PFS_superimpose  <- PFS_superimpose + 
+PFS_superimpose$plot  <- PFS_superimpose$plot + 
   geom_line(aes(x=time, y=lcl), size=0.55, alpha=0.65, linetype='dashed', data=summary_best_PFS)
 # superimpose the upper bound of the confidence interval
-PFS_superimpose  <- PFS_superimpose +
+PFS_superimpose$plot  <- PFS_superimpose$plot +
   geom_line(aes(x=time, y=ucl), size=0.55, alpha=0.65, linetype='dashed', data=summary_best_PFS)
 PFS_superimpose
 
 # OS
 # Select the best fitted survivor function based on the smallest AIC
-best_OS <- fit_OS$models[[choose_OS]]  
+best_OS <- fit_OS$model.objects$models[[choose_OS]]  
 # plot KM for OS
 OS_superimpose <- ggsurvplot(
   fit_KM_OS, 
@@ -235,15 +270,38 @@ OS_superimpose <- ggsurvplot(
 # extract the estimated survival probabilities and the confidence intervals
 summary_best_OS <- as.data.frame(summary(best_OS)) 
 # superimpose the survival probabilities
-OS_superimpose  <- OS_superimpose$plot + 
+OS_superimpose$plot  <- OS_superimpose$plot + 
   geom_line(aes(x=time, y=est), size=0.55, alpha=0.65, data=summary_best_OS)
 # superimpose the lower bound of the confidence interval
-OS_superimpose  <- OS_superimpose + 
+OS_superimpose$plot  <- OS_superimpose$plot + 
   geom_line(aes(x=time, y=lcl), size=0.55, alpha=0.65, linetype='dashed', data=summary_best_OS)
 # superimpose the upper bound of the confidence interval
-OS_superimpose  <- OS_superimpose +
+OS_superimpose$plot  <- OS_superimpose$plot +
   geom_line(aes(x=time, y=ucl), size=0.55, alpha=0.65, linetype='dashed', data=summary_best_OS)
 OS_superimpose
+```
+
+We can plot the hazard ratio of OS vs. PFS using the best-fitting models. 
+
+```{r}
+df_HR <- boot_hr(surv_model1 = best_PFS, surv_model2 = best_OS, times = times, B = 100)
+df_HR %>% filter(time > 1) %>% 
+  ggplot(aes(x = time, y = med)) + 
+         geom_ribbon(aes(ymin=lcl, ymax=ucl), colour = NA, fill = "darkgreen", alpha=0.1) +
+         geom_line(size = 0.5, color = "darkgreen") +
+         scale_x_continuous(breaks = c(1:10)) + 
+         labs(title = "Hazard ratio of PFS vs. OS",
+              subtitle = "Median [2.5%, 97.5%]",
+              x = "time (years)",
+              y = "hazard ratio") + 
+         theme_bw() 
+```
+
+We developed the function `surv_prob` to extract survival probabilities from a partitioned survival model obtained by `partsurv`. We also developed the function `trans_prob` to convert survival probabilities into transition probabilities.
+
+```{r}
+surv_prob(best_OS) # extract survival probabilities
+trans_prob(surv_prob(best_OS)) # convert survival probabilities to transition probabilities
 ```
 
 ## 04.2 Partitioned Survival model
@@ -258,7 +316,7 @@ m_M_PSM <- partsurv(pfs_survHE = fit_PFS,
                     v_names_states = v_names_states)
 
 # plot the results of PSM and the true data 
-plot_trace_PSM(time = times, partsurv.model = m_M_PSM)
+plot_trace_PSM(time = times, partsurv.model = m_M_PSM, v_names_states = v_names_states)
  
 # construct a PSA  partitioned survival model out of the fitted models
 m_M_PSM_PSA <- partsurv(pfs_survHE = fit_PFS,
@@ -270,7 +328,7 @@ m_M_PSM_PSA <- partsurv(pfs_survHE = fit_PFS,
                         PA = T, n_sim = 1000)
 
 # plot the results of PSM and the trace
-plot_trace_PSM(time = times, partsurv.model = m_M_PSM_PSA, PA = T)
+plot_trace_PSM(time = times, partsurv.model = m_M_PSM_PSA, PA = T, v_names_states = v_names_states)
 ```
 
 Other outputs from the partitioned survival model could be explored:

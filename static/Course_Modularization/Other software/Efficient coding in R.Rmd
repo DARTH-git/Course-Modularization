@@ -1,0 +1,160 @@
+---
+title: "Efficient coding in R"
+author: "Eline Krijkamp for DARTH workgroup"
+date: "2/24/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require('pacman')) install.packages('pacman'); library(pacman) 
+```
+
+## Introduction
+
+The content of R Markdown document is inspired by the Datacamp course *Efficient coding in R* [https://campus.datacamp.com/courses/writing-efficient-r-code/the-art-of-benchmarking?ex=1] tought by Colin Gillespie. An other good source is the book [Efficient R programming from
+Colin Gillespie and Robin Lovelace](https://csgillespie.github.io/efficientR/])
+
+In this Markdown we discuss some aspects of code optimasation that are relevent for decision sciences after you understand the basis of decision modeling in R and need to 
+
+
+## Quick fix
+Always start by installing the newest `R` version. R itself works on efficienty itself and by making sure you have the newest version your code might already run faster without you having to do much.
+```{r}
+# you can check which version you have by running version
+version
+```
+
+On the (R website)[https://www.r-project.org] you cand find what the newest version is. 
+
+
+## Do you really have to update your code?
+Sorry, for getting personal. But is it really the code that is slow? Or is it maybe the compute you are working on that is the bottleneck of the slow code. With the benchmark function we can find out where you are compared to other computers
+```{r benchmarkme}
+p_load(benchmarkme)
+my_benchmark <- benchmark_io(runs = 3, size = 50)
+plot(my_benchmark)
+```
+
+
+
+## CSV files and RDS files
+In decision modeling and HTA we often extract data from large CSV files. However, loading and working with these CVS files in R can be slow. A  neat trick is to read in the CVS data once into the R environment and save as an R binary file (rds) using `saveRDS()`. And next time you need it you read in the rds file using `readRDS()`.
+
+In addition data.table is also more efficient than data.frame. Using data.table might already help you speeding up your code. More about data.table can be found on this [website](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+
+## & vs &&
+In our simulations we often like to check some condition before we execute a specific calculation or before we assign a transition probability, cost or reward. To check if two condition are true we often use the & operator. If we for example like to check if a person is sick and has no history of surgery jet we can use the & operator. The & operator will than always value both its arguments. However, this is quite inefficient. because after know that the person is not sick, their is not need to check of any history of disease as we will not do a surgical procedure on a healthy person anyway. Therefore, if health is FALSE, than healthy & no history of disease will always be FALSE, regardless of the value of the surgical history. Thus, you can save a little processing time by not calculating it. The && operator takes advantage of this trick, and doesn't bother to calculate y if it doesn't make a difference to the overall result.
+
+```{r}
+library(microbenchmark)
+df_patient <- data.frame(state     = "Healthy", 
+                         n_surgery = 1)
+
+
+# Make a function to check if a patient is eligible for surgery using & operator
+surgery <- function(df_patient){
+  surgery <- FALSE
+  if(df_patient$state == "Sick" & df_patient$n_surgery <= 1){
+    surgery <- TRUE}
+  return(surgery)
+  }
+
+# A function to check if a patient is eligible for surgery using && operator
+improved_surgery <- function(patient){
+  surgery <- FALSE
+  if(df_patient$state == "Sick" && df_patient$n_surgery <= 1){
+    surgery <- TRUE}
+    return(surgery)
+  }
+
+# Compare the functions
+microbenchmark(surgery(df_patient), 
+               improved_surgery(df_patient), times = 1e5)
+
+```
+
+One thing to note is that && only works on single logical values, i.e., logical vectors of length 1 (like you would pass into an if condition), but & also works on vectors of length greater than 1.
+
+
+
+## ifelse vs if_else
+Like in the previous function, we often like to check if a condition is true and if this condition is true we execture and other calculation than in case it is false. In the previous function we initiate a FALSE statement and only overwrite it with TRUE if the condition is also true. However, in many cases we have longer equations to perform and we end up using ifelse statements. Base R has the function `ifelse` while dylr has the `if_else` statement. 
+
+`if_else` is faster than ifelse, but it is important to realize that they don't work identical. 
+
+For example:
+if_else is more strict. It checks that both alternatives are of the same type and otherwise throws an error, while ifelse will promote types as necessary. This may be a benefit in some circumstances, but may otherwise break scripts if you don't check for errors or explicitly force type conversion. For example:
+
+```{r, eval = FALSE}
+ifelse(c(TRUE, TRUE, FALSE), "a", 3)
+[1] "a" "a" "3"
+ 
+if_else(c(TRUE, TRUE, FALSE), "a" , 3)
+Error: `false` must be type character, not double
+
+```
+
+This might happens when you have 
+
+Lets go back to your healthy patient with history of
+```{r}
+# both functions work if we like to return a logical operator
+ifelse( df_patient$state == "Sick" & df_patient$n_surgery <= 1, TRUE, FALSE)
+
+if_else(df_patient$state == "Sick" & df_patient$n_surgery <= 1, TRUE, FALSE)
+
+
+# But ifelse only works if we like to return true in case of a valid condition and a value in case that is not true
+ifelse( df_patient$state[v_test] == "Sick" & df_patient$n_surgery <= 1, TRUE, 100)
+
+if_else(df_patient$state[v_test] == "Sick" & df_patient$n_surgery <= 1, 200, 100)
+
+
+df_patient <- rbind(df_patient, df_patient, df_patient, df_patient)
+v_test <- 1
+
+df_patient$state[v_test]
+
+# Is it differnet for matrix? -> check in the matrix the health state to find the row in the 
+
+
+
+```
+
+
+# Find the bottle necks
+
+## Profvis package
+You can profile your code with the profvis function. This is a relatively easy way to find the required memory and time in parts of your function. 
+
+```{r}
+library("profvis")
+
+v_vector <- 1:1e5
+run_simple_function <- function(v_vector){
+  list <- as.list(v_vector)
+  
+}
+
+profvis({ ADD CODE})
+```
+
+# Cores in R
+Many computers nowadays have more than 1 core. However, R only used on core. You can find out how many cores your computer has by running the following code.  
+
+```{r}
+library("parallel") 
+library("benchmarkme")
+detectCores() 
+get_cpu()
+```
+Sometimes it can be worth the effort to turn your code into code that runs processes parallel to speed up the process. 
+
+
+
+
+## apply and parApply
+The package
+
+

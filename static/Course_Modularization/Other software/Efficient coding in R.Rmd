@@ -61,10 +61,11 @@ surgery <- function(df_patient){
   }
 
 # A function to check if a patient is eligible for surgery using && operator
-improved_surgery <- function(patient){
+improved_surgery <- function(df_patient){
   surgery <- FALSE
   if(df_patient$state == "Sick" && df_patient$n_surgery <= 1){
-    surgery <- TRUE}
+    surgery <- TRUE
+    }
     return(surgery)
   }
 

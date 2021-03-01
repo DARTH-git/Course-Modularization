@@ -1,18 +1,3 @@
-## To do:
-# improve the warning/stop to see if the number of parameters are different
-## return those that are double -> also stop the function etc.
-# add data for multiple strategies?
-# work with tibble/matrix where possible ? 
-# restrictions of the getbeta param -> These calculations will only work if the variance is less than the mean*(1-mean)
-
-
-# Questions:
-# Normal distribution: is it ok to calculate the SD only via upper limit 95% CI -> Do we also want 90% or other % CI levels
-# Can we have "logical orders in the excel. where with normal you have to give 95-CI or mean and sd
-# Can we make use of the value mean, or does this give problesm and shall we have med/modus/mode for example?
-# lognormal: do we like to use rnorm or lnrom? 
-# do we like to do the check if there is an sd or a upper and limit with upperlimit of with sd?
-# how to deal with the diriclet parameters - should that be the mean and se for all the probabilities? Do we like to have 6 colums for the shapes in that case?
 
 # Make a function to make the PSA data set 
 make_psa_df <- function(df_param, n_iter, seed = 123){
@@ -54,7 +39,7 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
     # Beta distribution
     if(param$distribution == "beta"){
       # if mean and sigma -> get the shapes and add
-      if(c("mean") %in% names(param)){
+      if(c("sigma") %in% names(param)){
         l_shapes   <-  with(param, 
                                 dampack::beta_params(mean  = mean,
                                                      sigma = sigma))
@@ -70,12 +55,12 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
       
       } else if(param$distribution == "gamma"){
       # if mean and sigma -> get the shapes and add
-      if(c("mean") %in% names(param)){
+      if(c("sigma") %in% names(param)){
         l_shapes   <-  with(param, 
                             dampack::gamma_params(mu  = mean,
                                                  sigma = sigma))
-        param$shape <- l_shapes$shape
-        param$scale  <- l_shapes$scale }
+        param$shape  <- as.numeric(l_shapes$shape)
+        param$scale  <- as.numeric(l_shapes$scale) }
         
         m_param_psa[, p] <- with(param, 
                                  rgamma(n = n_iter,

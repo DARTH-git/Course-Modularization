@@ -220,9 +220,9 @@ m_P_trt <- m_P_notrt
 ```{r}
 for (t in 1:n_t){  # loop through the number of cycles
   m_M_notrt[t + 1, ] <- m_M_notrt[t, ] %*% m_P_notrt  # estimate the Markov trace 
-                                                         # for the next cycle (t + 1)
+                                                      # for the next cycle (t + 1)
   m_M_trt[t + 1, ]   <- m_M_trt[t, ]   %*% m_P_trt    # estimate the Markov trace 
-                                                         # for the next cycle (t + 1)
+                                                      # for the next cycle (t + 1)
 } # close the loop
 
 head(m_M_notrt)  # show the first 6 lines of the matrix

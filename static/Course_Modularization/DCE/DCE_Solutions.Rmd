@@ -16,7 +16,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
 
-In this worksheet, we will be analysing the data from a discrete choice experiment (DCE) using `R`. To start, this worksheet will demonstrate how to analyse a DCE using a simple example with two potential choices. You will then complete a set of exercises to analyses a DCE with 3 potential options. For both questions, we will be using the `mlogit` package in `R` to undertake the analysis. So, to begin, we will load the relevant packages into `R`.
+In this worksheet, we will be analysing the data from a discrete choice experiment (DCE) using `R`. To start, this worksheet will demonstrate how to analyse a DCE using a simple example with two potential choices. You will then complete a set of exercises to analyze a DCE with 3 potential options. For both questions, we will be using the `mlogit` package in `R` to undertake the analysis. So, to begin, we will load the relevant packages into `R`.
 
 # 01 Load packages
 
@@ -35,6 +35,8 @@ The `mlogit` package contains several datasets from DCEs, which we will be using
 data("Train", package = "mlogit")
 Train$scenario <- 1:nrow(Train) # Add a "Scenario" index that is unique for each row of the data
 ```
+
+The `Train` dataset is a sample of 235 Dutch individuals who made choices across 2929 scenarios to determine the relative value of four different components of train travelling; the price of ticket `price` (in cents of guilders - that's how old this dataset is!), the time taken for the journey `time` (in minutes), the comfort level of the journey `comfort` (coded 0, 1, 2 in order of decreasing comfort) and the number of changes `change`. 
 
 The `Train` dataset is in *wide* format, while the `mlogit` function requires that the data are in *long* format. The `dfidx` package and function have been developed alongside the `mlogit` package to transform the data from wide form to long form data.
 
@@ -55,7 +57,7 @@ Tr
 
 Once we have formatted the data in long form, we can use the `mlogit` function to fit the logistic regression. 
 
-The `Train` dataset is a sample of 235 Dutch individuals who made choices across 2929 scenarios to determine the relative value of four different components of train travelling; the price of ticket `price` (in cents of guilders - that's how old this dataset is!), the time taken for the journey `time` (in minutes), the comfort level of the journey `comfort` (coded 0, 1, 2 in order of decreasing comfort) and the number of changes `change`. 
+
 
 ## 03 Fit a Standard Binomial Logit
 
@@ -67,11 +69,11 @@ model.standardlogit <- mlogit(choice ~ price + time + change + comfort, Tr)
 summary(model.standardlogit)
 ```
 
-This model summary include the estimates for the coefficients, demonstrating that all four aspects of our journey are unlikely to have no impact on the calculation of the utility. Note that this model also includes an option specific intercept, essentially this is the component of the utility of choosing option `B` over option `A` that arises from the fact that it is option `B`. In general, this option specific intercept is valid if the options are "named" in some way, i.e., a named drug versus a generic, as it measures the additional importance of the named option.
+This model summary includes the estimates for the coefficients, demonstrating that all four aspects of our journey are unlikely to have no impact on the calculation of the utility. Note that this model also includes an option specific intercept, essentially this is the component of the utility of choosing option `B` over option `A` that arises from the fact that it is option `B`. In general, this option specific intercept is valid if the options are "named" in some way, i.e., a named drug versus a generic, as it measures the additional importance of the named option.
 
 The McFadden $R^2$ value offers an estimate of the goodness of fit of this model. Similar, to the $R^2$ measure in standard regression, the higher the value, the better the fit. However, values of McFadden $R^2$ are significantly smaller than standard $R^2$ values with values between 0.2 and 0.4 representing excellent fit.
 
-The results from this model can be analysed to give the willingness-to-pay for a given attribute or the marginal rate of substitution if neither of the attributes are prices. The willingness-to-pay is equal to the ratio of the two coefficients.
+The results from this model can be analysed to give the willingness-to-pay for a given attribute or the marginal rate of substitution if neither of the attributes are prices. The willingness-to-pay is equal to the ratio of two coefficients.
 
 ```{r}
 ## Willingness to pay or marginal rate of subsitution
@@ -101,7 +103,7 @@ summary(model.nointercept)
 
 This implicitly sets the utility when all attribute levels are 0 to 0, although this can be rescaled to estimate the "true" utility if alternative anchoring points are mode relevant.
 
-An option specific slope for a given attribute or individual-level characteristic can be added using a `|` in the formula for the regression model. In this case, we all a 0 after the bar to indicate that the model should only include an option-specific slope and not an option-specific intercept.
+An option specific slope for a given attribute or individual-level characteristic can be added using a `|` in the formula for the regression model. In this case, we add a 0 after the bar to indicate that the model should only include an option-specific slope and not an option-specific intercept.
 
 ```{r}
 # Standard binary logit with no intercept and option specific slope for comfort
@@ -111,7 +113,7 @@ summary(model.optionspecific)
 ```
 
 
-The next extension to the standard model is a mixed logit model. A mixed logit model will allow the impact of each attribute to varying across individuals. This is equivalent to using a random slope in a mixed effect model. In the `mlogit` package, this random slope is assigned using the `rpar` argument. This argument lists all the attributes for which we would like to use a random effect and then states that the random effect can have one of four distributions (`n` for normal, `l` for log-normal, `t` for truncated normal and `u` for uniform).
+The next extension to the standard model is a mixed logit model. A mixed logit model will allow the impact of each attribute to vary across individuals. This is equivalent to using a random slope in a mixed effect model. In the `mlogit` package, this random slope is assigned using the `rpar` argument. This argument lists all the attributes for which we would like to use a random effect and then states that the random effect can have one of four distributions (`n` for normal, `l` for log-normal, `t` for truncated normal and `u` for uniform).
 
 At least two additional arguments are used to define how these random effects should be estimated and defined. Firstly `R` defines the number of random numbers that should be used to estimate the random effects. `panel` is then a logical that states whether the data consists of repeated observations from the same individuals (as we have in this setting) and if this should be included in the estimation procedure.
 ```{r}
@@ -123,7 +125,7 @@ model.randomeffect <- mlogit(choice ~ price + time + change + comfort + 0, Tr,
 summary(model.randomeffect)
 ```
 
-The random effects parameters are provided in this summary. In particular, the mean and standard deviation for each of the parameters are listed with each of th standard deviations estimated as 1. This indicates that there are some difficulties estimating these variance parameters.
+The random effects parameters are provided in this summary. In particular, the mean and standard deviation for each of the parameters are listed with each of the standard deviations estimated as 1. This indicates that there are some difficulties estimating these variance parameters.
 
 The `mlogit` package can also extend to the nested logit model, which allows for more complex interdependencies using different arguments in the `mlogit()` function. The `?mlogit` help file can be used to explore these arguments or a full worked example can be found at this website `https://cran.r-project.org/web/packages/mlogit/vignettes/e2nlogit.html`.
 
@@ -133,7 +135,7 @@ In this section, you will analyse a different DCE dataset from the `mlogit` pack
 
 ### Load the Data
 
-Firstly, we will load the `Heating` dataset which contains a sample of 900 Californian households to understand the preferences for different types of heating.
+Firstly, we will load the `Heating` dataset which contains a sample of 900 Californian households to understand the preferences for different types of heating. to understand the dataset better you can type `?Heating`
 ```{r}
 data("Heating", package = "mlogit")
 head(Heating)
@@ -197,6 +199,7 @@ summary(model.simple)
 ```
 
 **Exercise 3**: Include the four household specific characteristics in your model as option-specific slopes. Are any of these household specific characteristics important to the model fit?
+
 ```{r}
 ## Your turn
 model.all <- mlogit(depvar ~ ic + oc | income + rooms + agehed + region, data = Heat)

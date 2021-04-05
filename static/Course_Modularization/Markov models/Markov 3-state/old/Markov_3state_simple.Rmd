@@ -102,17 +102,17 @@ v_init <- c("Healthy" = 1,
             "Dead"    = 0)  # initial cohort distribution (everyone allocated to the "healthy" state)
 
 # Transition probabilities
-p_HD <- 0.02                         # probability of dying when healthy
-p_HS <- 0.05                         # probability of becoming sick when healthy, under standard of care
+p_HD     <- 0.02                     # probability of dying when healthy
+p_HS     <- 0.05                     # probability of becoming sick when healthy, under standard of care
 p_HS_trt <- 0.03                     # probability of becoming sick when healthy, under treatment
-p_SD <- 0.1                          # probability of dying when sick
+p_SD     <- 0.1                      # probability of dying when sick
 
 # Costs and utilities  
 c_H   <- 400                         # cost of one cycle in healthy state
 c_S   <- 1000                        # cost of one cycle in sick state
 c_D   <- 0                           # cost of one cycle in dead state
 c_trt <- 800                         # cost of treatment (per cycle)
-u_H   <- 0.8                         # utility when healthy 
+u_H   <- 1                           # utility when healthy 
 u_S   <- 0.5                         # utility when sick
 u_D   <- 0                           # utility when dead
 d_e   <- d_c <- 0.03                 # discount rate per cycle equal discount of costs and QALYs by 3%

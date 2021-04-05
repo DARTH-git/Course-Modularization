@@ -113,7 +113,7 @@ p_SD     <- 0.1             # probability of dying when sick
 c_H      <- 400             # cost of one cycle in healthy state
 c_S      <- 1000            # cost of one cycle in sick state
 c_D      <- 0               # cost of one cycle in dead state
-u_H      <- 0.8             # utility when healthy 
+u_H      <- 1               # utility when healthy 
 u_S      <- 0.5             # utility when sick
 u_D      <- 0               # utility when dead
 d_e      <- d_c <- 0.03     # discount rate per cycle equal discount of costs and QALYs by 3%

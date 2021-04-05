@@ -74,11 +74,10 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr")                                           
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "dampack")                                           
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) # Uncomment if there is a newer version
 # install_github("DARTH-git/dectree", force = TRUE) # Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/dectree") # load one or more GitHub packages  
+p_load_gh("DARTH-git/dectree") # load one or more GitHub packages  
 ```
 
 # 02 Load functions

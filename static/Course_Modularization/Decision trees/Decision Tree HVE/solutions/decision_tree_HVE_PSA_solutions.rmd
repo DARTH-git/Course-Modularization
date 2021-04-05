@@ -87,13 +87,11 @@ if (!require('pacman')) {
 }
 library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", 
-       "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "reshape2")                                            
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "reshape2", "dampack")                                            
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/dectree", force = TRUE) Uncomment if there is a newer version
 # install_github("annaheath/EVSI", force = TRUE) #Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/dectree")
+p_load_gh("DARTH-git/dectree")
 p_load_gh("annaheath/EVSI")
 ```
 

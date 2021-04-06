@@ -1,34 +1,88 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Day 4 schedule on Decision Modeling in R Workshop</title>
-    <link>/days/day4/</link>
-    <description>Recent content in Day 4 schedule on Decision Modeling in R Workshop</description>
+    <title>Day 3 schedule on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/</link>
+    <description>Recent content in Day 3 schedule on Janssen Decision Modeling in R Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2020</copyright>
-    <lastBuildDate>Mon, 13 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/days/day4/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Probabilistic sensitivity analysis in R</title>
-      <link>/days/day4/psa/</link>
-      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      <title>Sensitivty Analysis - Exercises</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_exercise/</link>
+      <pubDate>Mon, 09 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/days/day4/psa/</guid>
-      <description>Here you find all the files for the sensitivity analysis session. To avoid issued with directories, we recommend storing all files in one folder.
-Slides SensitivityAnalysisSlides.pptx
-Demostration Please download Functions.R under student exercise template.
-Functions_decision_tree_HVE.R
-decision_tree_HVE_PSA_solutions.rmd
-Exercise worksheet markov_sick-sicker_PSA_exercise.pdf
-Student exercise template Functions we use:
-Functions.R
-Functions_markov_sick-sicker.R
-markov_sick-sicker_PSA_template.rmd
-Instructor solutions markov_sick-sicker_PSA_solutions.rmd</description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_exercise/</guid>
+      <description>Exercise worksheet (SA: Markov Sick-Sicker model)Download exercise worksheet
+Data for the exerciseDownload data
+Student templateDownload Sick-Sicker Markov model function (template)
+Download student template
+Instructor solutionsDownload instructor Sick-Sicker markov model function
+Download instructor solutions
+</description>
+    </item>
+    
+    <item>
+      <title>Cohort State Transition Models</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/markov/</link>
+      <pubDate>Fri, 06 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/markov/</guid>
+      <description>Demo (3-state model)Download demo
+Exercise worksheet (Sick-Sicker model)Download exercise worksheet
+Data for the exerciseDownload data
+Student templateDownload student template
+Instructor solutionsDownload instructor solutions
+</description>
+    </item>
+    
+    <item>
+      <title>Sensitvity Analysis - Demo</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_demo/</link>
+      <pubDate>Fri, 06 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_demo/</guid>
+      <description>Demo (SA: 3-state Markov model)Download 3-state Markov model function
+Download demo
+</description>
+    </item>
+    
+    <item>
+      <title>Senstiviy Analysis - Presentation Videos</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_psa/</link>
+      <pubDate>Fri, 06 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_psa/</guid>
+      <description>SlidesDownload slides - Sensitivity Analysis 01
+Download slides - Sensitivity Analysis 02
+Download slides - Sensitivity Analysis structure
+Download slides - dampack
+Sensitivity Analysis - Introduction
+  Sensitivity Analysis - 01 DSA
+  Sensitivity Analysis 02 - PSA
+  Value of Information (VOI)
+  </description>
+    </item>
+    
+    <item>
+      <title>Cohort State Transition Models (STM) - Presentation Videos</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_markov/</link>
+      <pubDate>Tue, 03 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_markov/</guid>
+      <description>SlidesDownload slides
+STM 1: Introduction
+  STM 2: Overview
+  STM 3: Simple 3-State Example
+  STM 4: Calculating Model Outcomes
+  STM 5: Time-Varying State-Transition Models
+  STM 6: History Dependence
+  </description>
     </item>
     
   </channel>

@@ -1,5 +1,5 @@
 ---
-title: Day 3 schedule
+title: "April 23 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -7,37 +7,30 @@ categories: []
 tags: []
 menu:
   day4:
-    name: "Day 3 schedule"
+    name: "Schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Thursday, Nov 5**: *Microsimulation Models*
+**Friday, April 23**: *Cohort state-transition models (part 1)*
 
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8AM-12pm Eastern Time
 
-Here is a tentative timetable for Day 3:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: cohort state-transition model exercise solutions |
-| 9:30 – 10:30| Code review: Microsimulation models in R  | 
-| 10:30 – 12:00 | Hands-on exercise: Microsimulation models |
-| 1:00pm – 4:00pm | On your own |
+| 8:00 - 8:15  | Review of cohort state-transition model concepts	 |
+| 8:15 - 9:00| Walk through code for time-homogeneous cohort state-transition model (3-state model)  | 
+| 9:00 - 9:30 | Hands-on activity: peer code walk-through |
+| 9:30 - 10:15| Demonstrate `dampack` package and code for analysis (CEA, OWSA, PSA) |
+| 10:15 - 10:30 | Break |
+| 10:30 - 11:00| Hands-on activity: peer code walk-through  | 
+| 11:00 - 11:45 | Hands-on activity: Cohort state-transition model exercise (time-homogeneous Sick-Sicker model) |
+| 11:45 - 12:00 | Session summary and Q&A |
 
-From 1:00pm to 4:00pm, please:
-
-- Complete microsimulation hands-on exercise
-
-- Watch "Day 4: Sensitivity Analysis" lecture series
-
-## Synchronous session recording
-
-```{r, echo=F}
-blogdown::shortcode("vimeo", "476082616")
-```
-
+Before April 29, please watch [cSTM lectures 5-6]().

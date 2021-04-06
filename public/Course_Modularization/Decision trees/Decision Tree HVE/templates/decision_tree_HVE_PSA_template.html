@@ -1,0 +1,257 @@
+---
+title: 'PSA: Three-strategy decision tree in R - HVE'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+keep_tex: yes
+self_contained: no
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6,7)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Making. 2020 Online first. <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;here&quot;, &quot;dplyr&quot;, &quot;devtools&quot;, &quot;scales&quot;, &quot;ellipse&quot;, &quot;ggplot2&quot;, &quot;lazyeval&quot;, &quot;igraph&quot;, &quot;truncnorm&quot;, &quot;ggraph&quot;, &quot;reshape2&quot;, &quot;knitr&quot;, &quot;stringr&quot;)                                           
+# load (install if required) packages from GitHub
+# install_github(&quot;DARTH-git/dampack&quot;, force = TRUE) # Uncomment if there is a newer version
+# install_github(&quot;DARTH-git/dectree&quot;, force = TRUE) # Uncomment if there is a newer version
+p_load_gh(&quot;DARTH-git/dampack&quot;, &quot;DARTH-git/dectree&quot;) # load one or more GitHub packages  </code></pre>
+</div>
+<div id="load-functions" class="section level1">
+<h1>02 Load functions</h1>
+<pre class="r"><code>source(here(&#39;functions&#39;,&#39;Functions.R&#39;))</code></pre>
+</div>
+<div id="define-parameter-input-values" class="section level1">
+<h1>03 Define parameter input values</h1>
+<pre class="r"><code>v_names_str   &lt;- c(&quot;No Tx&quot;, &quot;Tx All&quot;, &quot;Biopsy&quot;)    # names of strategies
+n_str         &lt;- length(v_names_str)               # number of strategies
+wtp           &lt;- 100000                            # willingness to pay threshold
+
+# Probabilities
+p_HVE         &lt;- 0.52   # prevalence of HVE
+p_HVE_comp    &lt;- 0.71   # complications with untreated HVE
+p_OVE_comp    &lt;- 0.01   # complications with untreated OVE
+p_HVE_comp_tx &lt;- 0.36   # complications with treated HVE
+p_OVE_comp_tx &lt;- 0.20   # complications with treated OVE
+p_biopsy_comp &lt;- 0.05   # probability of complications due to biopsy
+
+# Costs
+c_VE          &lt;- 1200   # cost of viral encephalitis care without complications
+c_VE_comp     &lt;- 9000   # cost of viral encephalitis care with complications
+c_tx          &lt;- 9500   # cost of treatment
+c_biopsy      &lt;- 25000  # cost of brain biopsy
+
+# QALYs
+q_VE          &lt;- 20     # remaining QALYs for those without VE-related complications
+q_VE_comp     &lt;- 19     # remaining QALYs for those with VE-related complications
+q_loss_biopsy &lt;- -0.01  # one-time QALY loss due to brain biopsy
+
+# store the parameters into a list
+l_params_all &lt;- as.list(data.frame(p_HVE, p_HVE_comp, p_OVE_comp, p_HVE_comp_tx, p_OVE_comp_tx, p_biopsy_comp, 
+                                   c_VE, c_VE_comp, c_tx, c_biopsy, 
+                                   q_VE, q_VE_comp, q_loss_biopsy))
+# store the names of the parameters into a vector
+v_names_params &lt;- c(&#39;p_HVE&#39;, &#39;p_HVE_comp&#39;, &#39;p_OVE_comp&#39;, &#39;p_HVE_comp_tx&#39;, &#39;p_OVE_comp_tx&#39;, &#39;p_biopsy_comp&#39;, 
+                    &#39;c_VE&#39;, &#39;c_VE_comp&#39;,  &#39;c_tx&#39;, &#39;c_biopsy&#39;, &#39;q_VE&#39;, &#39;q_VE_comp&#39;, &#39;q_loss_biopsy&#39;)</code></pre>
+</div>
+<div id="create-and-run-decision-tree-model" class="section level1">
+<h1>04 Create and run decision tree model</h1>
+<pre class="r"><code>decision_tree_HVE_output &lt;- with(as.list(l_params_all), {
+  
+  # Create vector of weights for each strategy 
+  
+  v_w_no_tx  &lt;- c(  p_HVE  *    p_HVE_comp  ,  # HVE, complications
+                    p_HVE  * (1-p_HVE_comp) ,  # HVE, no complications
+                 (1-p_HVE) *    p_OVE_comp  ,  # OVE, complications
+                 (1-p_HVE) * (1-p_OVE_comp))   # OVE, no complications
+  
+  v_w_tx     &lt;- # your turn
+    
+  v_w_biopsy &lt;- # your turn
+  
+  # Create vector of outcomes (QALYs) for each strategy 
+  
+  v_qaly_no_tx  &lt;- c(q_VE_comp ,  # HVE, complications
+                     q_VE      ,  # HVE, no complications
+                     q_VE_comp ,  # OVE, complications
+                     q_VE)        # OVE, no complications
+  
+  v_qaly_tx     &lt;- # your turn
+    
+  v_qaly_biopsy &lt;- # your turn
+  
+  # Create vector of costs for each strategy 
+
+  v_cost_no_tx  &lt;- c(c_VE_comp ,  # HVE, complications
+                     c_VE      ,  # HVE, no complications
+                     c_VE_comp ,  # OVE, complications
+                     c_VE)        # OVE, no complications
+  
+  v_costs_tx     &lt;- # your turn
+    
+  v_costs_biopsy &lt;- # your turn 
+  
+  # Calculate total utilities for each strategy ####
+  total_qaly_no_tx  &lt;- v_w_no_tx  %*%  v_qaly_no_tx      
+  total_qaly_tx     &lt;- v_w_tx     %*%  v_qaly_tx
+  total_qaly_biopsy &lt;- v_w_biopsy %*%  v_qaly_biopsy
+  
+  # Calculate total costs for each strategy ####
+  total_cost_no_tx  &lt;- v_w_no_tx  %*%  v_cost_no_tx    
+  total_cost_tx     &lt;- v_w_tx     %*%  v_cost_tx
+  total_cost_biopsy &lt;- v_w_biopsy %*%  v_cost_biopsy
+  
+  v_total_qaly &lt;- c(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy)  # vector of total QALYs
+  v_total_cost &lt;- c(total_cost_no_tx, total_cost_tx, total_cost_biopsy)  # vector of total costs
+  v_nmb        &lt;- v_total_qaly * wtp - v_total_cost                      # calculate vector of nmb
+  
+  # Name outcomes
+  names(v_total_qaly) &lt;- v_names_str  # names for the elements of the total QALYs vector
+  names(v_total_cost) &lt;- v_names_str  # names for the elements of the total cost vector
+  names(v_nmb)        &lt;- v_names_str  # names for the elements of the nmb vector
+  
+  df_output &lt;- data.frame(Strategy =  v_names_str,
+                          Cost     =  v_total_cost,
+                          Effect   =  v_total_qaly,
+                          NMB      =  v_nmb)
+  return(df_output)
+})
+  
+# model output
+decision_tree_HVE_output</code></pre>
+<div id="plot-the-decision-tree" class="section level2">
+<h2>04.1 Plot the decision tree</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="cost-effectiveness-analysis" class="section level2">
+<h2>05 Cost-Effectiveness Analysis</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="plot-frontier-of-decision-tree" class="section level2">
+<h2>05.1 Plot frontier of Decision Tree</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+</div>
+<div id="deterministic-sensitivity-analysis" class="section level1">
+<h1>06 Deterministic Sensitivity Analysis</h1>
+<div id="list-of-input-parameters" class="section level2">
+<h2>06.1 List of input parameters</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="load-decision-tree-model-function" class="section level2">
+<h2>06.2 Load decision tree model function</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="one-way-sensitivity-analysis-owsa" class="section level2">
+<h2>06.3 One-way sensitivity analysis (OWSA)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="plot-owsa" class="section level2">
+<h2>06.3.1 Plot OWSA</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="optimal-strategy-with-owsa" class="section level2">
+<h2>06.3.2 Optimal strategy with OWSA</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="tornado-plot" class="section level2">
+<h2>06.3.3 Tornado plot</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="two-way-sensitivity-analysis-twsa" class="section level2">
+<h2>06.4 Two-way sensitivity analysis (TWSA)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="plot-twsa" class="section level2">
+<h2>06.4.1 Plot TWSA</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+</div>
+<div id="probabilistic-sensitivity-analysis-psa" class="section level1">
+<h1>07 Probabilistic Sensitivity Analysis (PSA)</h1>
+<pre class="r"><code># your turn</code></pre>
+<div id="create-psa-object-for-dampack" class="section level2">
+<h2>07.2 Create PSA object for dampack</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="save-psa-objects" class="section level2">
+<h2>07.2.1 Save PSA objects</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="create-probabilistic-analysis-graphs" class="section level2">
+<h2>07.3 Create probabilistic analysis graphs</h2>
+<pre class="r"><code># your turn</code></pre>
+<p>Vector with willingness-to-pay (WTP) thresholds.</p>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="cost-effectiveness-scatter-plot" class="section level2">
+<h2>07.3.1 Cost-Effectiveness Scatter plot</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="conduct-cea-with-probabilistic-output" class="section level2">
+<h2>07.4 Conduct CEA with probabilistic output</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="plot-cost-effectiveness-frontier" class="section level2">
+<h2>07.4.1 Plot cost-effectiveness frontier</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="cost-effectiveness-acceptability-curves-ceacs-and-frontier-ceaf" class="section level2">
+<h2>07.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="expected-loss-curves-elcs" class="section level2">
+<h2>07.4.3 Expected Loss Curves (ELCs)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+<div id="expected-value-of-perfect-information-evpi" class="section level2">
+<h2>07.4.4 Expected value of perfect information (EVPI)</h2>
+<pre class="r"><code># your turn</code></pre>
+</div>
+</div>

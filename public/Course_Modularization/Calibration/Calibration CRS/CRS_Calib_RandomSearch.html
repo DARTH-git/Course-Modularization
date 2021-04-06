@@ -1,0 +1,236 @@
+---
+title: 'Calibrating a 3-state cancer model'
+subtitle: 'Random search using Latin-Hypercube Sampling'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Alarid-Escudero F, Maclehose RF, Peralta Y, Kuntz KM, Enns EA.
+Non-identifiability in model calibration and implications for
+medical decision making. Med Decis Making. 2018; 38(7):810-821.</p></li>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+</ul>
+<p>A walkthrough of the code could be found in the follwing link:
+- <a href="https://darth-git.github.io/calibSMDM2018-materials/" class="uri">https://darth-git.github.io/calibSMDM2018-materials/</a></p>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="calibration-specifications" class="section level1">
+<h1>00 Calibration Specifications</h1>
+<p>Model: 3-State Cancer Relative Survival (CRS) Markov Model</p>
+<p>Inputs to be calibrated: p_Mets, p_DieMets</p>
+<p>Targets: Surv</p>
+<p>Calibration method: Random search using Latin-Hypercube Sampling</p>
+<p>Goodness-of-fit measure: Sum of Log-Likelihood</p>
+</div>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;lhs&quot;, &quot;plotrix&quot;, &quot;psych&quot;)</code></pre>
+</div>
+<div id="load-target-data" class="section level1">
+<h1>02 Load target data</h1>
+<pre class="r"><code>load(&quot;CRS_CalibTargets.RData&quot;)
+lst_targets &lt;- CRS_targets
+
+# Plot the targets
+
+# TARGET 1: Survival (&quot;Surv&quot;)
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = &quot;Time&quot;, ylab = &quot;Pr Survive&quot;)
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = &quot;Time&quot;, ylab = &quot;Target 2&quot;)</code></pre>
+</div>
+<div id="load-model-as-a-function" class="section level1">
+<h1>03 Load model as a function</h1>
+<pre class="r"><code># - inputs are parameters to be estimated through calibration
+# - outputs correspond to the target data
+
+source(&quot;CRS_MarkovModel_Function.R&quot;) # creates the function run_crs_markov()
+
+# Check that it works
+v_params_test &lt;- c(p_Mets = 0.10, p_DieMets = 0.05)
+run_crs_markov(v_params_test) # It works!</code></pre>
+</div>
+<div id="specify-calibration-parameters" class="section level1">
+<h1>04 Specify calibration parameters</h1>
+<pre class="r"><code># Specify seed (for reproducible sequence of random numbers)
+set.seed(072218)
+
+# number of random samples
+n_samp &lt;- 1000
+
+# names and number of input parameters to be calibrated
+v_param_names &lt;- c(&quot;p_Mets&quot;,&quot;p_DieMets&quot;)
+n_param &lt;- length(v_param_names)
+
+# range on input search space
+lb &lt;- c(p_Mets = 0.04, p_DieMets = 0.04) # lower bound
+ub &lt;- c(p_Mets = 0.16, p_DieMets = 0.16) # upper bound
+
+# number of calibration targets
+v_target_names &lt;- c(&quot;Surv&quot;)
+n_target &lt;- length(v_target_names)</code></pre>
+</div>
+<div id="calibrate" class="section level1">
+<h1>05 Calibrate!</h1>
+<pre class="r"><code># record start time of calibration
+t_init &lt;- Sys.time()
+
+###  Generate a random sample of input values  ###
+
+# Sample unit Latin Hypercube
+m_lhs_unit &lt;- randomLHS(n_samp, n_param)
+
+# Rescale to min/max of each parameter
+m_param_samp &lt;- matrix(nrow=n_samp,ncol=n_param)
+for (i in 1:n_param){
+  m_param_samp[,i] &lt;- qunif(m_lhs_unit[,i],
+                           min = lb[i],
+                           max = ub[i])
+}
+colnames(m_param_samp) &lt;- v_param_names
+
+# view resulting parameter set samples
+pairs.panels(m_param_samp)
+
+
+###  Run the model for each set of input values ###
+
+# initialize goodness-of-fit vector
+m_GOF &lt;- matrix(nrow = n_samp, ncol = n_target)
+colnames(m_GOF) &lt;- paste0(v_target_names, &quot;_fit&quot;)
+
+# loop through sampled sets of input values
+for (j in 1:n_samp){
+  
+  ###  Run model for a given parameter set  ###
+  model_res &lt;- run_crs_markov(v_params = m_param_samp[j, ])
+  
+  
+  ###  Calculate goodness-of-fit of model outputs to targets  ###
+
+  # TARGET 1: Survival (&quot;Surv&quot;)
+  # log likelihood  
+  m_GOF[j,1] &lt;- sum(dnorm(x = lst_targets$Surv$value,
+                       mean = model_res$Surv,
+                       sd = lst_targets$Surv$se,
+                       log = T))
+  
+  # weighted sum of squared errors (alternative to log likelihood)
+  # w &lt;- 1/(lst_targets$Surv$se^2)
+  # m_GOF[j,1] &lt;- -sum(w*(lst_targets$Surv$value - v_res)^2)
+  
+  
+  # TARGET 2: (if you had more...)
+  # log likelihood
+  # m_GOF[j,2] &lt;- sum(dnorm(x = lst_targets$Target2$value,
+  #                        mean = model_res$Target2,
+  #                        sd = lst_targets$Target2$se,
+  #                        log = T))
+  
+  
+} # End loop over sampled parameter sets
+
+
+###  Combine fits to the different targets into single GOF  ###
+# can give different targets different weights
+v_weights &lt;- matrix(1, nrow = n_target, ncol = 1)
+# matrix multiplication to calculate weight sum of each GOF matrix row
+v_GOF_overall &lt;- c(m_GOF%*%v_weights)
+# Store in GOF matrix with column name &quot;Overall&quot;
+m_GOF &lt;- cbind(m_GOF,Overall_fit=v_GOF_overall)
+
+# Calculate computation time
+comp_time &lt;- Sys.time() - t_init</code></pre>
+</div>
+<div id="exploring-best-fitting-input-sets" class="section level1">
+<h1>06 Exploring best-fitting input sets</h1>
+<pre class="r"><code># Arrange parameter sets in order of fit
+m_calib_res &lt;- cbind(m_param_samp,m_GOF)
+m_calib_res &lt;- m_calib_res[order(-m_calib_res[,&quot;Overall_fit&quot;]),]
+
+# Examine the top 10 best-fitting sets
+m_calib_res[1:10,]
+
+# Plot the top 100 (top 10%)
+plot(m_calib_res[1:100,1],m_calib_res[1:100,2],
+     xlim=c(lb[1],ub[1]),ylim=c(lb[2],ub[2]),
+     xlab = colnames(m_calib_res)[1],ylab = colnames(m_calib_res)[2])
+
+# Pairwise comparison of top 100 sets
+pairs.panels(m_calib_res[1:100,v_param_names])
+
+### Plot model-predicted output at best set vs targets ###
+v_out_best &lt;- run_crs_markov(m_calib_res[1,])
+
+# TARGET 1: Survival (&quot;Surv&quot;)
+plotrix::plotCI(x = lst_targets$Surv$time, y = lst_targets$Surv$value, 
+                ui = lst_targets$Surv$ub,
+                li = lst_targets$Surv$lb,
+                ylim = c(0, 1), 
+                xlab = &quot;Time&quot;, ylab = &quot;Pr Survive&quot;)
+points(x = lst_targets$Surv$time, 
+       y = v_out_best$Surv, 
+       pch = 8, col = &quot;red&quot;)
+legend(&quot;topright&quot;, 
+       legend = c(&quot;Target&quot;, &quot;Model-predicted output&quot;),
+       col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))
+
+# TARGET 2: (if you had more...)
+# plotrix::plotCI(x = lst_targets$Target2$time, y = lst_targets$Target2$value, 
+#                 ui = lst_targets$Target2$ub,
+#                 li = lst_targets$Target2$lb,
+#                 ylim = c(0, 1), 
+#                 xlab = &quot;Time&quot;, ylab = &quot;Target 2&quot;)
+# points(x = lst_targets$Target2$time, 
+#        y = v_out_best$Target2, 
+#        pch = 8, col = &quot;red&quot;)
+# legend(&quot;topright&quot;, 
+#        legend = c(&quot;Target&quot;, &quot;Model-predicted output&quot;),
+#        col = c(&quot;black&quot;, &quot;red&quot;), pch = c(1, 8))</code></pre>
+</div>

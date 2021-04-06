@@ -1,50 +1,90 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Day 1 schedule on Decision Modeling in R Workshop</title>
-    <link>/days/day1/</link>
-    <description>Recent content in Day 1 schedule on Decision Modeling in R Workshop</description>
+    <title>April 6-15 schedule on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/</link>
+    <description>Recent content in April 6-15 schedule on Janssen Decision Modeling in R Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2020</copyright>
-    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/days/day1/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Intro to decision modeling in R</title>
-      <link>/days/day1/intro/</link>
-      <pubDate>Fri, 17 Jul 2020 00:00:00 +0000</pubDate>
+      <title>Data manipulation</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/data_manipulation/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/days/day1/intro/</guid>
-      <description>Slides CourseIntroSlides.pptx
-Preparation Run code in this script to download all packages needed for this workshop.
-00_prep.R</description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/data_manipulation/</guid>
+      <description>Presentation video   SlidesDownload slides
+DataDownload data
+Download data documentation
+Student templatesDownload student template
+Instructor solutionsSolutions will be uploaded after April 16.
+</description>
     </item>
     
     <item>
-      <title>Decision tree models in R</title>
-      <link>/days/day1/tree/</link>
-      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      <title>Data visualization</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/plotting/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/days/day1/tree/</guid>
-      <description>Slides DecisionTreeSlides.pptx
-Exercise worksheet decision_tree_HVE_exercise.pdf
-Student exercise template decision_tree_HVE_template.Rmd
-Instructor solutions decision_tree_HVE_solutions.Rmd
-Below is the dataset that is the input of the dectree functions.
-decision_tree_HVE_branches.csv</description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/plotting/</guid>
+      <description>Presentation video   SlidesDownload slides
+Student templatesDownload student template
+Instructor solutionsSolutions will be uploaded after April 16.
+</description>
     </item>
     
     <item>
-      <title>dampack &amp; darthpack</title>
-      <link>/days/day1/tools/</link>
-      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      <title>Getting Ready</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/getting_ready/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/days/day1/tools/</guid>
-      <description>Slides dampack.pptx
-darthpack.pdf</description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/getting_ready/</guid>
+      <description>Presentation video   Install packagesInstall packages required for this workshop by running all code in this R script:
+Download R script
+SlidesDownload slides
+Student templateDownload student template
+Instructor solutionsThere are no solutions for this template - simply go through it.
+</description>
+    </item>
+    
+    <item>
+      <title>Introduction to R</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/introduction_to_r/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/introduction_to_r/</guid>
+      <description>Presentation video   SlidesDownload slides
+Student templateDownload student template
+Instructor solutionsSolutions will be uploaded after April 16.
+</description>
+    </item>
+    
+    <item>
+      <title>Loops and functions</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/loops_and_funcitons/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/loops_and_funcitons/</guid>
+      <description>Presentation video   SlidesDownload slides
+Student templatesDownload student template
+Instructor solutionsSolutions will be uploaded after April 16.
+</description>
+    </item>
+    
+    <item>
+      <title>Welcome</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/welcome/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/welcome/</guid>
+      <description>Welcome to Introduction to R!
+Presentation video   SlidesDownload slides
+</description>
     </item>
     
   </channel>

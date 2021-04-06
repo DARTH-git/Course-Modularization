@@ -3,207 +3,303 @@
     
     <url>
     
-      <loc>/days/day2/markov/</loc>
-      <lastmod>2020-07-21T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day1/intro/</loc>
-      <lastmod>2020-07-17T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day4/psa/</loc>
-      <lastmod>2020-07-24T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/dampack-demo/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day5/calib/</loc>
-      <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/data_manipulation/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day3/microsim/</loc>
-      <lastmod>2020-07-22T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/plotting/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day2/markov_variants/</loc>
-      <lastmod>2020-07-21T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/getting_ready/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day1/tree/</loc>
-      <lastmod>2020-07-20T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/intro_to_decision_analysis/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day5/survival/</loc>
-      <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/intro_to_r_q_and_a/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day1/tools/</loc>
-      <lastmod>2020-07-20T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/introduction_to_r/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day5/voi/</loc>
-      <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/</loc>
-      <lastmod>2020-07-24T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/loops_and_funcitons/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/</loc>
-      <lastmod>2020-07-24T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/matrix_algebra/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/system/</loc>
-      <lastmod>2020-07-15T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/shiny-examples/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day1/</loc>
-      <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/r-tips/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day2/</loc>
-      <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/darth/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day3/</loc>
-      <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/welcome/</loc>
+      <lastmod>2021-04-05T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/</loc>
-      <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/darthpack/</loc>
+      <lastmod>2020-11-10T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day4/</loc>
-      <lastmod>2020-07-13T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/</loc>
+      <lastmod>2020-11-10T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/days/day5/</loc>
-      <lastmod>2020-07-13T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/shiny/</loc>
+      <lastmod>2020-11-10T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/local/</loc>
-      <lastmod>2020-07-13T00:00:00+00:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_demo/</loc>
+      <lastmod>2020-11-09T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/accommodations/</loc>
-      <lastmod>2019-09-11T00:00:00-08:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_exercise/</loc>
+      <lastmod>2020-11-09T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/instructors/</loc>
-      <lastmod>2019-09-11T00:00:00-08:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day5/</loc>
+      <lastmod>2020-11-09T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/time-and-location/</loc>
-      <lastmod>2019-09-11T00:00:00-08:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/</loc>
+      <lastmod>2020-11-09T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/tutorials/</loc>
-      <lastmod>2018-12-10T00:00:00-08:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_exercise/</loc>
+      <lastmod>2020-11-09T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/prework/slack/</loc>
-      <lastmod>2018-12-10T00:00:00-08:00</lastmod>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/videos_calibration/</loc>
+      <lastmod>2020-11-08T00:00:00+00:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/post/</loc>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/markov/</loc>
+      <lastmod>2020-11-06T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/sa_demo/</loc>
+      <lastmod>2020-11-06T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_psa/</loc>
+      <lastmod>2020-11-06T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day5/markov_variants/</loc>
+      <lastmod>2020-11-06T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/</loc>
+      <lastmod>2020-11-05T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/</loc>
+      <lastmod>2020-11-05T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/opportunities/</loc>
+      <lastmod>2020-11-03T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day4/videos_markov/</loc>
+      <lastmod>2020-11-03T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/system/</loc>
+      <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/local/</loc>
+      <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/</loc>
+      <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/instructors/</loc>
+      <lastmod>2020-10-26T00:00:00-08:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/post/</loc>
       <lastmod>2017-01-01T00:00:00-08:00</lastmod>
     </url>
     
@@ -211,21 +307,56 @@
     
     <url>
     
-      <loc>/categories/</loc>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/categories/</loc>
     </url>
     
   
     
     <url>
     
-      <loc>/publication_types/</loc>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/</loc>
     </url>
     
   
     
     <url>
     
-      <loc>/tags/</loc>
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/accommodations/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/publication_types/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/tutorials/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/slack/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/tags/</loc>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/prework/time-and-location/</loc>
     </url>
     
   

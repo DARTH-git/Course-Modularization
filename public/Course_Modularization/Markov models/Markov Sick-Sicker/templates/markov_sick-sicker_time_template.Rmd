@@ -1,0 +1,275 @@
+---
+title: 'Markov Sick-Sicker model in R'
+subtitle: "with age-dependency"
+author: "The DARTH workgroup"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+Fernando Alarid-Escudero, PhD (1) 
+
+Eva A. Enns, MS, PhD (2)	
+
+M.G. Myriam Hunink, MD, PhD (3,4)
+
+Hawre J. Jalal, MD, PhD (5) 
+
+Eline M. Krijkamp, MSc (3)	
+
+Petros Pechlivanoglou, PhD (6,7)
+
+Alan Yang, MSc (7)
+
+In collaboration of: 		
+
+1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
+   Aguascalientes, Mexico
+2. University of Minnesota School of Public Health, Minneapolis, MN, USA
+3. Erasmus MC, Rotterdam, The Netherlands
+4. Harvard T.H. Chan School of Public Health, Boston, USA
+5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
+6. University of Toronto, Toronto ON, Canada
+7. The Hospital for Sick Children, Toronto ON, Canada
+
+Please cite our publications when using this code:
+ 
+- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
+Microsimulation modeling for health decision sciences using R: A tutorial. 
+Med Decis Making. 2018;38(3):400–22. 
+https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
+ 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+A Multidimensional Array Representation of State-Transition Model Dynamics. 
+Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
+\newpage
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+Change `eval` to `TRUE` if you want to knit this document.
+
+```{r}
+rm(list = ls())      # clear memory (removes all the variables from the workspace)
+```
+
+# 01 Load packages
+
+```{r, warning = FALSE, message = FALSE}
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "dampack")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load_gh("DARTH-git/darthtools")
+```
+
+# 02 Load functions
+
+```{r}
+# all functions are in the darthtools package
+```
+
+# 03 Input model parameters
+
+```{r}
+# Strategy names
+v_names_str <- c("No Treatment", "Treatment") 
+
+# Markov model parameters
+age      <- 25                       # age at baseline
+max_age  <- 55                       # maximum age of follow up
+n_t      <- max_age - age            # time horizon, number of cycles
+v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
+                                     # Sicker (S2), Dead (D)
+v_init   <- c("H"  = 1, 
+              "S1" = 0, 
+              "S2" = 0, 
+              "D"  = 0)              # initial cohort distribution
+
+
+# Transition probabilities (per cycle) and hazard ratios
+# Read age-specific mortality rates from csv file
+
+# MAKE SURE YOU HAVE A DATA FOLDER! Or when in the same folder remove the ../data/ part 
+lt_usa_2005 <- read.csv("../data/HMD_USA_Mx_2015.csv")
+
+v_r_HD <- lt_usa_2005 %>% 
+  filter(Age >= age & Age <= (max_age-1)) %>%
+  select(Total) %>%
+  as.matrix()
+
+
+# Transition probabilities (per cycle)
+p_HD     <- rate_to_prob(r = v_r_HD, t = 1)  # probability to die when healthy
+p_HS1    <- 0.15          	         # probability to become sick when healthy, conditional on surviving
+p_S1H    <- 0.5           	         # probability to become healthy when sick, conditional on surviving
+p_S1S2   <- 0.105         	         # probability to become sicker when sick, conditional on surviving
+hr_S1    <- 3             	         # hazard ratio of death in sick vs healthy
+hr_S2    <- 10            	         # hazard ratio of death in sicker vs healthy 
+r_S1D    <- hr_S1 * v_r_HD  	       # rate of death in sick
+r_S2D    <- hr_S2 * v_r_HD  	       # rate of death in sicker
+p_S1D    <- rate_to_prob(r = r_S1D, t = 1)    # probability to die in sick
+p_S2D    <- rate_to_prob(r = r_S2D, t = 1)    # probability to die in sicker
+
+# Cost and utility inputs 
+c_H      <- 2000                     # cost of remaining one cycle in the healthy state
+c_S1     <- 4000                     # cost of remaining one cycle in the sick state
+c_S2     <- 15000                    # cost of remaining one cycle in the sicker state
+c_trt    <- 12000                    # cost of treatment(per cycle)
+c_D      <- 0                        # cost of being in the death state
+u_H      <- 1                        # utility when healthy
+u_S1     <- 0.75                     # utility when sick
+u_S2     <- 0.5                      # utility when sicker
+u_D      <- 0                        # utility when dead
+u_trt    <- 0.95                     # utility when being treated
+d_e      <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%
+
+n_str     <- length(v_names_str)     # number of strategies
+n_states  <- length(v_names_states)  # number of states
+
+# Discount weights for costs and effects
+v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
+v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
+```
+
+# 04 Define and initialize matrices and vectors
+
+## 04.1 Cohort trace
+
+```{r}
+# create the markov trace matrix M capturing the proportion of the cohort in each state 
+# at each cycle
+m_M_notrt <- m_M_trt <- matrix(NA, 
+                               nrow     = n_t + 1, ncol = n_states,
+                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
+
+head(m_M_notrt) # show first 6 rows of the matrix 
+
+# The cohort starts as healthy
+m_M_notrt[1, ] <- m_M_trt[1, ] <- v_init  # initiate first cycle of cohort trace 
+```
+
+## 04.2 Transition probability array
+
+```{r}
+# create the transition probability array for NO treatment
+a_P_notrt <- array(0,  # Create 3-D array
+                   dim = c(n_states, n_states, n_t),
+                   dimnames = list(v_names_states, v_names_states, 0:(n_t-1))) # name dimensions
+a_P_notrt[, , 1:3]
+```
+
+Fill in the transition probability array:
+
+```{r}
+# from Healthy
+
+# from Sick
+
+# from Sicker
+
+# from Dead
+
+# create transition probability array for treatment same as no treatment
+a_P_trt <- a_P_notrt  
+
+# In the Sick-Sicker example the transitions are similar. Therefore, you can use the same values in the transition probability array. If you are modeling other strategies you have to update the transition probabilities accordingly
+```
+
+# 05 Run Markov model
+
+```{r}
+# your turn
+
+```
+
+# 06 Compute and Plot Epidemiological Outcomes
+
+## 06.1 Cohort trace
+
+```{r}
+# your turn
+
+```
+
+## 06.2 Overall Survival (OS)
+
+```{r}
+# your turn
+
+```
+
+## 06.2.1 Life Expectancy (LE)
+
+```{r}
+# your turn
+
+```
+
+## 06.3 Disease prevalence
+
+```{r}
+# your turn
+
+```
+
+## 06.4 ratio of sick(S1) vs sicker(S2)
+
+```{r}
+# your turn
+
+```
+
+# 07 Compute Cost-Effectiveness Outcomes
+
+## 07.1 Mean Costs and QALYs for Treatment and NO Treatment
+
+```{r}
+# your turn
+
+```
+
+## 07.2 Discounted Mean Costs and QALYs
+
+```{r}
+# your turn
+
+# Store discounted costs and effectiveness for each strategy in a data frame
+df_ce       <- data.frame(Strategy = NA, # <-- your value (strategy names)
+                          Cost     = NA, # <-- your value (strategy costs)
+                          Effect   = NA  # <-- your value (strategy QALYs)
+                          )
+```
+
+## 07.3 Compute ICERs of the Markov model
+
+```{r}
+# Use the function calculate_icers() from the dampack package
+df_cea <- calculate_icers(cost       = df_ce$Cost,
+                          effect     = df_ce$Effect,
+                          strategies = df_ce$Strategy)
+df_cea 
+```
+
+## 07.4 Plot frontier of the Markov model
+
+```{r}
+plot(df_cea, effect_units = "QALYs")
+```
+

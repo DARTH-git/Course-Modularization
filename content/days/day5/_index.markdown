@@ -1,42 +1,38 @@
 ---
-title: Day 4 schedule
+title: "April 29 Schedule"
 author: ''
-date: "2020-11-09"
+date: "2021-04-06"
 slug: day5
 categories: []
 tags: []
 menu:
   day5:
-    name: "Day 4 schedule"
+    name: "Schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Friday, Nov 6**: *Sensitivity Analysis*
+**Thursday, April 29**: *Cohort state-transition models (part 2)*
 
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8AM-12pm Eastern Time
 
-Here is a tentative timetable for Day 4:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: microsimulation model exercise solutions |
-| 9:30 – 10:30| Code review: Probabilistic sensitivity analysis  | 
-| 10:30 – 12:00 | Hands-on exercise: Probabilistic sensitivity analysis  |
-| 1:00pm – 4:00pm | On your own |
-
-From 1:00pm to 4:00pm, please:
-
-- Complete sensitivity analysis hands-on exercise
-
-- Watch “Day 5: Model Calibration” lecture series
-
-## Synchronous session recording
-
-<!--html_preserve-->{{% vimeo "477007766" %}}<!--/html_preserve-->
+| 8:00 - 8:30  | Review time-homogeneous exercise solutions (from part 1)	 |
+| 8:30 – 8:45	| Review of time-heterogeneous cohort state-transition concepts | 
+|  8:45 – 9:15 | Walk through code for time-dependent cohort state-transition model (age-dependent 3-state model) |
+|  9:15 – 9:30	| Hands-on activity: peer code walk-through |
+| 9:30 – 10:00 | Walk through code for history-dependent cohort state-transition model (3-state model with tunnel states) |
+| 10:00 – 10:15| Hands-on activity: peer code walk-through  | 
+| 10:15 – 10:30 | Break |
+| 10:30 – 11:15 | Hands-on activity: Cohort time-dependent state transition model exercise (Sick-Sicker model with age and history dependence)|
+| 11:15 – 11:30| Review exercise solutions | 
+| 11:30 – 12:00 | Course summary and reflections|
 
 

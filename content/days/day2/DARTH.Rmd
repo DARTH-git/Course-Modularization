@@ -12,5 +12,5 @@ menu:
 
 ## Slides
 
-[Download slides](../../../rmds/DARTH Overview_CDC.pptx)
+[Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx)
 

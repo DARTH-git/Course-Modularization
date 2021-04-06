@@ -1,36 +1,51 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Day 3 schedule on Decision Modeling in R Workshop</title>
-    <link>/days/day3/</link>
-    <description>Recent content in Day 3 schedule on Decision Modeling in R Workshop</description>
+    <title>Day 2 schedule on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/</link>
+    <description>Recent content in Day 2 schedule on Janssen Decision Modeling in R Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2020</copyright>
-    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/days/day3/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Microsimulation models in R</title>
-      <link>/days/day3/microsim/</link>
-      <pubDate>Wed, 22 Jul 2020 00:00:00 +0000</pubDate>
+      <title>dampack demo</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/dampack-demo/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/days/day3/microsim/</guid>
-      <description>Here you find all the files for the Microsimulation session. To avoid issued with directories, we recommend storing all files in one folder.
-Presentation video If you have time, please watch the microsimulation presentation video to get more prepared prior to tomorrow.
-link to video
-Slides MicrosimulationSlides.pdf
-Demostration microsim_3-state_time.Rmd
-Exercise worksheet microsim_sick-sicker_exercise.pdf
-Student exercise template Datasets for the exercise:
-mortProb_age.csv
-MyPopulation-AgeDistribution.csv
-Functions we use:
-Functions.R
-microsim_Sick-Sicker_time_template.Rmd
-Instructor solutions microsim_Sick-Sicker_time_solutions.Rmd</description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/dampack-demo/</guid>
+      <description>Download slides</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Decision Modeling</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/intro_to_decision_analysis/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/intro_to_decision_analysis/</guid>
+      <description>SlidesDownload slides
+</description>
+    </item>
+    
+    <item>
+      <title>R Shiny</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/shiny-examples/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/shiny-examples/</guid>
+      <description>R ShinyR Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.
+R Shiny
+Simple Markov model Shiny App
+Access App
+COVID-19 Modeling Collaborative Shiny App
+Access App
+BresMed Shiny App
+Access App
+</description>
     </item>
     
   </channel>

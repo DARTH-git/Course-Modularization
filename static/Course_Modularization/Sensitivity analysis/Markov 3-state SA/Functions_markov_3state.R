@@ -14,23 +14,23 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ####### INITIALIZATION ##########################################
     # create the cohort trace
-    m_M_SoC <- m_M_trt <-  matrix(NA, 
-                                  nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
-                                  # understand Cycle 0)
-                                  ncol = n_states, 
-                                  dimnames = list(0:n_t, v_names_states))
+    # create the cohort trace
+    m_M_SoC <- m_M_trtA <- m_M_trtB <-  matrix(NA, 
+                                               nrow = n_t + 1, # n_t + 1 because R doesn't understand Cycle 0
+                                               ncol = n_states, 
+                                               dimnames = list(v_names_cycles, v_names_states))
     
-    m_M_SoC[1, ] <- m_M_trt[1, ] <- v_init          # initialize first cycle of Markov trace
+    m_M_SoC[1, ] <- m_M_trtA[1, ] <- m_M_trtB[1, ] <- v_init   # initialize first cycle of cohort trace
     
-    # create the transition probability matrices
-    m_P_SoC  <- m_P_trt <- matrix(0,
-                                  nrow = n_states, ncol = n_states,
-                                  dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the matrix 
+    # create the transition probability matrix
+    m_P_SoC  <- matrix(0,
+                       nrow = n_states, ncol = n_states,
+                       dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the transition probability matrix
 
-    # For Standard of Care 
+    ## Standard of Care
     # from Healthy
-    m_P_SoC["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS)
-    m_P_SoC["Healthy", "Sick"]    <- (1 - p_HD) * p_HS
+    m_P_SoC["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_SoC)
+    m_P_SoC["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_SoC
     m_P_SoC["Healthy", "Dead"]    <- p_HD
     
     # from Sick
@@ -40,31 +40,39 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     # from Dead
     m_P_SoC["Dead", "Dead"] <- 1
     
-    # Under treatment
-    m_P_trt <- m_P_SoC  # Assign the matrix for standard of care to the transition probability matrix for treatment
-    # replace values that are different under treatment 
-    m_P_trt["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trt)
-    m_P_trt["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trt
+    ## Treatment A
+    m_P_trtA <- m_P_SoC
+    m_P_trtA["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trtA)
+    m_P_trtA["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trtA
+    
+    ## Treatment B
+    m_P_trtB <- m_P_SoC
+    m_P_trtB["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trtB)
+    m_P_trtB["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trtB
     
     # Check that transition probabilities are in [0, 1]
-    check_transition_probability(m_P_SoC, verbose = TRUE)
-    check_transition_probability(m_P_trt, verbose = TRUE)
+    check_transition_probability(m_P_SoC,  verbose = TRUE)
+    check_transition_probability(m_P_trtA, verbose = TRUE)
+    check_transition_probability(m_P_trtB, verbose = TRUE)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P_SoC, n_states = n_states, n_cycles = n_t, verbose = TRUE)
-    check_sum_of_transition_array(m_P_trt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P_SoC,  n_states = n_states, verbose = TRUE)
+    check_sum_of_transition_array(m_P_trtA, n_states = n_states, verbose = TRUE)
+    check_sum_of_transition_array(m_P_trtB, n_states = n_states, verbose = TRUE)
 
     ############# PROCESS ###########################################
-    
     for (t in 1:n_t){  # loop through the number of cycles
-      m_M_SoC[t + 1, ] <- m_M_SoC[t, ] %*% m_P_SoC  # estimate the state vector for the next cycle (t + 1)
-      m_M_trt[t + 1, ] <- m_M_trt[t, ] %*% m_P_trt  # for treatment
+      m_M_SoC [t + 1, ] <- m_M_SoC [t, ] %*% m_P_SoC   # estimate the state vector for the next cycle (t + 1)
+      m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% m_P_trtA  # estimate the state vector for the next cycle (t + 1)
+      m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% m_P_trtB  # estimate the state vector for the next cycle (t + 1)
     }
     
     ####### RETURN OUTPUT  ###########################################
-    out <- list(m_M_SoC  = m_M_SoC,
-                m_M_trt  = m_M_trt,
-                m_P_SoC  = m_P_SoC,
-                m_P_trt  = m_P_trt)
+    out <- list(m_M_SoC   = m_M_SoC,
+                m_M_trtA  = m_M_trtA,
+                m_M_trtB  = m_M_trtB,
+                m_P_SoC   = m_P_SoC,
+                m_P_trtA  = m_P_trtA,
+                m_P_trtB  = m_P_trtB)
     
     return(out) 
   }
@@ -84,39 +92,44 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 #' 
 calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
   with(as.list(l_params_all), {
-    ## Create discounting vectors
-    v_dwc <- 1 / ((1 + d_e) ^ (0:(n_t))) # vector with discount weights for costs
-    v_dwe <- 1 / ((1 + d_c) ^ (0:(n_t))) # vector with discount weights for QALYs
+    # discount weights for costs and effects
+    v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
+    v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
     
     ## Run STM model at a parameter set 
     l_model_out <- decision_model(l_params_all = l_params_all)
     
     ## Cohort traces 
-    m_M_SoC <- l_model_out$m_M_SoC 
-    m_M_trt <- l_model_out$m_M_trt
+    m_M_SoC  <- l_model_out$m_M_SoC 
+    m_M_trtA <- l_model_out$m_M_trtA
+    m_M_trtB <- l_model_out$m_M_trtB
     
     # per cycle
-    # calculate expected costs by multiplying m_M with the cost vector for the different 
-    # health states   
-    v_tc_SoC <- m_M_SoC %*% c(c_H, c_S,         c_D)  # Standard of Care
-    v_tc_trt <- m_M_trt %*% c(c_H, c_S + c_trt, c_D)  # Treatment
-    # calculate expected QALYs by multiplying m_M with the utilities for the different 
-    # health states   
-    v_tu_SoC <- m_M_SoC %*% c(u_H, u_S, u_D)          # Standard of Care
-    v_tu_trt <- m_M_trt %*% c(u_H, u_S, u_D)          # Treatment
+    # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
+    v_tc_SoC  <- m_M_SoC  %*% c(c_H, c_S, c_D)  
+    v_tc_trtA <- m_M_trtA %*% c(c_H, c_S + c_trtA, c_D)  
+    v_tc_trtB <- m_M_trtB %*% c(c_H, c_S + c_trtB, c_D)  
     
-    # Discount costs by multiplying the cost vector with discount weights  
-    tc_d_SoC  <-  t(v_tc_SoC) %*% v_dwc  # Standard of Care
-    tc_d_trt  <-  t(v_tc_trt) %*% v_dwc  # Treatment
-    # Discount QALYS by multiplying the QALYs vector with discount weights 
-    tu_d_SoC  <-  t(v_tu_SoC) %*% v_dwe  # Standard of Care
-    tu_d_trt  <-  t(v_tu_trt) %*% v_dwe  # Treatment
+    # calculate expected QALYs by multiplying cohort trace with the utilities for the different health states   
+    v_tu_SoC  <- m_M_SoC  %*% c(u_H, u_S, u_D)  
+    v_tu_trtA <- m_M_trtA %*% c(u_H, u_S, u_D) 
+    v_tu_trtB <- m_M_trtB %*% c(u_H, u_S, u_D) 
     
-    # store them into a vector
-    v_tc_d    <- c(tc_d_SoC, tc_d_trt)
-    v_tu_d    <- c(tu_d_SoC, tu_d_trt)
+    # Discount costs by multiplying the cost vector with discount weights (v_dw) 
+    tc_d_SoC  <-  t(v_tc_SoC)  %*% v_dwc
+    tc_d_trtA <-  t(v_tc_trtA) %*% v_dwc
+    tc_d_trtB <-  t(v_tc_trtB) %*% v_dwc
     
-    ## Vector with discounted net monetary benefits (NMB)
+    # Discount QALYS by multiplying the QALYs vector with discount weights (v_dw)
+    tu_d_SoC  <-  t(v_tu_SoC)  %*% v_dwe
+    tu_d_trtA <-  t(v_tu_trtA) %*% v_dwe
+    tu_d_trtB <-  t(v_tu_trtB) %*% v_dwe
+    
+    # Store them into a vector
+    v_tc_d <- c(tc_d_SoC, tc_d_trtA, tc_d_trtB)
+    v_tu_d <- c(tu_d_SoC, tu_d_trtA, tu_d_trtB)
+    
+    # Vector with discounted net monetary benefits (NMB)
     v_nmb_d   <- v_tu_d * n_wtp - v_tc_d
     
     ## Dataframe with discounted costs, effectiveness and NMB

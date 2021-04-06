@@ -1,0 +1,26 @@
+---
+title: Matrix algebra in R
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Matrix algebra
+menu:
+  day2:
+    weight: 4
+---
+
+## Slides
+
+[Download slides](../../../Course_Modularization/Intro, general, packages/matrixAlgebraSlidesExtra.pptx)
+
+## R demo
+
+[Download R demo](../../../Course_Modularization/Intro, general, packages/matrix operations.Rmd)
+
+## Matrix algebra handout
+
+[Download handout](../../../Course_Modularization/Intro, general, packages/matrix.algebra.pdf)
+

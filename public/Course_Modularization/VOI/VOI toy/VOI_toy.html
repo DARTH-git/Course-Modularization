@@ -1,0 +1,486 @@
+---
+title: 'Value of information - Toy model'
+author: "The DARTH workgroup"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6,7)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+Med Decis Making. Online First <a href="https://doi.org/10.1177/0272989X19893973" class="uri">https://doi.org/10.1177/0272989X19893973</a></p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div style="page-break-after: always;"></div>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;here&quot;, &quot;dplyr&quot;, &quot;devtools&quot;, &quot;matrixStats&quot;, &quot;scales&quot;, &quot;ggplot2&quot;, &quot;grid&quot;, &quot;mgcv&quot;, &quot;gridExtra&quot;, &quot;gdata&quot;, &quot;reshape2&quot;, &quot;knitr&quot;)       
+# load (install if required) packages from GitHub
+# install_github(&quot;DARTH-git/dampack&quot;, force = TRUE) Uncomment if there is a newer version
+p_load_gh(&quot;DARTH-git/dampack&quot;) </code></pre>
+</div>
+<div id="load-functions" class="section level1">
+<h1>02 Load functions</h1>
+<pre class="r"><code>source(&quot;VOI_Functions.R&quot;) # VOI functions 
+source(&quot;GA_functions.R&quot;)  # Gaussian Approximation Approach functions</code></pre>
+</div>
+<div id="input-model-parameters" class="section level1">
+<h1>03 Input model parameters</h1>
+<pre class="r"><code># Load simulation file
+# Read the `.csv` simulation file into `R`.
+toy   &lt;- read.csv(&quot;PSA.csv&quot;, header = TRUE)[, -1]
+# Strategy A = includes parameter uncertainty
+# Strategy B = includes paramter uncertainty
+# Strategy C = no parameter uncertainty -&gt; same NBM for all PSA runs
+n_sim &lt;- nrow(toy)
+
+# Display first five observations of the data fram using the command `head`
+head(toy)
+
+# Net Monetary Benefit (NMB) 
+# Create NMB matrix
+nmb &lt;- toy[, 5:7]
+head(nmb) # print the first six rows 
+
+# Number of Strategies
+n_strategies &lt;- ncol(nmb)
+n_strategies
+
+# Assign name of strategies
+strategies    &lt;- c(&quot;Strategy A&quot;, &quot;Strategy B&quot;, &quot;Strategy C&quot;)
+colnames(nmb) &lt;- strategies
+head(nmb)  # print the first six rows 
+
+# Format data frame suitably for plotting
+nmb_gg &lt;- melt(nmb,  
+               variable.name = &quot;Strategy&quot;, 
+               value.name = &quot;NMB&quot;)
+
+# Plot NMB for different strategies
+# Faceted plot by Strategy
+ggplot(nmb_gg, aes(x = NMB/1000)) +
+  geom_histogram(aes(y =..density..), col = &quot;black&quot;, fill = &quot;gray&quot;) +
+  geom_density(color = &quot;red&quot;) +
+  facet_wrap(~ Strategy, scales = &quot;free_y&quot;) +
+  xlab(&quot;Net Monetary Benefit (NMB) x10^3&quot;) +
+  scale_x_continuous(breaks = number_ticks(5), labels = dollar) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw()</code></pre>
+</div>
+<div id="incremental-nmb-inmb" class="section level1">
+<h1>04 Incremental NMB (INMB)</h1>
+<pre class="r"><code># Calculate INMB of B vs A
+# Only B vs A but we could have plotted all combinations
+inmb &lt;- data.frame(Simulation = 1:n_sim,
+                   `Strategy B vs Strategy A` = nmb$`Strategy B` - nmb$`Strategy A`) 
+
+## Format data frame suitably for plotting
+inmb_gg &lt;- melt(inmb, id.vars = &quot;Simulation&quot;, 
+                variable.name = &quot;Comparison&quot;, 
+                value.name = &quot;INMB&quot;)
+txtsize &lt;- 16
+
+## Plot INMB
+ggplot(inmb_gg, aes(x = INMB/1000)) +
+  geom_histogram(aes(y =..density..), col = &quot;black&quot;, fill = &quot;gray&quot;) +
+  geom_density(color = &quot;red&quot;) +
+  geom_vline(xintercept = 0, col = 4, size = 1.5, linetype = &quot;dashed&quot;) +
+  facet_wrap(~ Comparison, scales = &quot;free_y&quot;) +
+  xlab(&quot;Incremental Net Monetary Benefit (INMB) in thousand $&quot;) +
+  scale_x_continuous(breaks = number_ticks(5), limits = c(-100, 100)) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw(base_size = 14)</code></pre>
+</div>
+<div id="loss-matrix" class="section level1">
+<h1>05 Loss Matrix</h1>
+<pre class="r"><code># Find optimal strategy (d*) based on the highest expected NMB
+d_star &lt;- which.max(colMeans(nmb))
+d_star
+
+# Compute Loss matrix iterating over all strategies
+# Initialize loss matrix of dimension: number of simulation by number of strategies
+loss &lt;- matrix(0, n_sim, n_strategies)
+for (d in 1:n_strategies){ # d &lt;- 1
+  loss[, d] &lt;- nmb[, d] - nmb[, d_star]
+}
+head(loss)
+
+# Or without iterating (much faster!)
+loss &lt;- as.matrix(nmb - nmb[, d_star])
+head(loss)</code></pre>
+</div>
+<div id="evpi" class="section level1">
+<h1>06 EVPI</h1>
+<pre class="r"><code># Find maximum loss overall strategies at each state of the world 
+# (i.e., PSA sample)
+max_loss_i &lt;- rowMaxs(loss)  # Only the positive values are a loss. Negative values show we selected the best strategy
+head(max_loss_i)
+## Average expected loss across all states of the world
+## Expected loss = expected value of perfect information
+evpi &lt;- mean(max_loss_i)
+evpi</code></pre>
+</div>
+<div id="evppi" class="section level1">
+<h1>07 EVPPI</h1>
+<pre class="r"><code>names_params &lt;- c(&quot;Mean No. Visits (A)&quot;, 
+                   &quot;Mean No. Visits (B)&quot;,
+                   &quot;Prob. Failing (A)&quot;, 
+                   &quot;Prob. Failing (B)&quot;)
+# Matrix with parameters
+x &lt;- toy[, 1:4]
+colnames(x) &lt;- names_params
+head(x)
+
+# Number and names of parameters
+n_params &lt;- ncol(x)
+n_params
+
+# Histogram of parameters
+# Format data suitably for plotting
+params &lt;- melt(x, variable.name = &quot;Parameter&quot;)
+head(params)
+# Make parameter names as factors (helps with plotting formatting)
+params$Parameter &lt;- factor(params$Parameter, 
+                           levels = names_params, 
+                           labels = names_params)
+# Facet plot of parameter distributions
+ggplot(params, aes(x = value)) + 
+  geom_histogram(aes(y =..density..), col=&quot;black&quot;, fill = &quot;gray&quot;) +
+  geom_density(color = &quot;red&quot;) +
+  facet_wrap(~ Parameter, scales = &quot;free&quot;) +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(5)) + 
+  theme_bw(base_size = 14)</code></pre>
+<div id="construct-spline-metamodel" class="section level3">
+<h3>Construct Spline metamodel</h3>
+<pre class="r"><code># Splines
+# Initialize EVPPI vector 
+evppi_splines &lt;- matrix(0, n_params)
+lmm1 &lt;- vector(&quot;list&quot;, n_params)
+lmm2 &lt;- vector(&quot;list&quot;, n_params)
+lmm3 &lt;- vector(&quot;list&quot;, n_params)
+for (p in 1:n_params){ # p &lt;- 1
+  print(paste(&quot;Computing EVPPI of parameter&quot;, names_params[p]))
+  # Estimate Splines
+  lmm1[[p]] &lt;- gam(loss[, 1] ~ s(x[, p]))
+  lmm2[[p]] &lt;- gam(loss[, 2] ~ s(x[, p]))
+  lmm3[[p]] &lt;- gam(loss[, 2] ~ s(x[, p]))
+  
+  # Predict Loss using Splines
+  Lhat_splines &lt;- cbind(lmm1[[p]]$fitted, lmm2[[p]]$fitted, lmm3[[p]]$fitted)
+  
+  # Compute EVPPI
+  evppi_splines[p] &lt;- mean(rowMaxs(Lhat_splines))
+}
+# Ploting EVPPI using of order polynomial
+evppi_splines_gg &lt;- data.frame(Parameter = names_params, EVPPI = evppi_splines)
+evppi_splines_gg$Parameter &lt;- factor((evppi_splines_gg$Parameter), 
+                              levels = names_params[order(evppi_splines_gg$EVPPI, decreasing = TRUE)])
+
+# Plot EVPPI using ggplot2 package
+ggplot(data = evppi_splines_gg, aes(x = Parameter, y = EVPPI)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  ylab(&quot;EVPPI ($)&quot;) +
+  scale_y_continuous(breaks = number_ticks(6), labels = comma) +
+  theme_bw(base_size = 14)</code></pre>
+</div>
+</div>
+<div id="expected-value-of-sample-information-evsi" class="section level1">
+<h1>08 Expected value of sample information (EVSI)</h1>
+<pre class="r"><code># Effective (prior) Sample size
+n0 &lt;- c(10, # MeanNumVisitsA
+        10, # MeanNumVisitsB
+        10, # ProbFailA
+        10) # ProbFailB
+n &lt;- c(0, 1, 5, 10, seq(20, 200, by = 20))
+n_samples &lt;- length(n)
+
+# Each parameter individually (only assuming linear relationship)
+# Initialize EVSI matrix for each parameters
+evsi &lt;- data.frame(N = n, matrix(0, nrow = n_samples, ncol = n_params))
+
+# Name columns of EVPSI matrix with parameter names
+colnames(evsi)[-1] &lt;- names_params
+
+# Compute EVSI for all parameters separately
+for (p in 1:n_params){ # p &lt;- 1
+  print(paste(&quot;Computing EVSI of parameter&quot;, names_params[p]))
+    # Update loss based on gaussian approximation for each sample of interest
+    for (nSamp in 1:n_samples){ # nSamp &lt;- 10
+      Ltilde1 &lt;- predict.ga(lmm1[[p]], n = n[nSamp], n0 = n0[p])
+      Ltilde2 &lt;- predict.ga(lmm2[[p]], n = n[nSamp], n0 = n0[p])
+      Ltilde3 &lt;- predict.ga(lmm3[[p]], n = n[nSamp], n0 = n0[p])
+      ## Combine losses into one matrix
+      Ltilde &lt;- cbind(Ltilde1, Ltilde2, Ltilde3)
+      ### Apply EVSI equation
+      evsi[nSamp, p+1] &lt;- mean(rowMaxs(Ltilde))
+    }
+}
+
+# Plotting EVSI
+# Create EVSI data frame for plotting in decreasing order of EVPPI
+evsi_gg &lt;- melt(evsi[1:21,], id.vars = &quot;N&quot;, 
+                 variable.name = &quot;Parameter&quot;, 
+                 value.name = &quot;evsi&quot;)
+evsi_gg$Parameter &lt;- factor((evsi_gg$Parameter), 
+                             levels = names_params[order(evppi_splines_gg$EVPPI, decreasing = TRUE)])
+
+# Plot evsi using ggplot2 package
+ggplot(evsi_gg, aes(x = N, y = evsi)) +  # colour = Parameter
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Parameter) +  # scales = &quot;free_y&quot;
+  ggtitle(&quot;Expected Value of Sample Information (EVSI)&quot;) +
+  xlab(&quot;Sample size (n)&quot;) +
+  ylab(&quot;$&quot;) +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
+  theme_bw(base_size = 14)
+
+# Adding EVPPI 
+ggplot(evsi_gg, aes(x = N, y = evsi)) +  # colour = Parameter
+  geom_line(aes(linetype = &quot;EVSI&quot;)) +
+  geom_point() +
+  facet_wrap(~ Parameter) +  # scales = &quot;free_y&quot;
+  geom_hline(aes(yintercept = EVPPI, linetype = &quot;EVPPI&quot;), data = evppi_splines_gg) +
+  scale_linetype_manual(name=&quot;&quot;, 
+                        values = c(&quot;EVSI&quot; = &quot;solid&quot;, &quot;EVPPI&quot; = &quot;dashed&quot;)) +
+  xlab(&quot;Sample size (n)&quot;) +
+  ylab(&quot;$&quot;) +
+  #ggtitle(&quot;Expected Value of Sample Information (EVSI)&quot;) +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
+  theme_bw(base_size = 14)</code></pre>
+</div>
+<div id="combination-of-parameters" class="section level1">
+<h1>09 Combination of parameters</h1>
+<div id="assuming-an-observational-study" class="section level2">
+<h2>09.1 Assuming an observational study</h2>
+<pre class="r"><code>sel_params_obs &lt;- c(1, 2)
+# Vector with samples to evaluate EVPSI for an Observational design
+n_obs &lt;- c(0, 1, 5, 10, seq(20, 200, by = 20), 300, 400, 500, 600, 700, 800) #seq(0, 1000, by = 20)
+n_obs_samples &lt;- length(n_obs)
+# Initailize EVPSI matrix for a combination of parameters
+evsi_obs &lt;- data.frame(Study = &quot;Observational&quot;, 
+                        N = n_obs, 
+                        EVSI = matrix(0, nrow = n_obs_samples, ncol = 1))
+
+# Estimate linear metamodel of two parameters
+lmm1_obs &lt;- gam(loss[, 1] ~ s(x[, sel_params_obs[1]]) + 
+              s(x[, sel_params_obs[2]]) + 
+              ti(x[, sel_params_obs[1]], x[, sel_params_obs[2]]))
+lmm2_obs &lt;- gam(loss[, 2] ~ s(x[, sel_params_obs[1]]) + 
+                  s(x[, sel_params_obs[2]]) + 
+                  ti(x[, sel_params_obs[1]], x[, sel_params_obs[2]]))
+lmm3_obs &lt;- gam(loss[, 3] ~ s(x[, sel_params_obs[1]]) + 
+                  s(x[, sel_params_obs[2]]) + 
+                  ti(x[, sel_params_obs[1]], x[, sel_params_obs[2]]))
+# Predict Loss using Splines
+Lhat_obs_splines &lt;- cbind(lmm1_obs$fitted, lmm2_obs$fitted, lmm3_obs$fitted)
+
+# Compute EVPPI
+evppi_obs &lt;- mean(rowMaxs(Lhat_obs_splines))
+evppi_obs          
+
+for (nSamp in 1:n_obs_samples){
+  Ltilde1_obs &lt;- predict.ga(lmm1_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
+  Ltilde2_obs &lt;- predict.ga(lmm2_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
+  Ltilde3_obs &lt;- predict.ga(lmm3_obs, n = n_obs[nSamp], n0 = n0[sel_params_obs])
+  # Combine losses into one matrix
+  Ltilde_obs &lt;- cbind(Ltilde1_obs, Ltilde2_obs, Ltilde3_obs)
+  # Apply EVSI equation
+  evsi_obs$EVSI[nSamp] &lt;- mean(rowMaxs(Ltilde_obs))
+}</code></pre>
+</div>
+<div id="assuming-an-rct" class="section level2">
+<h2>09.2 Assuming an RCT</h2>
+<pre class="r"><code>sel_params_rct &lt;- c(3, 4)
+# Vector with samples to evaluate EVPSI for a RCT
+n_rct &lt;- c(0, 1, 5, 10, seq(20, 200, by = 20))
+n_rct_samples &lt;- length(n_rct)
+# Initailize EVPSI matrix for a combination of parameters
+evsi_rct &lt;- data.frame(Study = &quot;RCT&quot;,
+                        N = n_rct, 
+                        EVSI = matrix(0, nrow = n_rct_samples, ncol = 1))
+
+# Estimate linear metamodel of two parameters
+lmm1_rct &lt;- gam(loss[, 1] ~ s(x[, sel_params_rct[1]]) + 
+                  s(x[, sel_params_rct[2]]) + 
+                  ti(x[, sel_params_rct[1]], x[, sel_params_rct[2]]))
+lmm2_rct &lt;- gam(loss[, 2] ~ s(x[, sel_params_rct[1]]) + 
+                  s(x[, sel_params_rct[2]]) + 
+                  ti(x[, sel_params_rct[1]], x[, sel_params_rct[2]]))
+lmm3_rct &lt;- gam(loss[, 3] ~ s(x[, sel_params_rct[1]]) + 
+                  s(x[, sel_params_rct[2]]) + 
+                  ti(x[, sel_params_rct[1]], x[, sel_params_rct[2]]))
+# Predict Loss using Splines
+Lhat_rct_splines &lt;- cbind(lmm1_rct$fitted, lmm2_rct$fitted, lmm3_rct$fitted)
+
+# Compute EVPPI
+evppi_rct &lt;- mean(rowMaxs(Lhat_rct_splines))
+evppi_rct          
+
+# Compute EVSI over different sample sizes
+for (nSamp in 1:n_rct_samples){
+  Ltilde1_rct &lt;- predict.ga(lmm1_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
+  Ltilde2_rct &lt;- predict.ga(lmm2_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
+  Ltilde3_rct &lt;- predict.ga(lmm3_rct, n = n_rct[nSamp], n0 = n0[sel_params_rct])
+  # Combine losses into one matrix
+  Ltilde_rct &lt;- cbind(Ltilde1_rct, Ltilde2_rct, Ltilde3_rct)
+  # Apply EVSI equation
+  evsi_rct$EVSI[nSamp] &lt;- mean(rowMaxs(Ltilde_rct))
+}</code></pre>
+<p>Plot EVSI for both study designs.</p>
+<pre class="r"><code># Combine both study designs
+evppi_combo &lt;- data.frame(Study = c(&quot;Observational&quot;, &quot;RCT&quot;), 
+                          EVPPI = c(evppi_obs, evppi_rct))
+evsi_combo  &lt;- rbind(evsi_obs,
+                     evsi_rct)
+
+# Plot EVSI by study design
+ggplot(evsi_combo, aes(x = N, y = EVSI)) +  # colour = Parameter
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Study, scales = &quot;free_x&quot;) +
+  geom_hline(aes(yintercept = EVPPI, linetype = &quot;EVPPI&quot;), data = evppi_combo) +
+  scale_linetype_manual(name=&quot;&quot;, 
+                        values = c(&quot;EVSI&quot; = &quot;solid&quot;, &quot;EVPPI&quot; = &quot;dashed&quot;)) +
+  ggtitle(&quot;EVPSI for different study designs&quot;) +
+  xlab(&quot;Sample size (n)&quot;) +
+  ylab(&quot;$&quot;) +
+  scale_x_continuous(breaks = number_ticks(5)) + 
+  scale_y_continuous(breaks = number_ticks(6), labels = dollar) + 
+  theme_bw(base_size = 14) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+</div>
+</div>
+<div id="enbs" class="section level1">
+<h1>10 ENBS</h1>
+<pre class="r"><code># Population Values
+# Discount rate
+disc &lt;- c(0.03)
+# Technology lifetime
+LT   &lt;- 10
+time &lt;- seq(0, LT)
+# Per Annum Number of Individuals to Be Treated With Urate Lowering Therapy
+# Present prevalence
+prev &lt;- 0.010 # In millions(1e6)
+# Annual Incidence
+incid &lt;- 147*1e-6 # In millions: 0.005*29.376e-3
+# Total population afectd by technology calculated with `TotPop` function in Millions
+tot_pop &lt;- TotPop(time,    # Function
+                  prev, 
+                  incid, 
+                  disc) 
+
+# Population EVPSI
+# Obervational study
+pop_evsi_obs &lt;- evsi_obs
+pop_evsi_obs$popEVSI &lt;- pop_evsi_obs$EVSI*tot_pop
+# RCT
+pop_evsi_rct &lt;- evsi_rct
+pop_evsi_rct$popEVSI &lt;- pop_evsi_rct$EVSI*tot_pop
+
+# Cost of research
+# Obervational study
+cost_res_obs &lt;- CostRes(fixed.cost = 10000e-6,
+                        samp.size = n_obs,  # vector 
+                        cost.per.patient = 500e-6, # In Million $
+                        INMB = 0,
+                        clin.trial = FALSE)
+# Data frame with cost of trial in Millions
+cost_obs &lt;- data.frame(N = n_obs, CS = cost_res_obs)
+# RCT
+cost_res_rct &lt;- CostRes(fixed.cost = 8000000e-6,
+                        samp.size = n_rct,  # vector 
+                        cost.per.patient = 8500e-6, # In Million $
+                        INMB = 0,
+                        clin.trial = TRUE) 
+# Data frame with cost of trial in Millions
+cost_rct &lt;- data.frame(N = n_rct, CS = cost_res_rct)
+
+# Create ENBS data frame
+enbs_obs &lt;- merge(pop_evsi_obs, cost_obs, by = &quot;N&quot;)
+enbs_rct &lt;- merge(pop_evsi_rct, cost_rct, by = &quot;N&quot;)
+# Compute ENBS 
+enbs_obs$ENBS &lt;- enbs_obs$popEVSI - enbs_obs$CS
+enbs_rct$ENBS &lt;- enbs_rct$popEVSI - enbs_rct$CS
+# Compute OSS (n*)
+enbs_obs$nstar &lt;- enbs_obs$N[which.max(enbs_obs$ENBS)]
+enbs_rct$nstar &lt;- enbs_rct$N[which.max(enbs_rct$ENBS)]
+# Append data frames
+enbs_all &lt;- rbind(enbs_obs,
+                  enbs_rct)
+
+oss &lt;- summarise(group_by(enbs_all, Study),
+                 MaxENBS = max(ENBS),
+                 Nstar   = N[which.max(ENBS)])
+
+# Plot ENBS, EVPSI and n*
+# Create suitable data frames for plotting
+enbs_obs_gg &lt;- melt(enbs_obs[, -3], id.vars = c(&quot;Study&quot;, &quot;N&quot;, &quot;nstar&quot;), value.name = &quot;Million&quot;)
+enbs_rct_gg &lt;- melt(enbs_rct[, -3], id.vars = c(&quot;Study&quot;, &quot;N&quot;, &quot;nstar&quot;), value.name = &quot;Million&quot;)
+# Append data frames for plotting
+enbs_all_gg &lt;- rbind(enbs_obs_gg,
+                     enbs_rct_gg)
+levels(enbs_all_gg$Study) &lt;- c(paste(&quot;Observational; n* = &quot;, comma(oss$Nstar[1]), sep=&quot;&quot;), 
+                               paste(&quot;RCT; n* = &quot;, comma(oss$Nstar[2]), sep=&quot;&quot;))
+
+ggplot(enbs_all_gg, aes(x = N, y = Million, colour = variable, group = variable)) + 
+  facet_wrap(~ Study, scales = &quot;free_x&quot;) +
+  # geom_segment(data = oss, aes(x = Nstar, y = 0, xend = Nstar, yend = MaxENBS)) + 
+  geom_hline(aes(yintercept=0), size = 0.7, linetype = 2, colour = &quot;gray&quot;) + 
+  geom_vline(aes(xintercept = nstar), size = 0.7, linetype = 2, colour = &quot;gray&quot;) + 
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = number_ticks(6), labels = comma)+
+  scale_y_continuous(breaks = number_ticks(6), labels = comma, limits = c(0, 40))+
+  scale_colour_hue(&quot;Study design &quot;, l=50,
+                   labels=c(&quot;popEVPSI(n) &quot;, &quot;Cost of Research(n) &quot;, &quot;ENBS(n) &quot;)) +
+  xlab(&quot;Sample size (N)&quot;) +
+  ylab(&quot;Value (Million $)&quot;) + 
+  theme_bw(base_size = 14) +
+  theme(legend.position = &quot;bottom&quot;,
+        panel.spacing = unit(2, &quot;lines&quot;))</code></pre>
+</div>

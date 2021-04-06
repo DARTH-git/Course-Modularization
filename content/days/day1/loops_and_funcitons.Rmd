@@ -20,12 +20,14 @@ blogdown::shortcode("vimeo", "473054054")
 
 ## Slides
 
-[Download slides](../../../rmds/05_loops_function_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/05_loops_function_slides.pptx)
 
 ## Student templates
 
-[Download student template](../../../rmds/05_loops_and_functions_template.Rmd)
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)
 
 ## Instructor solutions
 
-[Download instructor solutions](../../../rmds/05_loops_and_functions_solutions.Rmd)
+<!-- [Download instructor solutions](../../../rmds/05_loops_and_functions_solutions.Rmd) -->
+
+Solutions will be uploaded after April 16.

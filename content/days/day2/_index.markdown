@@ -1,45 +1,33 @@
 ---
-title: Day 1 schedule
+title: "April 16 schedule"
 author: ''
-date: "2020-11-03"
+date: "2021-04-05"
 slug: day2
 categories: []
 tags: []
 menu:
   day2:
-    name: "Day 1 schedule"
+    name: "Schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Tuesday, Nov 3**: *Introduction to Decision Analysis*
+**April 16**: *Intro to R for Decision Modeling (part 2)* 
 
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8AM-12pm Eastern Time
 
-Here is a tentative timetable for Day 1:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  |   The DARTH Workgroup |
-| 9:30 – 10:00| Introduction to Decision Modeling | 
-| 10:00 – 10:45 | Two practical examples |
-| 10:45 – 11:00 | Break |
-| 11:00 – 12:00 | Intro to R Q & A and Review |
-| 1:00pm – 4:00pm | On your own |
-
-From 1:00pm to 4:00pm, please:
-
-- Watch "Day 2: State-Transition Models" lecture series
-
-- Revisit "Introduction to `R`" materials if needed  
-
-## Synchronous session recording
-
-<!--html_preserve-->{{% vimeo "475190905" %}}<!--/html_preserve-->
-
-
+| 8:00 – 8:30  |  The DARTH Workgroup |
+| 8:30 – 9:00| Review of “Intro to R (part 1)” materials| 
+| 9:00 – 10:00 | Intro to R assessments |
+| 10:00 – 10:15 | Break |
+| 10:15 – 11:15 | Matrix algebra in R |
+| 11:00 - 12:00 | R tips and tricks and debugging in R|
 

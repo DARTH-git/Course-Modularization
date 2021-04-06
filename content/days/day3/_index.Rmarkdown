@@ -1,5 +1,5 @@
 ---
-title: Day 2 schedule
+title: "April 20 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day3
@@ -7,40 +7,32 @@ categories: []
 tags: []
 menu:
   day3:
-    name: "Day 2 schedule"
+    name: Schedule
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Wednesday, Nov 4**: *Cohort State-Transition Models*
+**Tuesday, April 20**: *Intro to Decision Modeling*
 
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 4:00pm Eastern Time
+- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8AM-12pm Eastern Time
 
-Here is a tentative timetable for Day 2:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:45  | Code review: Basic cohort state-transition model in R  |
-| 9:45 – 10:30 | Hands-on exercise: Cohort state-transition model  | 
-| 10:30 – 11:00 | Code review: Advanced cohort state-transition models |
-| 11:00 – 12:00 | Hands-on exercise: Cohort state-transition model extensions |
-| 1:00pm – 4:00pm | On your own |
+| 8:00 – 8:30  | Overview of Decision Modeling |
+| 8:30 – 9:15 | Two practical examples | 
+| 9:15 – 10:00 | Hands-on activity: How to choose the right model? |
+| 10:00 – 10:15 | Break |
+| 10:15 – 10:45 | Demonstration of `dampack` R package |
+| 10:45 – 11:00 | Demonstration of R Shiny Apps |
+| 11:00 – 12:00 | Discussion: Participant topics and goals |
 
-From 1:00pm to 4:00pm, please:
-
-- Complete Cohort state-transition model hands-on exercises
-
-- Watch "Day 3: Microsimulation Models" lecture series
-
-## Synchronous session recording
-
-```{r, echo=F}
-blogdown::shortcode("vimeo", "475724349")
-```
+Before April 23, please watch Markov model lectures 1-4.
 
 
 

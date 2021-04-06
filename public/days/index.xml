@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Days on Decision Modeling in R Workshop</title>
-    <link>/days/</link>
-    <description>Recent content in Days on Decision Modeling in R Workshop</description>
+    <title>Days on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/</link>
+    <description>Recent content in Days on Janssen Decision Modeling in R Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2020</copyright>
-    <lastBuildDate>Fri, 24 Jul 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/days/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

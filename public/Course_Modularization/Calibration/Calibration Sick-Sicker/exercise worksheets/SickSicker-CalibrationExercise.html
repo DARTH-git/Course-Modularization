@@ -1,0 +1,242 @@
+---
+title: "Decision Modeling for Publich Health"
+author: "The DARTH workgroup"
+subtitle: Exercises – Calibration 
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:</p>
+<p>Fernando Alarid-Escudero, PhD (1)</p>
+<p>Eva A. Enns, MS, PhD (2)</p>
+<p>M.G. Myriam Hunink, MD, PhD (3,4)</p>
+<p>Hawre J. Jalal, MD, PhD (5)</p>
+<p>Eline M. Krijkamp, MSc (3)</p>
+<p>Petros Pechlivanoglou, PhD (6)</p>
+<p>Alan Yang, MSc (7)</p>
+<p>In collaboration of:</p>
+<ol style="list-style-type: decimal">
+<li>Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT,
+Aguascalientes, Mexico</li>
+<li>University of Minnesota School of Public Health, Minneapolis, MN, USA</li>
+<li>Erasmus MC, Rotterdam, The Netherlands</li>
+<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
+<li>University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA</li>
+<li>The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada</li>
+<li>The Hospital for Sick Children, Toronto ON, Canada</li>
+</ol>
+<p>Please cite our publications when using this code:</p>
+<ul>
+<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG.
+An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P.
+Microsimulation modeling for health decision sciences using R: A tutorial.
+Med Decis Making. 2018;38(3):400–22.
+<a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513</a></p></li>
+<li><p>Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H.
+A Multidimensional Array Representation of State-Transition Model Dynamics.
+BioRxiv 670612 2019.https://www.biorxiv.org/content/10.1101/670612v1</p></li>
+</ul>
+<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.
+All rights reserved in Canada, the United States and worldwide. Copyright,
+trademarks, trade names and any and all associated intellectual property are
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating
+institutions. These materials may be used, reproduced, modified, distributed
+and adapted with proper attribution.</p>
+<div id="exercise-calibration-of-a-sick-sicker-model" class="section level1">
+<h1>Exercise: Calibration of a Sick-Sicker Model</h1>
+<p>In this exercise, we will calibrate a model of a hypothetical Sick-Sicker disease. A Markov model of the Sick-Sicker disease has been implemented using four health states: Healthy (H); two disease states, Sick (S1) and Sicker (S2); and Dead (D). A state transition diagram is shown in Figure 1. All individuals start in the Healthy state (H). Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Once in S2, individuals cannot recover (i.e. cannot transition back to either S1 or H). Individuals in H have a baseline probability of death, while individuals in S1 and S2 have an increased mortality rate compared to healthy individuals, modeled as a hazard ratio applied to the baseline mortality rate.</p>
+<p>Unfortunately, while we can identify those who are afflicted with the illness through obvious symptoms, we can’t easily distinguish those in the S1 state from the those in the S2 state. Thus, we can’t directly estimate state-specific mortality hazard ratios, nor do we know the transition probability of progressing from S1 to S2. We do have some idea of the plausible ranges for these unknown parameters; these ranges are listed in Table 1. All other model parameters are known and are also listed in Table 1.</p>
+<p>There are three calibration targets to be used in this example: (1) observed survival of a cohort over time; (2) disease prevalence in a cohort over time; and (3) among sick patients (S1+S2), the proportion who are in the S1 state at three points in time. The first two targets came from an observational study of a typical cohort of individuals. The third target was obtained by subjecting ill patients to an invasive procedure which can determine disease stage but can’t be used routinely due to its invasiveness. The calibration target values are provided in the data file “SickSicker_CalibTargets.RData”, which contains a list with three data frames: Surv, Prev, and PropSick.</p>
+<div id="tasks" class="section level2">
+<h2>Tasks</h2>
+<ol style="list-style-type: decimal">
+<li>Use the <code>R</code> script <code>SickSicker_CalibTemplate.R</code> as a starting point to code the calibration of the Sick-Sicker.</li>
+</ol>
+<ul>
+<li><p>Load and plot the calibration target data stored in <code>SickSicker_CalibTargets.RData</code>.</p></li>
+<li><p>Source the file, <code>SickSicker_MarkovModel_Function.R</code>, which contains the Sick-Sicker model function, <code>run_sick_sicker_markov()</code>. This function takes in a vector of three parameters, <code>c(p_S1S2, hr_S1, hr_S2)</code>, and returns model outputs corresponding to the calibration targets. Try using the model function and look at the output.</p></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Implement the calibration of the Sick-Sicker model using random search with 1000 random samples. Copy code from the calibration of the 3-state model, modifying where necessary. Remember that the Sick-Sicker model needs to be calibrated to three different targets (instead of one) by varying three different inputs (instead of two).</li>
+</ol>
+<ul>
+<li><p>Explore the top-fitting input sets (e.g. top 10, top 100). To visualize the best-fitting sets, use <code>pairs.panels()</code> and <code>scatterplot3d()</code> functions. Type “?scatterplot3d” for function documentation.</p></li>
+<li><p>Plot the model-predicted output at the best-fitting parameter set overlaid over each of the three types of calibration targets (extend the plotting code in the 3-state model calibration script).</p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Save a new copy of your Sick-Sicker model calibration code. Change the implementation from random search to Nelder-Mead, using 100 random starting points. Where do you need to make changes? Use the Nelder-Mead calibration of the 3-state model as a guide.</li>
+</ol>
+<ul>
+<li><p>Explore the top-fitting input sets (e.g. top 10) using <code>pairs.panels()</code> and <code>scatterplot3d()</code>. How does it compare to the best-fitting sets from random search?</p></li>
+<li><p>Plot the model-predicted output at the best-fitting parameter set overlaid over each of the three types of calibration targets.</p></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Save a new copy of your Sick-Sicker model calibration code. Use the Bayesian calibration of the 3-state model as a guide and modify your Sick-Sicker calibration code to implement the IMIS calibration method.</li>
+</ol>
+<ul>
+<li><p>Sample 1,000 parameter sets from the calibrated posterior distribution. Visualize these parameter sets using <code>scatterplot3d()</code> and <code>pairs.panels()</code>.</p></li>
+<li><p>Plot the model-predicted output at the maximum aposteriori parameter set overlaid over each of the three types of calibration targets.</p></li>
+</ul>
+<p><strong>Table 1: Input parameters for the time dependent Sick-Sicker Microsimulation </strong></p>
+<table>
+<colgroup>
+<col width="56%" />
+<col width="20%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Parameter</strong></th>
+<th align="left"><strong>R name</strong></th>
+<th align="center"><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Time horizon</td>
+<td align="left"><code>n_t</code></td>
+<td align="center">30 years</td>
+</tr>
+<tr class="even">
+<td align="left">Cycle length</td>
+<td align="left"></td>
+<td align="center">1 year</td>
+</tr>
+<tr class="odd">
+<td align="left">Names of simulated individuals</td>
+<td align="left"><code>n_i</code></td>
+<td align="center">1000</td>
+</tr>
+<tr class="even">
+<td align="left">Names of health states</td>
+<td align="left"><code>v_n</code></td>
+<td align="center">H, S1, S2, D</td>
+</tr>
+<tr class="odd">
+<td align="left">Annual discount rate (costs/QALYs)</td>
+<td align="left"><code>d_r</code></td>
+<td align="center">3%</td>
+</tr>
+<tr class="even">
+<td align="left">Annual transition probabilities</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Disease onset (H to S1)</td>
+<td align="left"><code>p_HS1</code></td>
+<td align="center">0.15</td>
+</tr>
+<tr class="even">
+<td align="left">- Recovery (S1 to H)</td>
+<td align="left"><code>p_S1H</code></td>
+<td align="center">0.5</td>
+</tr>
+<tr class="odd">
+<td align="left">- Disease progression (S1 to S2)</td>
+<td align="left"><code>p_S1S2</code></td>
+<td align="center">To be calibrated; range: 0.01 - 0.50</td>
+</tr>
+<tr class="even">
+<td align="left">Annual mortality</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- All-cause mortality (H to D)</td>
+<td align="left"><code>p_HD</code></td>
+<td align="center">0.005</td>
+</tr>
+<tr class="even">
+<td align="left">- Hazard ratio of death in S1 vs H</td>
+<td align="left"><code>hr_S1</code></td>
+<td align="center">To be calibrated; range: 1.0 - 4.5</td>
+</tr>
+<tr class="odd">
+<td align="left">- Hazard ratio of death in S2 vs H</td>
+<td align="left"><code>hr_S2</code></td>
+<td align="center">To be calibrated; range: 5 - 15</td>
+</tr>
+<tr class="even">
+<td align="left">Annual costs</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Healthy individuals</td>
+<td align="left"><code>c_H</code></td>
+<td align="center">$2,000</td>
+</tr>
+<tr class="even">
+<td align="left">- Sick individuals in S1</td>
+<td align="left"><code>c_S1</code></td>
+<td align="center">$4,000</td>
+</tr>
+<tr class="odd">
+<td align="left">- Sick individuals in S2</td>
+<td align="left"><code>c_S2</code></td>
+<td align="center">$15,000</td>
+</tr>
+<tr class="even">
+<td align="left">- Dead individuals</td>
+<td align="left"><code>c_D</code></td>
+<td align="center">$0</td>
+</tr>
+<tr class="odd">
+<td align="left">- Additional costs of sick individuals treated in S1 or S2</td>
+<td align="left"><code>c_trt</code></td>
+<td align="center">$12,000</td>
+</tr>
+<tr class="even">
+<td align="left">Utility weights</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">- Healthy individuals</td>
+<td align="left"><code>u_H</code></td>
+<td align="center">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">- Sick individuals in S1</td>
+<td align="left"><code>u_S1</code></td>
+<td align="center">0.75</td>
+</tr>
+<tr class="odd">
+<td align="left">- Sick individuals in S2</td>
+<td align="left"><code>u_S2</code></td>
+<td align="center">0.50</td>
+</tr>
+<tr class="even">
+<td align="left">- Dead individuals</td>
+<td align="left"><code>u_D</code></td>
+<td align="center">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Intervention effect</td>
+<td align="left"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">- Utility for treated individuals in S1</td>
+<td align="left"><code>u_trt</code></td>
+<td align="center">0.95</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="sick_sicker_diagram.png" alt="Schematic representation of the Sick-Sicker model" width="100%" />
+<p class="caption">
+Figure 1: Schematic representation of the Sick-Sicker model
+</p>
+</div>
+</div>
+</div>

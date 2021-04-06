@@ -18,11 +18,11 @@ menu:
 blogdown::shortcode("vimeo", "472839769")
 ```
 
-## Install packages 1
+## Install packages 
 
-Install packages required for this workshop by running all code in this `R` script:
+Install packages required for this workshop by running all code in this R script:
 
-[Download R script](../../Course_Modularization/Intro to R/Worksheets/Student Templates/01_getting_ready.Rmd)
+[Download R script](../../Course_Modularization/Intro, general, packages/00_prep.R)
 
 ## Slides
 
@@ -34,5 +34,5 @@ Install packages required for this workshop by running all code in this `R` scri
 
 ## Instructor solutions
 
-There are no solutions for this template - simply go through the it.
+There are no solutions for this template - simply go through it.
 

@@ -1,44 +1,412 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Decision Modeling in R Workshop on Decision Modeling in R Workshop</title>
-    <link>/</link>
-    <description>Recent content in Decision Modeling in R Workshop on Decision Modeling in R Workshop</description>
+    <title>Janssen Decision Modeling in R Workshop on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/</link>
+    <description>Recent content in Janssen Decision Modeling in R Workshop on Janssen Decision Modeling in R Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2020</copyright>
-    <lastBuildDate>Fri, 24 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Days</title>
-      <link>/days/</link>
-      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      <title>dampack demo</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/dampack-demo/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/days/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Welcome</title>
-      <link>/prework/</link>
-      <pubDate>Tue, 14 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/prework/</guid>
-      <description>&lt;p&gt;This site is the official home for all information related to the Decision Modeling in R workshop hosted by &lt;a href=&#34;https://www.sickkids.ca/&#34;&gt;the Hospital for Sick Children&lt;/a&gt; and &lt;a href=&#34;http://darthworkgroup.com/&#34;&gt;the DARTH workgroup&lt;/a&gt;. This is the place to find all the information you&amp;rsquo;ll need to get the most out of this workshop, including software, R packages, and additional resources.&lt;/p&gt;
-&lt;h2 id=&#34;orientation&#34;&gt;Orientation&lt;/h2&gt;
-&lt;p&gt;Please use the menus to the left to guide you through all the workshop set-up instructions, and notice the menu on the right with links for:&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;We look forward to virtually meeting you all!&lt;/p&gt;
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/dampack-demo/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro,%20general,%20packages/dampack-darthpack/dampack%20video/dampack_storyboard.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
-      <title>Posts</title>
-      <link>/post/</link>
-      <pubDate>Sun, 01 Jan 2017 00:00:00 -0800</pubDate>
+      <title>Data manipulation</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/data_manipulation/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/</guid>
-      <description></description>
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/data_manipulation/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/473042385&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/03_data_manipulation_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/framingham.csv&#34;&gt;Download data&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/framingham/Framingham%20Longitudinal%20Data%20Documentation.pdf&#34;&gt;Download data documentation&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-templates&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student templates&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/03_data_manipulation_template.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;!-- [Download instructor solutions](../../../rmds/03_data_manipulation_solutions.Rmd) --&gt;
+&lt;p&gt;Solutions will be uploaded after April 16.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Data visualization</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/plotting/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/plotting/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/473445406&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/04_plotting_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-templates&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student templates&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/04_plotting_template.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;!-- [Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd) --&gt;
+&lt;p&gt;Solutions will be uploaded after April 16.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting Ready</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/getting_ready/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/getting_ready/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/472839769&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;install-packages&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Install packages&lt;/h2&gt;
+&lt;p&gt;Install packages required for this workshop by running all code in this R script:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../Course_Modularization/Intro,%20general,%20packages/00_prep.R&#34;&gt;Download R script&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/01_getting_ready_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-template&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student template&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/01_getting_ready.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;p&gt;There are no solutions for this template - simply go through it.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Decision Modeling</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/intro_to_decision_analysis/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/intro_to_decision_analysis/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/DecisionModelingIntroSlides_CDC.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Intro to R assessments</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/intro_to_r_q_and_a/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/intro_to_r_q_and_a/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;student-template&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student template&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/Recap_Exercises_Template.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;!-- #[Download instructor solutions](../../../rmds/02_Introduction_solutions.Rmd) --&gt;
+&lt;p&gt;Solutions will be uploaded after April 16.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introduction to R</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/introduction_to_r/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/introduction_to_r/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/473442290&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/02_introduction_to_R_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-template&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student template&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/02_Introduction_template.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;!-- #[Download instructor solutions](../../../rmds/02_Introduction_solutions.Rmd) --&gt;
+&lt;p&gt;Solutions will be uploaded after April 16.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Loops and functions</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/loops_and_funcitons/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/loops_and_funcitons/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/473054054&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/05_loops_function_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-templates&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student templates&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Worksheets/Student%20Templates/05_loops_and_functions_template.Rmd&#34;&gt;Download student template&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;!-- [Download instructor solutions](../../../rmds/05_loops_and_functions_solutions.Rmd) --&gt;
+&lt;p&gt;Solutions will be uploaded after April 16.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Matrix algebra in R</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/matrix_algebra/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/matrix_algebra/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro,%20general,%20packages/matrixAlgebraSlidesExtra.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r-demo&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R demo&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro,%20general,%20packages/matrix%20operations.Rmd&#34;&gt;Download R demo&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;matrix-algebra-handout&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Matrix algebra handout&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro,%20general,%20packages/matrix.algebra.pdf&#34;&gt;Download handout&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>R Shiny</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/shiny-examples/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day3/shiny-examples/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;r-shiny&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R Shiny&lt;/h2&gt;
+&lt;p&gt;R Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://shiny.rstudio.com/&#34;&gt;R Shiny&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Simple Markov model Shiny App&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://darkpeakanalytics.shinyapps.io/sadm-mk2/&#34;&gt;Access App&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;COVID-19 Modeling Collaborative Shiny App&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.covid-19-mc.ca/interactive-models/hospital-resources&#34;&gt;Access App&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;BresMed Shiny App&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/&#34;&gt;Access App&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>R tips and tricks</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/r-tips/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/r-tips/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;r-demo&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R demo&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Other%20software/Efficient%20coding%20in%20R.Rmd&#34;&gt;Download R demo&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The DARTH Workgroup</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/darth/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day2/darth/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro,%20general,%20packages/DARTH%20Overview.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Welcome</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/welcome/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day1/welcome/</guid>
+      <description>
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Welcome to Introduction to R!&lt;/p&gt;
+&lt;div id=&#34;presentation-video&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Presentation video&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//player.vimeo.com/video/473551236&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../Course_Modularization/Intro%20to%20R/Slides/00_welcome_slides.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DARTH framework</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/darthpack/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/darthpack/</guid>
+      <description>
+&lt;link href=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/DARTH%20Framework.pdf&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/DARTH-git/darthpack&#34;&gt;darthpack&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rdcu.be/bRP5h&#34;&gt;A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>R Shiny</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/shiny/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/shiny/</guid>
+      <description>
+&lt;link href=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://decision-modeling-for-public-health-ajgh02sd.netlify.app/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;slides&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/ShinySlides_CDC.pptx&#34;&gt;Download slides&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;exercise-worksheet&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Exercise worksheet&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/shiny_exercise.pdf&#34;&gt;Download exercise worksheet&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;relevant-files-for-the-exercise&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Relevant files for the exercise&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/Functions_Input.R&#34;&gt;Download Functions_Input.R&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/Function_MicroSim_3state.R&#34;&gt;Download Function_MicroSim_3state.R&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;student-template&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Student template&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;../../../rmds/ShinyApp.R&#34;&gt;Download ShinyApp.R&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instructor-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructor solutions&lt;/h2&gt;
+&lt;p&gt;Instructor solutions will be uploaded later.&lt;/p&gt;
+&lt;!-- [Download instructor solutions - ShinyApp_solutions.R](../../../rmds/ShinyApp_solutions.R) --&gt;
+&lt;/div&gt;
+</description>
     </item>
     
   </channel>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 5 schedule on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/</link>
+    <description>Recent content in Day 5 schedule on Janssen Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Mon, 09 Nov 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Calibration - Demo</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_demo/</link>
+      <pubDate>Mon, 09 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_demo/</guid>
+      <description>Demo: 3-State Cancer Relative Survival (CRS) Markov ModelDownload calibration targets
+Download Markov model function
+Download 3-state Markov model function
+Download demo - Random search
+Download demo - Nelder Mead
+Download demo - Bayesian IMIS
+</description>
+    </item>
+    
+    <item>
+      <title>Calibration - Exercises</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_exercise/</link>
+      <pubDate>Mon, 09 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/calibration_exercise/</guid>
+      <description>Exercise worksheet (Calibration: Markov Sick-Sicker model)Download exercise worksheet
+Relevant files for the exerciseDownload data (calibration targets)
+Download Sick-Sicker Markov model function (for calibration)
+Student templateDownload student template
+Instructor solutionsDownload instructor solutions - Random Search
+Download instructor solutions - Nelder Mead
+Download instructor solutions - Bayesian IMIS
+</description>
+    </item>
+    
+    <item>
+      <title>Calibration - Presentation Videos</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/videos_calibration/</link>
+      <pubDate>Sun, 08 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day6/videos_calibration/</guid>
+      <description>SlidesDownload slides - Calibration
+Calibration 0 - Introduction
+  Calibration 1 - Overview
+  Calibration 2 - Goodness of Fit
+  Calibration 3 - Search
+  Calibration 4 - 3-state cancer model
+  Calibration 5 - 3-state cancer model
+  </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+---
+title: Cohort State Transition Models Variants
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: STM variants
+menu:
+  day5:
+    weight: 6
+---
+
+## Demos (3-state model)
+
+[Download demo 1](../../../rmds/Markov_3state_time.Rmd)
+
+[Download demo 2](../../../rmds/Markov_3state_tunnels.Rmd)
+
+## Exercise worksheet (Sick-Sicker model)
+
+[Download exercise worksheet](../../../rmds/markov_sick-sicker_tunnels_exercise.pdf)
+
+## Data for the exercise
+
+[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
+
+## Student template
+
+[Download student template](../../../rmds/markov_sick-sicker_tunnels_template.Rmd)
+
+## Instructor solutions
+
+[Download instructor solutions](../../../rmds/markov_sick-sicker_tunnels_solutions.Rmd)
+

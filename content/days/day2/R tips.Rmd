@@ -1,0 +1,20 @@
+---
+title: R tips and tricks
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: R tips and tricks
+menu:
+  day2:
+    weight: 6
+---
+
+## R demo
+
+[Download R demo](../../../Course_Modularization/Other software/Efficient coding in R.Rmd)
+
+
+

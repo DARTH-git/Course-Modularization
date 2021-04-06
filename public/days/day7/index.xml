@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Day 6 schedule on Janssen Decision Modeling in R Workshop</title>
+    <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/</link>
+    <description>Recent content in Day 6 schedule on Janssen Decision Modeling in R Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2020</copyright>
+    <lastBuildDate>Tue, 10 Nov 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DARTH framework</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/darthpack/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/darthpack/</guid>
+      <description>SlidesDownload slides
+Referencesdarthpack
+A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling
+</description>
+    </item>
+    
+    <item>
+      <title>R Shiny</title>
+      <link>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/shiny/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://decision-modeling-for-public-health-ajgh02sd.netlify.app/days/day7/shiny/</guid>
+      <description>SlidesDownload slides
+Exercise worksheetDownload exercise worksheet
+Relevant files for the exerciseDownload Functions_Input.R
+Download Function_MicroSim_3state.R
+Student templateDownload ShinyApp.R
+Instructor solutionsInstructor solutions will be uploaded later.
+</description>
+    </item>
+    
+  </channel>
+</rss>

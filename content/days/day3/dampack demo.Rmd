@@ -9,6 +9,6 @@ menu:
     weight: 4
 ---
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/dampack video/dampack_storyboard.pptx)
+[Download slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/dampack video/dampack_slides.pptx)
 
 

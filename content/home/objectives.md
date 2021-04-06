@@ -18,9 +18,9 @@ Overall learning objectives for the course include;
 
 We will cover the following topics:
 
-**April 6 - 15**: Intro to R for Decision Modeling (part 1)
+**April 6 - 15**: Intro to R for Decision Modeling, part 1
 
-**Friday, April 16**: Intro to R for Decision Modeling (part 2)
+**Friday, April 16**: Intro to R for Decision Modeling, part 2
 
 **Tuesday, April 20**: Intro to Decision Modeling
 

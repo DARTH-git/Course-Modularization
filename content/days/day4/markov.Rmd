@@ -1,9 +1,9 @@
 ---
-title: Cohort State Transition Models (cSTM)
+title: "Cohort state-transition models (cSTM), part 1"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Basic cSTM 
+linktitle: "cSTM part 1"
 menu:
   day4:
     weight: 3
@@ -11,21 +11,25 @@ menu:
 
 ## Demo (3-state model)
 
-[Download demo](../../../rmds/Markov_3state.Rmd)
+[Download demo](../../../Course_Modularization/Markov models/Markov_3state.Rmd)
 
-## Exercise worksheet (Sick-Sicker model)
+[Download demo - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)
 
-[Download exercise worksheet](../../../rmds/markov_sick-sicker_exercise.pdf)
+[Download demo function - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
 
-## Data for the exercise
+<!-- ## Exercise worksheet (Sick-Sicker model) -->
 
-[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
+<!-- [Download exercise worksheet](../../../rmds/markov_sick-sicker_exercise.pdf) -->
 
-## Student template
+<!-- ## Data for the exercise -->
 
-[Download student template](../../../rmds/markov_sick-sicker_template.Rmd)
+<!-- [Download data](../../../rmds/HMD_USA_Mx_2015.csv) -->
 
-## Instructor solutions
+<!-- ## Student template -->
 
-[Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd)
+<!-- [Download student template](../../../rmds/markov_sick-sicker_template.Rmd) -->
+
+<!-- ## Instructor solutions -->
+
+<!-- [Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd) -->
 

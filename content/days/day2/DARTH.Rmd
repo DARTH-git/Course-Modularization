@@ -1,10 +1,10 @@
 ---
-title: The DARTH Workgroup
+title: Intro to Decision Modeling in R
 date: "`r Sys.Date()`"
 draft: false
 type: docs
 
-linktitle: The DARTH Workgroup
+linktitle: Intro to Decision Modeling in R
 menu:
   day2:
     weight: 2
@@ -12,5 +12,5 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx)
+[Download slides](../../../Course_Modularization/Intro, general, packages/IntrotoDecModelR.pptx)
 

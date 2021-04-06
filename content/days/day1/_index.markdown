@@ -1,7 +1,7 @@
 ---
 title: "April 6-15 schedule"
 author: ''
-date: "2021-04-05"
+date: "2021-04-06"
 slug: day1
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-**April 6 - 15**: *Intro to R for Decision Modeling (part 1)* 
+*Intro to R for Decision Modeling, part 1* 
 
 Basic agenda:
 

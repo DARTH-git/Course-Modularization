@@ -91,38 +91,34 @@ p_load_gh("DARTH-git/darthtools")
 # 03 Input model parameters
 
 ```{r}
-# Strategy names
-v_names_str <- c("Standard of Care", "Treatment A", "Treatment B")  
-
-# Markov model parameters
+## General setup
+n_cycles        <- 60                            # number of cycles
+v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
 v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
-n_t  <- 60                                       # number of cycles
-v_names_cycles  <- paste("cycle", 0:n_t)         # cycle names
+n_states        <- length(v_names_states)        # number of health states 
 
-# Transition probabilities
-p_HD_min  <- 0.003                           # probability of dying when healthy at t = 0
-p_HD_max  <- 0.01                            # probability of dying when healthy at t = n_t
-p_HS_SoC  <- 0.05                            # probability of becoming sick when healthy, conditional on surviving, under SoC
-p_HS_trtA <- 0.04                            # probability of becoming sick when healthy, conditional on surviving, under treatment A
-p_HS_trtB <- 0.02                            # probability of becoming sick when healthy, conditional on surviving, under treatment B
-p_SD      <- 0.1                             # probability of dying when sick
+# Discounting factors
+d_c             <- 0.03                          # discount rate for costs 
+d_e             <- 0.03                          # discount rate for QALYs
 
-# Costs and utilities  
-c_H       <- 400                             # cost of one cycle in healthy state
-c_S       <- 1000                            # cost of one cycle in sick state
-c_D       <- 0                               # cost of one cycle in dead state
-c_trtA    <- 800                             # cost of treatment A (per cycle)
-c_trtB    <- 2000                            # cost of treatment B (per cycle)
-u_H       <- 1                               # utility when healthy 
-u_S       <- 0.5                             # utility when sick
-u_D       <- 0                               # utility when dead
-d_e       <- d_c <- 0.03                     # discount rate per cycle equal discount of costs and QALYs by 3%
+# Strategy names
+v_names_str     <- c("Standard of Care",         # store the strategy names
+                     "Treatment A", 
+                     "Treatment B")  
+n_str           <- length(v_names_str)           # number of strategies
 
+## Transition probabilities
+p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
+p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
+p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
+p_SD      <- 0.1   # probability of dying          
+p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
+p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
 # probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
-v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_t)  
+v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles) 
 
-# Tunnels
-n_tunnel_size   <- n_t
+## Tunnels
+n_tunnel_size   <- n_cycles
 # Sick state
 v_Sick_tunnels  <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for time-dependent model
@@ -134,12 +130,22 @@ l    <- 0.08
 g    <- 1.1
 p_SD <- l*g*(1:n_tunnel_size)^{g-1} # probability of dying when sick (time-in-state dependent)
 
-n_str    <- length(v_names_str)     # number of strategies
-n_states <- length(v_names_states)  # number of states
+## State rewards
+# Costs and utilities  
+c_H       <- 400   # cost of one cycle in healthy state
+c_S       <- 1000  # cost of one cycle in sick state
+c_D       <- 0     # cost of one cycle in dead state
+c_trtA    <- 800   # cost of treatment A (per cycle) in healthy state
+c_trtB    <- 1500  # cost of treatment B (per cycle) in healthy state
+u_H       <- 1     # utility when healthy 
+u_S       <- 0.5   # utility when sick
+u_D       <- 0     # utility when dead
+d_e       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
+d_c       <- 0.03  # discount rate per cycle equal discount of costs and QAL  
 
-#discount weights for costs and effects
-v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
-v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
+# Discount weight (equal discounting is assumed for costs and effects)
+v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
+v_dwe <- 1 / (1 + d_e) ^ (0:n_cycles)
 ```
 
 # 04 Define and initialize matrices and vectors
@@ -147,14 +153,14 @@ v_dwe <- 1 / (1 + d_e) ^ (0:n_t)
 ## 04.1 Cohort trace
 
 ```{r}
-m_M_SoC <- m_M_trtA <- m_M_trtB <- matrix(NA, 
-                                          nrow = n_t + 1,  # create Markov trace (n_t + 1) because R doesn't understand Cycle 0)
-                                          ncol = n_states_tunnels,                  
-                                          dimnames = list(v_names_cycles, v_names_states_tunnels)) 
+m_M_SoC <- matrix(NA, 
+                  nrow = (n_cycles + 1), ncol = n_states_tunnels,                  
+                  dimnames = list(v_names_cycles, v_names_states_tunnels)) 
 
 # The cohort starts as healthy
 # initialize first cycle of Markov trace accounting for the tunnels
-m_M_SoC[1, ] <- m_M_trtA[1, ] <- m_M_trtB[1, ] <- c(1, rep(0, n_tunnel_size), 0)     
+m_M_SoC[1, ] <- c(1, rep(0, n_tunnel_size), 0)    
+m_M_trtA <- m_M_trtB <- m_M_SoC # structure and initial states remain the same
 ```
 
 ## 04.2 Transition probability array
@@ -162,7 +168,7 @@ m_M_SoC[1, ] <- m_M_trtA[1, ] <- m_M_trtB[1, ] <- c(1, rep(0, n_tunnel_size), 0)
 ```{r}
 # create the transition probability array
 a_P_SoC <- array(0,  # Create 3-D array
-                 dim = c(n_states_tunnels, n_states_tunnels, n_t),               
+                 dim = c(n_states_tunnels, n_states_tunnels, n_cycles),               
                  dimnames = list(v_names_states_tunnels, v_names_states_tunnels,
                                  v_names_cycles[-length(v_names_cycles)])) # name the dimensions of the array   
 ```
@@ -207,15 +213,15 @@ check_transition_probability(a_P_SoC,  verbose = TRUE)
 check_transition_probability(a_P_trtA, verbose = TRUE)
 check_transition_probability(a_P_trtB, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P_SoC,  n_states = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
-check_sum_of_transition_array(a_P_trtA, n_states = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
-check_sum_of_transition_array(a_P_trtB, n_states = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P_SoC,  n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_trtA, n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_trtB, n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
 ```
 
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){  # loop through the number of cycles
+for (t in 1:n_cycles){  # loop through the number of cycles
   # estimate the cohort trace for cycle t + 1 using the t-th matrix from the probability array 
   m_M_SoC [t + 1, ] <- m_M_SoC [t, ] %*% a_P_SoC [, , t] 
   m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t] 
@@ -268,7 +274,7 @@ plot(v_os, type = 'l',
      xlab = "Cycle",
      main = "Overall Survival")             
 # add grid 
-grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = TRUE) 
+grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = TRUE) 
 ```
 
 ## 06.2.1 Life Expectancy (LE)
@@ -296,8 +302,8 @@ plot(v_prev,
 # per cycle
 # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
 v_tc_SoC  <- m_M_tunnels_SoC  %*% c(c_H, c_S, c_D)  
-v_tc_trtA <- m_M_tunnels_trtA %*% c(c_H, c_S + c_trtA, c_D)  
-v_tc_trtB <- m_M_tunnels_trtB %*% c(c_H, c_S + c_trtB, c_D)  
+v_tc_trtA <- m_M_tunnels_trtA %*% c(c_H + c_trtA, c_S, c_D)  
+v_tc_trtB <- m_M_tunnels_trtB %*% c(c_H + c_trtB, c_S, c_D)  
 
 # calculate expected QALYs by multiplying cohort trace with the utilities for the different health states   
 v_tu_SoC  <- m_M_tunnels_SoC  %*% c(u_H, u_S, u_D)  

@@ -8,7 +8,7 @@ menu:
   day3:
     weight: 3
 ---
-
+  
 ## Slides
 
 [Download slides](../../../Course_Modularization/Intro, general, packages/DecisionModelingIntroSlides.pptx)

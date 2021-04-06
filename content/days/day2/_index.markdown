@@ -1,7 +1,7 @@
 ---
 title: "April 16 schedule"
 author: ''
-date: "2021-04-05"
+date: "2021-04-06"
 slug: day2
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-**April 16**: *Intro to R for Decision Modeling (part 2)* 
+*Intro to R for Decision Modeling, part 2* 
 
 Basic agenda:
 
@@ -24,8 +24,8 @@ Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 – 8:30  |  The DARTH Workgroup |
-| 8:30 – 9:00| Review of “Intro to R (part 1)” materials| 
+| 8:00 – 8:30  |  Intro to decision modeling in R |
+| 8:30 – 9:00| Review of “Intro to R for Decision Modeling, part 1” materials| 
 | 9:00 – 10:00 | Intro to R assessments |
 | 10:00 – 10:15 | Break |
 | 10:15 – 11:15 | Matrix algebra in R |

@@ -1,9 +1,9 @@
 ---
-title: Cohort State Transition Models Variants
+title: "Cohort state-transition models (cSTM), part 2"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: STM variants
+linktitle: "cSTM part 2"
 menu:
   day5:
     weight: 6
@@ -11,23 +11,23 @@ menu:
 
 ## Demos (3-state model)
 
-[Download demo 1](../../../rmds/Markov_3state_time.Rmd)
+[Download demo 1 - age dependence](../../../Course_Modularization/Markov models/Markov_3state_time.Rmd)
 
-[Download demo 2](../../../rmds/Markov_3state_tunnels.Rmd)
+[Download demo 2 - age and history dependence](../../../Course_Modularization/Markov models/Markov_3state_tunnels.Rmd)
 
-## Exercise worksheet (Sick-Sicker model)
+<!-- ## Exercise worksheet (Sick-Sicker model) -->
 
-[Download exercise worksheet](../../../rmds/markov_sick-sicker_tunnels_exercise.pdf)
+<!-- [Download exercise worksheet](../../../rmds/markov_sick-sicker_tunnels_exercise.pdf) -->
 
-## Data for the exercise
+<!-- ## Data for the exercise -->
 
-[Download data](../../../rmds/HMD_USA_Mx_2015.csv)
+<!-- [Download data](../../../rmds/HMD_USA_Mx_2015.csv) -->
 
-## Student template
+<!-- ## Student template -->
 
-[Download student template](../../../rmds/markov_sick-sicker_tunnels_template.Rmd)
+<!-- [Download student template](../../../rmds/markov_sick-sicker_tunnels_template.Rmd) -->
 
-## Instructor solutions
+<!-- ## Instructor solutions -->
 
-[Download instructor solutions](../../../rmds/markov_sick-sicker_tunnels_solutions.Rmd)
+<!-- [Download instructor solutions](../../../rmds/markov_sick-sicker_tunnels_solutions.Rmd) -->
 

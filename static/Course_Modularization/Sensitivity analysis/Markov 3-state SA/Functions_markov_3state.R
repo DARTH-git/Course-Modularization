@@ -13,29 +13,35 @@ decision_model <- function(l_params_all, verbose = FALSE) {
   with(as.list(l_params_all), {
     
     ####### INITIALIZATION ##########################################
-    # create the cohort trace
-    # create the cohort trace
-    m_M_SoC <- m_M_trtA <- m_M_trtB <-  matrix(NA, 
-                                               nrow = n_t + 1, # n_t + 1 because R doesn't understand Cycle 0
-                                               ncol = n_states, 
-                                               dimnames = list(v_names_cycles, v_names_states))
+    ## Initial state vector
+    # All starting healthy
+    v_s_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+    v_s_init
     
-    m_M_SoC[1, ] <- m_M_trtA[1, ] <- m_M_trtB[1, ] <- v_init   # initialize first cycle of cohort trace
+    ## Initialize cohort trace for cSTM for all strategies
+    m_M_SoC <- matrix(0, 
+                      nrow = (n_cycles + 1), ncol = n_states, 
+                      dimnames = list(v_names_cycles, v_names_states))
+    # Store the initial state vector in the first row of the cohort trace
+    m_M_SoC[1, ] <- v_s_init
+    ## Initialize cohort traces
+    m_M_trtA <- m_M_trtB <- m_M_SoC # structure and initial states remain the same
     
-    # create the transition probability matrix
+    ## Initialize transition probability matrix 
+    # all transitions to a non-death state are assumed to be conditional on survival 
     m_P_SoC  <- matrix(0,
                        nrow = n_states, ncol = n_states,
-                       dimnames = list(v_names_states, v_names_states))  # name the columns and rows of the transition probability matrix
-
+                       dimnames = list(v_names_states, v_names_states)) # define row and column names
+    
     ## Standard of Care
     # from Healthy
     m_P_SoC["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_SoC)
-    m_P_SoC["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_SoC
-    m_P_SoC["Healthy", "Dead"]    <- p_HD
+    m_P_SoC["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS_SoC
+    m_P_SoC["Healthy", "Dead"]    <-      p_HD
     
     # from Sick
     m_P_SoC["Sick", "Sick"] <- 1 - p_SD
-    m_P_SoC["Sick", "Dead"] <- p_SD
+    m_P_SoC["Sick", "Dead"] <-     p_SD
     
     # from Dead
     m_P_SoC["Dead", "Dead"] <- 1
@@ -43,12 +49,12 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     ## Treatment A
     m_P_trtA <- m_P_SoC
     m_P_trtA["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trtA)
-    m_P_trtA["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trtA
+    m_P_trtA["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS_trtA
     
     ## Treatment B
     m_P_trtB <- m_P_SoC
     m_P_trtB["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trtB)
-    m_P_trtB["Healthy", "Sick"]    <- (1 - p_HD) * p_HS_trtB
+    m_P_trtB["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS_trtB
     
     # Check that transition probabilities are in [0, 1]
     check_transition_probability(m_P_SoC,  verbose = TRUE)
@@ -60,7 +66,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     check_sum_of_transition_array(m_P_trtB, n_states = n_states, verbose = TRUE)
 
     ############# PROCESS ###########################################
-    for (t in 1:n_t){  # loop through the number of cycles
+    for (t in 1:n_cycles){  # loop through the number of cycles
       m_M_SoC [t + 1, ] <- m_M_SoC [t, ] %*% m_P_SoC   # estimate the state vector for the next cycle (t + 1)
       m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% m_P_trtA  # estimate the state vector for the next cycle (t + 1)
       m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% m_P_trtB  # estimate the state vector for the next cycle (t + 1)
@@ -93,8 +99,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
   with(as.list(l_params_all), {
     # discount weights for costs and effects
-    v_dwc <- 1 / (1 + d_c) ^ (0:n_t) 
-    v_dwe <- 1 / (1 + d_e) ^ (0:n_t) 
+    v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
+    v_dwe <- 1 / (1 + d_e) ^ (0:n_cycles) 
     
     ## Run STM model at a parameter set 
     l_model_out <- decision_model(l_params_all = l_params_all)
@@ -107,8 +113,8 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     # per cycle
     # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
     v_tc_SoC  <- m_M_SoC  %*% c(c_H, c_S, c_D)  
-    v_tc_trtA <- m_M_trtA %*% c(c_H, c_S + c_trtA, c_D)  
-    v_tc_trtB <- m_M_trtB %*% c(c_H, c_S + c_trtB, c_D)  
+    v_tc_trtA <- m_M_trtA %*% c(c_H + c_trtA, c_S, c_D)  
+    v_tc_trtB <- m_M_trtB %*% c(c_H + c_trtB, c_S, c_D)  
     
     # calculate expected QALYs by multiplying cohort trace with the utilities for the different health states   
     v_tu_SoC  <- m_M_SoC  %*% c(u_H, u_S, u_D)  

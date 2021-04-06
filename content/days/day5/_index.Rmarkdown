@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-**Thursday, April 29**: *Cohort state-transition models (part 2)*
+*Cohort state-transition models, part 2*
 
 Basic agenda:
 

@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-**Friday, April 23**: *Cohort state-transition models (part 1)*
+*Cohort state-transition models, part 1*
 
 Basic agenda:
 
@@ -33,4 +33,4 @@ Here is a tentative timetable:
 | 11:00 - 11:45 | Hands-on activity: Cohort state-transition model exercise (time-homogeneous Sick-Sicker model) |
 | 11:45 - 12:00 | Session summary and Q&A |
 
-Before April 29, please watch Markov model lectures 5-6.
+Before April 29, please watch [cSTM lectures 5-6]().

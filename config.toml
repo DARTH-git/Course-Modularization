@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Decision Modeling for Public Health"
+title = "Janssen Decision Modeling in R Workshop"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/slack-syz2211/shared_invite/zt-oji1li0m-46vjISCNR2FPg~s6mWWEsA"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -252,51 +252,39 @@ enableGitInfo = false
   weight = 1
 
 [[menu.main]]
-  name = "Nov 2"
-  weight = 3
+  name = "Apr 6-15"
+  weight = 2
   url = "days/day1/" 
   identifier = "day1"
-  
+
 [[menu.main]]
-  name = "Nov 3"
-  weight = 4
+  name = "Apr 16"
+  weight = 3
   url = "days/day2/" 
   identifier = "day2"
   
 [[menu.main]]
-  name = "Nov 4"
-  weight = 5
+  name = "Apr 20"
+  weight = 4
   url = "days/day3/" 
   identifier = "day3"
   
 [[menu.main]]
-  name = "Nov 5"
-  weight = 6
+  name = "Apr 23"
+  weight = 5
   url = "days/day4/" 
   identifier = "day4"
   
 [[menu.main]]
-  name = "Nov 6"
-  weight = 7
+  name = "Apr 29"
+  weight = 6
   url = "days/day5/" 
   identifier = "day5"
   
 [[menu.main]]
-  name = "Nov 9"
-  weight = 8
-  url = "days/day6/" 
-  identifier = "day6"
-
-[[menu.main]]
-  name = "Nov 10"
-  weight = 9
-  url = "days/day7/" 
-  identifier = "day7"
-
-[[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/darthcdcdecis-lyt5179/shared_invite/zt-ild8x6xe-nmZqMaFQK9DC86tssB2GWw"
+  url = "https://join.slack.com/t/slack-syz2211/shared_invite/zt-oji1li0m-46vjISCNR2FPg~s6mWWEsA"
   weight = 10
   
 # Search.

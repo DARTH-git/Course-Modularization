@@ -60,6 +60,12 @@ and adapted with proper attribution.
 
 \newpage
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+Change `eval` to `TRUE` if you want to knit this document.
+
 ```{r}
 rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
@@ -69,11 +75,10 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "devtools", "scales", "ellipse", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram", "jsonlite", "rstudioapi", "tidyverse")                                               
+p_load("here", "devtools", "scales", "ellipse", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram", "jsonlite", "rstudioapi", "tidyverse", "dampack")                                               
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools", "DARTH-git/OpenTree")
+p_load_gh("DARTH-git/darthtools", "DARTH-git/OpenTree")
 ```
 
 # 02 Load functions

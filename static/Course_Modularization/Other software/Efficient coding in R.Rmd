@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 ```
 
@@ -36,8 +36,6 @@ my_benchmark <- benchmark_io(runs = 3, size = 50)
 plot(my_benchmark)
 ```
 
-
-
 ## CSV files and RDS files
 In decision modeling and HTA we often extract data from large CSV files. However, loading and working with these CVS files in R can be slow. A  neat trick is to read in the CVS data once into the R environment and save as an R binary file (rds) using `saveRDS()`. And next time you need it you read in the rds file using `readRDS()`.
 
@@ -47,7 +45,7 @@ In addition data.table is also more efficient than data.frame. Using data.table 
 In our simulations we often like to check some condition before we execute a specific calculation or before we assign a transition probability, cost or reward. To check if two condition are true we often use the & operator. If we for example like to check if a person is sick and has no history of surgery jet we can use the & operator. The & operator will than always value both its arguments. However, this is quite inefficient. because after know that the person is not sick, their is not need to check of any history of disease as we will not do a surgical procedure on a healthy person anyway. Therefore, if health is FALSE, than healthy & no history of disease will always be FALSE, regardless of the value of the surgical history. Thus, you can save a little processing time by not calculating it. The && operator takes advantage of this trick, and doesn't bother to calculate y if it doesn't make a difference to the overall result.
 
 ```{r}
-library(microbenchmark)
+p_load(microbenchmark)
 df_patient <- data.frame(state     = "Healthy", 
                          n_surgery = 1)
 
@@ -130,7 +128,7 @@ df_patient$state[v_test]
 You can profile your code with the profvis function. This is a relatively easy way to find the required memory and time in parts of your function. 
 
 ```{r}
-library("profvis")
+p_load("profvis")
 
 v_vector <- 1:1e5
 run_simple_function <- function(v_vector){

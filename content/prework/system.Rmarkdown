@@ -20,7 +20,6 @@ In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on
 
 - If you will be using a personal machine, please follow the installation instructions below.
 
-
 ## Install R
 
 Download `R` version 4.0.2 from [here](https://cran.r-project.org/bin/windows/base/old/4.0.2/). Download the file `R-4.0.2-win.exe` and follow the installation procedure.

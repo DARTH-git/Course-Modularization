@@ -1,7 +1,7 @@
 ---
 active: true
 autolink: true
-date: "2017-10-15T00:00:00-07:00"
+date: "`r Sys.Date()`"
 subtitle: ""
 title: Contact
 weight: 70

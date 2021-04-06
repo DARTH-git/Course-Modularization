@@ -1,5 +1,5 @@
 ---
-date: "2020-10-26T00:00:00-08:00"
+date: "`r Sys.Date()`"
 draft: false
 linktitle: Resources
 menu:

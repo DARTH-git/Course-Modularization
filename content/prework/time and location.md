@@ -1,5 +1,5 @@
 ---
-date: "2020-10-26T00:00:00-08:00"
+date: "`r Sys.Date()`"
 draft: false
 linktitle: Time
 menu:
@@ -13,11 +13,15 @@ type: docs
 
 ## When
 
-Tuesday, November 3, 2020 - Tuesday, November 10, 2020
+Friday, April 16
 
-9:00 AM - 12:00 PM
+Tuesday, April 20
 
-Eastern Time
+Friday, April 23
+
+Thurs, April 29
+
+8AM - 12PM Eastern Time
 
 ## Where
 

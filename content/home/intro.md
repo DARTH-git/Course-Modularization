@@ -13,7 +13,4 @@ Health and public health resources are limited and policymakers are under increa
 
 The materials presented in this workshop were developed by the [Decision Analysis in `R` for Technologies in Health (DARTH) Workgroup](http://darthworkgroup.com/) The DARTH workgroup is a multi-institutional, multi-university collaborative effort comprised of researchers who have a passion for transparent and open-source solutions to decision analysis in health. The aim of this collaboration is to expand knowledge and develop educational materials that empower people to construct `R`-based decision models. Visit [our website](www.darthworkgroup.com) for more information.
 
-Part I of this workshop covers the foundational models and analyses used in decision analysis, including cohort state-transition models (Markov models), microsimulation models, and probabilistic sensitivity analysis.
-
-Part II of this workshop covers some advanced decision analysis topics, including model calibration and constructing user-friendly interfaces using `R` Shiny.
-
+This workshop covers fundamental R skills, models, and analyses used in decision-analytic modeling, including cohort state-transition models (Markov models) and probabilistic sensitivity analysis (PSA).

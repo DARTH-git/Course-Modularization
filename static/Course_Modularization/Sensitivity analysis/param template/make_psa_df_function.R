@@ -29,15 +29,17 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
     # select the row with information about the parameter
     v_param <- df_param[df_param$parameter == p, ]
     # name the parameter
-    v_shapes        <- v_param[, c("shape1",      "shape2",      "shape3")]
-    names(v_shapes) <- v_param[, c("type.shape1", "type.shape2", "type.shape3")]
+    v_shapes        <- v_param[, c("par1",      "par2",      "par3")]
+    names(v_shapes) <- v_param[, c("type.par1", "type.par2", "type.par3")]
     v_shapes        <- v_shapes[c(!is.na(v_shapes))] # remove NA's 
 
     param <- cbind(v_param[, c("parameter", "unit", "distribution")], 
                    v_shapes)
     
-    # Beta distribution
-    if(param$distribution == "beta"){
+    # if the distribution is missing use the base value
+    if (is.na(param$distribution) | param$distribution == "NA"){
+      m_param_psa[, p] <- rep(param$mean, n_iter) 
+    } else if(param$distribution == "beta"){ # Beta distribution
       # if mean and sigma -> get the shapes and add
       if(c("sigma") %in% names(param)){
         l_shapes   <-  with(param, 
@@ -109,9 +111,7 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
                                    rweibull(n = n_iter,
                                          shape = shape,
                                          scale = scale))
-    } else if (param$distribution == "NA"){
-        m_param_psa[, p] <- rep(param$mean, n_iter) 
-      }
+    } 
     
   } # close loop for the parameters
   

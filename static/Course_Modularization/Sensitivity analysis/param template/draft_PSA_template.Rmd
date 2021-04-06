@@ -1,7 +1,7 @@
 ---
 title: "PSA template"
 author: "DARTH"
-date: "3/1/2021"
+date: "3/23/2021"
 output: html_document
 ---
 
@@ -26,19 +26,24 @@ source("make_psa_df_function.R")
 
 ## Load the data and remove empty lines
 ```{r cars}
-df_param  <- data.frame(readxl::read_xlsx("param.xlsx", sheet = "param"))
-# df_param <- fread("param.csv")
+# Read from the xlsx
+#df_param  <- data.frame(readxl::read_xlsx("param.xlsx", sheet = "param"))
+
+# Read from the csv
+df_param <- read.csv(file = "param.csv", header = TRUE, sep = ";")
 
 # document which parameters do not have a unit and will be deleted
-param_NA <- df_param[which(is.na(df_param$unit)), ]
+# < 0 is used to find rows without information
+param_NA <- df_param[which((df_param$unit < 0)), ]
 
 # Remove parameters without unit
-df_param <- df_param[!is.na(df_param$unit), ]
+df_param <- df_param[df_param$unit>0, ]
 
-# Make shape variables numeric
-numvar <- c("shape1", "shape2", "shape3")
+# Make shape variables numeric, for those not missing
+numvar <- c("par1", "par2", "par3")
 for (i in numvar) {
-  df_param[, i] <- as.numeric(df_param[, i])
+  v_row_NA <- is.na(df_param[, i])}
+  df_param[, i][!is.na(df_param[, i])] <- as.numeric(df_param[, i][!is.na(df_param[, i])])
 }
 
 ```

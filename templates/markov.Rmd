@@ -1,9 +1,9 @@
 ---
-title: "Cohort state-transition models (cSTM), part 1"
+title: "Cohort state-transition models (cSTM) - time-homogenous models"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "cSTM part 1"
+linktitle: "cSTM time-homogeneous models"
 menu:
   day4:
     weight: 3

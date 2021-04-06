@@ -1,7 +1,7 @@
 ---
 title: Welcome
 author: ''
-date: "2020-10-29"
+date: "2021-04-06"
 slug: welcome
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-This site is the official home for all information related to the Decision Modeling for Public Health workshop hosted by and [the DARTH workgroup](http://darthworkgroup.com/). This is the place to find all the information you'll need to get the most out of this workshop, including software, R packages, and additional resources. 
+This site is the official home for all information related to the Janssen Decision Modeling in R workshop hosted by and [the DARTH workgroup](http://darthworkgroup.com/). This is the place to find all the information you'll need to get the most out of this workshop, including software, R packages, and additional resources. 
 
 ## Orientation
 

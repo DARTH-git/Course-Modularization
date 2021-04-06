@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-*Cohort state-transition models, part 2*
+*Cohort state-transition models - model variants*
 
 Basic agenda:
 

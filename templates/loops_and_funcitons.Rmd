@@ -8,8 +8,8 @@ type: docs
 
 linktitle: Loops and functions
 menu:
-  day1:
-    weight: 6
+  day2:
+    weight: 4
 ---
 
 ## Presentation video

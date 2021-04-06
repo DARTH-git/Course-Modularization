@@ -24,7 +24,7 @@ We will cover the following topics:
 
 **Tuesday, April 20**: Intro to Decision Modeling
 
-**Friday, April 23**: Cohort state-transition models, part 1
+**Friday, April 23**: Cohort state-transition models (cSTM) - time-homogeneous models
 
-**Thursday, April 29**: Cohort state-transition models, part 2
+**Thursday, April 29**: Cohort state-transition models (cSTM) - model variants
 

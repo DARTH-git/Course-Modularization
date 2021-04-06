@@ -32,7 +32,7 @@ Here is a tentative timetable:
 | 10:45 – 11:00 | Demonstration of R Shiny Apps |
 | 11:00 – 12:00 | Discussion: Participant topics and goals |
 
-Before April 23, please watch Markov model lectures 1-4.
+Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
 
 
 

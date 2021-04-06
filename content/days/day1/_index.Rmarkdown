@@ -1,5 +1,5 @@
 ---
-title: "April 6-15 schedule"
+title: "Preparation & Tasks"
 author: ''
 date: "`r Sys.Date()`"
 slug: day1
@@ -7,20 +7,17 @@ categories: []
 tags: []
 menu:
   day1:
-    name: "Schedule"
+    name: "Prep & Tasks"
     weight: 1
 toc: yes
 type: docs
 ---
 
-*Intro to R for Decision Modeling, part 1* 
+Before April 16, please complete the [Intro to R for Decision Modeling, part 1](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/)
 
-Basic agenda:
+Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
 
-- This module is completely asynchronous
-- It will take approximately 4-5 hours to complete
-- Slack support available 8AM-12PM Eastern Time
-
+Before April 29, please watch [cohort state-transition model lectures 5-6](https://janssen-decision-modeling-workshop.netlify.app/days/day5/videos_markov1/).
 
 
 

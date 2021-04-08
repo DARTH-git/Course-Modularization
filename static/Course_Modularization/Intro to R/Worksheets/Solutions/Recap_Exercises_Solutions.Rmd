@@ -17,47 +17,12 @@ Change `eval` to `TRUE` if you want to knit this document.
 
 This worksheet recaps the programming capabilities of `R` that we will need to develop our decision models. There are three exercises and we have left all the *code chunks* empty for you to fill in. We will also provide solutions after the session.
 
-# 0. Load data into `R`
+# 1. Load data into `R`
 
 Before we begin this session, we need to load our Framingham dataset into `R`.
 
 ```{r}
 data <- read.csv('framingham.csv', header = TRUE)
-```
-
-We will modify a few important variables so that we can understand and visualize the results better. 
-
-# 1. Data manipulation 
-
-Nested `ifelse` statements should be read from 'outside-in'. That is, start with the most outer `ifelse` statement and work your way in. For the purpose of working through these exercises, you do not have to fully understand the code in the below code chunk.
-
-```{r, warning = FALSE, message = FALSE}
-library(dplyr)
-data1 <- data %>% 
-             mutate(SEX = ifelse(!is.na(SEX), 
-                                    ifelse(SEX == 1, 
-                                           'male', 'female'), 
-                                 NA)) %>%
-             mutate(PREVSTRK = ifelse(!is.na(PREVSTRK), 
-                                         ifelse(PREVSTRK == 1, 
-                                                'yes', 'no'), 
-                                      NA)) %>%
-             mutate(PREVMI = ifelse(!is.na(PREVMI), 
-                                       ifelse(PREVMI == 1, 
-                                              'yes', 'no'), 
-                                    NA)) %>% 
-             mutate(DIABETES = ifelse(!is.na(DIABETES), 
-                                         ifelse(DIABETES== 1, 
-                                                'yes', 'no'), 
-                                      NA)) %>%
-             mutate(CURSMOKE = ifelse(!is.na(CURSMOKE), 
-                                         ifelse(CURSMOKE== 1, 
-                                                'yes', 'no'), 
-                                      NA)) %>%
-             mutate(BPMEDS = ifelse(!is.na(BPMEDS), 
-                                       ifelse(BPMEDS== 1, 
-                                              'yes', 'no'), 
-                                    NA))
 ```
 
 # 2. Data Manipulation

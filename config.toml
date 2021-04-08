@@ -287,6 +287,12 @@ enableGitInfo = false
   url = "https://join.slack.com/t/slack-syz2211/shared_invite/zt-oji1li0m-46vjISCNR2FPg~s6mWWEsA"
   weight = 10
   
+[[menu.main]]
+  pre = "<i class=\"fas fa-headset fa-lg\"></i>"
+  name = "Zoom"
+  url = "https://zoom.us/j/99175716535?pwd=N2RJSlJ6YnoxNENXTXlwL1FPZ0ZqQT09"
+  weight = 12
+  
 # Search.
 [params.search]
   # Search provider:

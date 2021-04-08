@@ -1,7 +1,7 @@
 ---
 title: "April 23 Schedule"
 author: ''
-date: "2021-04-06"
+date: "2021-04-08"
 slug: day4
 categories: []
 tags: []

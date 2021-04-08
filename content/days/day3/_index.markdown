@@ -1,7 +1,7 @@
 ---
 title: "April 20 Schedule"
 author: ''
-date: "2021-04-06"
+date: "2021-04-08"
 slug: day3
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-*Intro to Decision Modeling*
+*Overview of Decision Modeling*
 
 Basic agenda:
 

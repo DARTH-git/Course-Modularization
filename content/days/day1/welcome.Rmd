@@ -9,7 +9,7 @@ menu:
     weight: 1
 ---
 
-Welcome to Introduction to R! 
+Welcome to "Introduction to R for Decision Modeling". 
 
 - This module is completely asynchronous
 - It will take approximately 4-5 hours to complete

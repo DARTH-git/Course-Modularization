@@ -26,5 +26,5 @@ We will cover the following topics:
 
 **Friday, April 23**: Cohort state-transition models (cSTM) - time-homogeneous models
 
-**Thursday, April 29**: Cohort state-transition models (cSTM) - model variants
+**Thursday, April 29**: Cohort state-transition models (cSTM) - time-dependent and state-residency-dependent models
 

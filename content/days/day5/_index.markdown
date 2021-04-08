@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-*Cohort state-transition models - model variants*
+*Cohort state-transition models - time-dependent and state-residency-dependent models*
 
 Basic agenda:
 

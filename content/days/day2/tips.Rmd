@@ -12,7 +12,7 @@ menu:
     weight: 6
 ---
 
-## Slides
+## Handout
 
 [Download handout](../../../Course_Modularization/Intro, general, packages/R tips and tricks.html)
 

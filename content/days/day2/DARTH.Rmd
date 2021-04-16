@@ -12,5 +12,5 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/IntrotoDecModelR.pptx)
+[Download slides](../../../Course_Modularization/Intro, general, packages/Introduction to Decision modeling using R.pptx)
 

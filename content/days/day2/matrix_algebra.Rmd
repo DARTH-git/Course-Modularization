@@ -9,7 +9,7 @@ type: docs
 linktitle: Matrix algebra
 menu:
   day2:
-    weight: 4
+    weight: 3
 ---
 
 ## Slides
@@ -18,9 +18,15 @@ menu:
 
 ## R demo
 
-[Download R demo](../../../Course_Modularization/Intro, general, packages/matrix operations.Rmd)
+[Download R demo](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - demo.Rmd)
 
-## Matrix algebra handout
+## Exercise
+
+[Download exercise template](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - template.Rmd)
+
+Solutions will be uploaded later.
+
+## Matrix algebra handout (for reference)
 
 [Download handout](../../../Course_Modularization/Intro, general, packages/matrix.algebra.pdf)
 

@@ -1,0 +1,82 @@
+---
+title: "Matrix Algebra in R"
+author: "SickKids and DARTH"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+subtitle: Introduction
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+Change `eval` to `TRUE` if you want to knit this document.
+
+This worksheet provides an introduction to matrix algebra in `R`:
+
+Throughout the course, we will demonstrate code and leave some empty *code chunks* for you to fill in. We will also provide solutions after the session.
+
+Feel free to modify this document with your own comments and clarifications. 
+
+**EXERCISE 1** Use the following *code chunk* to create a matrix `matrixB` with 2 rows and 4 columns and a matrix `matrixC` with 4 rows and 2 columns:
+
+NOTE: you may decide what the elements are for both matrices - they can be anything as long as the dimensions are right.
+
+```{r}
+matrixB <- matrix(1:8, nrow=2, ncol=4)
+matrixC <- matrix(c(1,2,5,10,28,90,60,100), nrow = 4, ncol=2)
+```
+
+In `R`, there are three key operations that we can do with matrices, addition (`+`), multiplication (`*`) and matrix multiplication (`%*%`). Each of these operations can only be used if the matrices are compatible.
+
+**EXERCISE 2** Perform the following operations on `m_A` and `m_B`:
+
+1) Their sum
+
+2) Their element-wise product (the Hadamard product)
+
+3) Their product
+
+4) The product of the first matrix with the transpose of the second matrix
+
+```{r}
+m_A <- matrix(1:9,  nrow=3, ncol=3)
+m_B <- matrix(6:14, nrow=3, ncol=3)
+```
+
+```{r}
+# 1)
+m_A + m_B
+# 2)
+m_A * m_B
+# 3)
+m_A %*% m_B
+# 4)
+m_A %*% t(m_B)
+```
+
+**EXERCISE 3** We created two matrices, `matrix1` and `matrix2` in the code chunk below. Perform the following operations and display the results:
+
+1) Add `matrix1` to `matrix2` and take the transpose of the sum, and matrix-multiply the result with `matrix2`
+
+2) Obtain the transpose of the product of `matrix1` and `matrix2` and element-wise multiply the result with `matrix1`
+
+```{r}
+matrix1 <- matrix(1:9, nrow=3, ncol=3)
+matrix2 <- matrix(c(1,0,0,0,3,4,5,9,2), nrow=3, ncol=3)
+
+# 1)
+# Your turn
+t(matrix1 + matrix2) %*% matrix2
+# 2)
+# Your turn
+t(matrix1 %*% matrix2) * matrix1
+```
+
+
+
+
+
+

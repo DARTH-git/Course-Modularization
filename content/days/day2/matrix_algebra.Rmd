@@ -18,7 +18,7 @@ menu:
 
 ## R demo
 
-[Download R demo](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - demo.Rmd)
+[Download R demo](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - demo.R)
 
 ## Exercise
 

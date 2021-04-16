@@ -22,6 +22,10 @@ blogdown::shortcode("vimeo", "473054054")
 
 [Download slides](../../../Course_Modularization/Intro to R/Slides/05_loops_function_slides.pptx)
 
+## R Demo
+
+[Download R Demo](../../../Course_Modularization/Intro to R/loops_and_functions_R_demo.R)
+
 ## Student templates
 
 [Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)

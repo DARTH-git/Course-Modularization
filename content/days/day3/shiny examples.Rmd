@@ -1,0 +1,29 @@
+---
+title: R Shiny
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: R Shiny
+menu:
+  day3:
+    weight: 6
+---
+
+## R Shiny
+
+R Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.
+
+[R Shiny](https://shiny.rstudio.com/)
+
+**Simple Markov model Shiny App**
+
+[Access App](https://darkpeakanalytics.shinyapps.io/sadm-mk2/)
+
+**BresMed Shiny App**
+
+[Access App](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
+
+<!-- **COVID-19 Modeling Collaborative Shiny App** -->
+
+<!-- [Access App](https://www.covid-19-mc.ca/interactive-models/hospital-resources) -->
+

@@ -108,9 +108,9 @@ fun_SSS <- function(minage, maxage ,p.HS1 ,p.S1H ,p.S1S2,p.HD  ,rr.S1 ,rr.S2 ,d.
   table_Markov_SickSicker <- as.data.frame(table_Markov_SickSicker)    # create a data frame 
   table_Markov_SickSicker                                              
   
-  
   return(list(trace = m.M_no_trt,
-              table = table_Markov_SickSicker))
+              table = table_Markov_SickSicker,
+              n.t = n.t))
   
 }
 
@@ -245,7 +245,7 @@ server <- function(input, output) {
   observeEvent(input$button, {
     withProgress(message = 'Performing Health Economic Analysis', value = 0, {
       ages<-as.numeric(input$age)
-      CEAnalysis<-fun_SSS(ages[1], ages[2] ,
+      CEAnalysis<-fun_SSS(minage = ages[1], maxage = ages[2] ,
                    input$HS ,input$SH , input$SSR,input$HD  , input$SD, input$SRD ,
                    input$Dis,
                    input$cH,input$cS,input$cSR,input$cT,c.D=0,
@@ -257,9 +257,7 @@ server <- function(input, output) {
     },digits=6)
     
     output$Plot <- renderPlot({
-      ages<-as.numeric(input$age)
-      n.t<-ages[2]-ages[1]
-      matplot(0:n.t,CEAnalysis$trace, type = 'l', 
+      matplot(0:CEAnalysis$n.t,CEAnalysis$trace, type = 'l',
               ylab = "Probability of state occupancy",
               xlab = "Cycle",
               main = "Markov Trace")              # create a plot of the Markov trace

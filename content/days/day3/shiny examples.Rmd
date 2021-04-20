@@ -23,6 +23,11 @@ menu:
 
 [Access App](https://www.covid-19-mc.ca/interactive-models/hospital-resources)
 
+## Shiny App code - DARTH Sick-Sicker Model
+
+[Download code](../../../Course_Modularization/Markov models/Markov Sick-Sicker/Markov SickSicker Shiny.R)
+
+
 ## References
 
 R Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.

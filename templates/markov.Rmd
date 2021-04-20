@@ -9,25 +9,25 @@ menu:
     weight: 3
 ---
 
-## Demo (3-state model)
+<!-- ## Demo (3-state model) -->
 
-[Download demo](../../../Course_Modularization/Markov models/Markov_3state.Rmd)
+<!-- [Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd) -->
 
-[Download demo - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)
+<!-- [Download demo - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd) -->
 
-[Download demo function - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
+<!-- [Download demo function - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R) -->
 
 <!-- ## Exercise worksheet (Sick-Sicker model) -->
 
-<!-- [Download exercise worksheet](../../../rmds/markov_sick-sicker_exercise.pdf) -->
+<!-- [Download exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html) -->
 
 <!-- ## Data for the exercise -->
 
-<!-- [Download data](../../../rmds/HMD_USA_Mx_2015.csv) -->
+<!-- [Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/HMD_USA_Mx_2015.csv) -->
 
-<!-- ## Student template -->
+<!-- ## Exercise template -->
 
-<!-- [Download student template](../../../rmds/markov_sick-sicker_template.Rmd) -->
+<!-- [Download exercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_template.Rmd) -->
 
 <!-- ## Instructor solutions -->
 

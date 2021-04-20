@@ -1,7 +1,7 @@
 ---
 title: "April 20 Schedule"
 author: ''
-date: "2021-04-08"
+date: "2021-04-19"
 slug: day3
 categories: []
 tags: []
@@ -24,13 +24,17 @@ Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 – 8:30  | Overview of Decision Modeling |
-| 8:30 – 9:15 | Two practical examples | 
-| 9:15 – 10:00 | Hands-on activity: How to choose the right model? |
+| 8:00 – 8:10  | Questions or discussion from previous sessions |
+| 8:10 – 8:30  | Overview of Decision Modeling |
+| 8:30 – 8:50  | Decision tree example and OpenTree|
+| 8:50 – 9:10 | Markov model example | 
+| 9:15 – 9:25 | What type of model to use & introduce exercise |
+| 9:25 – 9:50 | Breakout rooms to discuss exercise |
+| 9:50 – 10:00 | Debrief exercise|
 | 10:00 – 10:15 | Break |
-| 10:15 – 10:45 | Demonstration of `dampack` R package |
-| 10:45 – 11:00 | Demonstration of R Shiny Apps |
-| 11:00 – 12:00 | Discussion: Participant topics and goals |
+| 10:15 – 10:30 | Introduction to dampack |
+| 10:30 – 11:00 | Demonstration of R Shiny Apps |
+| 11:00 – 12:00 | Participant topics/ areas of interest/ applications |
 
 Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
 

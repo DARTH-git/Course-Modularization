@@ -290,7 +290,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-headset fa-lg\"></i>"
   name = "Zoom"
-  url = "https://zoom.us/j/99175716535?pwd=N2RJSlJ6YnoxNENXTXlwL1FPZ0ZqQT09"
+  url = "https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09"
   weight = 12
   
 # Search.

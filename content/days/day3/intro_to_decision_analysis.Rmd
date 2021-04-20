@@ -17,6 +17,8 @@ menu:
 
 [Download demo](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
 
+[Download treee .json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+
 ## Exercise
 
 [Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf)

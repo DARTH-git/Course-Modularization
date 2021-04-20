@@ -9,11 +9,7 @@ menu:
     weight: 6
 ---
 
-## R Shiny
-
-R Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.
-
-[R Shiny](https://shiny.rstudio.com/)
+## Shiny App examples
 
 **Simple Markov model Shiny App**
 
@@ -26,4 +22,12 @@ R Shiny official site - this site contains a lot of useful information on Shiny 
 **COVID-19 Modeling Collaborative Shiny App**
 
 [Access App](https://www.covid-19-mc.ca/interactive-models/hospital-resources)
+
+## References
+
+R Shiny official site - this site contains a lot of useful information on Shiny Apps including tutorials on building one.
+
+[R Shiny](https://shiny.rstudio.com/)
+
+[shinyapps.io](https://www.shinyapps.io/#:~:text=shinyapps.io%20is%20secure%2Dby,access%20is%20always%20SSL%20encrypted)
 

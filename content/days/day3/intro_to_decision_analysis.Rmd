@@ -19,4 +19,4 @@ menu:
 
 ## Exercise
 
-To be uploaded.
+[Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf)

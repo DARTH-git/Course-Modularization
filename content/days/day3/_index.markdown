@@ -1,7 +1,7 @@
 ---
 title: "April 20 Schedule"
 author: ''
-date: "2021-04-19"
+date: "2021-04-20"
 slug: day3
 categories: []
 tags: []

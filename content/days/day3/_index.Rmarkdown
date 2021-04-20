@@ -26,15 +26,15 @@ Here is a tentative timetable:
 |--------------------------------------------|:------------------|
 | 8:00 – 8:10  | Questions or discussion from previous sessions |
 | 8:10 – 8:30  | Overview of Decision Modeling |
-| 8:30 – 8:50  | Decision tree example and OpenTree|
-| 8:50 – 9:10 | Markov model example | 
-| 9:15 – 9:25 | What type of model to use & introduce exercise |
-| 9:25 – 9:50 | Breakout rooms to discuss exercise |
-| 9:50 – 10:00 | Debrief exercise|
+| 8:30 – 9:00  | Decision tree example and OpenTree|
+| 9:00 – 9:20 | Markov model example | 
+| 9:20 – 9:35 | What type of model to use & introduce exercise |
+| 9:35 – 10:00 | Breakout rooms to discuss exercise |
 | 10:00 – 10:15 | Break |
-| 10:15 – 10:30 | Introduction to dampack |
-| 10:30 – 11:00 | Demonstration of R Shiny Apps |
-| 11:00 – 12:00 | Participant topics/ areas of interest/ applications |
+| 10:15 – 10:30 | Debrief exercise|
+| 10:30 – 10:45 | Introduction to dampack |
+| 10:45 – 11:15 | Demonstration of R Shiny Apps |
+| 11:15 – 12:00 | Participant topics/ areas of interest/ applications |
 
 Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
 

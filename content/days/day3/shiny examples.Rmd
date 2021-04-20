@@ -23,7 +23,7 @@ R Shiny official site - this site contains a lot of useful information on Shiny 
 
 [Access App](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
 
-<!-- **COVID-19 Modeling Collaborative Shiny App** -->
+**COVID-19 Modeling Collaborative Shiny App**
 
-<!-- [Access App](https://www.covid-19-mc.ca/interactive-models/hospital-resources) -->
+[Access App](https://www.covid-19-mc.ca/interactive-models/hospital-resources)
 

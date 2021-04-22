@@ -66,7 +66,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -151,7 +151,7 @@ v_dwe <- 1 / (1 + d_e) ^ (0:n_t)
 
 ## Create a state-transition diagram of the cohort model
 
-```{r}
+```{r STD-Sick-Sicker, fig.cap="State-transition diagram of the time-independent Sick-Sicker cohort state-transition model.", fig.pos="H"}
 m_P_diag <- matrix(0, 
                    nrow = n_states, ncol = n_states, 
                    dimnames = list(v_names_states, v_names_states))
@@ -247,7 +247,7 @@ head(m_M_notrt)  # show the first 6 lines of the matrix
 
 ## 06.1 Cohort trace
 
-```{r, message = FALSE}
+```{r Sick-Sicker-Trace-TimeHom, fig.cap='Cohort trace of the time-independent cSTM under no treatment.', message=FALSE, warning=FALSE, fig.pos="H"}
 # create a plot of the data
 matplot(m_M_notrt, type = 'l', 
         ylab = "Probability of state occupancy",
@@ -260,7 +260,7 @@ legend("topright", v_names_states,
 
 ## 06.2 Overall Survival (OS)
 
-```{r}
+```{r Sick-Sicker-OS-TimeHom, fig.cap='Overall survival of the time-independent cSTM under no treatment.', message=FALSE, warning=FALSE, fig.pos="H"}
 # calculate the overall survival (OS) probability for no treatment
 v_os_notrt <- 1 - m_M_notrt[, "D"]    
 # alternative way of calculating the OS probability   
@@ -284,7 +284,7 @@ v_le <- sum(v_os_notrt)  # summing probability of OS over time  (i.e. life expec
 
 ## 06.3 Disease prevalence
 
-```{r}
+```{r Sick-Sicker-DisPrev-TimeHom, fig.cap='Disease prevalence of the time-independent cSTM under no treatment.', message=FALSE, warning=FALSE, fig.pos="H"}
 v_prev <- rowSums(m_M_notrt[, c("S1", "S2")]) / v_os_notrt
 plot(v_prev,
      ylim = c(0, 1),
@@ -295,7 +295,7 @@ plot(v_prev,
 
 ## 06.4 Proportion of sick in S1 state
 
-```{r}
+```{r Sick-Sicker-PropS1-TimeHom, fig.cap='Proportion of sick in S1 state of the time-independent cSTM under no treatment.', message=FALSE, warning=FALSE, fig.pos="H"}
 v_prop_S1 <- m_M_notrt[, "S1"] / v_prev
 plot(0:n_t, v_prop_S1,
      xlab = "Cycle", 
@@ -358,7 +358,7 @@ df_cea
 
 ## 07.4 Plot frontier of the Markov model
 
-```{r Sick-Sicker-CEA, fig.cap='Cost-effectiveness efficient frontier of all four strategies for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
+```{r Sick-Sicker-CEA, fig.cap='Cost-effectiveness efficient frontier for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```
 
@@ -422,23 +422,21 @@ owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with 
                           n_wtp           = 120000)           # extra argument to pass to FUN
 ```
 
-## 08.3.1 Plot OWSA
-
-```{r}
+```{r Sick-Sicker-OWSA, fig.cap='One-way sensitivity analysis for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(owsa_nmb, txtsize = 10, n_x_ticks = 4, 
      facet_scales = "free") +
      theme(legend.position = "bottom")
 ```
 
-## 08.3.2 Optimal strategy with OWSA
+### 08.3.2 Optimal strategy with OWSA
 
-```{r}
+```{r Sick-Sicker-OptStrOWSA, fig.cap='Optimal strategy with one-way sensitivity analysis for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 ```
 
-## 08.3.3 Tornado plot
+### 08.3.3 Tornado plot
 
-```{r}
+```{r Sick-Sicker-Tornado, fig.cap='Tornado plot for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 owsa_tornado(owsa = owsa_nmb)
 ```
 
@@ -463,7 +461,7 @@ twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,   # data.frame with p
 l
 ## 08.4.1 Plot TWSA
 
-```{r}
+```{r Sick-Sicker-TWSA, fig.cap='Two-way sensitivity analysis for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(twsa_nmb)
 ```
 
@@ -511,7 +509,9 @@ n_sim <- 1000
 df_psa_input <- gen_psa(n_sim = n_sim)
 # First six observations
 head(df_psa_input)
+`````
 
+```{r Sick-Sicker-ParamsHist, fig.cap='Histogram of parameters distributions for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 # Histogram of parameters
 ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
        facet_wrap(~Parameter, scales = "free") +
@@ -535,7 +535,7 @@ colnames(df_e) <- v_names_str
 
 ## 09.1 Conduct probabilistic sensitivity analysis
 
-```{r}
+```{r, message=FALSE}
 # Run Markov model on each parameter set of PSA input dataset
 for(i in 1:n_sim){
   l_out_temp <- calculate_ce_out(df_psa_input[i, ])
@@ -555,6 +555,9 @@ l_psa <- make_psa_obj(cost          = df_c,
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 
                       strategies    = v_names_str)
+l_psa$strategies <- v_names_str
+colnames(l_psa$effectiveness)<- v_names_str
+colnames(l_psa$cost)<- v_names_str
 ```
 
 ## 09.2.1 Save PSA objects
@@ -576,10 +579,13 @@ Vector with willingness-to-pay (WTP) thresholds.
 v_wtp <- seq(0, 200000, by = 10000)
 ```
 
-## 09.3.1 Cost-Effectiveness Scatter plot
-
-```{r}
-plot(l_psa)
+## 09.3.1 Cost-Effectiveness scatter plot
+```{r CE-scatter, echo=FALSE, fig.cap='Cost-effectiveness scatter plot.', message=FALSE, warning=FALSE, fig.pos="H"} 
+# CEA Scatter plot
+plot(l_psa, txtsize = 16) +
+  xlab("Effectiveness (QALYs)") +
+  guides(col = guide_legend(nrow = 1)) +
+  theme(legend.position = "bottom")
 ```
 
 ## 09.4 Conduct CEA with probabilistic output
@@ -605,13 +611,13 @@ write.csv(df_cea_psa,
 
 ## 09.4.1 Plot cost-effectiveness frontier
 
-```{r}
+```{r Sick-Sicker-CEA-PSA, fig.cap='Cost-effectiveness efficient frontier from probabilistic outputs for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(df_cea_psa)
 ```
 
 ## 09.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
-```{r}
+```{r CEAC, echo=FALSE, fig.cap='Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF).', message=FALSE, warning=FALSE, fig.pos="H"}
 ceac_obj <- ceac(wtp = v_wtp, psa = l_psa)
 # Regions of highest probability of cost-effectiveness for each strategy
 summary(ceac_obj)
@@ -622,7 +628,7 @@ plot(ceac_obj)
 ## 09.4.3 Expected Loss Curves (ELCs)
 The expected loss is the the quantification of the foregone benefits when choosing a suboptimal strategy given current evidence.
 
-```{r}
+```{r ELC, echo=FALSE, fig.cap='Expected loss curves (ELCs).', message=FALSE, warning=FALSE, fig.pos="H"}
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)
 elc_obj
 # ELC plot
@@ -631,7 +637,7 @@ plot(elc_obj, log_y = FALSE)
 
 ## 09.4.4 Expected value of perfect information (EVPI)
 
-```{r}
+```{r EVPI, echo=FALSE, fig.cap='Expected value of perfect information (EVPI).', message=FALSE, warning=FALSE, fig.pos="H"}
 evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
 plot(evpi, effect_units = "QALY")

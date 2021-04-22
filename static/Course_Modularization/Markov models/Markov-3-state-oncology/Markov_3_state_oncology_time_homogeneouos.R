@@ -68,7 +68,12 @@ c_SD_DrugAcq_Int <- 2500 # Drug acquisition 1L (treatment duration= time spent i
 c_SD_DrugAdm_Int <- 300  # Drug administration 1L (treatment duration= time spent in SD)
 c_AE_Int         <- 1500 # AE costs (one off at the start)
 
-c_D    <- 0     # cost of being dead (per cycle)
+# Vector with intervention-specific AE costs
+v_c_AE <- c(BSC = c_AE_BSC, 
+            C1  = c_AE_C1,
+            Int = c_AE_Int)
+# cost of being dead (per cycle)
+c_D    <- 0     
 
 ## Utilities
 # SD state
@@ -82,9 +87,14 @@ u_PD_Int <- 0.797 # under Int
 # D state
 u_D    <- 0     # utility when Dead 
 # Disutility from AEs applied in the 1st cycle
-du_SD_BSC <- -0.100 # under BSC
-du_SD_C1  <- -0.025 # under C1
-du_SD_Int <- -0.050 # under Int
+du_BSC <- -0.100 # under BSC
+du_C1  <- -0.025 # under C1
+du_Int <- -0.050 # under Int
+
+# Vector with intervention-specific AE costs
+v_du_AE <- c(BSC = du_BSC, 
+             C1  = du_C1,
+             Int = du_Int)
 
 # Discount weight for costs and effects
 v_dwc  <- 1 / ((1 + d_e) ^ (0:n_cycles))
@@ -261,9 +271,9 @@ for (i in 1:n_str) {
   
   #### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction if applicable ####
   ## QALYs
-  v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
+  v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc) + v_du_AE[i] # Subtract AE disutility (one-off, applied in the 1st cycle)
   ## Costs
-  v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc)
+  v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc) + v_c_AE[i] # Add AE costs (one-off, applied in the 1st cycle)
 }
 
 ########################## Cost-effectiveness analysis #######################

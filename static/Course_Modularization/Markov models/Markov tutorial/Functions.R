@@ -13,7 +13,7 @@ plot_trace <- function(m_M) {
   df_M_long <- tidyr::gather(df_M, key = `Health State`, value, 2:ncol(df_M))
   df_M_long$`Health State` <- factor(df_M_long$`Health State`, levels = v_names_states)
   gg_trace <- ggplot(df_M_long, aes(x = Cycle, y = value, 
-                            color = `Health State`, linetype = `Health State`)) +
+                                    color = `Health State`, linetype = `Health State`)) +
     geom_line(size = 1) +
     xlab("Cycle") +
     ylab("Proportion of the cohort") +
@@ -21,7 +21,7 @@ plot_trace <- function(m_M) {
     theme_bw(base_size = 14) +
     theme(legend.position  = "bottom", 
           legend.background = element_rect(fill = NA)) 
-
+  
   return(gg_trace) 
 }
 
@@ -45,7 +45,7 @@ plot_trace_strategy <- function(l_m_M) {
                             2:(ncol(df_M_strategies)-1))
   m_M_plot$`Health State`    <- factor(m_M_plot$`Health State`, levels = v_names_states)
   m_M_plot$Strategy <- factor(m_M_plot$Strategy, levels = v_names_str)
-
+  
   p <- ggplot(m_M_plot, aes(x = Cycle, y = value, 
                             color = Strategy, linetype = Strategy)) +
     geom_line(size = 1) +
@@ -74,8 +74,8 @@ calc_surv <- function(l_m_M, v_names_death_states) {
   df_surv <- as.data.frame(lapply(l_m_M, 
                                   function(x) {
                                     rowSums(x[, !colnames(x) %in% v_names_death_states])
-                                    }
-                                  ))
+                                  }
+  ))
   colnames(df_surv) <- v_names_str
   df_surv$Cycle     <- 0:n_cycles
   df_surv_long      <- tidyr::gather(df_surv, key = Strategy, Survival, 1:n_str)
@@ -152,8 +152,8 @@ calc_prop_sicker <- function(l_m_M, v_names_sick_states, v_names_sicker_states) 
   df_prop_sick_sicker <- data.frame(Strategy   = df_prop_sick$Strategy, 
                                     Cycle      = df_prop_sick$Cycle,
                                     `Proportion Sicker` = 
-                                     df_prop_sicker$Sick / 
-                                    (df_prop_sick$Sick + df_prop_sicker$Sick))
+                                      df_prop_sicker$Sick / 
+                                      (df_prop_sick$Sick + df_prop_sicker$Sick))
   
   return(df_prop_sick_sicker) 
 }
@@ -260,12 +260,12 @@ format_table_cea <- function(table_cea) {
                              "Inc_Cost", 
                              "Inc_Effect",
                              "ICER")] <- 
-                                               
-                           c("Costs ($)", 
-                             "QALYs", 
-                             "Incremental Costs ($)", 
-                             "Incremental QALYs", 
-                             "ICER ($/QALY)") 
+    
+    c("Costs ($)", 
+      "QALYs", 
+      "Incremental Costs ($)", 
+      "Incremental QALYs", 
+      "ICER ($/QALY)") 
   
   table_cea$`Costs ($)` <- comma(round(table_cea$`Costs ($)`, 0))
   table_cea$`Incremental Costs ($)` <- comma(round(table_cea$`Incremental Costs ($)`, 0))
@@ -273,4 +273,19 @@ format_table_cea <- function(table_cea) {
   table_cea$`Incremental QALYs` <- round(table_cea$`Incremental QALYs`, 2)
   table_cea$`ICER ($/QALY)` <- comma(round(table_cea$`ICER ($/QALY)`, 0))
   return(table_cea)
+}
+
+#' Number of ticks for \code{ggplot2} plots
+#'
+#' Function for determining number of ticks on axis of \code{ggplot2} plots.
+#' @param n integer giving the desired number of ticks on axis of
+#' \code{ggplot2} plots. Non-integer values are rounded down.
+#' @section Details:
+#' Based on function \code{pretty}.
+#' @return a vector of axis-label breaks
+#' @export
+number_ticks <- function(n) {
+  function(limits) {
+    pretty(limits, n + 1)
+  }
 }

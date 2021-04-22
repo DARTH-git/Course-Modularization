@@ -77,6 +77,8 @@ Implements a time-independent Sick-Sicker cohort state-transition model (cSTM).
  
 - *Strategy AB*: combines treatment A and treatment B. The disease progression is reduced, and Sick individuals have an improved utility.
 
+\newpage
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
@@ -124,7 +126,7 @@ max_age  <- 100                      # maximum age of follow up
 n_cycles <- max_age - age            # time horizon, number of cycles
 v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
                                      # Sicker (S2), Dead (D)
-v_s_init <- c("H"  = 1,
+v_m_init <- c("H"  = 1,
               "S1" = 0,
               "S2" = 0,
               "D"  = 0)              # initial cohort distribution (everyone allocated to the "healthy" state)
@@ -218,20 +220,23 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,
 ## 04.1 Cohort trace
 
 ```{r}
-## Initialize cohort trace for cSTM for strategies SoC and A
-m_M <- matrix(0, 
-              nrow = (n_cycles + 1), ncol = n_states,
+## Initialize cohort trace for SoC
+m_M <- matrix(NA, 
+              nrow = (n_cycles + 1), ncol = n_states, 
               dimnames = list(0:n_cycles, v_names_states))
 # Store the initial state vector in the first row of the cohort trace
-m_M[1, ] <- v_s_init
-## Initialize cohort trace for strategies B and AB
-m_M_strB <- m_M # structure and initial states remain the same.
+m_M[1, ] <- v_m_init
+## Initialize cohort trace for strategies A, B, and AB
+# Structure and initial states are the same as for SoC
+m_M_strA  <- m_M # Strategy A
+m_M_strB  <- m_M # Strategy B
+m_M_strAB <- m_M # Strategy AB
 ```
 
 ## 04.2 Transition probability matrices
 
 ```{r}
-## Initialize transition probability matrix 
+## Initialize transition probability matrix for strategy SoC
 # all transitions to a non-death state are assumed to be conditional on survival 
 m_P <- matrix(0, 
               nrow = n_states, ncol = n_states, 
@@ -258,21 +263,29 @@ m_P["S2", "D"]  <- p_S2D
 # From D
 m_P["D", "D"]   <- 1
 
-### For strategies B and AB
-## Initialize transition probability array for strategies B and AB
+## Initialize transition probability matrix for strategy A as a copy of SoC's
+m_P_strA <- m_P
+
+## Initialize transition probability matrix for strategy B
 m_P_strB <- m_P
-## Only need to update the probabilities involving the transition from Sick to Sicker, p_S1S2
-# From S1
+# Update only transition probabilities from S1 involving p_S1S2
 m_P_strB["S1", "S1"] <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2_trtB))
 m_P_strB["S1", "S2"] <- (1 - p_S1D) * p_S1S2_trtB
 
+## Initialize transition probability matrix for strategy AB as a copy of B's
+m_P_strAB <- m_P_strB
+
 ### Check if transition probability matrices are valid
 ## Check that transition probabilities are [0, 1]
-check_transition_probability(m_P,      verbose = TRUE)
-check_transition_probability(m_P_strB, verbose = TRUE)
+check_transition_probability(m_P,       verbose = TRUE)
+check_transition_probability(m_P_strA,  verbose = TRUE)
+check_transition_probability(m_P_strB,  verbose = TRUE)
+check_transition_probability(m_P_strAB, verbose = TRUE)
 ## Check that all rows sum to 1
-check_sum_of_transition_array(m_P,      n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_strB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P,       n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P_strA,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P_strB,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -280,18 +293,21 @@ check_sum_of_transition_array(m_P_strB, n_states = n_states, n_cycles = n_cycles
 ```{r}
 # Iterative solution of time-independent cSTM
 for(t in 1:n_cycles){
-  ## Fill in cohort trace
-  # For strategies SoC and A
-  m_M[t + 1, ]      <- m_M[t, ]      %*% m_P
-  # For strategies B and AB
-  m_M_strB[t + 1, ] <- m_M_strB[t, ] %*% m_P_strB
+  # For SoC
+  m_M[t + 1, ] <- m_M[t, ] %*% m_P
+  # For strategy A
+  m_M_strA[t + 1, ]  <- m_M_strA[t, ]  %*% m_P_strA
+  # For strategy B
+  m_M_strB[t + 1, ]  <- m_M_strB[t, ]  %*% m_P_strB
+  # For strategy AB
+  m_M_strAB[t + 1, ] <- m_M_strAB[t, ] %*% m_P_strAB
 }
 
 ## Store the cohort traces in a list
 l_m_M <- list(m_M,
-              m_M,
+              m_M_strA,
               m_M_strB,
-              m_M_strB)
+              m_M_strAB)
 names(l_m_M) <- v_names_str
 ```
 
@@ -301,13 +317,7 @@ names(l_m_M) <- v_names_str
 
 ```{r Sick-Sicker-Trace-TimeHom, fig.cap='Cohort trace of the time-independent cSTM under standard of care', message=FALSE, warning=FALSE, fig.pos="H"}
 # create a plot of the data
-matplot(l_m_M$`Standard of care`, type = 'l', 
-        ylab = "Probability of state occupancy",
-        xlab = "Cycle",
-        main = "Cohort Trace")             
-# add a legend to the graph
-legend("topright", v_names_states, 
-       col = 1:n_states, lty = 1:n_states, bty = "n") 
+plot_trace(l_m_M$`Standard of care`)
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -361,53 +371,53 @@ plot(0:n_cycles, v_prop_S1,
 ## 07.1 State rewards for each strategy
 
 ```{r}
-# Vector of state utilities under strategy SoC
+## Vector of state utilities under strategy SoC
 v_u_SoC    <- c(H  = u_H, 
                 S1 = u_S1, 
                 S2 = u_S2, 
                 D  = u_D)
-# Vector of state costs under strategy SoC
+## Vector of state costs under strategy SoC
 v_c_SoC    <- c(H  = c_H, 
                 S1 = c_S1,
                 S2 = c_S2, 
                 D  = c_D)
-# Vector of state utilities under strategy A
+## Vector of state utilities under strategy A
 v_u_strA   <- c(H  = u_H, 
                 S1 = u_trtA, 
                 S2 = u_S2, 
                 D  = u_D)
-# Vector of state costs under strategy A
+## Vector of state costs under strategy A
 v_c_strA   <- c(H  = c_H, 
                 S1 = c_S1 + c_trtA,
                 S2 = c_S2 + c_trtA, 
                 D  = c_D)
-# Vector of state utilities under strategy B
+## Vector of state utilities under strategy B
 v_u_strB   <- c(H  = u_H, 
                 S1 = u_S1, 
                 S2 = u_S2, 
                 D  = u_D)
-# Vector of state costs under strategy B
+## Vector of state costs under strategy B
 v_c_strB   <- c(H  = c_H, 
                 S1 = c_S1 + c_trtB, 
                 S2 = c_S2 + c_trtB, 
                 D  = c_D)
-# Vector of state utilities under strategy AB
+## Vector of state utilities under strategy AB
 v_u_strAB  <- c(H  = u_H, 
                 S1 = u_trtA, 
                 S2 = u_S2, 
                 D  = u_D)
-# Vector of state costs under strategy AB
+## Vector of state costs under strategy AB
 v_c_strAB  <- c(H  = c_H, 
                 S1 = c_S1 + (c_trtA + c_trtB), 
                 S2 = c_S2 + (c_trtA + c_trtB), 
                 D  = c_D)
 
-# Store the vectors of state utilities for each strategy in a list 
+## Store the vectors of state utilities for each strategy in a list 
 l_u   <- list(SQ = v_u_SoC,
               A  = v_u_strA,
               B  = v_u_strB,
               AB = v_u_strAB)
-# Store the vectors of state cost for each strategy in a list 
+## Store the vectors of state cost for each strategy in a list 
 l_c   <- list(SQ = v_c_SoC,
               A  = v_c_strA,
               B  = v_c_strB,
@@ -424,18 +434,18 @@ names(l_u) <- names(l_c) <- v_names_str
 v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
 names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
 
-#### Loop through each strategy and calculate total utilities and costs 
+#### Loop through each strategy and calculate total utilities and costs ####
 for (i in 1:n_str) {
   v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
   v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
   
-  ### Expected QALYs and costs per cycle 
-  ## Vector of QALYs and Costs
-  # Apply state rewards 
+  #### Expected QALYs and costs per cycle ####
+  ### Vector of QALYs and Costs
+  ## Apply state rewards ###
   v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
   v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
   
-  ### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction if applicable 
+  #### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction if applicable ####
   ## QALYs
   v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
   ## Costs
@@ -464,7 +474,8 @@ table_cea
 ## 07.5 Plot frontier of the Markov model
 
 ```{r Sick-Sicker-CEA, fig.cap='Cost-effectiveness efficient frontier for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
-plot(df_cea, label = "all") + expand_limits(x = max(table_cea$QALYs) + 0.5) 
+plot(df_cea, label = "all") + 
+  expand_limits(x = max(table_cea$QALYs) + 0.5) 
 ```
 
 # 08 Deterministic Sensitivity Analysis
@@ -476,28 +487,28 @@ Create list `l_params_all` with all input probabilities, cost and utilities.
 ```{r}
 l_params_all <- list(
   # Transition probabilities (per cycle), hazard ratios
-  r_HD         = 0.002, # constant rate of dying when Healthy (all-cause mortality)
-  p_HS1        = 0.15,  # probability to become Sick when Healthy conditional on surviving
-  p_S1H        = 0.5,   # probability to become Healthy when Sick conditional on surviving
-  p_S1S2       = 0.105, # probability to become Sicker when Sick conditional on surviving
-  hr_S1        = 3,     # hazard ratio of death in Sick vs Healthy 
-  hr_S2        = 10,    # hazard ratio of death in Sicker vs Healthy 
+  r_HD   = 0.002, # constant rate of dying when Healthy (all-cause mortality)
+  p_HS1  = 0.15,  # probability to become Sick when Healthy conditional on surviving
+  p_S1H  = 0.5,   # probability to become Healthy when Sick conditional on surviving
+  p_S1S2 = 0.105, # probability to become Sicker when Sick conditional on surviving
+  hr_S1  = 3,     # hazard ratio of death in Sick vs Healthy 
+  hr_S2  = 10,    # hazard ratio of death in Sicker vs Healthy 
   # Effectiveness of treatment B 
-  hr_S1S2_trtB = 0.6,   # hazard ratio of becoming Sicker when Sick under B under treatment B
+  hr_S1S2_trtB = 0.6,  # hazard ratio of becoming Sicker when Sick under B under treatment B
   ## State rewards
   # Costs
-  c_H          = 2000,  # cost of remaining one cycle in Healthy 
-  c_S1         = 4000,  # cost of remaining one cycle in Sick 
-  c_S2         = 15000, # cost of remaining one cycle in Sicker 
-  c_D          = 0,     # cost of being dead (per cycle)
-  c_trtA       = 12000, # cost of treatment A
-  c_trtB       = 13000, # cost of treatment B
+  c_H    = 2000,  # cost of remaining one cycle in Healthy 
+  c_S1   = 4000,  # cost of remaining one cycle in Sick 
+  c_S2   = 15000, # cost of remaining one cycle in Sicker 
+  c_D    = 0,     # cost of being dead (per cycle)
+  c_trtA = 12000, # cost of treatment A
+  c_trtB = 13000, # cost of treatment B
   # Utilities
-  u_H          = 1,     # utility when Healthy 
-  u_S1         = 0.75,  # utility when Sick 
-  u_S2         = 0.5,   # utility when Sicker
-  u_D          = 0,     # utility when Dead 
-  u_trtA       = 0.95   # utility when being treated with A
+  u_H    = 1,     # utility when Healthy 
+  u_S1   = 0.75,  # utility when Sick 
+  u_S2   = 0.5,   # utility when Sicker
+  u_D    = 0,     # utility when Dead 
+  u_trtA = 0.95   # utility when being treated with A
 )
 
 # store the parameter names into a vector
@@ -508,7 +519,7 @@ v_names_params <- names(l_params_all)
 
 ```{r}
 source("Functions_markov_sick-sicker_intro_tutorial.R")
-# Test function
+# Test function to compute CE outcomes
 calculate_ce_out(l_params_all)
 ```
 
@@ -584,11 +595,11 @@ generate_psa_params <- function(n_sim = 1000, seed = 071818){
   df_psa <- data.frame(
     # Transition probabilities (per cycle), hazard ratios
     r_HD    = rlnorm(n_sim, meanlog = log(0.002), sdlog = 0.01), # constant rate of dying when Healthy (all-cause mortality)
-    p_HS1   = rbeta(n_sim, shape1 = 30, shape2 = 170),           # probability to become Sick when Healthy conditional on surviving
-    p_S1H   = rbeta(n_sim, shape1 = 60, shape2 = 60) ,           # probability to become Healthy when Sick conditional on surviving
-    p_S1S2  = rbeta(n_sim, shape1 = 84, shape2 = 716),           # probability to become Sicker when Sick conditional on surviving
-    hr_S1   = rlnorm(n_sim, meanlog = log(3),  sdlog = 0.01),    # hazard ratio of death in Sick vs Healthy 
-    hr_S2   = rlnorm(n_sim, meanlog = log(10), sdlog = 0.02),    # hazard ratio of death in Sicker vs Healthy 
+    p_HS1   = rbeta(n_sim, shape1 = 30, shape2 = 170),        # probability to become Sick when Healthy conditional on surviving
+    p_S1H   = rbeta(n_sim, shape1 = 60, shape2 = 60) ,        # probability to become Healthy when Sick conditional on surviving
+    p_S1S2  = rbeta(n_sim, shape1 = 84, shape2 = 716),        # probability to become Sicker when Sick conditional on surviving
+    hr_S1   = rlnorm(n_sim, meanlog = log(3),  sdlog = 0.01), # hazard ratio of death in Sick vs Healthy 
+    hr_S2   = rlnorm(n_sim, meanlog = log(10), sdlog = 0.02), # hazard ratio of death in Sicker vs Healthy 
     
     # Effectiveness of treatment B 
     hr_S1S2_trtB = rlnorm(n_sim, meanlog = log(0.6), sdlog = 0.02), # hazard ratio of becoming Sicker when Sick under B under treatment B

@@ -4,6 +4,7 @@ author: "The DARTH workgroup"
 output:
   pdf_document: default
   html_document: default
+  fig_caption: yes
 keep_tex: yes
 self_contained: no
 ---
@@ -52,7 +53,8 @@ Med Decis Making. Feb;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 - Alarid-Escudero, F., Krijkamp, E. M., Enns, E. A., Hunink, M. G. M., 
 Pechlivanoglou, P., & Jalal, H. (2020). Cohort state-transition models in R: 
-From conceptualization to implementation. ArXiv:2001.07824v1, 1–31. http://arxiv.org/abs/2001.07824
+From conceptualization to implementation. ArXiv:2001.07824v1, 1–31. 
+http://arxiv.org/abs/2001.07824
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -76,12 +78,17 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 # 01 Load packages
 
 ```{r, warning = F, message = F}
-if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+if (!require('pacman')){
+  install.packages('pacman')
+  library(pacman) # use this package to conveniently install other packages
+}
 # load (install if required) packages from CRAN
-p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram")                                               
+pacman::p_load("dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", 
+               "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", 
+               "diagram", "dampack")                                               
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/dampack", force = TRUE) Uncomment if there is a newer version
-p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
+# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+pacman::p_load_gh("DARTH-git/darthtools")
 ```
 
 # 02 Load functions
@@ -121,17 +128,18 @@ p_S1D    <- 1 - exp(-r_S1D)          # probability to die in sick
 p_S2D    <- 1 - exp(-r_S2D)          # probability to die in sicker
 
 # Cost and utility inputs 
-c_H      <- 2000                     # cost of remaining one cycle in the healthy state
-c_S1     <- 4000                     # cost of remaining one cycle in the sick state
-c_S2     <- 15000                    # cost of remaining one cycle in the sicker state
-c_trt    <- 12000                    # cost of treatment (per cycle)
-c_D      <- 0                        # cost of being in the death state
-u_H      <- 1                        # utility when healthy
-u_S1     <- 0.75                     # utility when sick
-u_S2     <- 0.5                      # utility when sicker
-u_D      <- 0                        # utility when dead
-u_trt    <- 0.95                     # utility when being treated
-d_e      <- d_c <- 0.03              # discount rate per cycle equal discount of costs and QALYs by 3%
+c_H   <- 2000  # cost of remaining one cycle in the healthy state
+c_S1  <- 4000  # cost of remaining one cycle in the sick state
+c_S2  <- 15000 # cost of remaining one cycle in the sicker state
+c_trt <- 12000 # cost of treatment (per cycle)
+c_D   <- 0     # cost of being in the death state
+u_H   <- 1     # utility when healthy
+u_S1  <- 0.75  # utility when sick
+u_S2  <- 0.5   # utility when sicker
+u_D   <- 0     # utility when dead
+u_trt <- 0.95  # utility when being treated
+d_e   <- 0.03  # discount rate per cycle for costs by 3%
+d_c   <- 0.03  # discount rate per cycle for QALYs by 3%
 
 n_str     <- length(v_names_str)     # Number of strategies
 n_states  <- length(v_names_states)  # number of states
@@ -144,7 +152,9 @@ v_dwe <- 1 / (1 + d_e) ^ (0:n_t)
 ## Create a state-transition diagram of the cohort model
 
 ```{r}
-m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
+m_P_diag <- matrix(0, 
+                   nrow = n_states, ncol = n_states, 
+                   dimnames = list(v_names_states, v_names_states))
 m_P_diag["H" , "S1"] = "" 
 m_P_diag["H" , "D" ] = "" 
 m_P_diag["H" , "H" ] = "" 
@@ -167,26 +177,29 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,
 ## 04.1 Cohort trace
 
 ```{r}
-# create the markov trace matrix M capturing the proportion of the cohort in each state 
-# at each cycle
+# create the markov trace matrix M capturing the proportion of the cohort in
+# each state at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
                                nrow     = n_t + 1, ncol = n_states,
-                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
+                               dimnames = list(paste("cycle", 0:n_t, sep = " "), 
+                                               v_names_states))
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
 # The cohort starts as healthy
-m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
+m_M_notrt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace
+m_M_trt[1, ]   <- c(1, 0, 0, 0) # initiate first cycle of cohort trace
 ```
 
-## 04.2 Transition probability matrix
+## 04.2 Transition probability matrices
 
 ```{r}
 # create the transition probability matrix for both treatment arms
 m_P_notrt <- m_P_trt <- matrix(0,
                                nrow = n_states,
                                ncol = n_states,
-                               dimnames = list(v_names_states, v_names_states)) # name the columns and rows of the matrix
+                               dimnames = list(v_names_states, 
+                                               v_names_states)) # name the columns and rows of the matrix
 m_P_notrt
 ```
 
@@ -211,7 +224,7 @@ m_P_notrt["D", "D"  ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(m_P_notrt, n_states = n_states, verbose = TRUE)
 
 # Overwrite the transition probability matrix for treatment with the no treatment values as they are the same here
 m_P_trt <- m_P_notrt
@@ -241,7 +254,8 @@ matplot(m_M_notrt, type = 'l',
         xlab = "Cycle",
         main = "Cohort Trace")             
 # add a legend to the graph
-legend("topright", v_names_states, col = 1:n_states, lty = 1:n_states, bty = "n") 
+legend("topright", v_names_states, 
+       col = 1:n_states, lty = 1:n_states, bty = "n") 
 ```
 
 ## 06.2 Overall Survival (OS)
@@ -324,7 +338,7 @@ tc_d_trt    <- t(v_tc_trt)     %*%  v_dwc
 v_tc_d      <- c(tc_d_notrt, tc_d_trt)
 v_tu_d      <- c(tu_d_notrt, tu_d_trt)
 
-# Dataframe with discounted costs and effectiveness
+# data.frame with discounted costs and effectiveness
 df_ce       <- data.frame(Strategy = v_names_str,
                           Cost     = v_tc_d,
                           Effect   = v_tu_d
@@ -344,7 +358,7 @@ df_cea
 
 ## 07.4 Plot frontier of the Markov model
 
-```{r}
+```{r Sick-Sicker-CEA, fig.cap='Cost-effectiveness efficient frontier of all four strategies for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(df_cea, effect_units = "QALYs", xlim = c(15.6, 16.6))
 ```
 
@@ -392,20 +406,20 @@ calculate_ce_out(l_params_all)
 
 ```{r}
 options(scipen = 999) # disabling scientific notation in R
-# dataframe containing all parameters, their basecase values, and the min and 
+# data.frame containing all parameters, their base-case values, and the min and 
 # max values of the parameters of interest 
 df_params_owsa <- data.frame(pars = c("p_S1S2", "c_trt", "u_S1", "u_trt"),
-                             min  = c(0.05 ,  6000 , 0.65, 0.80),  # min parameter values
-                             max  = c(0.155, 18000 , 0.85, 0.98)   # max parameter values
+                             min  = c(0.05 ,  6000 , 0.65, 0.80), # min parameter values
+                             max  = c(0.155, 18000 , 0.85, 0.98)  # max parameter values
                              )
 
-owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,    # dataframe with parameters for OWSA
-                          params_basecase  = l_params_all,      # list with all parameters
-                          nsamp            = 100,               # number of parameter values
-                          FUN              = calculate_ce_out,  # function to compute outputs
-                          outcomes         = c("NMB"),          # output to do the OWSA on
-                          strategies       = v_names_str,       # names of the strategies
-                          n_wtp            = 120000)            # extra argument to pass to FUN
+owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with parameters for OWSA
+                          params_basecase = l_params_all,     # list with all parameters
+                          nsamp           = 100,              # number of parameter values
+                          FUN             = calculate_ce_out, # function to compute outputs
+                          outcomes        = c("NMB"),         # output to do the OWSA on
+                          strategies      = v_names_str,      # names of the strategies
+                          n_wtp           = 120000)           # extra argument to pass to FUN
 ```
 
 ## 08.3.1 Plot OWSA
@@ -438,13 +452,13 @@ df_params_twsa <- data.frame(pars = c("c_trt", "u_trt"),
                              max  = c(18000, 0.98)  # max parameter values
                              )
 
-twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with parameters for TWSA
-                         params_basecase = l_params_all,      # list with all parameters
-                         nsamp           = 40,                # number of parameter values
-                         FUN             = calculate_ce_out,  # function to compute outputs
-                         outcomes        = c("NMB"),          # output to do the TWSA on
-                         strategies      = v_names_str,       # names of the strategies
-                         n_wtp           = 120000)            # extra argument to pass to FUN
+twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,   # data.frame with parameters for TWSA
+                         params_basecase = l_params_all,     # list with all parameters
+                         nsamp           = 40,               # number of parameter values
+                         FUN             = calculate_ce_out, # function to compute outputs
+                         outcomes        = c("NMB"),         # output to do the TWSA on
+                         strategies      = v_names_str,      # names of the strategies
+                         n_wtp           = 120000)           # extra argument to pass to FUN
 ```
 l
 ## 08.4.1 Plot TWSA
@@ -461,12 +475,12 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
   set.seed(seed) # set a seed to be able to reproduce the same results
   df_psa <- data.frame(
     # Transition probabilities (per cycle)
-    p_HS1   = rbeta(n_sim, shape1 = 30, shape2 = 170),     # probability to become sick when healthy
-    p_S1H   = rbeta(n_sim, shape1 = 60, shape2 = 60) ,     # probability to become healthy when sick
-    p_S1S2  = rbeta(n_sim, shape1 = 84, shape2 = 716),     # probability to become sicker when sick
-    p_HD    = rbeta(n_sim, shape1 = 10, shape2 = 1990),    # probability to die when healthy
-    hr_S1   = rlnorm(n_sim, meanlog = log(3),  sdlog = 0.01),  # rate ratio of death in S1 vs healthy
-    hr_S2   = rlnorm(n_sim, meanlog = log(10), sdlog = 0.02),  # rate ratio of death in S2 vs healthy 
+    p_HS1  = rbeta(n_sim, shape1 = 30, shape2 = 170),  # probability to become sick when healthy
+    p_S1H  = rbeta(n_sim, shape1 = 60, shape2 = 60) ,  # probability to become healthy when sick
+    p_S1S2 = rbeta(n_sim, shape1 = 84, shape2 = 716),  # probability to become sicker when sick
+    p_HD   = rbeta(n_sim, shape1 = 10, shape2 = 1990), # probability to die when healthy
+    hr_S1  = rlnorm(n_sim, meanlog = log(3),  sdlog = 0.01), # rate ratio of death in S1 vs healthy
+    hr_S2  = rlnorm(n_sim, meanlog = log(10), sdlog = 0.02), # rate ratio of death in S2 vs healthy 
     
     # State rewards
     # Costs
@@ -477,13 +491,13 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
     c_D   = 0,                                          # cost of being in the death state
     
     # Utilities
-    u_H   = rbeta(n_sim, shape1 = 200, shape2 = 3),     # utility when healthy
-    u_S1  = rbeta(n_sim, shape1 = 130, shape2 = 45),    # utility when sick
-    u_S2  = rbeta(n_sim, shape1 = 230, shape2 = 230),   # utility when sicker
-    u_D   = 0,                                          # utility when dead
-    u_Trt = rbeta(n_sim, shape1 = 300, shape2 = 15),    # utility when being treated
-    d_e   = 0.03,                                       # discount factor for effectiveness
-    d_c   = 0.03                                        # discount factor for costs
+    u_H   = rbeta(n_sim, shape1 = 200, shape2 = 3),   # utility when healthy
+    u_S1  = rbeta(n_sim, shape1 = 130, shape2 = 45),  # utility when sick
+    u_S2  = rbeta(n_sim, shape1 = 230, shape2 = 230), # utility when sicker
+    u_D   = 0,                                        # utility when dead
+    u_Trt = rbeta(n_sim, shape1 = 300, shape2 = 15),  # utility when being treated
+    d_e   = 0.03,                                     # discount factor for effectiveness
+    d_c   = 0.03                                      # discount factor for costs
   )
     return(df_psa)
 }

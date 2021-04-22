@@ -69,14 +69,13 @@ and adapted with proper attribution.
 
 Implements a time-independent Sick-Sicker cohort state-transition model (cSTM).                       
 
-- *Standard of Care (SoC)*: best available care for the patients with the disease. This scenario reflects the natural history of the 
-disease progressions.
+- *Standard of Care (SoC)*: current available care for the patients with the disease. This strategy reflects the natural history of the disease progression.
 
-- *Strategy A*: treatment A is given to all sick patients, patients in sick and sicker, but does only improves the utility of those being sick.
+- *Strategy A*: treatment A is given to all sick patients, patients in the Sick and Sicker, but only improves the utility of those being sick.
 
-- *Strategy B*: treatment B reduces disease progression from sick to sicker. However, it is not possible to distinguish those sick from sicker and therefore all individuals in one of the two sick states get the treatment.  
+- *Strategy B*: treatment B reduces disease progression from the Sick to Sicker states. However, it is not possible to distinguish those sick from sicker, and therefore all individuals in one of the two sick states get the treatment.   
  
-- *Strategy AB*: This strategy combines treatment A and treatment B. The disease progression is reduced and Sick individuals has an improved utility. 
+- *Strategy AB*: combines treatment A and treatment B. The disease progression is reduced, and Sick individuals have an improved utility.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)

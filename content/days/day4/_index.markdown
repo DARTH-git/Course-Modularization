@@ -1,7 +1,7 @@
 ---
 title: "April 23 Schedule"
 author: ''
-date: "2021-04-08"
+date: "2021-04-23"
 slug: day4
 categories: []
 tags: []
@@ -24,13 +24,13 @@ Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 - 8:15  | Review of cohort state-transition model concepts	 |
-| 8:15 - 9:00| Walk through code for time-homogeneous cohort state-transition model (3-state model)  | 
-| 9:00 - 9:30 | Hands-on activity: peer code walk-through |
-| 9:30 - 10:15| Demonstrate `dampack` package and code for analysis (CEA, OWSA, PSA) |
+| 8:00 - 8:10  | General Q & A 	 |
+| 8:10 - 9:00| Walk through code for time-homogeneous cohort state-transition model (DARTH Sick-Sicker model)  | 
+| 9:00 - 9:30 | Hands-on activity: peer code walk-through & implementation of Janssen oncology model |
+| 9:30 - 10:15| Demonstrate `dampack` package and code for analysis (CEA, OWSA, PSA) - DARTH Sick-Sicker model |
 | 10:15 - 10:30 | Break |
-| 10:30 - 11:00| Hands-on activity: peer code walk-through  | 
-| 11:00 - 11:45 | Hands-on activity: Cohort state-transition model exercise (time-homogeneous Sick-Sicker model) |
+| 10:30 - 11:00|  Hands-on activity: peer code walk-through & implementation of Janssen oncology model (CEA, OWSA) | 
+| 11:00 - 11:45 | Hands-on activity: peer code walk-through & implementation of Janssen oncology model (PSA) |
 | 11:45 - 12:00 | Session summary and Q&A |
 
 Before April 29, please watch [cohort state-transition model lectures 5-6](https://janssen-decision-modeling-workshop.netlify.app/days/day5/videos_markov1/).

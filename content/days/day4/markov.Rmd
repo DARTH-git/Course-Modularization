@@ -17,7 +17,7 @@ menu:
 
 [Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/Functions.R)
 
-[Download PDF report](../../../Course_Modularization/markov_sick-sicker_intro_tutorial.PDF)
+[Download PDF report](../../../Course_Modularization/Markov models/Markov tutorial/markov_sick-sicker_intro_tutorial.PDF)
 
 ## Exercise - 
 
@@ -33,6 +33,6 @@ Sample solutions will be provided later.
 
 [Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/MarkovModelSlides_Janssen.pptx)
 
-[Download sensitivity analysis (time-homogenous) slides](../../../Course_Modularization/Sensitivity analysis/slides/Sensitivity Analysis.pptx)
+[Download sensitivity analysis (time-homogenous) slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysis.pptx)
 
 

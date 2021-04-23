@@ -124,12 +124,16 @@ v_names_str <- c("Standard of care", # store the strategy names
 age      <- 25                       # age at baseline
 max_age  <- 100                      # maximum age of follow up
 n_cycles <- max_age - age            # time horizon, number of cycles
-v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
-                                     # Sicker (S2), Dead (D)
+# the 4 states of the model: 
+v_names_states <- c("H",  # Healthy (H)
+                    "S1", # Sick (S1), 
+                    "S2", # Sicker (S2)
+                    "D")  # Dead (D)
+# initial cohort distribution (everyone allocated to the "healthy" state)
 v_m_init <- c("H"  = 1,
               "S1" = 0,
               "S2" = 0,
-              "D"  = 0)              # initial cohort distribution (everyone allocated to the "healthy" state)
+              "D"  = 0) 
 
 ## Transition probabilities (per cycle), hazard ratios 
 r_HD     <- 0.002 # constant rate of dying when Healthy (all-cause mortality)
@@ -185,7 +189,8 @@ p_S2D    <- rate_to_prob(r_S2D)     # Mortality risk in the Sicker state
 ## Transition probability of becoming Sicker when Sick for treatment B
 # transform probability to rate
 r_S1S2      <- prob_to_rate(p = p_S1S2)
-# apply hazard ratio to rate to obtain transition rate of becoming Sicker when Sick for treatment B
+# apply hazard ratio to rate to obtain transition rate of becoming Sicker when 
+# Sick for treatment B
 r_S1S2_trtB <- r_S1S2 * hr_S1S2_trtB
 # transform rate to probability
 p_S1S2_trtB <- rate_to_prob(r = r_S1S2_trtB) # probability to become Sicker when Sick 
@@ -282,10 +287,10 @@ check_transition_probability(m_P_strA,  verbose = TRUE)
 check_transition_probability(m_P_strB,  verbose = TRUE)
 check_transition_probability(m_P_strAB, verbose = TRUE)
 ## Check that all rows sum to 1
-check_sum_of_transition_array(m_P,       n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_strA,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_strB,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P,       n_states = n_states, verbose = TRUE)
+check_sum_of_transition_array(m_P_strA,  n_states = n_states, verbose = TRUE)
+check_sum_of_transition_array(m_P_strB,  n_states = n_states, verbose = TRUE)
+check_sum_of_transition_array(m_P_strAB, n_states = n_states, verbose = TRUE)
 ```
 
 # 05 Run Markov model
@@ -436,8 +441,8 @@ names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
 
 #### Loop through each strategy and calculate total utilities and costs ####
 for (i in 1:n_str) {
-  v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
-  v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+  v_u_str <- l_u[[i]] # select the vector of state utilities for the i-th strategy
+  v_c_str <- l_c[[i]] # select the vector of state costs for the i-th strategy
   
   #### Expected QALYs and costs per cycle ####
   ### Vector of QALYs and Costs
@@ -445,7 +450,7 @@ for (i in 1:n_str) {
   v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
   v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
   
-  #### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction if applicable ####
+  #### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction ####
   ## QALYs
   v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
   ## Costs
@@ -494,7 +499,7 @@ l_params_all <- list(
   hr_S1  = 3,     # hazard ratio of death in Sick vs Healthy 
   hr_S2  = 10,    # hazard ratio of death in Sicker vs Healthy 
   # Effectiveness of treatment B 
-  hr_S1S2_trtB = 0.6,  # hazard ratio of becoming Sicker when Sick under B under treatment B
+  hr_S1S2_trtB = 0.6, # hazard ratio of becoming Sicker when Sick under B under treatment B
   ## State rewards
   # Costs
   c_H    = 2000,  # cost of remaining one cycle in Healthy 

@@ -80,7 +80,7 @@ Implements a time-independent Sick-Sicker cohort state-transition model (cSTM).
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -766,7 +766,6 @@ The expected loss is the the quantification of the foregone benefits when choosi
 
 ```{r ELC, echo=FALSE, fig.cap='Expected loss curves (ELCs).', message=FALSE, warning=FALSE, fig.pos="H"}
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)
-elc_obj
 # ELC plot
 plot(elc_obj, log_y = FALSE)
 ```

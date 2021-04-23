@@ -1,0 +1,38 @@
+---
+title: "Cohort state-transition models (cSTM) - time-homogenous models"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "cSTM time-homogeneous models"
+menu:
+  day4:
+    weight: 3
+---
+
+## R code demo & walkthrough - Markov Sick-Sicker model (time-homogenous)
+
+[Download R Markdown](../../../Course_Modularization/Markov models/Markov tutorial/markov_sick-sicker_intro_tutorial.Rmd)
+
+[Download model function R script](../../../Course_Modularization/Markov models/Markov tutorial/Functions_markov_sick-sicker_intro_tutorial.R)
+
+[Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/Functions.R)
+
+[Download PDF report](../../../Course_Modularization/markov_sick-sicker_intro_tutorial.PDF)
+
+## Exercise - 
+
+[Download model info (provided by Janssen)](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx)
+
+## Instructor solutions
+
+Sample solutions will be provided later.
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx) -->
+
+## Slides
+
+[Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/MarkovModelSlides_Janssen.pptx)
+
+[Download sensitivity analysis (time-homogenous) slides](../../../Course_Modularization/Sensitivity analysis/slides/Sensitivity Analysis.pptx)
+
+

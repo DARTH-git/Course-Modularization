@@ -6,7 +6,7 @@ title: Upcoming
 weight: 1
 ---
 
-## Next workshop session: April 20, 2021
+## Next workshop session: April 23, 2021
 
 
 

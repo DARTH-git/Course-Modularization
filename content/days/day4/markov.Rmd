@@ -19,7 +19,7 @@ menu:
 
 [Download PDF report](../../../Course_Modularization/Markov models/Markov tutorial/markov_sick-sicker_intro_tutorial.PDF)
 
-## Exercise - 
+## Exercise - Janssen oncology model
 
 [Download model info (provided by Janssen)](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx)
 
@@ -31,7 +31,7 @@ Sample solutions will be provided later.
 
 ## Slides
 
-[Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/MarkovModelSlides_Janssen.pptx)
+[Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_Janssen.pptx)
 
 [Download sensitivity analysis (time-homogenous) slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysis.pptx)
 

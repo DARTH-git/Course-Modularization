@@ -525,13 +525,13 @@ calculate_ce_out(l_params_all)
 
 ## 08.3 One-way sensitivity analysis (OWSA)
 
-```{r}
+```{r, message=FALSE}
 options(scipen = 999) # disabling scientific notation in R
 # data.frame containing all parameters, their base-case values, and the min and
 # max values of the parameters of interest
-df_params_owsa <- data.frame(pars = c("p_S1S2", "c_trtA", "u_S1", "u_trtA"),
-                             min  = c(0.05 ,  6000 , 0.65, 0.80), # min parameter values
-                             max  = c(0.155, 18000 , 0.85, 0.98)  # max parameter values
+df_params_owsa <- data.frame(pars = c("hr_S1S2_trtB", "c_trtA", "u_S1", "u_trtA"),
+                             min  = c(0.10,  6000 , 0.65, 0.80), # min parameter values
+                             max  = c(1.00, 18000 , 0.85, 0.98)  # max parameter values
                              )
 
 owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with parameters for OWSA
@@ -563,12 +563,12 @@ owsa_tornado(owsa = owsa_nmb, txtsize = 10)
 
 ## 08.4 Two-way sensitivity analysis (TWSA)
 
-```{r}
+```{r, message=FALSE}
 # dataframe containing all parameters, their basecase values, and the min and
 # max values of the parameters of interest
-df_params_twsa <- data.frame(pars = c("c_trtA", "u_trtA"),
-                             min  = c(6000,  0.80),  # min parameter values
-                             max  = c(18000, 0.98)   # max parameter values
+df_params_twsa <- data.frame(pars = c("hr_S1S2_trtB", "u_trtA"),
+                             min  = c(0.10, 0.80),  # min parameter values
+                             max  = c(1.00, 0.98)   # max parameter values
                              )
 
 twsa_nmb <- run_twsa_det(params_range = df_params_twsa,      # data.frame with parameters for TWSA
@@ -643,7 +643,11 @@ ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) + 
   theme_bw(base_size = 16) + 
   theme(axis.text = element_text(size=6)) 
+```
 
+## 09.1 Conduct probabilistic sensitivity analysis
+
+```{r, message=FALSE}
 # Initialize data.frames with PSA output 
 # data.frame of costs
 df_c <- as.data.frame(matrix(0, 
@@ -655,12 +659,6 @@ df_e <- as.data.frame(matrix(0,
                              nrow = n_sim,
                              ncol = n_str))
 colnames(df_e) <- v_names_str
-
-```
-
-## 09.1 Conduct probabilistic sensitivity analysis
-
-```{r, message=FALSE}
 # Run Markov model on each parameter set of PSA input dataset
 n_time_init_psa_series <- Sys.time()
 for(i in 1:n_sim){

@@ -6,6 +6,7 @@ library(darthtools)
 library(dampack) 
 library(scales)
 library(doParallel)
+library(flexsurv)
 
 ### Load supplementary functions
 source("funtions/Functions.R")
@@ -16,7 +17,6 @@ cycle_length <- 1  # in months
 n_cycles     <- 60 # time horizon, number of cycles
 v_names_states <- c("SD", "PD", "D") # the 3 health states of the model:
 # Stable Disease (SD), Progressed Disease (PD). Dead (D)
-n_states    <- length(v_names_states)     # number of health states 
 
 # Discounting factors
 d_c         <- 0.035  # discount rate for costs 
@@ -26,22 +26,26 @@ d_e         <- 0.035  # discount rate for QALYs
 v_names_str <- c("Best Supportive Care (BSC)",  # store the strategy names
                  "Comparator 1 (C1)", 
                  "Intervention (Int)") 
-n_str       <- length(v_names_str)        # number of strategies
 
-# Within-cycle correction (WCC) using Simpson's 1/3 rule
-v_wcc <- darthtools::gen_wcc(n_cycles = n_cycles, 
-                             method = "Simpson1/3") # vector of wcc
+
+
+
 
 ## Transition rates (per cycle) under BSC 
-r_SD_PD_BSC <- 1 / (200/4) # constant rate of progressing
-r_SD_D_BSC  <- 1 / (300/4) # constant rate of dying from SD
-r_PD_D_BSC  <- 1 / (100/4) # constant rate of dying from PD
+
+
+
+r_SD_PD_BSC <- hweibull(1: n_cycles ,shape = 1.5, scale  = 222 )
+r_SD_D_BSC  <- hweibull(1: n_cycles ,shape = 1.5, scale  = 333 )
+
+r_PD_D_BSC  <- 1 / 100 # constant rate of dying from PD
 
 ## Effectiveness of interventions as hazard ratios (HR)
 ## Comparator 1 vs. BSC
 hr_SD_PD_C1  <- 0.80
 hr_SD_D_C1   <- 0.90
 hr_PD_D_C1   <- 0.95
+
 ## Intervention vs. BSC
 hr_SD_PD_Int <- 0.75
 hr_SD_D_Int  <- 0.85
@@ -68,10 +72,8 @@ c_SD_DrugAcq_Int <- 2500 # Drug acquisition 1L (treatment duration= time spent i
 c_SD_DrugAdm_Int <- 300  # Drug administration 1L (treatment duration= time spent in SD)
 c_AE_Int         <- 1500 # AE costs (one off at the start)
 
-# Vector with intervention-specific AE costs
-v_c_AE <- c(BSC = c_AE_BSC, 
-            C1  = c_AE_C1,
-            Int = c_AE_Int)
+
+
 # cost of being dead (per cycle)
 c_D    <- 0     
 
@@ -91,6 +93,21 @@ du_BSC <- -0.100 # under BSC
 du_C1  <- -0.025 # under C1
 du_Int <- -0.050 # under Int
 
+v_m_init <- c(SD = 1, PD = 0, D = 0) # initial state vector
+
+
+n_states    <- length(v_names_states)     # number of health states 
+n_str       <- length(v_names_str)        # number of strategies
+
+# Within-cycle correction (WCC) using Simpson's 1/3 rule
+v_wcc <- darthtools::gen_wcc(n_cycles = n_cycles, 
+                             method = "Simpson1/3") # vector of wcc
+
+
+# Vector with intervention-specific AE costs
+v_c_AE <- c(BSC = c_AE_BSC, 
+            C1  = c_AE_C1,
+            Int = c_AE_Int)
 # Vector with intervention-specific AE costs
 v_du_AE <- c(BSC = du_BSC, 
              C1  = du_C1,
@@ -106,6 +123,13 @@ p_SD_PD_BSC <- rate_to_prob(r_SD_PD_BSC, t = cycle_length)
 p_SD_D_BSC  <- rate_to_prob(r_SD_D_BSC , t = cycle_length)
 p_PD_D_BSC  <- rate_to_prob(r_PD_D_BSC , t = cycle_length)
 
+
+# p_SD_PD_BSC0 <- trans_prob(pweibull(1: (n_cycles ) ,shape = 1.5, scale = 222 , lower.tail = F))
+# p_SD_D_BSC0  <- trans_prob(pweibull(1: (n_cycles ) ,shape = 1.5, scale = 333 , lower.tail = F))
+# 
+# plot( p_SD_D_BSC  , type ="l" )
+# lines(p_SD_D_BSC0, col= 2 )
+
 ## Compute transition probabilities from rates under Comparator 1
 p_SD_PD_C1 <- rate_to_prob(r_SD_PD_BSC * hr_SD_PD_C1, t = cycle_length)
 p_SD_D_C1  <- rate_to_prob(r_SD_D_BSC  * hr_SD_D_C1 , t = cycle_length)
@@ -118,7 +142,6 @@ p_PD_D_Int  <- rate_to_prob(r_PD_D_BSC  * hr_PD_D_Int , t = cycle_length)
 ####################### Construct state-transition models ######################
 ## Initial state vector
 # All starting healthy
-v_m_init <- c(SD = 1, PD = 0, D = 0) # initial state vector
 v_m_init
 
 ## Initialize cohort trace for BSC
@@ -134,78 +157,80 @@ m_M_Int  <- m_M # Intervention
 
 ## Initialize transition probability matrix for strategy BSC
 # all transitions to a non-death state are assumed to be conditional on survival 
-m_P <- matrix(NA, 
-              nrow     = n_states, 
-              ncol     = n_states, 
+a_P <- array(NA, dim = c(n_states,
+                          n_states,
+                          n_cycles),
               dimnames = list(v_names_states, 
-                              v_names_states)) # define row and column names
+                              v_names_states,
+                              0:(n_cycles - 1))) # define row and column names
+
 ## Initialize transition probability matrix for Comparator 1 and Intervention 
 ## as a copy of BSC's
-m_P_C1  <- m_P
-m_P_Int <- m_P
+a_P_C1  <- a_P
+a_P_Int <- a_P
 
 ### Fill in matrices
 ## Under BSC
 # From H
-m_P["SD", "SD"] <- (1 - p_SD_PD_BSC - p_SD_D_BSC)
-m_P["SD", "PD"] <- p_SD_PD_BSC
-m_P["SD", "D"]  <- p_SD_D_BSC
+a_P["SD", "SD",] <- (1 - p_SD_D_BSC) * (1 - p_SD_PD_BSC)
+a_P["SD", "PD",] <- (1 - p_SD_D_BSC) * p_SD_PD_BSC
+a_P["SD", "D",]  <- p_SD_D_BSC
 # From S1
-m_P["PD", "SD"] <- 0
-m_P["PD", "PD"] <- (1 - p_PD_D_BSC)
-m_P["PD", "D"]  <- p_PD_D_BSC
+a_P["PD", "SD",] <- 0
+a_P["PD", "PD",] <- (1 - p_PD_D_BSC)
+a_P["PD", "D",]  <- p_PD_D_BSC
 # From D
-m_P["D", "SD"] <- 0
-m_P["D", "PD"] <- 0
-m_P["D", "D"]  <- 1
+a_P["D", "SD",] <- 0
+a_P["D", "PD",] <- 0
+a_P["D", "D",]  <- 1
 
 ## Under Comparator 1
 # From H
-m_P_C1["SD", "SD"] <- (1 - p_SD_PD_C1 - p_SD_D_C1)
-m_P_C1["SD", "PD"] <- p_SD_PD_C1
-m_P_C1["SD", "D"]  <- p_SD_D_C1
+a_P_C1["SD", "SD",] <- (1 - p_SD_D_C1) * (1 - p_SD_PD_C1 )
+a_P_C1["SD", "PD",] <- (1 - p_SD_D_C1) * p_SD_PD_C1
+a_P_C1["SD", "D",]  <- p_SD_D_C1
 # From S1
-m_P_C1["PD", "SD"] <- 0
-m_P_C1["PD", "PD"] <- (1 - p_PD_D_C1)
-m_P_C1["PD", "D"]  <- p_PD_D_C1
+a_P_C1["PD", "SD",] <- 0
+a_P_C1["PD", "PD",] <- (1 - p_PD_D_C1)
+a_P_C1["PD", "D",]  <- p_PD_D_C1
 # From D
-m_P_C1["D", "SD"] <- 0
-m_P_C1["D", "PD"] <- 0
-m_P_C1["D", "D"]  <- 1
+a_P_C1["D", "SD",] <- 0
+a_P_C1["D", "PD",] <- 0
+a_P_C1["D", "D",]  <- 1
 
 ## Under Intervention
 # From H
-m_P_Int["SD", "SD"] <- (1 - p_SD_PD_Int - p_SD_D_Int)
-m_P_Int["SD", "PD"] <- p_SD_PD_Int
-m_P_Int["SD", "D"]  <- p_SD_D_Int
+a_P_Int["SD", "SD",] <- (1 - p_SD_PD_Int - p_SD_D_Int)
+a_P_Int["SD", "PD",] <- p_SD_PD_Int
+a_P_Int["SD", "D",]  <- p_SD_D_Int
 # From S1
-m_P_Int["PD", "SD"] <- 0
-m_P_Int["PD", "PD"] <- (1 - p_PD_D_Int)
-m_P_Int["PD", "D"]  <-      p_PD_D_Int
+a_P_Int["PD", "SD",] <- 0
+a_P_Int["PD", "PD",] <- (1 - p_PD_D_Int)
+a_P_Int["PD", "D",]  <-      p_PD_D_Int
 # From D
-m_P_Int["D", "SD"] <- 0
-m_P_Int["D", "PD"] <- 0
-m_P_Int["D", "D"]  <- 1
+a_P_Int["D", "SD",] <- 0
+a_P_Int["D", "PD",] <- 0
+a_P_Int["D", "D",]  <- 1
 
 ### Check if transition probability matrices are valid
 ## Check that transition probabilities are [0, 1]
-check_transition_probability(m_P,     verbose = TRUE)
-check_transition_probability(m_P_C1,  verbose = TRUE)
-check_transition_probability(m_P_Int, verbose = TRUE)
+check_transition_probability(a_P,     verbose = TRUE)
+check_transition_probability(a_P_C1,  verbose = TRUE)
+check_transition_probability(a_P_Int, verbose = TRUE)
 ## Check that all rows sum to 1
-check_sum_of_transition_array(m_P,     n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_C1,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(m_P_Int, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P,     n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_C1,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_Int, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 
 #### Run Markov model ####
 # Iterative solution of time-independent cSTM
 for(t in 1:n_cycles){
   # For SoC
-  m_M[t + 1, ]     <- m_M[t, ]     %*% m_P
+  m_M[t + 1, ]     <- m_M[t, ]     %*% a_P[,,t]
   # For Comparator 1
-  m_M_C1[t + 1, ]  <- m_M_C1[t, ]  %*% m_P_C1
+  m_M_C1[t + 1, ]  <- m_M_C1[t, ]  %*% a_P_C1[,,t]
   # For Intervention
-  m_M_Int[t + 1, ] <- m_M_Int[t, ] %*% m_P_Int
+  m_M_Int[t + 1, ] <- m_M_Int[t, ] %*% a_P_Int[,,t]
 }
 
 ## Store the cohort traces in a list

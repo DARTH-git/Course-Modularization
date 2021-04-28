@@ -35,7 +35,7 @@ v_names_str <- c("Best Supportive Care (BSC)",  # store the strategy names
 
 
 
-r_SD_PD_BSC <- Hweibull(seq(0, (n_cycles + 1) * 28, 28 ),shape = 1.5, scale  = 222 )
+r_SD_PD_BSC <- Hweibull(seq(0, (n_cycles + 1) * 28, 28 ) ,shape = 1.5, scale  = 222 )
 r_SD_D_BSC  <- hweibull(seq(0, (n_cycles + 1) * 28, 28 ) ,shape = 1.5, scale  = 333 )
 
 p_SD_PD_BC <- 1 - exp(- diff(r_SD_PD_BSC))
@@ -174,8 +174,8 @@ a_P_Int <- a_P
 ### Fill in matrices
 ## Under BSC
 # From H
-a_P["SD", "SD",] <- (1 - p_SD_PD_BSC - p_SD_D_BSC)
-a_P["SD", "PD",] <- p_SD_PD_BSC
+a_P["SD", "SD",] <- (1 - p_SD_D_BSC) * (1 - p_SD_PD_BSC)
+a_P["SD", "PD",] <- (1 - p_SD_D_BSC) *      p_SD_PD_BSC
 a_P["SD", "D",]  <- p_SD_D_BSC
 # From S1
 a_P["PD", "SD",] <- 0
@@ -188,8 +188,8 @@ a_P["D", "D",]  <- 1
 
 ## Under Comparator 1
 # From H
-a_P_C1["SD", "SD",] <- (1 - p_SD_PD_C1 - p_SD_D_C1)
-a_P_C1["SD", "PD",] <- p_SD_PD_C1
+a_P_C1["SD", "SD",] <- (1 - p_SD_D_C1) * (1 - p_SD_PD_C1)
+a_P_C1["SD", "PD",] <- (1 - p_SD_D_C1) *      p_SD_PD_C1
 a_P_C1["SD", "D",]  <- p_SD_D_C1
 # From S1
 a_P_C1["PD", "SD",] <- 0
@@ -202,8 +202,8 @@ a_P_C1["D", "D",]  <- 1
 
 ## Under Intervention
 # From H
-a_P_Int["SD", "SD",] <- (1 - p_SD_PD_Int - p_SD_D_Int)
-a_P_Int["SD", "PD",] <- p_SD_PD_Int
+a_P_Int["SD", "SD",] <- (1 - p_SD_D_Int) * (1 - p_SD_PD_Int)
+a_P_Int["SD", "PD",] <- (1 - p_SD_D_Int) *      p_SD_PD_Int
 a_P_Int["SD", "D",]  <- p_SD_D_Int
 # From S1
 a_P_Int["PD", "SD",] <- 0

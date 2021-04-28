@@ -106,15 +106,17 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.76,
         latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
         cex = 0.1, box.cex = 0.7, lwd = 1)
 ```
-The following chink generates a hypothetical dataset from a Randomized Controlled trial (RCT). The two outcomes are Sickness (or Progression) and Death. We generate four data structures:
 
--true_data includes the true trajectory of the patients in the RCT, assuming that we have followed them until their end of life
+The following chunk generates a hypothetical dataset from a Randomized Controlled trial (RCT). The two outcomes are Sickness (or Progression) and Death. We generate four data structures:
 
--sim_data includes the observed data within the RCT period. Patients could be censored anytime during the trial or at 5 years of follow-up (max follow-up in the trial)
+- `true_data` includes the true trajectory of the patients in the RCT, assuming that we have followed them until their end of life
 
--status includes information regarding whether the event occurred or not
+- `sim_data` includes the observed data within the RCT period. Patients could be censored anytime during the trial or at 5 years of follow-up (max follow-up in the trial)
 
-- OS_PFS_data include the data as they would typically be presented in the results of an RCT (a PFS and OS outcome with the corresponding event (0, 1) information)
+- `status` includes information regarding whether the event occurred or not
+
+- `OS_PFS_data` include the data as they would typically be presented in the results of an RCT (a PFS and OS outcome with the corresponding event (0, 1) information)
+
 ```{r}
 n_pat       <- 550                       # cohort size
 n_years     <- 30                        # number of years 
@@ -176,9 +178,9 @@ As a reminder, AIC stands for Akaike information criterion and is a measure of g
 
 ```{r}
 fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
-                   extrapolate = TRUE, times = times)
+                   extrapolate = TRUE, times = times, xlow = 0, xhigh = n_t)
 fit_OS  <- fit.fun(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
-                   extrapolate = TRUE, times = times) 
+                   extrapolate = TRUE, times = times, xlow = 0, xhigh = n_t) 
 
 # Check AIC of each model to assess goodness-of-fit
 GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)

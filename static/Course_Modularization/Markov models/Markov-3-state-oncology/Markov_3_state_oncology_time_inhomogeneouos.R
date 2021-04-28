@@ -22,6 +22,8 @@ v_names_states <- c("SD", "PD", "D") # the 3 health states of the model:
 d_c         <- 0.035  # discount rate for costs 
 d_e         <- 0.035  # discount rate for QALYs
 
+days_cycle <- 28
+
 # Strategies
 v_names_str <- c("Best Supportive Care (BSC)",  # store the strategy names
                  "Comparator 1 (C1)", 
@@ -33,14 +35,14 @@ v_names_str <- c("Best Supportive Care (BSC)",  # store the strategy names
 
 ## Transition rates (per cycle) under BSC 
 
+sc_SD_PD_BSC <- 222^-1.5
+sh_SD_PD_BSC <- 1.5
 
+sc_SD_D_BSC <- 333^-1.5
+sh_SD_D_BSC <- 1.5
 
-r_SD_PD_BSC <- Hweibull(seq(0, (n_cycles + 1) * 28, 28 ) ,shape = 1.5, scale  = 222 )
-r_SD_D_BSC  <- hweibull(seq(0, (n_cycles + 1) * 28, 28 ) ,shape = 1.5, scale  = 333 )
+r_PD_D_BSC   <-  1 / (100/28) # constant rate of dying from PD
 
-p_SD_PD_BC <- 1 - exp(- diff(r_SD_PD_BSC))
-p_SD_D_BC  <- 1 - exp(- diff(r_SD_D_BSC))
-r_PD_D_BSC  <- 1 / (100/28) # constant rate of dying from PD
 
 ## Effectiveness of interventions as hazard ratios (HR)
 ## Comparator 1 vs. BSC
@@ -52,6 +54,70 @@ hr_PD_D_C1   <- 0.95
 hr_SD_PD_Int <- 0.75
 hr_SD_D_Int  <- 0.85
 hr_PD_D_Int  <- 0.90
+
+sh_SD_PD_CI <- sh_SD_PD_BSC
+sc_SD_PD_CI <- sc_SD_PD_BSC * hr_SD_PD_C1
+
+
+sh_SD_D_CI  <- sh_SD_D_BSC
+sc_SD_D_CI  <- sc_SD_D_BSC  * hr_SD_PD_C1
+r_PD_D_CI   <- r_PD_D_BSC   * hr_PD_D_C1
+
+sh_SD_PD_Int <- sh_SD_PD_BSC
+sc_SD_PD_Int <- sc_SD_PD_BSC * hr_SD_PD_Int
+
+sh_SD_D_Int  <- sh_SD_D_BSC
+sc_SD_D_Int  <- sc_SD_D_BSC  * hr_SD_PD_Int
+r_PD_D_Int   <- r_PD_D_BSC   * hr_PD_D_Int
+
+
+
+
+H_SD_PD_BSC <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                          shape = sh_SD_PD_BSC, 
+                          scale  = sc_SD_PD_BSC )
+
+H_SD_D_BSC  <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                        shape = sh_SD_D_BSC,
+                        scale = sc_SD_D_BSC )
+
+
+
+H_SD_PD_CI <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                         shape = sh_SD_PD_CI, 
+                         scale= sc_SD_PD_CI )
+
+H_SD_D_CI  <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                       shape = sh_SD_D_CI, 
+                       scale = sc_SD_D_CI )
+
+H_SD_PD_Int <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                          shape  = sh_SD_PD_Int, 
+                          scale  = sc_SD_PD_Int )
+
+H_SD_D_Int  <- HweibullPH(seq(0, (n_cycles ) * days_cycle, days_cycle ) ,
+                        shape  = sh_SD_D_Int, 
+                        scale  = sc_SD_D_Int )
+
+
+
+p_SD_PD_BSC <- 1 - exp(- diff(H_SD_PD_BSC))
+p_SD_D_BSC  <- 1 - exp(- diff(H_SD_D_BSC))
+p_PD_D_BSC  <- 1 - exp(- r_PD_D_BSC)
+
+
+p_SD_PD_CI <- 1 - exp(- diff(H_SD_PD_CI))
+p_SD_D_CI  <- 1 - exp(- diff(H_SD_D_CI))
+p_PD_D_CI  <- 1 - exp(- r_PD_D_CI)
+
+p_SD_PD_Int <- 1 - exp(- diff(H_SD_PD_Int))
+p_SD_D_Int  <- 1 - exp(- diff(H_SD_D_Int))
+p_PD_D_Int  <- 1 - exp(- r_PD_D_Int)
+
+plot(p_SD_PD_BSC, type ='l')
+lines(p_SD_PD_CI, col = 2)
+lines(p_SD_PD_Int, col = 3)
+
 
 ### State rewards
 ## Costs
@@ -121,9 +187,9 @@ v_dwe  <- 1 / ((1 + d_c) ^ (0:n_cycles))
 
 ### Process model inputs
 ## Compute transition probabilities from rates under BSC
-p_SD_PD_BSC <- rate_to_prob(r_SD_PD_BSC, t = cycle_length)
-p_SD_D_BSC  <- rate_to_prob(r_SD_D_BSC , t = cycle_length)
-p_PD_D_BSC  <- rate_to_prob(r_PD_D_BSC , t = cycle_length)
+# p_SD_PD_BSC <- rate_to_prob(r_SD_PD_BSC, t = cycle_length)
+# p_SD_D_BSC  <- rate_to_prob(r_SD_D_BSC , t = cycle_length)
+# p_PD_D_BSC  <- rate_to_prob(r_PD_D_BSC , t = cycle_length)
 
 
 # p_SD_PD_BSC0 <- trans_prob(pweibull(1: (n_cycles ) ,shape = 1.5, scale = 222 , lower.tail = F))
@@ -132,14 +198,6 @@ p_PD_D_BSC  <- rate_to_prob(r_PD_D_BSC , t = cycle_length)
 # plot( p_SD_D_BSC  , type ="l" )
 # lines(p_SD_D_BSC0, col= 2 )
 
-## Compute transition probabilities from rates under Comparator 1
-p_SD_PD_C1 <- rate_to_prob(r_SD_PD_BSC * hr_SD_PD_C1, t = cycle_length)
-p_SD_D_C1  <- rate_to_prob(r_SD_D_BSC  * hr_SD_D_C1 , t = cycle_length)
-p_PD_D_C1  <- rate_to_prob(r_PD_D_BSC  * hr_PD_D_C1 , t = cycle_length)
-## Compute transition probabilities from rates under Intervention
-p_SD_PD_Int <- rate_to_prob(r_SD_PD_BSC * hr_SD_PD_Int, t = cycle_length)
-p_SD_D_Int  <- rate_to_prob(r_SD_D_BSC  * hr_SD_D_Int , t = cycle_length)
-p_PD_D_Int  <- rate_to_prob(r_PD_D_BSC  * hr_PD_D_Int , t = cycle_length)
 
 ####################### Construct state-transition models ######################
 ## Initial state vector
@@ -188,13 +246,13 @@ a_P["D", "D",]  <- 1
 
 ## Under Comparator 1
 # From H
-a_P_C1["SD", "SD",] <- (1 - p_SD_D_C1) * (1 - p_SD_PD_C1)
-a_P_C1["SD", "PD",] <- (1 - p_SD_D_C1) *      p_SD_PD_C1
-a_P_C1["SD", "D",]  <- p_SD_D_C1
+a_P_C1["SD", "SD",] <- (1 - p_SD_D_CI) * (1 - p_SD_PD_CI)
+a_P_C1["SD", "PD",] <- (1 - p_SD_D_CI) *      p_SD_PD_CI
+a_P_C1["SD", "D",]  <- p_SD_D_CI
 # From S1
 a_P_C1["PD", "SD",] <- 0
-a_P_C1["PD", "PD",] <- (1 - p_PD_D_C1)
-a_P_C1["PD", "D",]  <- p_PD_D_C1
+a_P_C1["PD", "PD",] <- (1 - p_PD_D_CI)
+a_P_C1["PD", "D",]  <- p_PD_D_CI
 # From D
 a_P_C1["D", "SD",] <- 0
 a_P_C1["D", "PD",] <- 0

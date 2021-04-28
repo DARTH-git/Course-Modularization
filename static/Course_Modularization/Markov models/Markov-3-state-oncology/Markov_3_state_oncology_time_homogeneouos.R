@@ -33,9 +33,9 @@ v_wcc <- darthtools::gen_wcc(n_cycles = n_cycles,
                              method = "Simpson1/3") # vector of wcc
 
 ## Transition rates (per cycle) under BSC 
-r_SD_PD_BSC <- 1 / (200/4) # constant rate of progressing
-r_SD_D_BSC  <- 1 / (300/4) # constant rate of dying from SD
-r_PD_D_BSC  <- 1 / (100/4) # constant rate of dying from PD
+r_SD_PD_BSC <- 1 / (200/28) # constant rate of progressing
+r_SD_D_BSC  <- 1 / (300/28) # constant rate of dying from SD
+r_PD_D_BSC  <- 1 / (100/28) # constant rate of dying from PD
 
 ## Effectiveness of interventions as hazard ratios (HR)
 ## Comparator 1 vs. BSC

@@ -9,7 +9,7 @@ menu:
     weight: 6
 ---
 
-## R code demo & walkthrough - Markov Sick-Sicker model (Simulation-time dependency)
+## R code demo & walkthrough - Markov Sick-Sicker model 
 
 [Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/advanced tutorial/Functions.R)
 

@@ -33,6 +33,6 @@ Sample solutions will be provided later.
 
 [Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_Janssen.pptx)
 
-[Download sensitivity analysis (time-homogenous) slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysis.pptx)
+[Download sensitivity analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysis.pptx)
 
 

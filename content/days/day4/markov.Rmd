@@ -11,13 +11,13 @@ menu:
 
 ## R code demo & walkthrough - Markov Sick-Sicker model (time-homogenous)
 
-[Download R Markdown](../../../Course_Modularization/Markov models/Markov tutorial/markov_sick-sicker_intro_tutorial.Rmd)
+[Download R Markdown](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/markov_sick-sicker_intro_tutorial.Rmd)
 
-[Download model function R script](../../../Course_Modularization/Markov models/Markov tutorial/Functions_markov_sick-sicker_intro_tutorial.R)
+[Download model function R script](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/Functions_markov_sick-sicker_intro_tutorial.R)
 
-[Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/Functions.R)
+[Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/Functions.R)
 
-[Download PDF report](../../../Course_Modularization/Markov models/Markov tutorial/markov_sick-sicker_intro_tutorial.PDF)
+[Download PDF report](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/markov_sick-sicker_intro_tutorial.PDF)
 
 ## Exercise - Janssen oncology model
 

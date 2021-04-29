@@ -24,7 +24,7 @@ Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 - 8:30  | Review of time-heterogeneous cohort state-transition concepts and Q & A |
+| 8:00 - 8:30  | Review of time-heterogeneous cohort state-transition concepts and brief survival analysis concepts |
 | 8:30 – 9:15	| Walk through code for time-dependent cohort state-transition model (age-dependent Sick-Sicker) | 
 | 9:15 – 10:00 |Walk through code for history-dependent cohort state-transition model (Sick-Sicker model with tunnel states)|
 | 10:00 – 10:15 | Break |

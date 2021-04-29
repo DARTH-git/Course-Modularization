@@ -100,7 +100,7 @@ if (!require('pacman')){
 # load (install if required) packages from CRAN
 pacman::p_load("dplyr", "data.table", "devtools", "scales", "ellipse", "ggplot2", 
                "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", 
-               "stringr", "gridExtra", "diagram", "dampack", "boot", "doParellel")                                               
+               "stringr", "gridExtra", "diagram", "dampack", "boot", "doParellel", "flexsurv")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
 pacman::p_load_gh("DARTH-git/darthtools")
@@ -211,15 +211,23 @@ v_p_S2Dage <- rate_to_prob(v_r_S2Dage) # Age-specific mortality risk in the Sick
 ## History-dependent transition probability of becoming Sicker when Sick
 # conditional on surviving
 # Weibull hazard
-v_p_S1S2_tunnels <- p_S1S2_scale * p_S1S2_shape * (1:n_tunnel_size)^{p_S1S2_shape-1}
+
+
+
+v_r_S1S2_tunnels <- HweibullPH(0:n_tunnel_size   ,
+                          shape = p_S1S2_shape, 
+                          scale  = p_S1S2_scale)
+v_p_S1S2_tunnels <- 1 - exp(- diff(v_r_S1S2_tunnels))
+
 
 ## History-dependent transition probability of becoming Sicker when Sick for treatment B
-# transform probability to rate
-v_r_S1S2_tunnels <- prob_to_rate(p = v_p_S1S2_tunnels)
-# apply hazard ratio to rate to obtain transition rate of becoming Sicker when Sick for treatment B
-r_S1S2_tunnels_trtB <- v_r_S1S2_tunnels * hr_S1S2_trtB
-# transform rate to probability
-v_p_S1S2_tunnels_trtB <- rate_to_prob(r = r_S1S2_tunnels_trtB) # probability to become Sicker when Sick 
+# apply hazard ratio to scale to obtain transition rate of becoming Sicker when Sick for treatment B
+p_S1S2_scale_trtB <- p_S1S2_scale * hr_S1S2_trtB
+p_S1S2_shape_trtB <- p_S1S2_shape
+v_r_S1S2_tunnels_trtB <- HweibullPH(0:n_tunnel_size   ,
+                          shape = p_S1S2_shape_trtB, 
+                          scale  = p_S1S2_scale_trtB)
+v_p_S1S2_tunnels_trtB <- 1 - exp(- diff(v_r_S1S2_tunnels_trtB))  # probability to become Sicker when Sick 
                                                                # under treatment B conditional on surviving
 ```
 

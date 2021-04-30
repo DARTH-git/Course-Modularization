@@ -23,11 +23,7 @@ menu:
 
 [Download model info (provided by Janssen)](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx)
 
-## Instructor solutions
-
-Sample solutions will be provided later.
-
-<!-- [Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx) -->
+[Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_time_homogeneous.R)
 
 ## Slides
 

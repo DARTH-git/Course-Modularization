@@ -719,7 +719,7 @@ v_wtp <- seq(0, 250000, by = 5000)
 
 ```{r CE-scatter, echo=FALSE, fig.cap='Cost-effectiveness scatter plot.', message=FALSE, warning=FALSE, fig.pos="H"} 
 # CEA Scatter plot
-plot(l_psa, txtsize = 14) +
+plot(l_psa, txtsize = 14, ellipse = TRUE) +
   xlab("Effectiveness (QALYs)") +
   guides(col = guide_legend(nrow = 1)) +
   theme(legend.position = "bottom")
@@ -766,7 +766,7 @@ plot(ceac_obj)
 
 ## 09.4.3 Expected Loss Curves (ELCs)
 
-The expected loss is the the quantification of the foregone benefits when choosing a sub-optimal strategy given current evidence.
+The expected loss is the quantification of the foregone benefits when choosing a sub-optimal strategy given current evidence.
 
 ```{r ELC, echo=FALSE, fig.cap='Expected loss curves (ELCs).', message=FALSE, warning=FALSE, fig.pos="H"}
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)

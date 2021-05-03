@@ -27,9 +27,9 @@ State-residence time dependency:
 
 [Download model info (provided by Janssen)](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx)
 
-[Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_time_inhomogeneous.Rmd)
+[Download instructor solutions - time-inhomogenous](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_time_inhomogeneous.R)
 
-[Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_history_dependence.Rmd)
+[Download instructor solutions - state-residency dependence](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_history_dependence.R)
 
 ## Slides
 

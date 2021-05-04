@@ -8,14 +8,14 @@ install.packages('pacman')
 library(pacman) 
 
 # load (install if required) packages from CRAN
-p_load("devtools", "dplyr", "scales", "ellipse",
-       "lazyeval", "igraph", "truncnorm", 
-       "reshape2", "knitr", "markdown", "stringr", 
-       "matrixStats", "lhs", "IMIS", "plotrix",
-       "psych", "scatterplot3d", "grid", "mgcv", 
-       "gridExtra", "gdata", "triangle", "flexsurv", "msm", 
-       "survminer", "gems", "jsonlite", "rstudioapi", "tidyverse",
-       "shiny", "tidyr", "purrr", "survHE", "mstate", "abind", "diagram", "dampack") 
+p_load("abind",  "dampack", "DES", "devtools", "diagram", "dplyr", 
+       "ellipse", "flexsurv", "gdata", "gems", "grid",  "gridExtra", 
+       "igraph", "IMIS", "jsonlite", "knitr", "lazyeval",  "lhs", 
+       "markdown", "matrixStats", "mgcv", "msm", "mstate",
+       "plotrix", "purrr", "psych", "reshape2", "rstudioapi",   
+       "scales",   "scatterplot3d", "stringr", "survHE",  "survminer",  "shiny",
+       "tidyverse",  "tidyr",  "triangle", "truncnorm" ) 
+
 
 # Enter an empty line to skip updates when prompted
 install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org") 

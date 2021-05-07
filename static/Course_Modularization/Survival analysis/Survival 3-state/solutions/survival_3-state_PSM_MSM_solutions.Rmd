@@ -135,6 +135,10 @@ head(status)
 head(OS_PFS_data)
 ```
 
+```{r}
+saveRDS(sim_data, file = "PFS_OS_data_trt_sort.rds")
+```
+
 # 04 Analysis
 
 Showcasing the use of packages `survival`, `flexsurv`. 

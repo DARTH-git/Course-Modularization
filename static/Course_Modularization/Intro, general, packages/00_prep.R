@@ -14,7 +14,7 @@ library(pacman)
 # load (install if required) packages from CRAN
 p_load("abind",  "dampack", "data.table", "DES", "devtools", "diagram", "dplyr", 
        "ellipse", "flexsurv", "flexsurvcure", "gdata", "gems", "grid", "gridExtra", 
-       "igraph", "IMIS", "jsonlite", "knitr", "lazyeval", "lhs", 
+       "igraph", "jsonlite", "knitr", "lazyeval", "lhs", 
        "markdown", "matrixStats", "mgcv", "msm", "mstate",
        "plotrix", "purrr", "psych", "reshape2", "rstudioapi",   
        "scales", "scatterplot3d", "stringr", "survHE", "survminer", "shiny",

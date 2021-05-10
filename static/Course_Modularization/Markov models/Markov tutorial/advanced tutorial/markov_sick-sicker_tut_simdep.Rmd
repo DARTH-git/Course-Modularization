@@ -148,10 +148,8 @@ hr_S1S2_trtB <- 0.6  # hazard ratio of becoming Sicker when Sick under treatment
 
 ## Age-dependent mortality rates
 lt_usa_2015 <- read.csv("LifeTable_USA_Mx_2015.csv")
-v_r_mort_by_age <- lt_usa_2015 %>% 
-                   select(Total) %>%
-                   as.matrix() # anyone above 100 have the same mortality
-names(v_r_mort_by_age) <- lt_usa_2015$Age
+v_r_mort_by_age <- lt_usa_2015$Total
+names(v_r_mort_by_age) <- paste0("Age",lt_usa_2015$Age)
 
 ## State rewards
 # Costs
@@ -492,7 +490,7 @@ for (i in 1:n_str) {
   
   #### Expected QALYs and Costs for all transitions per cycle ####
   # QALYs = life years x QoL
-  # Note: all parameters are annual in our example. In case your own case example is different make sure you correctly apply .
+  # Note: all parameters are annual in our example. In case your own case example is different make sure you correctly apply conversion to generate annual outcomes.
   a_Y_c_str <- a_A_str * a_R_c_str
   a_Y_u_str <- a_A_str * a_R_u_str 
   
@@ -527,7 +525,7 @@ table_cea <- format_table_cea(df_cea)
 table_cea
 ```
 
-## 07.5 Plot frontier of the Markov model
+## 07.5 Plot efficient frontier
 
 ```{r Sick-Sicker-CEA, fig.cap='Cost-effectiveness efficient frontier for the simulation-time dependent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
 plot(df_cea, label = "all", txtsize = 16) +

@@ -58,7 +58,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 rm(list = ls())     # clear memory (removes all the variables from the workspace)
 options(scipen=999) # disable scientific notation
 ```
@@ -70,7 +70,9 @@ Change `eval` to `TRUE` if you want to knit this document.
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load( "dplyr", "devtools", "gems", "flexsurv", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind", "DES", "dampack", "data.table")    
+p_load( "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survminer", "survHE", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "diagram", "abind", "DES", "dampack", "data.table")    
+
+# load (install if required) packages from GitHub
 #install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
 ```
@@ -133,6 +135,10 @@ head(status)
 head(OS_PFS_data)
 ```
 
+```{r}
+saveRDS(sim_data, file = "PFS_OS_data_trt_sort.rds")
+```
+
 # 04 Analysis
 
 Showcasing the use of packages `survival`, `flexsurv`. 
@@ -178,9 +184,9 @@ As a reminder, AIC stands for Akaike information criterion and is a measure of g
 
 ```{r}
 fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
-                   extrapolate = TRUE, times = times, xlow = 0, xhigh = n_t)
+                   extrapolate = TRUE, times = times)
 fit_OS  <- fit.fun(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
-                   extrapolate = TRUE, times = times, xlow = 0, xhigh = n_t) 
+                   extrapolate = TRUE, times = times) 
 
 # Check AIC of each model to assess goodness-of-fit
 GoF_PFS <- data.frame(AIC = fit_PFS$AIC, BIC = fit_PFS$BIC)
@@ -274,9 +280,9 @@ best.fit_SD <- fit_SD$model.objects$models$`Royston-Parmar`
 
 ```{r}
 # Extract transition probabilities from the best fitting models
-p_HS <- trans_prob(surv_prob(best.fit_HS))
-p_HD <- trans_prob(surv_prob(best.fit_HD))
-p_SD <- trans_prob(surv_prob(best.fit_SD))
+p_HS <- trans_prob(surv_prob(best.fit_HS, times = times))
+p_HD <- trans_prob(surv_prob(best.fit_HD, times = times))
+p_SD <- trans_prob(surv_prob(best.fit_SD, times = times))
 
 # everyone starts in the "Healthy" state and therefore has not spent time in "Sick"
 v_M_init  <- rep("Healthy", times = n_i)   
@@ -375,7 +381,7 @@ m_M_data <- transitionProbabilities(generate$cohort, times = times)@probabilitie
 
 # visually compare all methods
 matplot(times, m_M_data, type = 'l', lty = 1, col = 1, ylab = "proportion of cohort", xlab = "Time", main = "Trace comparisons", xlim = c(0, 25))
-#matlines(times, m_M_DES,   col = 2, lty = 1)
+# matlines(times, m_M_DES,   col = 2, lty = 1)
 matlines(times, m_M_Micro, col = 2, lty = 1)
 matlines(times, m_M_PSM$trace, col = 3, lty = 1)
 legend("right", c("True Data", "Microsim",  "PSM"),

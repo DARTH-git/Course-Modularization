@@ -6,14 +6,9 @@ title: Upcoming
 weight: 1
 ---
 
-## Next workshop session: April 29, 2021
+## Workshop feedback survey
 
-Before the next session, please:
-
-- Work offline to finish the Janssen Oncology Model 1 (time-homogeneous Markov) with PSA & OWSA & TWSA functionalities, by leveraging the Markov Sick-Sicker model template of DARTH & initial hand-on efforts
-
-- (OPTIONAL: for those who are new to cSTM): Watch [cSTM time-inhomogeneous and history-dependent lecture videos](https://janssen-decision-modeling-workshop.netlify.app/days/day5/videos_markov1/)
-
+Thank you for attending the 2021 Janssen Decision Modeling in R workshop given by the DARTH workgroup! If you could take a few moments to fill out this [feedback survey](https://forms.gle/8Efy3hrXSjXM6QySA), it can really help us improve our instructional materials and forms of delivery. Thanks in advance!
 
 
 

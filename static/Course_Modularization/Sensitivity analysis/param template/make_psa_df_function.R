@@ -106,12 +106,7 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
                                      min = lower_limit,
                                      max = upper_limit))
         
-        } else if(param$distribution == "weibull"){
-          m_param_psa[, p] <- with(param,
-                                   rweibull(n = n_iter,
-                                         shape = shape,
-                                         scale = scale))
-    } 
+        }
     
   } # close loop for the parameters
   

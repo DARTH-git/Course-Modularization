@@ -29,11 +29,7 @@ v_names_str <- c("Best Supportive Care (BSC)",  # store the strategy names
 
 
 
-
-
 ## Transition rates (per cycle) under BSC 
-
-
 
 r_SD_PD_BSC <- hweibull(1: n_cycles ,shape = 1.5, scale  = 222 )
 r_SD_D_BSC  <- hweibull(1: n_cycles ,shape = 1.5, scale  = 333 )

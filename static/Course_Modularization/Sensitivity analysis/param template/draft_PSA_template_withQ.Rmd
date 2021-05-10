@@ -1,0 +1,74 @@
+---
+title: "PSA template - DARFT"
+author: "DARTH"
+date: "5/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 01 Load packages
+
+```{r}
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr", "stringr", "diagram", "triangle")   
+# load (install if required) packages from GitHub
+p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
+```
+# Load the functions
+```{r}
+source("make_psa_df_function.R")
+
+```
+
+## Load the data and remove empty lines
+```{r cars}
+# Read from the xlsx
+#df_param  <- data.frame(readxl::read_xlsx("param.xlsx", sheet = "param"))
+
+# Read from the csv
+df_param <- read.csv(file = "param.csv", header = TRUE, sep = ";")
+
+# document which parameters do not have a unit and will be deleted
+# < 0 is used to find rows without information
+param_NA <- df_param[which((df_param$unit < 0)), ]
+
+# Remove parameters without unit
+df_param <- df_param[df_param$unit>0, ]
+
+# Make shape variables numeric, for those not missing
+numvar <- c("par1", "par2", "par3")
+for (i in numvar){
+  v_row_NA <- is.na(df_param[, i])
+  df_param[, i][!is.na(df_param[, i])] <- as.numeric(df_param[, i][!is.na(df_param[, i])])
+}
+
+```
+
+# load the functions
+```{r}
+make_psa_df(df_param = df_param, n_iter = 5) # test run
+```
+# Questions and ideas to improve
+
+## Improve in 
+- function: improve the warning/stop to see if the number of parameters are different
+- return those that are double -> also stop the function etc.
+- function: add more warnings/checks
+- work with tibble/matrix where possible ? 
+
+- Excle - add data for multiple strategies - do we like to do this is an extra column. Where do we handle this extra strategy? In the function of make PSA? Or in code
+- restrictions of the getbeta param -> These calculations will only work if the variance is less than the mean*(1-mean)
+- In the excel how can we guide users in what to use when. 
+- Are we missing distributions?
+
+## Questions:
+- Normal distribution: is it ok to calculate the SD only via upper limit 95% CI -> Do we also want 90% or other % CI levels
+- Can we have "logical orders in the excel. where with normal you have to give 95-CI or mean and sd
+- Can we make use of the value mean, or does this give problems and shall we have med/modus/mode for example?
+- lognormal: do we like to use rnorm or lnrom? 
+- do we like to do the check if there is an sd or a upper and limit with upper limit of with sd?
+- how to deal with the diriclet parameters - should that be the mean and se for all the probabilities? Do we like to have 6 colums for the shapes in that case?

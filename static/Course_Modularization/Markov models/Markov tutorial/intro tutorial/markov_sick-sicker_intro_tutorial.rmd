@@ -543,12 +543,13 @@ owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with 
                           params_basecase = l_params_all,     # list with all parameters
                           nsamp           = 100,              # number of parameter values
                           FUN             = calculate_ce_out, # function to compute outputs
-                          outcomes        = c("NMB"),         # output to do the OWSA on
+                          outcomes        = c("NMB"),         # output to do the OWSA on*
                           strategies      = v_names_str,      # names of the strategies
                           n_wtp           = 120000)           # extra argument to pass to FUN
+#*possible outcomes of the OWSA depend on the outcomes the function gives 
 ```
 
-```{r Sick-Sicker-OWSA, fig.cap='One-way sensitivity analysis for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
+```{r Sick-Sicker-OWSA, fig.cap='One-way sensitivity analysis for the time-independent Sick-Sicker model.', message = FALSE, warning = FALSE, fig.pos = "H"}
 plot(owsa_nmb, txtsize = 10, n_x_ticks = 4,
      facet_scales = "free") +
      theme(legend.position = "bottom")
@@ -563,7 +564,7 @@ owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 ### 08.3.3 Tornado plot
 
 ```{r Sick-Sicker-Tornado, fig.cap='Tornado plot for the time-independent Sick-Sicker model.', message=FALSE, warning=FALSE, fig.pos="H"}
-owsa_tornado(owsa = owsa_nmb, txtsize = 10)
+owsa_tornado(owsa = owsa_nmb, txtsize = 8, return = "plot") 
 ```
 
 ## 08.4 Two-way sensitivity analysis (TWSA)
@@ -583,6 +584,7 @@ twsa_nmb <- run_twsa_det(params_range = df_params_twsa,      # data.frame with p
                          outcomes        = c("NMB"),         # output to do the TWSA on
                          strategies      = v_names_str,      # names of the strategies
                          n_wtp           = 120000)           # extra argument to pass to FUN
+#*possible outcomes of the OWSA depend on the outcomes the function gives 
 ```
 
 ## 08.4.1 Plot TWSA
@@ -611,12 +613,12 @@ generate_psa_params <- function(n_sim = 1000, seed = 071818){
     
     # State rewards
     # Costs
-    c_H     = rgamma(n_sim, shape = 100, scale = 20),     # cost of remaining one cycle in Healthy 
-    c_S1    = rgamma(n_sim, shape = 177.8, scale = 22.5), # cost of remaining one cycle in Sick 
-    c_S2    = rgamma(n_sim, shape = 225, scale = 66.7),   # cost of remaining one cycle in Sicker 
-    c_D     = 0,                                          # cost of being dead (per cycle)
-    c_trtA  = rgamma(n_sim, shape = 73.5, scale = 163.3), # cost of treatment A
-    c_trtB  = rgamma(n_sim, shape = 86.2, scale = 150.8), # cost of treatment B
+    c_H     = rgamma(n_sim, shape = 100,   scale = 20),    # cost of remaining one cycle in Healthy 
+    c_S1    = rgamma(n_sim, shape = 177.8, scale = 22.5),  # cost of remaining one cycle in Sick 
+    c_S2    = rgamma(n_sim, shape = 225,   scale = 66.7),  # cost of remaining one cycle in Sicker 
+    c_D     = 0,                                           # cost of being dead (per cycle)
+    c_trtA  = rgamma(n_sim, shape = 73.5,  scale = 163.3), # cost of treatment A
+    c_trtB  = rgamma(n_sim, shape = 86.2,  scale = 150.8), # cost of treatment B
     
     # Utilities
     u_H     = rbeta(n_sim, shape1 = 200, shape2 = 3),     # utility when Healthy 
@@ -647,7 +649,7 @@ ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
   geom_histogram(aes(y = ..density..)) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) + 
   theme_bw(base_size = 16) + 
-  theme(axis.text = element_text(size=6)) 
+  theme(axis.text = element_text(size = 6)) 
 ```
 
 ## 09.1 Conduct probabilistic sensitivity analysis
@@ -665,7 +667,7 @@ df_e <- as.data.frame(matrix(0,
                              ncol = n_str))
 colnames(df_e) <- v_names_str
 # Run Markov model on each parameter set of PSA input dataset
-n_time_init_psa_series <- Sys.time()
+n_time_init_psa_series <- Sys.time()  # store the system time at start
 for(i in 1:n_sim){
   l_out_temp <- calculate_ce_out(df_psa_input[i, ])
   df_c[i, ] <- l_out_temp$Cost
@@ -675,8 +677,8 @@ for(i in 1:n_sim){
     cat('\r', paste(i/n_sim * 100, "% done", sep = " "))
   }
 }
-n_time_end_psa_series <- Sys.time()
-n_time_total_psa_series <- n_time_end_psa_series - n_time_init_psa_series
+n_time_end_psa_series   <- Sys.time() # store the system time at end 
+n_time_total_psa_series <- n_time_end_psa_series - n_time_init_psa_series # calculate the PSA duration 
 print(paste0("PSA with ", comma(n_sim), " simulations run in series in ", 
              round(n_time_total_psa_series, 2), " ", 
              units(n_time_total_psa_series)))
@@ -689,9 +691,9 @@ l_psa <- make_psa_obj(cost          = df_c,
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 
                       strategies    = v_names_str)
-l_psa$strategies <- v_names_str
-colnames(l_psa$effectiveness)<- v_names_str
-colnames(l_psa$cost)<- v_names_str
+l_psa$strategies              <- v_names_str
+colnames(l_psa$effectiveness) <- v_names_str
+colnames(l_psa$cost)          <- v_names_str
 ```
 
 ## 09.2.1 Save PSA objects
@@ -717,7 +719,7 @@ v_wtp <- seq(0, 250000, by = 5000)
 
 ```{r CE-scatter, echo=FALSE, fig.cap='Cost-effectiveness scatter plot.', message=FALSE, warning=FALSE, fig.pos="H"} 
 # CEA Scatter plot
-plot(l_psa, txtsize = 16) +
+plot(l_psa, txtsize = 14, ellipse = TRUE) +
   xlab("Effectiveness (QALYs)") +
   guides(col = guide_legend(nrow = 1)) +
   theme(legend.position = "bottom")
@@ -751,6 +753,8 @@ plot(df_cea_psa)
 ```
 
 ## 09.4.2 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
+CEAF: indicating which strategy is economically preferred at different threshold values for cost-effectiveness
+NOTE: The CEAF is informative in addition to the CEAC, because the strategy that is most likely to be cost-effective should not be conflated with the strategy that is optimal in expectation in the decision-making process
 
 ```{r CEAC, echo=FALSE, fig.cap='Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF).', message=FALSE, warning=FALSE, fig.pos="H"}
 ceac_obj <- ceac(wtp = v_wtp, psa = l_psa)
@@ -762,7 +766,7 @@ plot(ceac_obj)
 
 ## 09.4.3 Expected Loss Curves (ELCs)
 
-The expected loss is the the quantification of the foregone benefits when choosing a suboptimal strategy given current evidence.
+The expected loss is the quantification of the foregone benefits when choosing a sub-optimal strategy given current evidence.
 
 ```{r ELC, echo=FALSE, fig.cap='Expected loss curves (ELCs).', message=FALSE, warning=FALSE, fig.pos="H"}
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)

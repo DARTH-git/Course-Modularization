@@ -155,11 +155,9 @@ p_S1S2_scale <- 0.08 # scale
 p_S1S2_shape <- 1.1  # shape
 
 ## Age-dependent mortality rates
-lt_usa_2015  <- read.csv("LifeTable_USA_Mx_2015.csv")
-v_r_mort_by_age <- lt_usa_2015 %>% 
-                   select(Total) %>%
-                   as.matrix() # anyone above 100 have the same mortality
-names(v_r_mort_by_age) <- lt_usa_2015$Age
+lt_usa_2015 <- read.csv("LifeTable_USA_Mx_2015.csv")
+v_r_mort_by_age <- lt_usa_2015$Total
+names(v_r_mort_by_age) <- paste0("Age",lt_usa_2015$Age)
 
 ## State rewards
 # Costs
@@ -211,10 +209,7 @@ v_p_S2Dage <- rate_to_prob(v_r_S2Dage) # Age-specific mortality risk in the Sick
 ## History-dependent transition probability of becoming Sicker when Sick
 # conditional on surviving
 # Weibull hazard
-
-
-
-v_r_S1S2_tunnels <- HweibullPH(0:n_tunnel_size   ,
+v_r_S1S2_tunnels <- HweibullPH(0:n_tunnel_size,
                           shape = p_S1S2_shape, 
                           scale  = p_S1S2_scale)
 v_p_S1S2_tunnels <- 1 - exp(- diff(v_r_S1S2_tunnels))

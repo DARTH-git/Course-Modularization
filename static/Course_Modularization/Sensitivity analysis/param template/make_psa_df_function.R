@@ -8,7 +8,7 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
   # Return:
   ## param_psa: dataframe with estimated PSA parameters
   
-  set.seed(seed)    # set the seed
+
   l_shapes <- list()
 
   # check if all parameters have a unique name

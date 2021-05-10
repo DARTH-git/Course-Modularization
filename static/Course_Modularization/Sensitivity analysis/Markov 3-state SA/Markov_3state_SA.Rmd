@@ -77,7 +77,7 @@ rm(list = ls())  # clear memory (removes all the variables from the workspace)
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("diagram", "dampack") 
+p_load("diagram", "dampack", "reshape2") 
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
 ```
@@ -448,11 +448,12 @@ gen_psa <- function(n_sim = 1000, seed = 071818){
   df_psa <- data.frame(
     # Transition probabilities (per cycle), conditional on surviving
     # probability to become sick when healthy
+     # probability of dying when healthy
+    p_HD       = rbeta(n_sim, shape1 = 4,  shape2 = 391),
     p_HS_SoC   = rbeta(n_sim, shape1 = 24, shape2 = 450),  # under standard of care
     p_HS_trtA  = rbeta(n_sim, shape1 = 15, shape2 = 368),  # under treatment A
     p_HS_trtB  = rbeta(n_sim, shape1 = 16, shape2 = 767),  # under treatment B
-    # probability of dying when healthy
-    p_HD       = rbeta(n_sim, shape1 = 4, shape2 = 391),
+
     # probability of dying when sick
     p_SD       = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6), 
 

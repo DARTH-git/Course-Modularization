@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr", "stringr", "diagram", "triangle")   
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "ggraph", "reshape2", "knitr", "stringr", "diagram", "triangle", "dplyr", "data.table")   
 # load (install if required) packages from GitHub
 p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
@@ -31,24 +31,39 @@ source("make_psa_df_function.R")
 The data can be loaded as a csv or a xlsx file. 
 ```{r cars}
 # Read from the xlsx
-#df_param  <- data.frame(readxl::read_xlsx("param.xlsx", sheet = "param"))
+df_param_loaded  <-  data.frame(readxl::read_xlsx("param 3-state.xlsx", sheet = "param"))
 
 # Read from the csv
-df_param <- read.csv(file = "param.csv", header = TRUE, sep = ";")
+#df_param_loaded <- read.csv(file = "param.csv", header = TRUE, sep = ";")
 
-# document which parameters do not have a unit and will be deleted
+# Document which parameters do not have a unit and will be deleted
 # < 0 is used to find rows without information
-param_NA <- df_param[which((df_param$unit < 0)), ]
+# or use NA; because when using read_xlsx you need is.na
+n_row_NA <- which((df_param_loaded$unit < 0 | is.na(df_param_loaded$unit)))
+param_NA <- df_param_loaded[n_row_NA, ]
 
 # Remove parameters without unit
-df_param <- df_param[df_param$unit>0, ]
+df_param <- subset(df_param_loaded, unit!= "NA" | df_param_loaded$unit < 0 )
 
 # Make parameters values numeric, for those not missing
+# Needed when loading vai read_xlsx
+
 numvar <- c("par1", "par2", "par3")
+
 for (i in numvar){
-  v_row_NA <- is.na(df_param[, i])
-  df_param[, i][!is.na(df_param[, i])] <- as.numeric(df_param[, i][!is.na(df_param[, i])])
+  v_row_NA <- !is.na(df_param[, i]) # check for missings   
+  
+  df_param[!v_row_NA, i] <- 99999
+  df_param[, i]  <- as.numeric(df_param[, i])
+  df_param[round(df_param[, i]) == 99999, i] <- NA
+  
+  if(class(df_param[, i]) != "numeric"){
+    warning(paste("The column", i,  "is not numeric", sep = " "))
+  }
 }
+
+
+
 
 ```
 
@@ -77,3 +92,35 @@ ggplot(melt(df_psa_input, variable.name =  "Parameter"), aes(x = value)) +
        theme(axis.text = element_text(size = 8))
 
 ```
+
+
+
+
+
+# Tes for 3state
+
+
+```{r}
+
+m_psa_input <- make_psa_df(df_param = df_param, n_iter = 1000, seed = 071818)
+df_PSA_test1 <- df_psa_input
+
+# Check 
+# reorder, based on the column name
+df_PSA_test1_sort <- df_PSA_test1[, colnames(m_psa_input)]
+# all true?
+summary(colnames(df_PSA_test1_sort) == colnames(m_psa_input))
+
+# The sampling is different and therefore, we will never get the exact same dataset
+# However, with large numers we can compare if the mean values are close
+colMeans(df_PSA_test1_sort[1:100000, ])  
+colMeans(m_psa_input[1:100000, ])
+
+arrange(head(df_PSA_test1_sort)) - arrange(head(as.data.frame(m_psa_input)))
+
+
+head(df_PSA_test1_sort) - head(m_psa_input)
+
+```
+
+

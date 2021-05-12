@@ -22,13 +22,17 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 ```
 
 # Load the functions
-We need to load a function that is able to make a PSA dataset for us based on the data input in the csv or xlsx file.
+
+We need to load a function that is able to make a PSA dataset for us based on the data input in the `csv` or `xlsx` file.
+
 ```{r}
 source("make_psa_df_function.R")
 ```
 
 ## Load the data and remove empty lines
-The data can be loaded as a csv or a xlsx file. 
+
+The data can be loaded as a `csv` or a `xlsx` file. 
+
 ```{r cars}
 # Read from the xlsx
 df_param_loaded  <-  data.frame(readxl::read_xlsx("param 3-state.xlsx", sheet = "param"))
@@ -61,14 +65,12 @@ for (i in numvar){
     warning(paste("The column", i,  "is not numeric", sep = " "))
   }
 }
-
-
-
-
 ```
 
 # Run the functions
+
 We use the `make_psa_df` function to generate as PSA dataset with parameter values for each PSA iteration. the parameter values are sampled from their corresponding distribution as is specified in the input data. 
+
 ```{r}
 m_psa_input <- make_psa_df(df_param = df_param, n_iter = 5) # test run with 5 iterations 
 
@@ -76,32 +78,24 @@ m_psa_input <- make_psa_df(df_param = df_param, n_iter = 5) # test run with 5 it
 ```
 
 # Visually inspect the sampled results 
-```{r}
 
+```{r}
 m_psa_input <- make_psa_df(df_param = df_param, n_iter = 10000) # test run with 5 iterations 
 # Adjust the numbers of which parameters you like to see here
 
 df_psa_input <- as.data.frame(m_psa_input)
 
 # Note the 
-
 ggplot(melt(df_psa_input, variable.name =  "Parameter"), aes(x = value)) +
        facet_wrap(~Parameter, scales = "free") +
        geom_histogram(aes(y = ..density..)) +
        theme_bw(base_size = 16) + 
        theme(axis.text = element_text(size = 8))
-
 ```
 
-
-
-
-
-# Tes for 3state
-
+# Test for 3 state model
 
 ```{r}
-
 m_psa_input <- make_psa_df(df_param = df_param, n_iter = 1000, seed = 071818)
 df_PSA_test1 <- df_psa_input
 
@@ -118,9 +112,5 @@ colMeans(m_psa_input[1:100000, ])
 
 arrange(head(df_PSA_test1_sort)) - arrange(head(as.data.frame(m_psa_input)))
 
-
 head(df_PSA_test1_sort) - head(m_psa_input)
-
 ```
-
-

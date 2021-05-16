@@ -109,7 +109,7 @@ c_death_biopsy <- 0      # cost of dying from brain biopsy
 
 # QALYs
 q_VE           <- 20     # remaining QALYs for those without VE-related complications
-q_VE_comp      <- 19     # remaining QALYs for those with VE-related complications
+q_VE_comp      <- 19     # remaining QALYs for those with    VE-related complications
 q_loss_biopsy  <- 0.01   # one-time  QALY loss due to brain biopsy
 q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 ```
@@ -129,18 +129,35 @@ v_w_tx     <- c(    p_HVE  *      p_HVE_comp_tx  ,  # HVE w/tx, complications
                (1 - p_HVE) *      p_OVE_comp_tx  ,  # OVE w/tx, complications
                (1 - p_HVE) * (1 - p_OVE_comp_tx))   # OVE w/tx, no complications
   
-v_w_biopsy <- c(p_biopsy_death                   ,  # biopsy death
+v_w_biopsy <- c(    p_biopsy_death                   ,  # biopsy death
                # no biopsy death.,   HVE w/tx,        complications
-               (1-p_biopsy_death)   *    p_HVE  *    p_HVE_comp_tx  ,  
+               (1 - p_biopsy_death)   *      p_HVE  *    p_HVE_comp_tx  ,  
                # no biopsy death.,   HVE w/tx,     no complications
-               (1-p_biopsy_death)   *    p_HVE  * (1-p_HVE_comp_tx) ,  
+               (1 - p_biopsy_death)   *      p_HVE  * (1 - p_HVE_comp_tx) ,  
                # no biopsy death.,        OVE,        complications
-               (1-p_biopsy_death)   * (1-p_HVE) *      p_OVE_comp   ,  
+               (1 - p_biopsy_death)   * (1 - p_HVE) *      p_OVE_comp   ,  
                # no biopsy death.,        OVE,     no complications
-               (1-p_biopsy_death)   * (1-p_HVE) * (1 - p_OVE_comp))      
+               (1 - p_biopsy_death)   * (1 - p_HVE) * (1 - p_OVE_comp))      
   
+# Create vector of outcomes being complications for each strategy 
+v_comp_no_tx  <- c(1,          # HVE, complications
+                   0,          # HVE, no complications
+                   1,          # OVE, complications
+                   0)          # OVE, no complications
+  
+v_comp_tx     <- c(1,          # HVE, complications
+                   0,          # HVE, no complications
+                   1 ,         # OVE, complications
+                   0)          # OVE, no complications
+  
+v_comp_biopsy <- c(1,          # biopsy complications
+                   1,          # no biopsy comp., HVE w/tx, complications 
+                   0,          # no biopsy comp., HVE w/tx, no complications
+                   1,          # no biopsy comp., OVE, complications
+                   0)          # no biopsy comp., OVE, no complications
+  
+
 # Create vector of outcomes (QALYs) for each strategy 
-  
 v_qaly_no_tx  <- c(q_VE_comp ,          # HVE, complications
                    q_VE      ,          # HVE, no complications
                    q_VE_comp ,          # OVE, complications
@@ -160,7 +177,6 @@ v_qaly_biopsy <- -q_loss_biopsy     +   # loss due to biopsy
                     q_VE)               # no biopsy comp., OVE, no complications
   
 # Create vector of costs for each strategy 
-  
 v_cost_no_tx  <- c(c_VE_comp ,          # HVE, complications
                    c_VE      ,          # HVE, no complications
                    c_VE_comp ,          # OVE, complications
@@ -175,10 +191,18 @@ v_cost_tx     <- c_tx +                 # cost of treatment
 v_cost_biopsy <- c_biopsy           +   # cost of biopsy procedure
                  c(c_death_biopsy   ,   # cost of death (zero)
                    c_VE_comp + c_tx ,   # no biopsy comp., HVE w/tx, complications 
-                   c_VE + c_tx      ,   # no biopsy comp., HVE w/tx, no complications
+                   c_VE      + c_tx ,   # no biopsy comp., HVE w/tx, no complications
                    c_VE_comp        ,   # no biopsy comp., OVE, complications
                    c_VE)                # no biopsy comp., OVE, no complications
  
+
+
+# Calculate expected complications for each strategy 
+total_comp_no_tx  <- v_w_no_tx  %*%  v_comp_no_tx      
+total_comp_tx     <- v_w_tx     %*%  v_comp_tx
+total_comp_biopsy <- v_w_biopsy %*%  v_comp_biopsy
+  
+
 # Calculate total utilities for each strategy 
 total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      
 total_qaly_tx     <- v_w_tx     %*%  v_qaly_tx
@@ -189,6 +213,8 @@ total_cost_no_tx  <- v_w_no_tx  %*%  v_cost_no_tx
 total_cost_tx     <- v_w_tx     %*%  v_cost_tx
 total_cost_biopsy <- v_w_biopsy %*%  v_cost_biopsy
   
+# vector of expected complications 
+v_total_comp <- c(total_comp_no_tx, total_comp_tx, total_comp_biopsy) 
 # vector of total QALYs
 v_total_qaly <- c(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy) 
 # vector of total costs
@@ -197,6 +223,7 @@ v_total_cost <- c(total_cost_no_tx, total_cost_tx, total_cost_biopsy)
 v_nmb        <- v_total_qaly * wtp - v_total_cost                      
   
 # Name outcomes
+names(v_total_comp) <- v_names_str  # names for the elements of the total comp vector
 names(v_total_qaly) <- v_names_str  # names for the elements of the total QALYs vector
 names(v_total_cost) <- v_names_str  # names for the elements of the total cost vector
 names(v_nmb)        <- v_names_str  # names for the elements of the nmb vector
@@ -204,6 +231,7 @@ names(v_nmb)        <- v_names_str  # names for the elements of the nmb vector
 df_output <- data.frame(Strategy =  v_names_str,
                         Cost     =  v_total_cost,
                         Effect   =  v_total_qaly,
+                        Complications = v_total_comp,
                         NMB      =  v_nmb)
 
 # model output

@@ -233,10 +233,12 @@ v_init   &lt;- c(&quot;H&quot;  = 1,
 # Read age-specific mortality rates from csv file
 
 # MAKE SURE YOU HAVE A DATA FOLDER! Or when in the same folder remove the ../data/ part 
-lt_usa_2005 &lt;- read.csv(&quot;../data/HMD_USA_Mx_2015.csv&quot;)
+lt_usa_2015 &lt;- read.csv(&quot;../data/HMD_USA_Mx_2015.csv&quot;)
 
-v_r_HD &lt;- lt_usa_2005 %&gt;% 
-  filter(Age &gt;= age &amp; Age &lt;= (max_age-1)) %&gt;%
+# Transition probabilities (per cycle) and hazard ratios
+# Read age-specific mortality rates from csv file for the age 25 - 54
+v_r_HD &lt;- lt_usa_2015 %&gt;% 
+  filter(Age &gt;= age &amp; Age &lt;= (max_age - 1)) %&gt;%
   select(Total) %&gt;%
   as.matrix()
 

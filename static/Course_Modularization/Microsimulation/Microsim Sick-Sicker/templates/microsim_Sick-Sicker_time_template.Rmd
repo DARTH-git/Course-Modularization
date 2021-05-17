@@ -3,8 +3,8 @@ title: 'Microsimulation Sick-Sicker model with time dependency'
 subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifier, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -107,9 +107,9 @@ p_S1S2  <- 0.105  # probability of becoming sicker when sick
 # NOTE: if you don't have a data folder but the files in the same folder as your markdown you need 
 # read.csv("mortProb_age.csv") and 
 # read.csv("MyPopulation-AgeDistribution.csv") 
-p_mort   <- read.csv("mortProb_age.csv")
+p_mort   <- read.csv("../data/mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
+dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 

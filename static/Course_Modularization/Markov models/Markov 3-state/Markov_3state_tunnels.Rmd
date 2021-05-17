@@ -3,8 +3,8 @@ title: '3-state Markov model in R'
 subtitle: 'with dependency for time-since model start & state-residency dependency'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -178,9 +178,9 @@ Fill in the transition probability array:
 ```{r}
 ## Standard of Care
 # from Healthy
-a_P_SoC["Healthy", "Healthy", ]  <- (1 - v_p_HD)* (1 - p_HS_SoC)
-a_P_SoC["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) * p_HS_SoC
-a_P_SoC["Healthy", "Dead", ]     <- v_p_HD
+a_P_SoC["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_SoC)
+a_P_SoC["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_SoC["Healthy", "Dead", ]     <-      v_p_HD
 
 # from Sick
 for(i in 1:(n_tunnel_size - 1)){ 
@@ -196,13 +196,13 @@ a_P_SoC["Dead", "Dead", ] <- 1
 
 ## Treatment A
 a_P_trtA <- a_P_SoC
-a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_trtA["Healthy", "Sick_1Yr", ]    <- (1 - v_p_HD) * p_HS_trtA
+a_P_trtA["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_trtA)
+a_P_trtA["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtA
 
 ## Treatment B
 a_P_trtB <- a_P_SoC
-a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_trtB["Healthy", "Sick_1Yr", ]    <- (1 - v_p_HD) * p_HS_trtB
+a_P_trtB["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_trtB)
+a_P_trtB["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtB
 ```
 
 Check if transition array and probabilities are valid.
@@ -229,7 +229,7 @@ for (t in 1:n_cycles){  # loop through the number of cycles
 }
 ```
 
-Create aggregated trace.
+Create aggregated trace. Sum all Sick states together. 
 
 ```{r}
 m_M_tunnels_SoC  <- cbind(Healthy = m_M_SoC[, "Healthy"], 
@@ -301,7 +301,7 @@ plot(v_prev,
 ```{r}
 # per cycle
 # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
-v_tc_SoC  <- m_M_tunnels_SoC  %*% c(c_H, c_S, c_D)  
+v_tc_SoC  <- m_M_tunnels_SoC  %*% c(c_H,          c_S, c_D)  
 v_tc_trtA <- m_M_tunnels_trtA %*% c(c_H + c_trtA, c_S, c_D)  
 v_tc_trtB <- m_M_tunnels_trtB %*% c(c_H + c_trtB, c_S, c_D)  
 

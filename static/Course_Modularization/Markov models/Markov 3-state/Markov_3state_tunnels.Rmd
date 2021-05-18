@@ -1,10 +1,11 @@
 ---
-title: '3-state Markov model in R'
-subtitle: 'with dependency for time-since model start & state-residency dependency'
+title: "3-state Markov model in R"
 author: "The DARTH workgroup"
+subtitle: with dependency for time-since model start & state-residency dependency
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -128,7 +129,11 @@ n_states_tunnels        <- length(v_names_states_tunnels)        # number of sta
 # Weibull parameters
 l    <- 0.08
 g    <- 1.1
-p_SD <- l*g*(1:n_tunnel_size)^{g-1} # probability of dying when sick (time-in-state dependent)
+
+S_SD <- pweibull(0:n_tunnel_size, l , g, lower.tail = F)
+p_SD <- trans_prob(S_SD)  # probability of dying when sick (time-in-state dependent)
+
+
 
 ## State rewards
 # Costs and utilities  

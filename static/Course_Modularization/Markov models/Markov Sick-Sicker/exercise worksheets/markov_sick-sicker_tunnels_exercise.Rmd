@@ -3,9 +3,9 @@ title: "Decision Modeling for Public Health"
 subtitle: 'Markov Model Variants Exercise'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -63,7 +63,7 @@ and adapted with proper attribution.
 
 # Exercise I: Variations on the Sick-Sicker Markov Model
 
-Previously, you built a Markov of the Sick-Sicker model where transition probabilities were assumed to be constant over time. In this exercise, you will expand on that model to incorporate dependence on time since model start and on state residence.
+Previously, you built a Markov of the Sick-Sicker model. In this exercise, you will expand on that model to incorporate dependence on time since model start and on state residence.
 
 **Time since model start**
 
@@ -79,7 +79,7 @@ $p_{S1S2(t)} = \lambda_\gamma t^{(\gamma-1)}$
 
 where $t$ is the $t$-th cycle (year) that a person has been in the Sick state. $\lambda = 0.08$ and $\gamma = 1.1$ are the scale and shape parameters of the Weibull function, respectively.
 
-We will now expand the model to include age and state residence dependency by adding age varying probabilies for death and tunnel states for S1, as shown in Figure 2.
+We will now expand the model to include age and state residence dependency by adding age varying probabilities for death and tunnel states for S1, as shown in Figure 2.
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE, out.width = '100%', fig.cap='Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(here)) install.packages('here')
@@ -137,5 +137,5 @@ Using the template `markov_sick-sicker_tunnels_template.Rmd`, please do the foll
 | Intervention effect                |             |               |
 | - Utility for treated individuals in S1 | `u_trt` |  0.95        |
 
-*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
 

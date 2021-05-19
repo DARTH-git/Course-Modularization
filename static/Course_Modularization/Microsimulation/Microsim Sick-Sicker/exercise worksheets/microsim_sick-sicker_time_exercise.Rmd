@@ -3,9 +3,9 @@ title: "Microsimulation Modeling in R"
 author: "The DARTH workgroup"
 subtitle: Exercises – Microsimulation models 
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:

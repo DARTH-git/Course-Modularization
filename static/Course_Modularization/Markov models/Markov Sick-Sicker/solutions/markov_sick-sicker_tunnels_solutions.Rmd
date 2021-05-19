@@ -3,8 +3,8 @@ title: 'Markov Sick-Sicker model in R'
 subtitle: 'with dependency for time-since model start AND with state-residency dependency'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -369,7 +369,10 @@ df_cea
 ## 07.4 Plot frontier of the Markov model
 
 ```{r}
-plot(df_cea, effect_units = "QALYs", xlim=c(17,18))
+plot(df_cea, effect_units = "QALYs", 
+     xlim = c(min(df_cea$Effect) - 0.5, 
+              max(df_cea$Effect) + 0.5))
+
 ```
 
 

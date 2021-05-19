@@ -172,8 +172,8 @@ Fill in the transition probability array:
 ## Standard of Care
 # from Healthy
 a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
-a_P_SoC["Healthy", "Sick", ]    <- (1 - v_p_HD) * p_HS_SoC
-a_P_SoC["Healthy", "Dead", ]    <-  v_p_HD
+a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_SoC
+a_P_SoC["Healthy", "Dead",    ] <-  v_p_HD
 
 # from Sick
 a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
@@ -185,12 +185,12 @@ a_P_SoC["Dead", "Dead", ] <- 1
 ## Treatment A
 a_P_trtA <- a_P_SoC
 a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_trtA["Healthy", "Sick", ]    <- (1 - v_p_HD) * p_HS_trtA
+a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_trtA
 
 ## Treatment B
 a_P_trtB <- a_P_SoC
 a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_trtB["Healthy", "Sick", ]    <- (1 - v_p_HD) * p_HS_trtB
+a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_trtB
 ```
 
 Check if transition array and probabilities are valid.

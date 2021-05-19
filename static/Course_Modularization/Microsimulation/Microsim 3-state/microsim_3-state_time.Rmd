@@ -97,8 +97,8 @@ d_e <- d_c  <- 0.03                    # equal discount of costs and QALYs by 3%
 # Transition probabilities 
 # (all non-dead probabilities are conditional on survival)
 p_HS        <- 0.05    # probability healthy -> sick
-p_HD_female <- 0.0382  # probability health -> dead when female
-p_HD_male   <- 0.0463  # probability health -> dead when male
+p_HD_female <- 0.0382  # probability healthy -> dead when female
+p_HD_male   <- 0.0463  # probability healthy -> dead when male
 m_p_HD      <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male))
 
 # probability to die in sick state by cycle of being sick

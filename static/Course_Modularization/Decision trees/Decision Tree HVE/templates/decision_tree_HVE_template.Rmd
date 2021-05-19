@@ -90,7 +90,7 @@ p_load_gh("DARTH-git/darthtools", "DARTH-git/OpenTree")
 
 ```{r}
 v_names_str    <- c('Do not treat', "Treat", "Biopsy")  # names of strategies
-n_str          <- length(v_names_str)             # number of strategies
+n_str          <- length(v_names_str)                   # number of strategies
 wtp            <- 100000                          # willingness to pay threshold
 
 # Probabilities
@@ -121,10 +121,6 @@ v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp  ,  # HVE, complications
                     p_HVE  * (1 - p_HVE_comp) ,  # HVE, no complications
                (1 - p_HVE) *      p_OVE_comp  ,  # OVE, complications
                (1 - p_HVE) * (1 - p_OVE_comp))   # OVE, no complications
-
-
-
-
   
 # v_w_tx      <-  your turn
   
@@ -219,7 +215,7 @@ decision_tree_HVE_cea
 ## 05.1 Plot frontier of Decision Tree
 
 ```{r}
-plot(decision_tree_HVE_cea, effect_units = "QALYs", label="all")
+plot(decision_tree_HVE_cea, effect_units = "QALYs", label = "all")
 
 ```
 

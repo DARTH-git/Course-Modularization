@@ -52,19 +52,19 @@ df_param <- subset(df_param_loaded, unit!= "NA" | df_param_loaded$unit < 0 )
 # Make parameters values numeric, for those not missing
 # Needed when loading vai read_xlsx
 
-numvar <- c("par1", "par2", "par3")
+#numvar <- c("par1", "par2", "par3")
 
-for (i in numvar){
-  v_row_NA <- !is.na(df_param[, i]) # check for missings   
-  
-  df_param[!v_row_NA, i] <- 99999
-  df_param[, i]  <- as.numeric(df_param[, i])
-  df_param[round(df_param[, i]) == 99999, i] <- NA
-  
-  if(class(df_param[, i]) != "numeric"){
-    warning(paste("The column", i,  "is not numeric", sep = " "))
-  }
-}
+#for (i in numvar){
+#  v_row_NA <- !is.na(df_param[, i]) # check for missings   
+#  
+#  df_param[!v_row_NA, i] <- 99999
+#  df_param[, i]  <- as.numeric(df_param[, i])
+#  df_param[round(df_param[, i]) == 99999, i] <- NA
+#  
+#  if(class(df_param[, i]) != "numeric"){
+#    warning(paste("The column", i,  "is not numeric", sep = " "))
+#  }
+#}
 ```
 
 # Run the functions
@@ -93,11 +93,15 @@ ggplot(reshape2::melt(df_psa_input, variable.name =  "Parameter"), aes(x = value
         theme(axis.text = element_text(size = 8))
 ```
 
-# Test for 3 state model
+# Test for code with df from 3 state model
 
-```{r, }
-m_psa_input <- gen_psa_df(df_param = df_param, n_iter = 1000, seed = 071818)
+```{r, eval = FALSE}
+load("../Markov 3-state SA/df_psa_input.rda") # df_psa_input
+# df_psa_input is form the 3-state model
+
 df_PSA_test1 <- df_psa_input
+m_psa_input <- gen_psa_df(df_param = df_param, n_iter = 1e6, seed = 071818)
+
 
 # Check 
 # reorder, based on the column name
@@ -106,7 +110,7 @@ df_PSA_test1_sort <- df_PSA_test1[, colnames(m_psa_input)]
 summary(colnames(df_PSA_test1_sort) == colnames(m_psa_input))
 
 # The sampling is different and therefore, we will never get the exact same dataset
-# However, with large numers we can compare if the mean values are close
+# However, with large numbers we can compare if the mean values are close
 colMeans(df_PSA_test1_sort[1:100000, ])  
 colMeans(m_psa_input[1:100000, ])
 

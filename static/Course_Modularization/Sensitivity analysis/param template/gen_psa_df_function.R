@@ -38,7 +38,7 @@ gen_psa_df <- function(df_param, n_iter, seed = 123){
     
     # if the distribution is fixed use the base value
     if (is.na(param$distribution) | param$distribution == "fixed"){
-      m_param_psa[, p] <- rep(param$mean, n_iter) 
+      m_param_psa[, p] <- rep(param$value, n_iter) 
     } else if(param$distribution == "beta"){ # Beta distribution
       # if mean and sigma -> get the shapes and add
       if(c("sigma") %in% names(param)){

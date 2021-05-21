@@ -134,8 +134,8 @@ data_S1D  <- # Your turn
 data_S1S2 <- # Your turn
 
 # Fit independent models for each transition and pick one that fits best
-fit_S1S2 <- # Your turn
-fit_S1D  <- # Your turn
+fit_S1S2  <- # Your turn
+fit_S1D   <- # Your turn
 
 # Find the best-fitting models based on AIC
 fit_S1S2$AIC 
@@ -144,8 +144,8 @@ best_S1S2 <- # Your turn
 best_S1D  <- # Your turn
 
 # Calculate the transition probabilities from the best-fitting survival models
-p_S1S2 <- # Your turn
-p_S1D  <- # Your turn
+p_S1S2    <- # Your turn
+p_S1D     <- # Your turn
 ```
 
 # 04 Define and initialize matrices and vectors

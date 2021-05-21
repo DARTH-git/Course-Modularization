@@ -58,23 +58,30 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       p_HD     <- p_HD_all[M_t == "H","p_HD"]
       
       # update the m_p with the appropriate probabilities   
-      # transition probabilities when healthy
-      m_p_t[, M_t == "H"]  <- rbind((1 - p_HD) * (1 - p_HS1),
-                                    (1 - p_HD) *      p_HS1 , 
-                                    0 ,
-                                    p_HD               )                              
-      # transition probabilities when sick
-      m_p_t[, M_t == "S1"] <- rbind((1 - p_S1D[df_X$n_ts]) * p_S1H,
-                                    (1 - p_S1D[df_X$n_ts]) * (1 - p_S1H - p_S1S2),
-                                    (1 - p_S1D[df_X$n_ts]) *              p_S1S2 , 
-                                         p_S1D[df_X$n_ts]                        )  
-      # transition probabilities when sicker
-      m_p_t[, M_t == "S2"] <- rbind(0, 
-                                    0, 
-                                    1 - p_S2D, 
-                                        p_S2D)                                            
-      # transition probabilities when dead   
-      m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                        
+      # (all non-death probabilities are conditional on survival) 
+      # transition probabilities when Healthy 
+      m_p_t["H",  M_t == "H"]  <- (1 - p_HD)  * (1 - p_HS1)
+      m_p_t["S1", M_t == "H"]  <- (1 - p_HD)  *      p_HS1 
+      m_p_t["S2", M_t == "H"]  <-                        0
+      m_p_t["D",  M_t == "H"]  <-      p_HD              
+      
+      # transition probabilities when Sick 
+      m_p_t["H",  M_t == "S1"] <- (1 - p_S1D[df_X$n_ts]) *      p_S1H 
+      m_p_t["S1", M_t == "S1"] <- (1 - p_S1D[df_X$n_ts]) * (1 - p_S1H - p_S1S2)
+      m_p_t["S2", M_t == "S1"] <- (1 - p_S1D[df_X$n_ts]) *              p_S1S2
+      m_p_t["D",  M_t == "S1"] <-      p_S1D[df_X$n_ts]    
+      
+      # transition probabilities when Sicker
+      m_p_t["H",  M_t == "S2"] <-  0
+      m_p_t["S1", M_t == "S2"] <-  0
+      m_p_t["S2", M_t == "S2"] <-  1 - p_S2D
+      m_p_t["D",  M_t == "S2"] <-      p_S2D 
+      
+      # transition probabilities when Dead
+      m_p_t["H",  M_t == "D"]  <- 0
+      m_p_t["S1", M_t == "D"]  <- 0
+      m_p_t["S2", M_t == "D"]  <- 0 
+      m_p_t["D",  M_t == "D"]  <- 1                                                         
       
       return(t(m_p_t))
     }           

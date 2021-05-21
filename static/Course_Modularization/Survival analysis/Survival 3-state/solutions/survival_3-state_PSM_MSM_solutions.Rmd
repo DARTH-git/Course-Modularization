@@ -303,16 +303,22 @@ Probs <- function(M_t, v_Ts, t) {
   rownames(m_p_t) <-  v_names_states                              
   
   # update m_p_t with the appropriate probabilities   
+  # (all transition probabilities are conditional on survival)
   # transition probabilities when Healthy 
-  m_p_t[, M_t == "Healthy"] <- rbind( (1 - p_HD[t]) * (1 - p_HS[t]),
-                                      (1 - p_HD[t]) *      p_HS[t],
-                                                           p_HD[t])    
+  m_p_t["Healthy", M_t == "Healthy"] <- (1 - p_HD[t]) * (1 - p_HS[t])
+  m_p_t["Sick",    M_t == "Healthy"] <- (1 - p_HD[t]) *      p_HS[t]
+  m_p_t["Dead",    M_t == "Healthy"] <-      p_HD[t]  
+  
   # transition probabilities when Sick 
-  m_p_t[, M_t == "Sick"]    <- rbind(0,
-                                     1 - p_SD[v_Ts],
-                                         p_SD[v_Ts])  
+  m_p_t["Healthy", M_t == "Sick"]    <- 0
+  m_p_t["Sick",    M_t == "Sick"]    <- 1 - p_SD[v_Ts]
+  m_p_t["Dead",    M_t == "Sick"]    <-     p_SD[v_Ts]
+ 
   # transition probabilities when Dead     
-  m_p_t[, M_t == "Dead"]    <- rbind(0, 0, 1)                            
+  m_p_t["Healthy", M_t == "Dead"]    <- 0                         
+  m_p_t["Sick",    M_t == "Dead"]    <- 0
+  m_p_t["Dead",    M_t == "Dead"]    <- 1
+    
   return(t(m_p_t))
 }       
 ```

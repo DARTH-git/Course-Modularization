@@ -155,14 +155,14 @@ data_S1D  <- subset(data_long, trans == 3)
 data_S2D  <- subset(data_long, trans == 4)
 
 # fit independent models for each transition and pick the one with the lowest AIC
-fit_S1H  <- fit.fun(time = "time", status = "status", data = data_S1H, times = times, 
-                    extrapolate = F)
-fit_S1S2 <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times, 
-                    extrapolate = F)
-fit_S1D  <- fit.fun(time = "time", status = "status", data = data_S1D, times = times, 
-                    extrapolate = F)
-fit_S2D  <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
-                    extrapolate = F)
+fit_S1H   <- fit.fun(time = "time", status = "status", data = data_S1H, times = times, 
+                     extrapolate = F)
+fit_S1S2  <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times, 
+                     extrapolate = F)
+fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D, times = times, 
+                     extrapolate = F)
+fit_S2D   <- fit.fun(time = "time", status = "status", data = data_S2D, times = times, 
+                     extrapolate = F)
 
 best.fit_S1H  <- fit_S1H$model.objects$models[["Royston-Parmar"]]
 best.fit_S1S2 <- fit_S1S2$model.objects$models[["log-Logistic"]]
@@ -211,17 +211,29 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
   
   # update the v_p with the appropriate probabilities   
   # transition probabilities when healthy
-  m_p_t[, M_t == "H"]  <- rbind((1 - p_HD) * (1 - p_HS1), 
-                                (1 - p_HD) *      p_HS1 , 
-                                                       0,
-                                     p_HD               )   
+  m_p_t["H",  M_t == "H"]  <- (1 - p_HD) * (1 - p_HS1) 
+  m_p_t["S1", M_t == "H"]  <- (1 - p_HD) *      p_HS1  
+  m_p_t["S2", M_t == "H"]  <-                       0
+  m_p_t["D",  M_t == "H"]  <-      p_HD                  
+  
   # transition probabilities when sick
-  m_p_t[, M_t == "S1"] <- rbind(p_S1H[v_Ts1], 1 - p_S1H[v_Ts1] - p_S1S2[v_Ts1] - 
-                                p_S1D[v_Ts1],    p_S1S2[v_Ts1],   p_S1D[v_Ts1])  
+  m_p_t["H",  M_t == "S1"] <- (1 - p_S1D[v_Ts1]) *      p_S1H[v_Ts1]
+  m_p_t["S1", M_t == "S1"] <- (1 - p_S1D[v_Ts1]) * (1 - p_S1H[v_Ts1] - p_S1S2[v_Ts1])   
+  m_p_t["S2", M_t == "S1"] <- (1 - p_S1D[v_Ts1]) *                     p_S1S2[v_Ts1]
+  m_p_t["D",  M_t == "S1"] <-      p_S1D[v_Ts1]
+  
   # transition probabilities when sicker
-  m_p_t[, M_t == "S2"] <- rbind(0, 0, 1 - p_S2D[v_Ts2], p_S2D[v_Ts2])                   
+  m_p_t["H",  M_t == "S2"] <-  0   
+  m_p_t["S1", M_t == "S2"] <-  0
+  m_p_t["S2", M_t == "S2"] <-  1 - p_S2D[v_Ts2]
+  m_p_t["D",  M_t == "S2"] <-      p_S2D[v_Ts2]
+  
   # transition probabilities when dead  
-  m_p_t[, M_t == "D"]  <- rbind(0, 0, 0, 1)                                                         
+  m_p_t["H",  M_t == "D"]  <-  0   
+  m_p_t["S1", M_t == "D"]  <-  0
+  m_p_t["S2", M_t == "D"]  <-  0
+  m_p_t["D",  M_t == "D"]  <-  1
+  
   return(t(m_p_t))
 }       
 ```

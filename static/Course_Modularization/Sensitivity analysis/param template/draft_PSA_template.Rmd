@@ -26,7 +26,7 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 We need to load a function that is able to make a PSA dataset for us based on the data input in the `csv` or `xlsx` file.
 
 ```{r}
-source("make_psa_df_function.R")
+source("gen_psa_df_function.R")
 ```
 
 ## Load the data and remove empty lines
@@ -69,34 +69,34 @@ for (i in numvar){
 
 # Run the functions
 
-We use the `make_psa_df` function to generate as PSA dataset with parameter values for each PSA iteration. the parameter values are sampled from their corresponding distribution as is specified in the input data. 
+We use the `gen_psa_df` function to generate as PSA dataset with parameter values for each PSA iteration. the parameter values are sampled from their corresponding distribution as is specified in the input data. 
 
 ```{r}
-m_psa_input <- make_psa_df(df_param = df_param, n_iter = 5) # test run with 5 iterations 
+m_psa_input <- gen_psa_df(df_param = df_param, n_iter = 5) # test run with 5 iterations 
 
-# Note the output of make_psa_df is a matrix 
+# Note the output of gen_psa_df is a matrix 
 ```
 
 # Visually inspect the sampled results 
 
 ```{r}
-m_psa_input <- make_psa_df(df_param = df_param, n_iter = 10000) # test run with 5 iterations 
+m_psa_input <- gen_psa_df(df_param = df_param, n_iter = 10000) # test run with 5 iterations 
 # Adjust the numbers of which parameters you like to see here
 
 df_psa_input <- as.data.frame(m_psa_input)
 
 # Note the 
-ggplot(melt(df_psa_input, variable.name =  "Parameter"), aes(x = value)) +
+ggplot(reshape2::melt(df_psa_input, variable.name =  "Parameter"), aes(x = value)) +
        facet_wrap(~Parameter, scales = "free") +
-       geom_histogram(aes(y = ..density..)) +
-       theme_bw(base_size = 16) + 
-       theme(axis.text = element_text(size = 8))
+        geom_histogram(aes(y = ..density..)) +        
+  theme_bw(base_size = 16) + 
+        theme(axis.text = element_text(size = 8))
 ```
 
 # Test for 3 state model
 
-```{r}
-m_psa_input <- make_psa_df(df_param = df_param, n_iter = 1000, seed = 071818)
+```{r, }
+m_psa_input <- gen_psa_df(df_param = df_param, n_iter = 1000, seed = 071818)
 df_PSA_test1 <- df_psa_input
 
 # Check 

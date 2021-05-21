@@ -1,6 +1,6 @@
 
 # Make a function to make the PSA data set 
-make_psa_df <- function(df_param, n_iter, seed = 123){
+gen_psa_df <- function(df_param, n_iter, seed = 123){
   # Arguments:
   ## df_param: a dataframe with the parameters
   ## n_iter:   the number of PSA iterations
@@ -36,8 +36,8 @@ make_psa_df <- function(df_param, n_iter, seed = 123){
     param <- cbind(v_param[, c("parameter", "unit", "distribution")], 
                    v_shapes)
     
-    # if the distribution is missing use the base value
-    if (is.na(param$distribution) | param$distribution == "NA"){
+    # if the distribution is fixed use the base value
+    if (is.na(param$distribution) | param$distribution == "fixed"){
       m_param_psa[, p] <- rep(param$mean, n_iter) 
     } else if(param$distribution == "beta"){ # Beta distribution
       # if mean and sigma -> get the shapes and add

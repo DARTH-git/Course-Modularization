@@ -57,7 +57,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -66,7 +66,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 
 # 01 Load packages
 
-```{r}
+```{r }
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 # load (install if required) packages from CRAN
 p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack")
@@ -352,6 +352,7 @@ plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Co
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
 plot_trace_microsim(outcomes_trt$m_M)     # health state trace
 ```
+
 
 # 08 Cost-Effectiveness Analysis
 

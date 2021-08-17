@@ -44,5 +44,6 @@ Here is a tentative timetable:
 - Watch "history dependence" of "Cohort State-Transition Models" videos. 
 
 Live office hours available on Zoom 8:30AM-9:00AM
+
 Slack support available 1:00PM-4:00PM
 

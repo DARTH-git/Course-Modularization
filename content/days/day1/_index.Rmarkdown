@@ -1,5 +1,5 @@
 ---
-title: "Preparation & Tasks"
+title: "August 23 agenda"
 author: ''
 date: "`r Sys.Date()`"
 slug: day1
@@ -7,17 +7,21 @@ categories: []
 tags: []
 menu:
   day1:
-    name: "Prep & Tasks"
+    name: "August 23"
     weight: 1
 toc: yes
 type: docs
 ---
 
-Before April 16, please complete the [Intro to R for Decision Modeling](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/) module.
+Please complete the below modules on August 23:
 
-Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
+- [Introduction to R for Decision Modeling](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/) 
 
-Before April 29, please watch [cohort state-transition model lectures 5-6](https://janssen-decision-modeling-workshop.netlify.app/days/day5/videos_markov1/).
+- [Introduction to Decision Modeling](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/)
 
+These modules are **completely asynchronous**.
+
+- They will take approximately 5-7 hours to complete
+- Slack support available 9AM - 4PM Central Time
 
 

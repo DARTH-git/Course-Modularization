@@ -1,0 +1,30 @@
+---
+title: Intro to Decision Modeling
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+
+linktitle: Intro to Decision Modeling 
+menu:
+  day1:
+    weight: 10
+---
+
+Welcome to the *Introduction to Decision Modeling* module!
+
+Please go through the presentation video and slides below:
+
+## Presentation video
+
+To be uploaded.
+
+```{r, echo=F}
+# blogdown::shortcode("vimeo", "472839769")
+```
+
+## Slides
+
+To be uploaded.
+
+<!-- [Download slides](../../../Course_Modularization/Intro, general, packages/IntrotoDecModelR_Janssen.pptx) -->
+

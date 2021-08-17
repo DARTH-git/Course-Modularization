@@ -1,5 +1,5 @@
 ---
-title: Matrix algebra in R
+title: Matrix algebra 
 
 date: "`r Sys.Date()`"
 
@@ -8,8 +8,9 @@ type: docs
 
 linktitle: Matrix algebra
 menu:
-  day2:
-    weight: 3
+  day1:
+    parent: "Intro to R"
+    weight: 10
 ---
 
 ## Slides

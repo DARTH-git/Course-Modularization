@@ -1,15 +1,16 @@
 ---
-title: Getting Ready
+title: Getting ready
 
 date: "`r Sys.Date()`"
 
 draft: false
 type: docs
 
-linktitle: Getting Ready
+linktitle: Getting ready
 menu:
   day1:
-    weight: 2
+    parent: "Intro to R"
+    weight: 3
 ---
 
 ## Presentation video

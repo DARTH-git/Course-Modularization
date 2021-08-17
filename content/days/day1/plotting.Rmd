@@ -9,7 +9,8 @@ type: docs
 linktitle: Data visualization 
 menu:
   day1:
-    weight: 5
+    parent: "Intro to R"
+    weight: 6
 ---
 
 ## Presentation video
@@ -30,4 +31,4 @@ blogdown::shortcode("vimeo", "473445406")
 
 <!-- [Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd) -->
 
-Solutions will be uploaded after April 16.
+Solutions will be uploaded later.

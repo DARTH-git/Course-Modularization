@@ -11,5 +11,14 @@ menu:
   
 ## Slides
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/DecisionModelingIntroSlides.pptx)
+[Download slides](../../../Course_Modularization/Intro, general, packages/DecisionModelingIntroSlides_Janssen.pptx)
 
+## OpenTree
+
+[Download demo](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+
+[Download tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+
+## Exercise
+
+[Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf)

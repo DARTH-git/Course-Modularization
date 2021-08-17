@@ -13,15 +13,19 @@ type: docs
 
 ## When
 
-Friday, April 16
+Monday, Aug 23: 9:00AM - 12PM 
 
-Tuesday, April 20
+Tuesday, Aug 24: 9:00AM - 12PM 
 
-Friday, April 23
+Wednesday, Aug 25: 9:00AM - 12PM 
 
-Thurs, April 29
+Thursday, Aug 26: 9:00AM - 12PM 
 
-8AM - 12PM Eastern Time
+Friday, Aug 27: 9:00AM - 12PM 
+
+Office hours 8:30 - 9:00AM every day
+
+Times are Central Time 
 
 ## Where
 

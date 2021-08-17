@@ -1,7 +1,7 @@
 ---
-title: "April 20 Schedule"
+title: "August 25 Schedule"
 author: ''
-date: "2021-04-20"
+date: "2021-08-17"
 slug: day3
 categories: []
 tags: []
@@ -13,30 +13,35 @@ toc: yes
 type: docs
 ---
 
-*Overview of Decision Modeling*
+### Time-Dependent Cohort State-Transition Models
 
 Basic agenda:
 
-- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8AM-12pm Eastern Time
+- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8:30AM-12PM Central Time
+
+**Preparation**:
+
+- Watch "history dependence" of "Cohort State-Transition Models" videos
+- Complete cohort state-transition model exercise (1 hour)
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 – 8:10  | Questions or discussion from previous sessions |
-| 8:10 – 8:30  | Overview of Decision Modeling |
-| 8:30 – 9:00  | Decision tree example and OpenTree|
-| 9:00 – 9:20 | Markov model example | 
-| 9:20 – 9:35 | What type of model to use & introduce exercise |
-| 9:35 – 10:00 | Breakout rooms to discuss exercise |
-| 10:00 – 10:15 | Break |
-| 10:15 – 10:30 | Debrief exercise|
-| 10:30 – 10:45 | Introduction to dampack |
-| 10:45 – 11:15 | Demonstration of R Shiny Apps |
-| 11:15 – 12:00 | Participant topics/ areas of interest/ applications |
+| 9:00 – 9:30  | Review: Time-dependent cohort state-transition model exercise |
+| 9:30 – 10:15 | Code review: Cohort state-transition models with history dependence; calculating epidemiologic and economic outcomes; `dampack` R package |
+| 10:15 – 10:30 | Break |
+| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
+| 11:00 - 12:00 | Coding exercise: Implement a cohort state-transition model extensions |
 
-Before April 23, please watch [cohort state-transition model lectures 1-4](https://janssen-decision-modeling-workshop.netlify.app/days/day4/videos_markov/).
+**Homework**:
+
+- Complete cohort state-transition model extension exercise (1 hour)
+- Watch "Microsimulation Models" videos (30 minutes)
+
+Live office hours available on Zoom 8:30AM-9:00AM
+Slack support available 1:00PM-4:00PM
 
 
 

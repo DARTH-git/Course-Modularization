@@ -2,29 +2,21 @@
 active: true
 date: "`r Sys.Date()`"
 subtitle: ""
-title: Workshop objectives
+title: Workshop Details
 weight: 16
 widget: custom
 ---
 
-Overall learning objectives for the course include;
+Participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. A self-paced module introducing R concepts specifically for decision modeling will be provided as part of your workshop registration.
 
-- Overview of decision-analytic modeling in R
-- Explain research scenarios that require decision-analytic modeling methods
-- Develop and manage data for decision-analytic modeling
-- Analyze and interpret Markov models
-- Perform probabilistic sensitivity analysis 
-- Develop competence in R for performing decision analytic techniques
+**August 23**: Introduction to R for decision modeling and introduction to decision modeling
 
-We will cover the following topics:
+**August 24**: Introduction to cost-effectiveness and decision trees
 
-**April 6 - 15**: Intro to R for Decision Modeling
+**August 25**: Markov models
 
-**Friday, April 16**: Intro to Decision Modeling in R
+**August 26**: Microsimulation modeling
 
-**Tuesday, April 20**: Overview of Decision Modeling
+**August 27**: Sensitivity analysis
 
-**Friday, April 23**: Cohort state-transition models (cSTM) - time-homogeneous models
-
-**Thursday, April 29**: Cohort state-transition models (cSTM) - time-dependent and state-residency-dependent models
 

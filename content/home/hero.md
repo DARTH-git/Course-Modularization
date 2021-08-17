@@ -6,13 +6,10 @@ title: Welcome
 weight: 10
 ---
 
-This is the website for a 4-day hands-on workshop: *Janssen Decision Modeling in R Workshop*.
+This is the website for a 5-day hands-on workshop: *Cost-Effectiveness and Decision Modeling using R Workshop*.
 
-The [Decision Analysis in R for Technologies in Health (DARTH) workgroup](http://darthworkgroup.com/) is offering a workshop on decision modeling in R exclusively for Janssen. The workshop will be **offered virtually via Zoom**. Co-instructors Eva Enns, Petros Pechlivanoglou, Hawre Jalal, Fernando Alarid-Escudero, Eline Krijkamp and Alan Yang will cover the principles of decision-analytic modeling and will guide participants in developing fundamental skills in R, building cohort state-transition models in R, and conducting probabilistic sensitivity analysis in R. 
+The [Decision Analysis in R for Technologies in Health (DARTH) workgroup](http://darthworkgroup.com/) and the [University of Minnesota School of Public Health](https://www.sph.umn.edu/events-calendar/decision-modeling-using-r-workshop/) are jointly offering a workshop on cost-effectiveness and decision modeling in R. The workshop will be **offered virtually via Zoom**. Instructors Eva Enns, Karen Kuntz, Fernando Alarid-Escudero, and other DARTH co-instructors will cover the principles of cost-effectiveness analysis and decision analytic modeling and will guide participants in implementing decision trees, Markov models, and microsimulation models in R as well as how to use models for cost-effectiveness analysis and deterministic and probabilistic sensitivity analysis.
 
-**Zoom [link](https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09) and meeting info for the workshop:**
+**Zoom [link](https://umn.zoom.us/j/99828978314?pwd=VjBSeXRYSzZtSG4xUHF6djdYSjhJQT09) for the workshop:**
 
-Meeting ID: 825 168 7516 
-
-Passcode: janssen 
 

@@ -9,7 +9,8 @@ type: docs
 linktitle: Data manipulation 
 menu:
   day1:
-    weight: 4
+    parent: "Intro to R"
+    weight: 5
 ---
 
 ## Presentation video
@@ -36,4 +37,4 @@ blogdown::shortcode("vimeo", "473042385")
 
 <!-- [Download instructor solutions](../../../rmds/03_data_manipulation_solutions.Rmd) -->
 
-Solutions will be uploaded after April 16.
+Solutions will be uploaded later.

@@ -10,7 +10,7 @@ linktitle: Matrix algebra
 menu:
   day1:
     parent: "Intro to R"
-    weight: 10
+    weight: 9
 ---
 
 ## Slides
@@ -27,7 +27,9 @@ menu:
 
 Solutions will be uploaded later.
 
-## Matrix algebra handout (for reference)
+## Matrix algebra handout 
 
 [Download handout](../../../Course_Modularization/Intro, general, packages/matrix.algebra.pdf)
+
+This handout is only for your reference.
 

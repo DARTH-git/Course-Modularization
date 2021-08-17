@@ -25,7 +25,7 @@ blogdown::shortcode("vimeo", "473054054")
 
 ## Student templates
 
-[Download `05_loops_and_functions_template.Rmd`](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)
 
 ## Instructor solutions
 

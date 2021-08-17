@@ -15,9 +15,9 @@ type: docs
 
 Please complete the below modules on August 23:
 
-- [Introduction to R for Decision Modeling](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/) 
+- [Introduction to R for Decision Modeling](https://cea-and-modeling-using-r-workshop.netlify.app/days/day1/welcome/) 
 
-- [Introduction to Decision Modeling](https://janssen-decision-modeling-workshop.netlify.app/days/day1/welcome/)
+- [Introduction to Decision Modeling](https://cea-and-modeling-using-r-workshop.netlify.app/days/day1/darth/)
 
 These modules are **completely asynchronous**.
 

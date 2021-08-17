@@ -10,11 +10,11 @@ linktitle: R tips and debugging
 menu:
   day1:
     parent: "Intro to R"
-    weight: 9
+    weight: 10
 ---
 
 ## Handout
 
 [Download handout](../../../Course_Modularization/Intro, general, packages/R tips and tricks.html)
 
-There are no solutions for this template - simply go through it.
+This handout is only for your reference.

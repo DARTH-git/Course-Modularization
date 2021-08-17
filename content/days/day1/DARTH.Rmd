@@ -7,7 +7,7 @@ type: docs
 linktitle: Intro to Decision Modeling 
 menu:
   day1:
-    weight: 10
+    weight: 11
 ---
 
 Welcome to the *Introduction to Decision Modeling* module!

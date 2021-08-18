@@ -287,11 +287,11 @@ enableGitInfo = false
   url = "https://join.slack.com/t/newworkspace-6d91267/shared_invite/zt-uczf8yva-xCCHvd70zlzLq7_SWGm_9Q"
   weight = 10
   
-[[menu.main]]
-  pre = "<i class=\"fas fa-headset fa-lg\"></i>"
-  name = "Zoom"
-  url = "https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09"
-  weight = 12
+# [[menu.main]]
+#   pre = "<i class=\"fas fa-headset fa-lg\"></i>"
+#   name = "Zoom"
+#   url = "https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09"
+#   weight = 12
   
 # Search.
 [params.search]

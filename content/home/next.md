@@ -12,7 +12,11 @@ Thank you for joining us at the 2021 Cost-Effectiveness and Decision Modeling us
 
 ### August 24
 
-Please watch 
+Please complete the following prep before the Aug 24 session:
+
+- [Install OpenTree (10 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/intro_to_decision_analysis/)
+
+- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/videos_markov/)
 
 
 

@@ -11,7 +11,7 @@ menu:
 
 ## R code demo & walkthrough - 3-state Markov model with time-dependency
 
-[Download R Markdown](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_time.Rmd)
+[Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_time.Rmd)
 
 ## Exercise - Markov Sick-Sicker model with time dependency
 

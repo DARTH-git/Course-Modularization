@@ -9,7 +9,7 @@ menu:
     weight: 4
 ---
 
-## R code demo & walkthrough - 3-state Markov model (time-dependent)
+## R code demo & walkthrough - 3-state Markov model with time-dependency
 
 [Download R Markdown](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_time.Rmd)
 

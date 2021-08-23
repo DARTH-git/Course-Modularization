@@ -22,8 +22,8 @@ Basic agenda:
 
 **Preparation**:
 
-- Install OpenTree (10 minutes)
-- Watch "Cohort State-Transition Models" videos (30 minutes)
+- [Install OpenTree (10 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/intro_to_decision_analysis/)
+- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/videos_markov/)
 
 Here is a tentative timetable:
 

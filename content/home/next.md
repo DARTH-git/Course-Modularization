@@ -19,7 +19,7 @@ Please complete the following prep before the Aug 24 session:
 - [Watch "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/videos_markov/)
 
 
-
+[**Zoom link**](https://umn.zoom.us/j/99828978314?pwd=VjBSeXRYSzZtSG4xUHF6djdYSjhJQT09)
 
 
 

@@ -61,6 +61,18 @@ options(scipen=999) # disable scientific notation
 
 Change `eval` to `TRUE` if you want to knit this document.
 
+# Blog post
+
+The choice of a cycle length in decision-analytic models such as cohort state-transition models and individual-based state transition models (micromsimulation models) should be determined by the frequency of clinical events and interventions. Sometimes there is need to increase or decrease the cycle length of an existing decision model to reduce error in outcomes resulting from discretization of the underlying continuous-time phenomena or to increase the cycle length to gain computational efficiency. Sometimes there is a need to change cycle lengths when the frequency of clinical events,  intervention administration, and cost and utility accruals change after some time since model start. Cycle length conversion is also frequently required if a new decision model is built using data that have a different measurement interval than the model's cycle length.
+
+We present a method for building a microsimulation model that can change cycle lengths and illustrate it through a cost-effectiveness analysis example. In this example, individuals move through four health states: "Healthy", "Sick", "Sicker" and "Dead" and accrue costs and utilities over time. The model begins with a cycle length of one week. However, individuals can only transition between "non-dead" states in weekly cycles if they have not been in any "non-dead" states for more than 10 years. Once individuals have remained in any of the "non-dead" states for 10 years, they will transition in yearly cycles going forward. 
+
+To implement the aforementioned model structure and cycle length switch, we first obtain weekly and yearly transition probabilities through parametric survival and multi-state models. Then, we convert yearly costs and utilities to weekly costs and utilities. The model begins with individuals transitioning between health states in weekly cycles within a for-loop. In parallel, the number of weeks each individual has spent in each state is stored in a "tracker matrix". The weekly-cycle for-loop runs for 1560 weeks, which is 30 years in weeks since each of the three "non-dead" states can allow an individual to stay for a maximum of 10 years before they switch to yearly cycles. At each weekly cycle, only individuals who are not dead or have not yet spent 10 years in a "non-dead" state can make a transition. After the loop ends, we obtain the current state each individual is in and also the number of weeks they have spent in that state and convert them into years. Each individual then start off at their last state and the corresponding year in another for-loop and move in yearly cycles until the end of the tibme horizon. Finally, weekly and yearly costs and utilities of all individuals are properly discounted and averaged to calculate final outcomes. 
+
+The model can be extended to have different maximum number of cycles before switching for different "non-dead" states (e.g. 10 years for "Healthy", and 5 years for "Sick" and "Sicker") or have additional for-loops that can accommodate more cycle length switches. The coding structure and implementation are similar.
+
+This example is implemented in R and R code is available for download. 
+
 \newpage
 
 # 01 Load packages
@@ -87,8 +99,8 @@ p_load_gh("DARTH-git/darthtools")
 # Model structure
 v_names_states <- c("H", "S1", "S2", "D")                       # the model states names
 n_states       <- length(v_names_states)                        # the number of health states
-n_i            <- 100000                                        # number of simulated individuals
-n_t_yr         <- 110                                           # time horizon, 30 cycles
+n_i            <- 10000                                         # number of simulated individuals
+n_t_yr         <- 100                                           # time horizon, 30 cycles
 c_l            <- 1/52                                          # cycle length (weekly)
 times          <- seq(from = 0, to = n_t_yr, by = c_l)          # sequence of cycle days to be considered in the model 
 c_l_yr         <- 1                                             # cycle length (annual)
@@ -146,6 +158,7 @@ u_Trt_yr <- 0.95         # utility when sick(er) and being treated
 
 ```{r}
 set.seed(2019)    # set the seed for the simulation of individual characteristics
+n_i      <- 10000
 v_x      <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline  
 
 # sample from age distribution an initial age for every individual
@@ -215,13 +228,25 @@ v_Ts2_init <- rep(0, n_i)    # a vector with the time of being sick at the start
 The function that updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) { 
+Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t, n_i, yearly = FALSE) { 
   # Arguments:
-    # M_t: health state occupie at cycle t (character variable)
-    # v_Ts: time an individual is sick
-    # t:     current cycle 
+    # M_t   : health state occupied at cycle t (character variable)
+    # df_X  : individual characteristics including Age, Sex and the effect modifier of the treatment effect
+    # v_Ts1 : time an individual is sick
+    # v_Ts2 : time an individual is sicker
+    # t     : current cycle 
+    # n_i   : number of individuals
+    # yearly: whether the cycle is annual 
   # Returns: 
     # transition probabilities for that cycle
+  
+  # Determine weekly or yearly
+  if (yearly) {
+    p_S1H  <- p_S1H_yr
+    p_S1S2 <- p_S1S2_yr
+    p_S1D  <- p_S1D_yr
+    p_S2D  <- p_S2D_yr
+  }
   
   # create matrix of state transition probability vectors
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
@@ -265,11 +290,21 @@ Probs <- function(M_t, df_X, v_Ts1, v_Ts2, t) {
 The `Costs` function estimates the costs at every cycle.
 
 ```{r}
-Costs <- function (M_t, Trt = FALSE) {
-  # M_t: health state occupied by individual i at cycle t (character variable)
-  # Trt:  is the individual being treated? (default is FALSE) 
+Costs <- function (M_t, Trt = FALSE, yearly = FALSE) {
+  # M_t   : health state occupied by individual i at cycle t (character variable)
+  # Trt   : is the individual being treated? (default is FALSE) 
+  # yearly: whether the cycle is annual
   
-  c_t <- vector("numeric", n_i)            # create the cost variable 
+  # determine weekly or yearly
+  if (yearly) {
+    c_H   <- c_H_yr
+    c_S1  <- c_S1_yr
+    c_S2  <- c_S2_yr
+    c_D   <- c_D_yr
+    c_Trt <- c_Trt_yr
+  }
+  
+  c_t <- 0                                 # create the cost variable 
   c_t[M_t == "H"]  <- c_H                  # update the cost if healthy
   c_t[M_t == "S1"] <- c_S1 + c_Trt * Trt   # update the cost if sick conditional 
                                            # on treatment
@@ -286,99 +321,190 @@ Costs <- function (M_t, Trt = FALSE) {
 The `Effs` function to update the utilities at every cycle.
 
 ```{r}
-Effs <- function (M_t, df_X, Trt = FALSE, cl = 1) {
-  # M_it: health state occupied by individual i at cycle t (character variable)
-  # df_X: individual characteristics including Age, Sex and the effect modifier of 
-  #       the treatment effect
-  # Trt:  is the individual treated? (default is FALSE) 
-  # cl:   cycle length (default is 1)
+Effs <- function (M_t, df_X, Trt = FALSE, cl = 1, yearly = FALSE) {
+  # M_it  : health state occupied by individual i at cycle t (character variable)
+  # df_X  : individual characteristics including Age, Sex and the effect modifier of the treatment effect
+  # Trt   : is the individual treated? (default is FALSE) 
+  # cl    : cycle length (default is 1)
+  # yearly: whether the cycle is annual
+  
+  # determine weekly or yearly
+  if (yearly) {
+    u_H   <- u_H_yr
+    u_S1  <- u_S1_yr
+    u_S2  <- u_S2_yr
+    u_D   <- u_D_yr
+    u_Trt <- u_Trt_yr
+  }
   
   u_t <- 0                                 # by default the utility for everyone is zero
   u_t[M_t == "H"]  <- u_H                  # update the utility if healthy
   u_t[M_t == "S1" & Trt == FALSE] <- u_S1  # update the utility if sick
   # update the utility if sick but on treatment (adjust for individual effect modifier) 
-  u_t[M_t == "S1" & Trt == TRUE]  <- u_Trt * df_X$x[M_t == "S1"]  
+  u_t[M_t == "S1" & Trt == TRUE]  <- u_Trt * df_X$x[M_t == "S1"]   
   u_t[M_t == "S2"] <- u_S2                 # update the utility if sicker
   u_t[M_t == "D"]  <- u_D                  # update the utility if dead
   
-  QALYs <-  u_t * cl  # calculate the QALYs during cycle t
-  return(QALYs)       # return the QALYs
+  return(u_t)                              # return the QALYs accrued this cycle
 }
 ```
 
 # 06 Run Microsimulation
 
 ```{r}
-MicroSim <- function(n_i, df_X , Trt = FALSE, seed = 1) {
-  # Arguments:  
-    # n_i:  number of individuals
-    # df_X  data frame with individual data 
-    # Trt:  is this the individual receiving treatment? (default is FALSE)
-    # seed: default is 1
+max_cycle <- 10 / c_l                  # max cycle (individual can only stay in any state other than the dead state for   
+                                       # this many cycles before moving from weekly to annual cycles) - 10 years in weeks
+n_t1 <- (10/c_l) * (n_states - 1)      # max number of weekly cycles one can have before moving to annual cycles
+v_M_init  <- rep("H", n_i)             # a vector with the initial health state for all individuals 
+v_Ts1_init <- rep(0, n_i)              # a vector with the time in sick at the start of the model 
+v_Ts2_init <- rep(0, n_i)              # a vector with the time in sicker at the start of the model 
+```
+
+```{r}
+MicroSim_v_switch <- function(Trt = FALSE, seed = 1) {
+# Arguments:  
+  # Trt : is this the individual receiving treatment? (default is FALSE)
+  # seed: seed for random number generator
   
   set.seed(seed) # set the seed
   
-  n_states <- length(v_names_states) # the number of health states
-  
-  # create three matrices called m_M, m_C and m_E
-  # number of rows is equal to the n_i, the number of columns is equal to n_t  
-  # (the initial state and all the n_t cycles)
   # m_M is used to store the health state information over time for every individual
   # m_C is used to store the costs information over time for every individual
   # m_E is used to store the effects information over time for every individual
+  m_M <- matrix(nrow = n_i, ncol = n_t1, 
+                dimnames = list(paste("individual", 1:n_i,  sep = " "),
+                                paste("cycle",      1:n_t1, sep = " "))) 
+  m_C <- m_E <- matrix(0, nrow = n_i, ncol = n_t1, 
+                       dimnames = list(paste("individual", 1:n_i,  sep = " "),
+                                       paste("cycle",      1:n_t1, sep = " ")))  
   
-  m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_t + 1, 
-                                       dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
-                                                       paste("cycle", 0:n_t, sep = " ")))  
+  # initial health state at cycle 0 for individual i
+  m_M[, 1] <- v_M_init    # initial health state at cycle 0 for all individuals
+  v_Ts1    <- v_Ts1_init   # initialize time since sick for all individuals
+  v_Ts2    <- v_Ts2_init   # initialize time since sicker for all individuals
+  # calculate costs per individual during cycle 0 (t = 1)
+  m_C[, 1] <- Costs(m_M[, 1], Trt = Trt)     
+  # calculate QALYs per individual during cycle 0
+  m_E[, 1] <- Effs (m_M[, 1], df_X = df_X, Trt = Trt)   
   
-  m_M [, 1]  <- v_M_init    # initial health state at cycle 0 for individual i
-  v_Ts1      <- v_Ts1_init  # initialize time since illnes onset for individual i
-  v_Ts2      <- v_Ts2_init  # initialize time since illnes onset for individual i
-  
-  m_C[, 1]   <- Costs(m_M[, 1], Trt)        # calculate costs per individual during cycle 0
-  m_E[, 1]   <- Effs (m_M[, 1], df_X, Trt)  # calculate QALYs per individual during cycle 0
-  
-  # open a loop for time running cycles 1 to n_t 
-  for (t in 1:n_t) {
-    # calculate the transition probabilities for the cycle based on  health state t
-    m_p <- Probs(m_M[, t], df_X, v_Ts1, v_Ts2, t)      
+  # initialize trackers
+  m_track <- matrix(0, nrow = n_i, ncol = n_states, dimnames = list(paste("individual", 1:n_i, sep = " "), 
+                                                                    v_names_states))
+  m_track[, 1] <- 1
+  for (t in 1:(n_t1-1)) {  # loop through max number of weekly cycles 
+    # only sample individuals who are not dead or not "full"
+    to_allocate <- m_track[, 1] < max_cycle & m_track[, 2] < max_cycle & m_track[, 3] < max_cycle & m_track[, 4] == 0
+    # calculate the transition probabilities for the cycle based on health state t
+    m_P <- Probs(m_M[to_allocate, t], df_X = df_X[to_allocate, ], t = t, 
+                 v_Ts1 = v_Ts1[to_allocate], v_Ts2 = v_Ts2[to_allocate], n_i = sum(to_allocate))       
+    # check if transition probabilities are between 0 and 1
+    check_transition_probability(m_P, verbose = TRUE)
+    # check if checks if each of the rows of the transition probabilities matrix sum to one
+    check_sum_of_transition_array(m_P, n_rows = sum(to_allocate), n_cycles = n_t, verbose = TRUE)
     # sample the current health state and store that state in matrix m_M 
-    m_M[, t + 1]  <- samplev(m_p)                  
+    m_M[to_allocate, t + 1] <- samplev(m_P, 1)                 
     # calculate costs per individual during cycle t + 1
-    m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         
+    m_C[to_allocate, t + 1] <- Costs(m_M[to_allocate, t + 1], Trt = Trt)         
     # calculate QALYs per individual during cycle t + 1
-    m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt)    
+    m_E[to_allocate, t + 1] <- Effs( m_M[to_allocate, t + 1], df_X = df_X[to_allocate, ], Trt = Trt)  
+    # track time in PF, P and D
+    m_track[m_M[, t + 1] %in% "H",  1] <- m_track[m_M[, t + 1] %in% "H" , 1] + 1
+    m_track[m_M[, t + 1] %in% "S1", 2] <- m_track[m_M[, t + 1] %in% "S1", 2] + 1
+    m_track[m_M[, t + 1] %in% "S2", 3] <- m_track[m_M[, t + 1] %in% "S2", 3] + 1
+    m_track[m_M[, t + 1] %in% "D",  4] <- m_track[m_M[, t + 1] %in% "D" , 4] + 1
+    # track time spent in S1 and S2
+    v_Ts1[to_allocate] <- if_else(m_M[to_allocate, t + 1] == "S1", v_Ts1[to_allocate] + 1, 0)
+    v_Ts2[to_allocate] <- if_else(m_M[to_allocate, t + 1] == "S2", v_Ts2[to_allocate] + 1, 0)
+    # track age
+    df_X$Age[!m_M[, t + 1] %in% "D"]  <- floor(df_X$Age[!m_M[, t + 1] %in% "D"] + (1 * c_l))
     
-    v_Ts1 <- if_else(m_M[, t + 1] == "S1", v_Ts1 + 1, 0)
-    v_Ts2 <- if_else(m_M[, t + 1] == "S2", v_Ts2 + 1, 0) 
-    df_X$Age[m_M[, t + 1] != "D"]  <- df_X$Age[m_M[, t + 1] != "D"] + 1
-    
-    # Display simulation progress
-    if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
-      cat('\r', paste(t/n_t * 100, "% done", sep = " "))
-    }
-    
-  } # close the loop for the time points 
+  }  # close the weekly cycles loop
   
-  # calculate  
-  tc <- m_C %*% v_dw  # total (discounted) cost per individual
-  te <- m_E %*% v_dw  # total (discounted) QALYs per individual 
-  tc_hat <- mean(tc)  # average (discounted) cost 
-  te_hat <- mean(te)  # average (discounted) QALYs
+  # get everyone's last cycle and state
+  # Dataframe to store each individual's last cycle and state
+  df_last <- data.frame(ind = 1:n_i)
+  # Find out what each person's last cycle is
+  df_last$last_cycle <- apply(m_M, 1, function(x){which(is.na(x))[1]-1})
+  df_last$last_cycle[is.na(df_last$last_cycle)] <- n_t1   
+  # Find out what the corresponding state is
+  df_last$last_state <- rep(NA, n_i)
+  for (i in 1:n_i) {
+    df_last$last_state[i] <- m_M[i, df_last$last_cycle[i]]
+  }
+  df_last$last_cycle_yr <- round(df_last$last_cycle/52, 0) 
+
+  # only select individuals who are alive
+  alive <- df_last$last_state != "D"
+  df_last_alive <- df_last[alive,]
+  df_X_alive <- df_X[df_X$ID %in% df_last_alive$ind, ]
+  
+  # m_M_yr is used to store the health state information over time for every individual (yearly)
+  # m_C_yr is used to store the costs information over time for every individual (yearly)
+  # m_E_yr is used to store the effects information over time for every individual (yearly)
+  m_M_yr  <- matrix(nrow = sum(alive), ncol = n_t_yr) 
+  m_C_yr  <- m_E_yr <- matrix(0, nrow = sum(alive), ncol = n_t_yr) 
+  v_Ts1_yr <- rep(0, sum(alive))   # initialize time since sick for all individuals
+  v_Ts1_yr[df_last_alive$last_state == "S1"] <- 1
+  v_Ts2_yr <- rep(0, sum(alive))   # initialize time since sicker for all individuals
+  v_Ts2_yr[df_last_alive$last_state == "S2"] <- 1
+  
+  if (sum(alive) > 0) {
+  # start everyone from year 10 (minimum) in annual cycle for loop
+  in_pool <- rep(0, sum(alive))
+  for (t_yr in 10:(n_t_yr-1)) {# switch to annual cycles and go all the way to 101 years
+      # initialize start state for those who start at the current cycle
+      indi_start <- df_last_alive$last_cycle_yr == t_yr
+      m_M_yr[indi_start, t_yr] <- df_last_alive$last_state[indi_start]
+      # only sample individuals that start at the current cycle or in the pool
+      to_allocate <- indi_start | in_pool > 0
+      in_pool <- in_pool + to_allocate
+      # calculate the transition probabilities for the cycle based on health state at t_yr
+      m_P_yr <- Probs(m_M_yr[to_allocate, t_yr], t = t_yr, df_X = df_X_alive[to_allocate, ],  
+                      v_Ts1 = v_Ts1_yr[to_allocate], v_Ts2 = v_Ts2_yr[to_allocate], n_i = sum(to_allocate), 
+                      yearly = T)       
+      # check if transition probabilities are between 0 and 1
+      check_transition_probability(m_P_yr, verbose = TRUE)
+      # check if checks if each of the rows of the transition probabilities matrix sum to one
+      check_sum_of_transition_array(m_P_yr, n_rows = sum(to_allocate), n_cycles = n_t_yr, verbose = TRUE)
+      # sample the current health state and store that state in matrix m_M_yr 
+      m_M_yr[to_allocate, t_yr + 1] <- samplev(m_P_yr, 1)
+      # calculate costs per individual during cycle t_yr + 1
+      m_C_yr[to_allocate, t_yr + 1] <- Costs(m_M_yr[to_allocate, t_yr + 1], Trt, yearly = T)         
+      # calculate QALYs per individual during cycle t_yr + 1
+      m_E_yr[to_allocate, t_yr + 1] <- Effs( m_M_yr[to_allocate, t_yr + 1], df_X = df_X[to_allocate, ], 
+                                             Trt, yearly = T) 
+      # track time spent in S1 and S2
+      v_Ts1_yr[to_allocate] <- if_else(m_M_yr[to_allocate, t_yr + 1] == "S1", v_Ts1_yr[to_allocate] + 1, 0)
+      v_Ts2_yr[to_allocate] <- if_else(m_M_yr[to_allocate, t_yr + 1] == "S2", v_Ts2_yr[to_allocate] + 1, 0)
+      # track age
+      df_X$Age[!m_M[, t + 1] %in% "D"] <- df_X$Age[!m_M[, t + 1] %in% "D"] + 1
+  }  # close the annual cycles loop
+  }
+  # calculate costs and utilities
+  v_dw_wk      <- v_dw[1:n_t1]
+  tc_wk        <- m_C    %*% v_dw_wk     # total (discounted) cost per individual (weekly)
+  te_wk        <- m_E    %*% v_dw_wk     # total (discounted) QALYs per individual (weekly)
+  tc_yr        <- m_C_yr %*% v_dw_yr     # total (discounted) cost per individual (annual)
+  te_yr        <- m_E_yr %*% v_dw_yr     # total (discounted) QALYs per individual (annual)
+  tc_wk[alive] <- tc_wk[alive] + tc_yr   # total (discounted) cost per individual (weekly + annual)
+  te_wk[alive] <- te_wk[alive] + te_yr   # total (discounted) QALYs per individual (weekly + annual)
+  tc           <- tc_wk
+  te           <- te_wk
+  tc_hat       <- mean(tc)               # average (discounted) cost 
+  te_hat       <- mean(te)               # average (discounted) QALYs
   
   # store the results from the simulation in a list
-  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, te_hat = te_hat)   
+  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, m_M_yr = m_M_yr, m_C_yr = m_C_yr, m_E_yr = m_E_yr,
+                  tc = tc, te = te, tc_hat = tc_hat, te_hat = te_hat)   
   
   return(results)  # return the results
 
 } # end of the MicroSim function  
 
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
-# In this example the outcomes are of the simulation are stored in the variables `outcomes_no_tr` and `outcomes_trt`.
-
-# Run the simulation for both no treatment and treatment options
-outcomes_no_trt <- MicroSim(n_i, df_X, Trt = FALSE, seed = 1)
-outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE, seed = 1)
+# In this example the outcomes are of the simulation are stored in the variables `outcomes_no_trt` and `outcomes_trt`.
+outcomes_no_trt <- MicroSim_v_switch(Trt = FALSE)
+outcomes_trt    <- MicroSim_v_switch(Trt = TRUE)
 ```
 
 # 07 Visualize results
@@ -387,12 +513,10 @@ outcomes_trt    <- MicroSim(n_i, df_X, Trt = TRUE, seed = 1)
 # No treatment
 plot(density(outcomes_no_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_no_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_no_trt$m_M)  # health state trace
 
 # Treatment
 plot(density(outcomes_trt$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
 plot(density(outcomes_trt$te), main = paste("Total QALYs per person"), xlab = "QALYs")
-plot_trace_microsim(outcomes_trt$m_M)     # health state trace
 ```
 
 # 08 Cost Effectiveness Analysis
@@ -404,8 +528,10 @@ v_C <- c(outcomes_no_trt$tc_hat, outcomes_trt$tc_hat)
 v_E <- c(outcomes_no_trt$te_hat, outcomes_trt$te_hat)
 
 # use dampack to calculate the ICER
-calculate_icers(cost       = v_C,
-                effect     = v_E,
-                strategies = v_names_str)
+df_cea <- calculate_icers(cost       = v_C,
+                          effect     = v_E,
+                          strategies = v_names_str)
+df_cea
+plot(df_cea)
 ```
 

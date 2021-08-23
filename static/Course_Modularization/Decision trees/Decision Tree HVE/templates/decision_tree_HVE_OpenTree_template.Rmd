@@ -1,12 +1,13 @@
 ---
-title: 'Three-strategy decision tree in R - HVE'
+title: "Three-strategy decision tree in R - HVE"
 subtitle: with "OpenTree"
 author: "The DARTH workgroup"
 output:
+  word_document: default
   pdf_document: default
   html_document: default
-keep_tex: yes
 self_contained: no
+keep_tex: yes
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -21,7 +22,7 @@ Hawre J. Jalal, MD, PhD (5)
 
 Eline M. Krijkamp, MSc (3)	
 
-Petros Pechlivanoglou, PhD (6,7)
+Petros Pechlivanoglou, PhD (6, 7)
 
 Alan Yang, MSc (7)
 
@@ -61,7 +62,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -75,7 +76,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning = FALSE, message = FALSE}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("devtools", "scales", "ellipse", "lazyeval", "igraph",  "ggraph", "reshape2", "knitr", "stringr", "jsonlite", "rstudioapi", "tidyverse", "dampack")                                               
+p_load( "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph" , "ggraph", "reshape2", "knitr", "stringr", "rstudioapi", "dampack")                                               
 # load (install if required) packages from GitHub
 p_load_gh("DARTH-git/darthtools", "DARTH-git/OpenTree")
 ```
@@ -83,15 +84,15 @@ p_load_gh("DARTH-git/darthtools", "DARTH-git/OpenTree")
 # 02 Load functions
 
 ```{r}
-# all functions are in the darthtools package so no need for additional functions
+# all functions are in the darthtools package
 ```
 
 # 03 Define parameter input values
 
 ```{r}
-v_names_str    <- c("Do not treat", "Treat", "Biopsy")  # names of strategies
+v_names_str    <- c('Do not treat', "Treat", "Biopsy")  # names of strategies
 n_str          <- length(v_names_str)                   # number of strategies
-wtp            <- 100000                                # willingness to pay threshold
+wtp            <- 100000                          # willingness to pay threshold
 
 # Probabilities
 p_HVE          <- 0.52   # prevalence of HVE
@@ -106,12 +107,11 @@ c_VE           <- 1200   # cost of viral encephalitis care without complications
 c_VE_comp      <- 9000   # cost of viral encephalitis care with complications
 c_tx           <- 9500   # cost of treatment
 c_biopsy       <- 25000  # cost of brain biopsy
-c_death_biopsy <- 0      # cost of death from brain biopsy
 
 # QALYs
 q_VE           <- 20     # remaining QALYs for those without VE-related complications
 q_VE_comp      <- 19     # remaining QALYs for those with VE-related complications
-q_loss_biopsy  <- 0.01   # one-time  QALY loss due to brain biopsy
+q_loss_biopsy  <- 0.01   # one-time QALY loss due to brain biopsy
 q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 ```
 
@@ -128,15 +128,15 @@ The function `create_tree()` creates a blank tree and the function `open_tree()`
 Any changes made to the tree in OpenTree are automatically saved as a `.json` file to the working directory. If you are running it in an R script, the `.json` file will be saved to the path on your machine specified in `dir_name`. If you are running it in an R markdown document, the `.json` file will be saved to the path where the R markdown document is located. 
 
 ```{r}
-#create_tree(file_name = "Helloworld", dir_name = getwd())
-open_tree(file_name = "HVEsolution", dir_name = getwd())
+# draw the tree using OpenTree
+open_tree(file_name = "HVEtemplate", dir_name = getwd())
 ```
 
 Extract probability weights and outcomes of the decision tree.
 
 ```{r, warning = F}
 # extract the probability weights and outcomes  
-df_tree <- evaluate_model("HVEsolution", n_payoffs = 2)
+df_tree <- evaluate_model("HVEtemplate", n_payoffs = 2)
 ```
 
 Compute total cost and QALYs.
@@ -148,11 +148,11 @@ v_total_qaly <- v_total_cost <- vector(mode = "numeric", length = n_str)
 # Calculate total costs and QALYs for each strategy 
  for (i in 1:n_str) {
   v_total_qaly[i] <- df_tree[[i]]$prob %*% df_tree[[i]]$payoff1
-  v_total_cost[i] <- df_tree[[i]]$prob %*% df_tree[[i]]$payoff2
+  # Your turn: calculate total costs
  }
 
 # calculate vector of nmb
-v_nmb <- v_total_qaly * wtp - v_total_cost 
+v_nmb <- # Your turn
           
 df_output <- data.frame(Strategy =  v_names_str,
                         Cost     =  v_total_cost,

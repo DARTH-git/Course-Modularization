@@ -107,7 +107,7 @@ v_init   <- c("H"  = 1,
 # Read age-specific mortality rates from csv file
 
 # MAKE SURE YOU HAVE A DATA FOLDER! Or when in the same folder remove the ../data/ part 
-lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
+lt_usa_2015 <- read.csv("HMD_USA_Mx_2015.csv")
 
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file for the age 25 - 54

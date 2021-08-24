@@ -22,7 +22,7 @@ Basic agenda:
 
 **Preparation**:
 
-- Watch "history dependence" of "Cohort State-Transition Models" videos
+- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
 - Complete cohort state-transition model exercise (1 hour)
 
 Here is a tentative timetable:

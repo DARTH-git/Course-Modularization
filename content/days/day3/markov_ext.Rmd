@@ -5,7 +5,7 @@ draft: false
 type: docs
 linktitle: "cSTM with history dependence"
 menu:
-  day2:
+  day3:
     weight: 4
 ---
 

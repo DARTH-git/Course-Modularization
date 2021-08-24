@@ -13,13 +13,15 @@ menu:
 
 [Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx)
 
-## OpenTree installation & demo
+## OpenTree installation
 
 For those we went through the "Getting ready" session of the "Introduction to R for Decision Modeling Module", you would have already downloaded the R package `OpenTree` via:
 
 [Download package-installation R script](../../../Course_Modularization/Intro, general, packages/00_prep.R)
 
 If not, please download the above R script to install all R packages required for this workshop, which includes `OpenTree`. 
+
+## OpenTree demo
 
 [Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd)
 

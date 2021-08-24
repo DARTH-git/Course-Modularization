@@ -1,0 +1,23 @@
+---
+title: "Cohort state-transition models (cSTM), lecture 6"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "cSTM lectures 6"
+menu:
+  day3:
+    weight: 2
+---
+
+## Slides
+
+[Download Markov model extensions slides](../../../Course_Modularization/Markov models/Slides/MarkovModelVariants_UMN2021.pptx)
+
+## Presentation videos
+
+cSTM lecture 6: History dependence (state-residence time dependency)
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560799")
+```
+

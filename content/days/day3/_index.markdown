@@ -1,7 +1,7 @@
 ---
 title: "August 25 Schedule"
 author: ''
-date: "2021-08-17"
+date: "2021-08-24"
 slug: day3
 categories: []
 tags: []

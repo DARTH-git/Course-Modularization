@@ -6,11 +6,11 @@ title: Upcoming
 weight: 1
 ---
 
-### August 25
+### August 26
 
-Please complete the following prep before the Aug 25 session:
+Please complete the following prep before the Aug 26 session:
 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (3 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
+- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 ### Zoom link
 

@@ -1,12 +1,12 @@
 ---
-title: Survival Analysis - Demo
+title: Microsimulation Models
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Survival Analysis demo
+linktitle: Microsim
 menu:
   day4:
-    weight: 5
+    weight: 3
 ---
 
 ## Demo (3-state model)

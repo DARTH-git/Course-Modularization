@@ -1,18 +1,34 @@
 ---
-title: Survival Analysis - Demo
+title: Microsimulation Models lectures
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Survival Analysis demo
+linktitle: Microsim lectures
 menu:
   day4:
-    weight: 5
+    weight: 2
 ---
 
-## Demo (3-state model)
+Microsimulation - Theory
 
-[Download `data.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/data.R)
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473484372")
+```
 
-[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+Microsimulation - Efficiency
 
-[Download demo](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_3-state_solutions.Rmd)
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473071949")
+```
+
+Microsimulation - Implementation
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473414536")
+```
+
+Microsimulation - State-residence
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473464649")
+```

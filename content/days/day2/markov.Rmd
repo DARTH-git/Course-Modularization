@@ -3,7 +3,7 @@ title: "Cohort state-transition models (cSTM) - time-dependent models"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "cSTM time-dependents models"
+linktitle: "cSTM time-dependent models"
 menu:
   day2:
     weight: 4

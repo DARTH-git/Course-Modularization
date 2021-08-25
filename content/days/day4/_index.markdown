@@ -1,7 +1,7 @@
 ---
 title: "August 26 Schedule"
 author: ''
-date: "2021-08-17"
+date: "2021-08-25"
 slug: day4
 categories: []
 tags: []
@@ -23,7 +23,7 @@ Basic agenda:
 **Preparation**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-- Watch "Microsimulation Models" videos (30 minutes)
+- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 Here is a tentative timetable:
 

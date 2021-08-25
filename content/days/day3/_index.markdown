@@ -38,7 +38,7 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-- Watch "Microsimulation Models" videos (30 minutes)
+- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 Live office hours available on Zoom 8:30AM-9:00AM
 

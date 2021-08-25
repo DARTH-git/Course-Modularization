@@ -23,6 +23,6 @@ menu:
 
 <!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd) -->
 
-## dampack R package
+<!-- ## dampack R package -->
 
-[Download dampack slides](../../../Course_Modularization/Intro, general, packages/dampack.pptx)
+<!-- [Download dampack slides](../../../Course_Modularization/Intro, general, packages/dampack.pptx) -->

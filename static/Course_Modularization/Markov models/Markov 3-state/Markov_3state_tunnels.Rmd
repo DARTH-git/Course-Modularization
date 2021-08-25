@@ -130,8 +130,8 @@ n_states_tunnels        <- length(v_names_states_tunnels)        # number of sta
 l    <- 0.08
 g    <- 1.1
 
-S_SD <- pweibull(0:n_tunnel_size, l , g, lower.tail = F)
-p_SD <- trans_prob(S_SD)  # probability of dying when sick (time-in-state dependent)
+v_surv_S <- pweibull(0:n_tunnel_size, l, g, lower.tail = F) # survival curve for Sick state
+v_p_SD <- trans_prob(v_surv_S)  # probability of dying when sick (time-in-state dependent)
 
 
 
@@ -189,12 +189,12 @@ a_P_SoC["Healthy", "Dead", ]     <-      v_p_HD
 
 # from Sick
 for(i in 1:(n_tunnel_size - 1)){ 
-  a_P_SoC[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - p_SD[i]
-  a_P_SoC[v_Sick_tunnels[i], "Dead", ] <- p_SD[i]
+  a_P_SoC[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - v_p_SD[i]
+  a_P_SoC[v_Sick_tunnels[i], "Dead", ] <- v_p_SD[i]
 }
 
-a_P_SoC[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - p_SD[n_tunnel_size]
-a_P_SoC[v_Sick_tunnels[n_tunnel_size], "Dead", ] <- p_SD[n_tunnel_size]
+a_P_SoC[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - v_p_SD[n_tunnel_size]
+a_P_SoC[v_Sick_tunnels[n_tunnel_size], "Dead", ] <- v_p_SD[n_tunnel_size]
 
 # from Dead
 a_P_SoC["Dead", "Dead", ] <- 1

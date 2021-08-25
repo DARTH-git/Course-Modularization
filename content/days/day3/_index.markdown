@@ -1,7 +1,7 @@
 ---
 title: "August 25 Schedule"
 author: ''
-date: "2021-08-24"
+date: "2021-08-25"
 slug: day3
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-### Time-Dependent Cohort State-Transition Models
+### Cohort State-Transition Models with History Dependence
 
 Basic agenda:
 

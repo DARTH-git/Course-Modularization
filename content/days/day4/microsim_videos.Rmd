@@ -9,6 +9,12 @@ menu:
     weight: 2
 ---
 
+## Slides
+
+[Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/Microsimulation_Slides_UMN2021.pptx)
+
+## Presentation videos
+
 Microsimulation - Theory
 
 ```{r, echo=F}

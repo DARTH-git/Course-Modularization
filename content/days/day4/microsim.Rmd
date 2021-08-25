@@ -9,10 +9,18 @@ menu:
     weight: 3
 ---
 
-## Demo (3-state model)
+## R code demo & walkthrough - 3-state Microsimulation model with time-varying mortality    
 
-[Download `data.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/data.R)
+[Download demo code](../../../Course_Modularization/Microsimulation/Microsim 3-state/microsim_3-state_time.Rmd)
 
-[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+## Exercise - Sick-Sicker Microsimulation model with time and state-residence dependence
 
-[Download demo](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_3-state_solutions.Rmd)
+[Download exercise handout](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/exercise worksheets/microsim_sick-sicker_time_exercise.html)
+
+[Download age-dependent mortality data](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/mortProb_age.csv)
+
+[Download population age distribution data](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/MyPopulation-AgeDistribution.csv)
+
+[Download excercise template](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/templates/microsim_Sick-Sicker_time_template.Rmd)
+
+<!-- [Download excercise solutions](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/microsim_Sick-Sicker_time_solutions.Rmd) -->

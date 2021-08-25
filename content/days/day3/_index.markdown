@@ -17,33 +17,33 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
+-   Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+-   Slack support available 8:30AM-12PM Central Time
 
 **Preparation**:
 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
-- Complete cohort state-transition model exercise (1 hour)
+-   [Watch “history dependence” of “Cohort State-Transition Models” videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
+-   Complete cohort state-transition model exercise (1 hour)
 
 Here is a tentative timetable:
 
-|                            |            |
-|--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: Time-dependent cohort state-transition model exercise |
-| 9:30 – 10:15 | Code review: Cohort state-transition models with history dependence; calculating epidemiologic and economic outcomes; `dampack` R package |
-| 10:15 – 10:30 | Break |
-| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
-| 11:00 - 12:00 | Coding exercise: Implement a cohort state-transition model extensions |
+|               |                                                                                                                                           |
+|---------------|:------------------------------------------------------------------------------------------------------------------------------------------|
+| 9:00 – 9:30   | Review: Time-dependent cohort state-transition model exercise                                                                             |
+| 9:30 – 10:15  | Code review: Cohort state-transition models with history dependence; calculating epidemiologic and economic outcomes; `dampack` R package |
+| 10:15 – 10:30 | Break                                                                                                                                     |
+| 10:30 – 11:00 | Break out exercise: Peer-code walk-through                                                                                                |
+| 11:00 - 12:00 | Coding exercise: Implement a cohort state-transition model extensions                                                                     |
 
 **Homework**:
 
-- Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
+-   Complete cohort state-transition model extension exercise (1 hour)
+-   Watch [“Microsimulation Models” videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 Live office hours available on Zoom 8:30AM-9:00AM
 
 Slack support available 1:00PM-4:00PM
 
+## Live session recording:
 
-
- 
+{{% vimeo "592378542" %}}

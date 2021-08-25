@@ -21,8 +21,5 @@ menu:
 
 [Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_tunnels_template.Rmd)
 
-<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd) -->
+[Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd)
 
-<!-- ## dampack R package -->
-
-<!-- [Download dampack slides](../../../Course_Modularization/Intro, general, packages/dampack.pptx) -->

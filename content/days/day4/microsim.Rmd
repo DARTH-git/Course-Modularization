@@ -1,0 +1,18 @@
+---
+title: Survival Analysis - Demo
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Survival Analysis demo
+menu:
+  day4:
+    weight: 5
+---
+
+## Demo (3-state model)
+
+[Download `data.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/data.R)
+
+[Download `survival_functions.R`](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_functions.R)
+
+[Download demo](../../../Course_Modularization/Survival Analysis/Survival 3-state/solutions/survival_3-state_solutions.Rmd)

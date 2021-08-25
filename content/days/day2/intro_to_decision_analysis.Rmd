@@ -39,9 +39,9 @@ Copy and paste the json code from the pop-up to Notepad and save it as "HVEtempl
 
 [Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json)
 
-<!-- [Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
+[Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
 
-<!-- [Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
+[Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
 
 <!-- ## Exercise -->
 

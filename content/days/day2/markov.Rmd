@@ -20,3 +20,5 @@ menu:
 [Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv)
 
 [Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_time_template.Rmd)
+
+[Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_time_solutions.Rmd)

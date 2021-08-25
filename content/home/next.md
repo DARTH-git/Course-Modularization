@@ -10,7 +10,7 @@ weight: 1
 
 Please complete the following prep before the Aug 25 session:
 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
+- [Watch "history dependence" of "Cohort State-Transition Models" videos (3 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
 
 ### Zoom link
 

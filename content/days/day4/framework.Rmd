@@ -1,0 +1,16 @@
+---
+title: "DARTH decision modeling framework"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "DARTH framework"
+menu:
+  day4:
+    weight: 7
+---
+
+## Slides
+
+[Download DARTH framework slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/DARTH Framework.pdf)
+
+

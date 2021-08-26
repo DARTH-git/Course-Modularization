@@ -47,3 +47,9 @@ Live office hours available on Zoom 8:30AM-9:00AM
 
 Slack support available 1:00PM-4:00PM
 
+
+## Live session recording:
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "592848080")
+```

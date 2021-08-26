@@ -6,11 +6,11 @@ title: Upcoming
 weight: 1
 ---
 
-### August 26
+### August 27
 
-Please complete the following prep before the Aug 26 session:
+Please complete the following prep before the Aug 27 session:
 
-- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
+- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
 
 ### Zoom link
 

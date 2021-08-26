@@ -1,7 +1,7 @@
 ---
 title: "August 26 Schedule"
 author: ''
-date: "2021-08-25"
+date: "2021-08-26"
 slug: day4
 categories: []
 tags: []
@@ -40,7 +40,7 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete microsimulation model exercise (1-2 hours)
-- Watch “Sensitivity Analysis” videos (40 minutes)
+- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
 
 Live office hours available on Zoom 8:30AM-9:00AM
 

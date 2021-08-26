@@ -22,7 +22,7 @@ Basic agenda:
 
 **Preparation**:
 
-- Watch “Sensitivity Analysis” videos (40 minutes)
+- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
 - Complete microsimulation model exercise (1-2 hours)
 
 Here is a tentative timetable:

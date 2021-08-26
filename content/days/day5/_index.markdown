@@ -1,7 +1,7 @@
 ---
 title: "August 27 Schedule"
 author: ''
-date: "2021-08-17"
+date: "2021-08-26"
 slug: day5
 categories: []
 tags: []
@@ -33,8 +33,7 @@ Here is a tentative timetable:
 | 9:30 – 10:00 |  Code review: Deterministic and probabilistic sensitivity analysis | 
 | 10:00 – 10:30 | Break out exercise: Peer code walk-through |
 | 10:30 – 10:45 | Break |
-| 10:45 – 11:30 | Coding exercise: Implement a probabilistic sensitivity analysis |
-| 11:30 – 11:45 | Programming practices: DARTH organizational framework    |
+| 10:45 – 11:45 | Coding exercise: Implement a probabilistic sensitivity analysis |
 | 11:45 - 12:00 | Wrap up |
 
 Live office hours available on Zoom 8:30AM-9:00AM

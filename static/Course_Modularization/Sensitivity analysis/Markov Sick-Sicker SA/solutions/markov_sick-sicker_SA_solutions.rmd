@@ -580,6 +580,7 @@ v_wtp <- seq(0, 200000, by = 10000)
 ```
 
 ## 09.3.1 Cost-Effectiveness scatter plot
+
 ```{r CE-scatter, echo=FALSE, fig.cap='Cost-effectiveness scatter plot.', message=FALSE, warning=FALSE, fig.pos="H"} 
 # CEA Scatter plot
 plot(l_psa, txtsize = 16) +

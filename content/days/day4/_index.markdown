@@ -17,35 +17,34 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
+-   Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+-   Slack support available 8:30AM-12PM Central Time
 
 **Preparation**:
 
-- Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
+-   Complete cohort state-transition model extension exercise (1 hour)
+-   Watch [“Microsimulation Models” videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 Here is a tentative timetable:
 
-|                            |            |
-|--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: Cohort state-transition model extension exercise |
-| 9:30 – 10:15 | Code review: Microsimulation models in R |
-| 10:15 – 10:30 | Break  |
-| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
-| 11:00 - 11:45 | Coding exercise: Implement a microsimulation model |
-| 11:45 - 12:00 | Programming practices: Organizing your R code |
-
+|               |                                                          |
+|---------------|:---------------------------------------------------------|
+| 9:00 – 9:30   | Review: Cohort state-transition model extension exercise |
+| 9:30 – 10:15  | Code review: Microsimulation models in R                 |
+| 10:15 – 10:30 | Break                                                    |
+| 10:30 – 11:00 | Break out exercise: Peer-code walk-through               |
+| 11:00 - 11:45 | Coding exercise: Implement a microsimulation model       |
+| 11:45 - 12:00 | Programming practices: Organizing your R code            |
 
 **Homework**:
 
-- Complete microsimulation model exercise (1-2 hours)
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
+-   Complete microsimulation model exercise (1-2 hours)
+-   Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
 
 Live office hours available on Zoom 8:30AM-9:00AM
 
 Slack support available 1:00PM-4:00PM
 
+## Live session recording:
 
-
- 
+{{% vimeo "593027038" %}}

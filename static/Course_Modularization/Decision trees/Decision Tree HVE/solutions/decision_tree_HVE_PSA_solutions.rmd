@@ -50,9 +50,8 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
 Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
 
-- Alarid-Escudero, F., Krijkamp, E. M., Enns, E. A., Hunink, M. G. M., Pechlivanoglou, 
-P., & Jalal, H. (2020). Cohort state-transition models in R: From conceptualization 
-to implementation. arXiv:2001.07824v1, 1–31. http://arxiv.org/abs/2001.07824 
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. arXiv:200107824v3. 2021:1-26. http://arxiv.org/abs/2001.07824 
 
 - Alarid-Escudero, F., Enns, E. A., Kuntz, K. M., Michaud, T. L., & Jalal, H. (2019). 
 “Time Traveling Is Just Too Dangerous” But Some Methods Are Worth Revisiting: 

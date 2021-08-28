@@ -6,15 +6,11 @@ title: Upcoming
 weight: 1
 ---
 
-### August 27
+## Workshop completed!
 
-Please complete the following prep before the Aug 27 session:
+Thank you all for joining our workshop, we hope you took something valuable and useful from it. The course website and all materials will be available for 3 weeks. 
 
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
 
-### Zoom link
-
-[**Zoom link**](https://umn.zoom.us/j/99828978314?pwd=VjBSeXRYSzZtSG4xUHF6djdYSjhJQT09)
 
 
 

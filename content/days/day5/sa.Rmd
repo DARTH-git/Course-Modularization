@@ -26,4 +26,3 @@ menu:
 [Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_SA_solutions.Rmd)
 
 [Download model function solution code](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/Functions_markov_sick-sicker_sol.R)
-

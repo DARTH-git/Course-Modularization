@@ -1,0 +1,20 @@
+---
+title: R tips and tricks and debugging in R
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: R tips and debugging
+menu:
+  day1:
+    parent: "Intro to R"
+    weight: 10
+---
+
+## Handout
+
+[Download handout](../../../Course_Modularization/Intro, general, packages/R tips and tricks.html)
+
+This handout is only for your reference.

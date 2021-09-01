@@ -1,0 +1,25 @@
+---
+title: "Cohort state-transition models (cSTM) - history dependence"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "cSTM with history dependence"
+menu:
+  day3:
+    weight: 4
+---
+
+## R code demo & walkthrough - 3-state Markov model with state-residence time dependency (history dependence)
+
+[Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_tunnels.Rmd)
+
+## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence)
+
+[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html)
+
+[Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv)
+
+[Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_tunnels_template.Rmd)
+
+[Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd)
+

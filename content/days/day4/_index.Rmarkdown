@@ -1,5 +1,5 @@
 ---
-title: "April 23 Schedule"
+title: "August 26 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -13,24 +13,45 @@ toc: yes
 type: docs
 ---
 
-*Cohort state-transition models - time-homogeneous models*
+### Microsimulation Models
 
 Basic agenda:
 
-- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8AM-12pm Eastern Time
+- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8:30AM-12PM Central Time
+
+**Preparation**:
+
+- Complete cohort state-transition model extension exercise (1 hour)
+- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 - 8:10  | General Q & A 	 |
-| 8:10 - 9:00| Walk through code for time-homogeneous cohort state-transition model (DARTH Sick-Sicker model)  | 
-| 9:00 - 9:30 | Hands-on activity: peer code walk-through & implementation of Janssen oncology model |
-| 9:30 - 10:15| Demonstrate `dampack` package and code for analysis (CEA, OWSA, PSA) - DARTH Sick-Sicker model |
-| 10:15 - 10:30 | Break |
-| 10:30 - 11:00|  Hands-on activity: peer code walk-through & implementation of Janssen oncology model (CEA, OWSA) | 
-| 11:00 - 11:45 | Hands-on activity: peer code walk-through & implementation of Janssen oncology model (PSA) |
-| 11:45 - 12:00 | Session summary and Q&A |
+| 9:00 – 9:30  | Review: Cohort state-transition model extension exercise |
+| 9:30 – 10:15 | Code review: Microsimulation models in R |
+| 10:15 – 10:30 | Break  |
+| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
+| 11:00 - 11:45 | Coding exercise: Implement a microsimulation model |
+| 11:45 - 12:00 | Programming practices: Organizing your R code |
 
-Before April 29, please watch [cohort state-transition model lectures 5-6](https://janssen-decision-modeling-workshop.netlify.app/days/day5/videos_markov1/).
+
+**Homework**:
+
+- Complete microsimulation model exercise (1-2 hours)
+- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
+
+Live office hours available on Zoom 8:30AM-9:00AM
+
+Slack support available 1:00PM-4:00PM
+
+
+## Live session recording:
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "593027038")
+```
+
+
+ 

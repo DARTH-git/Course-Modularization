@@ -1,28 +1,23 @@
 ---
-title: "Welcome"
+title: "Introduction to R for Decision Modeling"
 date: "`r Sys.Date()`"
 draft: no
 type: docs
-linktitle: Welcome
+linktitle: Intro to R
 menu:
   day1:
-    weight: 1
+    name: Intro to R
+    weight: 2
 ---
 
-Welcome to "Introduction to R for Decision Modeling". 
+Welcome to the *Introduction to R for Decision Modeling* module!
 
-- This module is completely asynchronous
-- It will take approximately 4-5 hours to complete
-- Slack support available 8AM-12PM Eastern Time
+Please go through the presentation videos and demos and attempt the exercises in each of the below sections:
 
-## Presentation video
-
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473551236")
-```
-
-## Slides
-
-[Download slides](../../../Course_Modularization/Intro to R/Slides/00_welcome_slides.pptx)
-
-
+- Getting ready
+- Data manipulation
+- Introduction to R
+- Data visualization
+- R tips and debugging
+- Matrix algebra
+- Loops and functions

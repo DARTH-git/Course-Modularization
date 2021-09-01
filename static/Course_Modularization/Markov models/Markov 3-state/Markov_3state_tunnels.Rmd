@@ -42,8 +42,7 @@ An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
 
 - Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 
-2020:1-48. http://arxiv.org/abs/2001.07824
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. arXiv:200107824v3. 2021:1-26. http://arxiv.org/abs/2001.07824
 
 - Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
 Microsimulation modeling for health decision sciences using R: A tutorial. 
@@ -64,7 +63,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -130,8 +129,8 @@ n_states_tunnels        <- length(v_names_states_tunnels)        # number of sta
 l    <- 0.08
 g    <- 1.1
 
-S_SD <- pweibull(0:n_tunnel_size, l , g, lower.tail = F)
-p_SD <- trans_prob(S_SD)  # probability of dying when sick (time-in-state dependent)
+v_surv_S <- pweibull(0:n_tunnel_size, l, g, lower.tail = F) # survival curve for Sick state
+v_p_SD <- trans_prob(v_surv_S)  # probability of dying when sick (time-in-state dependent)
 
 
 
@@ -189,12 +188,12 @@ a_P_SoC["Healthy", "Dead", ]     <-      v_p_HD
 
 # from Sick
 for(i in 1:(n_tunnel_size - 1)){ 
-  a_P_SoC[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - p_SD[i]
-  a_P_SoC[v_Sick_tunnels[i], "Dead", ] <- p_SD[i]
+  a_P_SoC[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 1 - v_p_SD[i]
+  a_P_SoC[v_Sick_tunnels[i], "Dead", ] <- v_p_SD[i]
 }
 
-a_P_SoC[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - p_SD[n_tunnel_size]
-a_P_SoC[v_Sick_tunnels[n_tunnel_size], "Dead", ] <- p_SD[n_tunnel_size]
+a_P_SoC[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 1 - v_p_SD[n_tunnel_size]
+a_P_SoC[v_Sick_tunnels[n_tunnel_size], "Dead", ] <- v_p_SD[n_tunnel_size]
 
 # from Dead
 a_P_SoC["Dead", "Dead", ] <- 1

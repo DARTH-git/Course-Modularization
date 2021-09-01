@@ -1,0 +1,35 @@
+---
+title: Loops and functions 
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Loops and functions
+menu:
+  day1:
+    parent: "Intro to R"
+    weight: 7
+---
+
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473054054")
+```
+
+## Slides
+
+[Download slides](../../../Course_Modularization/Intro to R/Slides/05_loops_function_slides.pptx)
+
+## Student templates
+
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)
+
+## Instructor solutions
+
+<!-- Solutions will be posted later. -->
+
+[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd)
+

@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Janssen Decision Modeling in R Workshop"
+title = "Cost-Effectiveness and Decision Modeling using R Workshop"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/slack-syz2211/shared_invite/zt-oji1li0m-46vjISCNR2FPg~s6mWWEsA"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/newworkspace-6d91267/shared_invite/zt-uczf8yva-xCCHvd70zlzLq7_SWGm_9Q"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -252,31 +252,31 @@ enableGitInfo = false
   weight = 1
 
 [[menu.main]]
-  name = "Pre-Workshop"
+  name = "Aug 23"
   weight = 2
   url = "days/day1/" 
   identifier = "day1"
 
 [[menu.main]]
-  name = "Apr 16"
+  name = "Aug 24"
   weight = 3
   url = "days/day2/" 
   identifier = "day2"
   
 [[menu.main]]
-  name = "Apr 20"
+  name = "Aug 25"
   weight = 4
   url = "days/day3/" 
   identifier = "day3"
   
 [[menu.main]]
-  name = "Apr 23"
+  name = "Aug 26"
   weight = 5
   url = "days/day4/" 
   identifier = "day4"
   
 [[menu.main]]
-  name = "Apr 29"
+  name = "Aug 27"
   weight = 6
   url = "days/day5/" 
   identifier = "day5"
@@ -284,14 +284,14 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/slack-syz2211/shared_invite/zt-oji1li0m-46vjISCNR2FPg~s6mWWEsA"
+  url = "https://join.slack.com/t/newworkspace-6d91267/shared_invite/zt-uczf8yva-xCCHvd70zlzLq7_SWGm_9Q"
   weight = 10
   
-[[menu.main]]
-  pre = "<i class=\"fas fa-headset fa-lg\"></i>"
-  name = "Zoom"
-  url = "https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09"
-  weight = 12
+# [[menu.main]]
+#   pre = "<i class=\"fas fa-headset fa-lg\"></i>"
+#   name = "Zoom"
+#   url = "https://us02web.zoom.us/j/8251687516?pwd=OTExN3duejBWa2VsYytXUVN6NlpCQT09"
+#   weight = 12
   
 # Search.
 [params.search]

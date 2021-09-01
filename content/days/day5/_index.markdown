@@ -1,7 +1,7 @@
 ---
-title: "April 29 Schedule"
+title: "August 27 Schedule"
 author: ''
-date: "2021-04-29"
+date: "2021-08-27"
 slug: day5
 categories: []
 tags: []
@@ -13,23 +13,33 @@ toc: yes
 type: docs
 ---
 
-*Cohort state-transition models - time-dependent and state-residency-dependent models*
+### Sensitivity Analysis
 
 Basic agenda:
 
-- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8AM-12pm Eastern Time
+-   Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+-   Slack support available 8:30AM-12PM Central Time
+
+**Preparation**:
+
+-   Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
+-   Complete microsimulation model exercise (1-2 hours)
 
 Here is a tentative timetable:
 
-|                            |            |
-|--------------------------------------------|:------------------|
-| 8:00 - 8:30  | Review of time-heterogeneous cohort state-transition concepts and brief survival analysis concepts |
-| 8:30 – 9:15	| Walk through code for time-dependent cohort state-transition model (age-dependent Sick-Sicker) | 
-| 9:15 – 10:00 |Walk through code for history-dependent cohort state-transition model (Sick-Sicker model with tunnel states)|
-| 10:00 – 10:15 | Break |
-| 10:15 – 11:00 | Hands-on activity: Cohort time-dependent state transition model exercise (Janssen example) |
-| 11:00 – 11:30| PSA | 
-| 11:30 – 12:00 | DARTH framework |
+|               |                                                                   |
+|---------------|:------------------------------------------------------------------|
+| 9:00 – 9:30   | Review: Microsimulation model exercise solution                   |
+| 9:30 – 10:00  | Code review: Deterministic and probabilistic sensitivity analysis |
+| 10:00 – 10:30 | Break out exercise: Peer code walk-through                        |
+| 10:30 – 10:45 | Break                                                             |
+| 10:45 – 11:45 | Coding exercise: Implement a probabilistic sensitivity analysis   |
+| 11:45 - 12:00 | Wrap up                                                           |
 
+Live office hours available on Zoom 8:30AM-9:00AM
 
+Slack support available 1:00PM-4:00PM
+
+## Live session recording:
+
+{{% vimeo "592848080" %}}

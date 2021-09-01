@@ -1,0 +1,25 @@
+---
+title: "Cohort state-transition models (cSTM), lectures 5-6"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "cSTM lectures 5-6"
+menu:
+  day5:
+    weight: 4
+---
+
+cSTM lecture 5: Time-Varying State-Transition Models
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560741")
+```
+
+cSTM lecture 6: History Dependence
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560799")
+```
+
+
+

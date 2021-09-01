@@ -1,0 +1,48 @@
+---
+title: Overview & OpenTree
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Overview & OpenTree
+menu:
+  day2:
+    weight: 2
+---
+  
+## Workshop series overview 
+
+[Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx)
+
+## OpenTree installation
+
+For those we went through the "Getting ready" session of the "Introduction to R for Decision Modeling Module", you would have already downloaded the R package `OpenTree` via:
+
+[Download package-installation R script](../../../Course_Modularization/Intro, general, packages/00_prep.R)
+
+If not, please download the above R script to install all R packages required for this workshop, which includes `OpenTree`. 
+
+## OpenTree demo
+
+[Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd)
+
+Copy and paste the json code from the pop-up to Notepad and save it as "RockClimberProblem.json".
+
+[Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json)
+
+## OpenTree exercise
+
+[Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html)
+
+[Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd)
+
+Copy and paste the json code from the pop-up to Notepad and save it as "HVEtemplate.json".
+
+[Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json)
+
+[Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+
+[Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+
+<!-- ## Exercise -->
+
+<!-- [Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf) -->

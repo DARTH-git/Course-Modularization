@@ -1,5 +1,5 @@
 ---
-title: "April 16 schedule"
+title: "August 24 schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day2
@@ -13,22 +13,43 @@ toc: yes
 type: docs
 ---
 
-*Intro to Decision Modeling in R* 
+### Decision Trees and Cohort State-Transition Models
 
 Basic agenda:
 
-- Synchronous session is from 8AM-12pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8AM-12pm Eastern Time
+- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8:30AM-12PM Central Time
+
+**Preparation**:
+
+- [Install OpenTree (10 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/intro_to_decision_analysis/)
+- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/videos_markov/)
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 8:00 – 8:45  |  Intro to decision modeling in R + DARTH |
-| 8:45 – 9:15 | Review of “Intro to R for Decision Modeling” materials| 
-| 9:15 – 10:00 | Matrix Algebra in R |
-| 10:00 – 10:15 | Break |
-| 10:15 – 10:45 | Loops and functions |
-| 10:45 – 11:30 | Loops and functions - exercises |
-| 11:30 - 12:00 | R tips and tricks and debugging in R|
+| 9:00 – 9:30  | Workshop series overview |
+| 9:30 – 9:45 | Introduction to OpenTree | 
+| 9:45 – 10:15 | Exercise: Build a model in OpenTree |
+| 10:15 – 10:30 | Break |
+| 10:30 – 11:00 | Code review: Time-dependent cohort state-transition model in R |
+| 11:00 – 11:30 | Break out exercise: Peer-code walk-through |
+| 11:30 - 12:00 | Coding exercise: Implement a time-dependent cohort state-transition model |
 
+**Homework**:
+
+- Complete decision tree exercise (30 minutes)
+- Complete cohort state-transition model exercise (1 hour)
+- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
+
+Live office hours available on Zoom 8:30AM-9:00AM
+
+Slack support available 1:00PM-4:00PM
+
+
+## Live session recording:
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "592848080")
+```

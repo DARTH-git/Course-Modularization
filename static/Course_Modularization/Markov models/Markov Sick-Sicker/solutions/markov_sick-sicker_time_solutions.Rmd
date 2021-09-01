@@ -61,7 +61,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -106,7 +106,7 @@ v_init <- c("H"  = 1,
 
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file for the age 25 - 54
-lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
+lt_usa_2015 <- read.csv("HMD_USA_Mx_2015.csv")
 v_r_HD <- lt_usa_2015 %>% 
   filter(Age >= age & Age <= (max_age - 1)) %>%
   select(Total) %>%

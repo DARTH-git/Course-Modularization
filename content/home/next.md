@@ -6,9 +6,12 @@ title: Upcoming
 weight: 1
 ---
 
-## Workshop feedback survey
+## Workshop completed!
 
-Thank you for attending the 2021 Janssen Decision Modeling in R workshop given by the DARTH workgroup! If you could take a few moments to fill out this [feedback survey](https://forms.gle/8Efy3hrXSjXM6QySA), it can really help us improve our instructional materials and forms of delivery. Thanks in advance!
+Thank you all for joining our workshop, we hope you took something valuable and useful from it. The course website and all materials will be available for 3 weeks. 
+
+
+
 
 
 

@@ -18,7 +18,7 @@ p_load("abind",  "dampack", "data.table", "DES", "devtools", "diagram", "dplyr",
        "markdown", "matrixStats", "mgcv", "msm", "mstate",
        "plotrix", "purrr", "psych", "reshape2", "rstudioapi",   
        "scales", "scatterplot3d", "stringr", "survHE", "survminer", "shiny",
-       "tidyverse", "tidyr", "triangle", "truncnorm") 
+       "tidyverse", "tidyr", "tm", "triangle", "truncnorm") 
 
 
 # Enter an empty line to skip updates when prompted

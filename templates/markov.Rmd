@@ -9,27 +9,26 @@ menu:
     weight: 3
 ---
 
-<!-- ## Demo (3-state model) -->
+## R code demo & walkthrough - Markov Sick-Sicker model (time-homogenous)
 
-<!-- [Download demo](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd) -->
+[Download R Markdown](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/markov_sick-sicker_intro_tutorial.Rmd)
 
-<!-- [Download demo - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd) -->
+[Download model function R script](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/Functions_markov_sick-sicker_intro_tutorial.R)
 
-<!-- [Download demo function - SA](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R) -->
+[Download functions R script](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/Functions.R)
 
-<!-- ## Exercise worksheet (Sick-Sicker model) -->
+[Download PDF report](../../../Course_Modularization/Markov models/Markov tutorial/intro tutorial/markov_sick-sicker_intro_tutorial.PDF)
 
-<!-- [Download exercise worksheet](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html) -->
+## Exercise - Janssen oncology model
 
-<!-- ## Data for the exercise -->
+[Download model info (provided by Janssen)](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Oncology examples in R v2.0_.pptx)
 
-<!-- [Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/HMD_USA_Mx_2015.csv) -->
+[Download instructor solutions](../../../Course_Modularization/Markov models/Markov-3-state-oncology/Markov_3_state_oncology_time_homogeneous.R)
 
-<!-- ## Exercise template -->
+## Slides
 
-<!-- [Download exercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_template.Rmd) -->
+[Download Markov model (time-homogenous) slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_Janssen.pptx)
 
-<!-- ## Instructor solutions -->
+[Download sensitivity analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysis.pptx)
 
-<!-- [Download instructor solutions](../../../rmds/markov_sick-sicker_solutions.Rmd) -->
 

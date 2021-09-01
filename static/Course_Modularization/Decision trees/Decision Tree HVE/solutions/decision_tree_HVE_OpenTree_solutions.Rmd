@@ -117,97 +117,6 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 
 # 04 Create and run decision tree model
 
-```{r}
-# Create vector of weights for each strategy
-v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
-                    p_HVE  * (1 - p_HVE_comp)    ,  # HVE, no complications
-               (1 - p_HVE) *      p_OVE_comp     ,  # OVE, complications
-               (1 - p_HVE) * (1 - p_OVE_comp))      # OVE, no complications
-  
-v_w_tx     <- c(    p_HVE  *      p_HVE_comp_tx  ,  # HVE w/tx, complications
-                    p_HVE  * (1 - p_HVE_comp_tx) ,  # HVE w/tx, no complications
-               (1 - p_HVE) *      p_OVE_comp_tx  ,  # OVE w/tx, complications
-               (1 - p_HVE) * (1 - p_OVE_comp_tx))   # OVE w/tx, no complications
-  
-v_w_biopsy <- c(    p_biopsy_death             ,  # biopsy death
-               # no biopsy death.,   HVE w/tx,        complications
-               (1 - p_biopsy_death)   *      p_HVE  *      p_HVE_comp_tx  ,  
-               # no biopsy death.,   HVE w/tx,     no complications
-               (1 - p_biopsy_death)   *      p_HVE  * (1 - p_HVE_comp_tx) ,  
-               # no biopsy death.,        OVE,        complications
-               (1 - p_biopsy_death)   * (1 - p_HVE) *      p_OVE_comp   ,  
-               # no biopsy death.,        OVE,     no complications
-               (1 - p_biopsy_death)   * (1 - p_HVE) * (1 - p_OVE_comp))      
-  
-# Create vector of outcomes (QALYs) for each strategy 
-  
-v_qaly_no_tx  <- c(q_VE_comp ,          # HVE, complications
-                   q_VE      ,          # HVE, no complications
-                   q_VE_comp ,          # OVE, complications
-                   q_VE)                # OVE, no complications
-  
-v_qaly_tx     <- c(q_VE_comp ,          # HVE, complications
-                   q_VE      ,          # HVE, no complications
-                   q_VE_comp ,          # OVE, complications
-                   q_VE)                # OVE, no complications
-  
-# loss due to biopsy
-v_qaly_biopsy <-  c(q_death_biopsy - q_loss_biopsy, # biopsy complications
-                    q_VE_comp      - q_loss_biopsy, # no biopsy comp., HVE w/tx, complications 
-                    q_VE           - q_loss_biopsy, # no biopsy comp., HVE w/tx, no complications
-                    q_VE_comp      - q_loss_biopsy, # no biopsy comp., OVE, complications
-                    q_VE           - q_loss_biopsy)               # no biopsy comp., OVE, no complications
-  
-# Create vector of costs for each strategy 
-  
-v_cost_no_tx  <- c(c_VE_comp ,          # HVE, complications
-                   c_VE      ,          # HVE, no complications
-                   c_VE_comp ,          # OVE, complications
-                   c_VE)                # OVE, no complications
-  
-v_cost_tx     <- c(c_VE_comp + c_tx ,   # HVE, complications
-                   c_VE      + c_tx,    # HVE, no complications
-                   c_VE_comp + c_tx ,   # OVE, complications
-                   c_VE      + c_tx)    # OVE, no complications
-  
-v_cost_biopsy <-    # cost of biopsy procedure
-                 c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
-                   c_VE_comp + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, complications 
-                   c_VE      + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, no complications
-                   c_VE_comp        + c_biopsy,   # no biopsy comp., OVE, complications
-                   c_VE             + c_biopsy)   # no biopsy comp., OVE, no complications
- 
-# Calculate total utilities for each strategy 
-total_qaly_no_tx  <- v_w_no_tx  %*%  v_qaly_no_tx      
-total_qaly_tx     <- v_w_tx     %*%  v_qaly_tx
-total_qaly_biopsy <- v_w_biopsy %*%  v_qaly_biopsy
-  
-# Calculate total costs for each strategy 
-total_cost_no_tx  <- v_w_no_tx  %*%  v_cost_no_tx    
-total_cost_tx     <- v_w_tx     %*%  v_cost_tx
-total_cost_biopsy <- v_w_biopsy %*%  v_cost_biopsy
-  
-# vector of total QALYs
-v_total_qaly <- c(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy) 
-# vector of total costs
-v_total_cost <- c(total_cost_no_tx, total_cost_tx, total_cost_biopsy) 
-# calculate vector of nmb
-v_nmb        <- v_total_qaly * wtp - v_total_cost                      
-  
-# Name outcomes
-names(v_total_qaly) <- v_names_str  # names for the elements of the total QALYs vector
-names(v_total_cost) <- v_names_str  # names for the elements of the total cost vector
-names(v_nmb)        <- v_names_str  # names for the elements of the nmb vector
-
-df_output <- data.frame(Strategy =  v_names_str,
-                        Cost     =  v_total_cost,
-                        Effect   =  v_total_qaly,
-                        NMB      =  v_nmb)
-
-# model output
-df_output
-```
-
 # 04.1 Use OpenTree to create and run decision tree model
 
 Create or open decision tree. 
@@ -220,7 +129,7 @@ Any changes made to the tree in OpenTree are automatically saved as a `.json` fi
 
 ```{r}
 #create_tree(file_name = "Helloworld", dir_name = getwd())
-open_tree(file_name = "HVEsolutionPPT", dir_name = getwd())
+open_tree(file_name = "HVEsolution", dir_name = getwd())
 ```
 
 Extract probability weights and outcomes of the decision tree.

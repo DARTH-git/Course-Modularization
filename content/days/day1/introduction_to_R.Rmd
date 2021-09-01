@@ -9,7 +9,8 @@ type: docs
 linktitle: Introduction to R
 menu:
   day1:
-    weight: 3
+    parent: "Intro to R"
+    weight: 4
 ---
 
 ## Presentation video
@@ -30,5 +31,5 @@ blogdown::shortcode("vimeo", "473442290")
 
 <!-- #[Download instructor solutions](../../../rmds/02_Introduction_solutions.Rmd) -->
 
-Solutions will be uploaded after April 16.
+Solutions will be uploaded later.
 

@@ -59,7 +59,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
 options(scipen = 999)  # disable scientific notation
 rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
@@ -162,18 +162,21 @@ Probs <- function(M_t, df_X) {
   p_HD     <- p_HD_all[M_t == "Healthy", "p_HD"]
   
   # update m_p_t with the appropriate probabilities   
+  # (all non-death probabilities are conditional on survival)
   # transition probabilities when Healthy 
-  m_p_t[, M_t == "Healthy"] <- rbind((1 - p_HD) * (1 - p_HS),
-                                     (1 - p_HD) *      p_HS ,
-                                          p_HD              )  
+  m_p_t["Healthy", M_t == "Healthy"] <- (1 - p_HD) * (1 - p_HS)
+  m_p_t["Sick",    M_t == "Healthy"] <- (1 - p_HD) *      p_HS 
+  m_p_t["Dead",    M_t == "Healthy"] <-      p_HD              
+  
   # transition probabilities when Sick 
-  m_p_t[, M_t == "Sick"]    <- rbind(       0,
-                                     1 - p_SD,
-                                         p_SD)          
+  m_p_t["Healthy", M_t == "Sick"]    <-  0
+  m_p_t["Sick",    M_t == "Sick"]    <-  1 - p_SD
+  m_p_t["Dead",    M_t == "Sick"]    <-      p_SD     
+ 
   # transition probabilities when Dead
-  m_p_t[, M_t == "Dead"]    <- rbind(0,
-                                     0,
-                                     1)                         
+  m_p_t["Healthy", M_t == "Dead"]    <- 0
+  m_p_t["Sick",    M_t == "Dead"]    <- 0
+  m_p_t["Dead",    M_t == "Dead"]    <- 1                         
   return(t(m_p_t))
 }     
 ```

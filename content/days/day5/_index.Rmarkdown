@@ -43,5 +43,5 @@ Slack support available 1:00PM-4:00PM
 ## Live session recording:
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "592848080")
+blogdown::shortcode("vimeo", "593547119")
 ```

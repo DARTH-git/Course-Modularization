@@ -29,6 +29,5 @@ blogdown::shortcode("vimeo", "473445406")
 
 ## Instructor solutions
 
-<!-- [Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd) -->
+[Download instructor solutions](../../../rmds/04_plotting_solutions.Rmd)
 
-Solutions will be uploaded later.

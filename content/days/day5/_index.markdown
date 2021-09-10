@@ -1,7 +1,7 @@
 ---
 title: "August 27 Schedule"
 author: ''
-date: "2021-08-27"
+date: "2021-09-10"
 slug: day5
 categories: []
 tags: []
@@ -42,4 +42,4 @@ Slack support available 1:00PM-4:00PM
 
 ## Live session recording:
 
-{{% vimeo "592848080" %}}
+{{% vimeo "593547119" %}}

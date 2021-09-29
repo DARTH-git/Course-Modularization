@@ -24,12 +24,17 @@ p_load("abind",  "dampack", "data.table", "DES", "devtools", "diagram", "dplyr",
 # Enter an empty line to skip updates when prompted
 install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org") 
 
+#click "Enter" when they ask about what  to update
+
 # Install additional packages
 p_load("ggrepel")
 
 # load (install if required) packages from GitHub
 
 install_github("DARTH-git/darthtools", force = TRUE) # (Un)comment if there is a newer version#
+# #click "Enter" when they ask about what  to update
+
+
 p_load_gh("DARTH-git/darthtools")
 
 install_github("DARTH-git/OpenTree", force = TRUE) # (Un)comment if there is a newer version

@@ -22,7 +22,7 @@ getwd() # where is your working directory
 saveRDS(hund_icers, "data_hund_icers.rds")  # export the file
 # you find the file at the location from the working directory
 
-# Check which version of R you have, do you have 4.0.3?
+# Check which version of R you have, do you have 4.1.1?
 getRversion()
 
  

@@ -2,6 +2,21 @@
 ### and to load the package you need
 ### from either CRAN or GitHub
 ## Next, run the code from below to check if you succesfully installed the packages 
+library(pacman) 
+
+# load (install if required) packages from CRAN
+p_load("abind",  "dampack", "data.table", "DES", "devtools", "diagram", "dplyr", 
+       "ellipse", "flexsurv", "flexsurvcure", "gdata", "gems", "grid", "gridExtra", 
+       "igraph", "jsonlite", "knitr", "lazyeval", "lhs", 
+       "markdown", "matrixStats", "mgcv", "msm", "mstate",
+       "plotrix", "purrr", "psych", "reshape2", "rstudioapi",   
+       "scales", "scatterplot3d", "stringr", "survHE", "survminer", "shiny",
+       "tidyverse", "tidyr", "tm", "triangle", "truncnorm")
+p_load("ggrepel")
+p_load_gh("DARTH-git/OpenTree")
+p_load_gh("DARTH-git/darthtools")
+
+
 
 p_D <- darthtools::prob_to_rate(p = 0.5, t = 1)
 v_p_D <- rtriangle(n = 1000, a = 0, b = 1, c = p_D)

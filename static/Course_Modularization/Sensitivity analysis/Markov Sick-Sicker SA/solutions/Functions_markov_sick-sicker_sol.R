@@ -22,8 +22,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     # create the Markov trace matrix M capturing the proportion of the cohort 
     # in each state at each cycle
     m_M_notrt <- m_M_trt <- matrix(NA, 
-                                   nrow     = n_t + 1, ncol = n_states,
-                                   dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states))
+                                   nrow     = n_cycles + 1, ncol = n_states,
+                                   dimnames = list(paste("cycle", 0:n_cycles, sep = " "), v_names_states))
     
     # The cohort starts as healthy
     m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, 0, 0, 0) # initiate first cycle of cohort trace 
@@ -53,14 +53,14 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     # Check that transition probabilities are in [0, 1]
     check_transition_probability(m_P_notrt, verbose = TRUE)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P_notrt, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
     
     # create transition probability matrix for treatment same as no treatment
     m_P_trt <- m_P_notrt
     
     ############# PROCESS ###########################################
     
-    for (t in 1:n_t){     # loop through the number of cycles
+    for (t in 1:n_cycles){     # loop through the number of cycles
       m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% m_P_notrt  # estimate the Markov trace 
       # for the next cycle (t + 1)
       m_M_trt[t + 1, ]   <- t(m_M_trt[t, ])   %*% m_P_trt    # estimate the Markov trace 
@@ -89,8 +89,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 calculate_ce_out <- function(l_params_all, n_wtp = 100000){ # User defined
   with(as.list(l_params_all), {
     ## Create discounting vectors
-    v_dwc <- 1 / ((1 + d_e) ^ (0:(n_t))) # vector with discount weights for costs
-    v_dwe <- 1 / ((1 + d_c) ^ (0:(n_t))) # vector with discount weights for QALYs
+    v_dwc <- 1 / ((1 + d_e) ^ (0:(n_cycles))) # vector with discount weights for costs
+    v_dwe <- 1 / ((1 + d_c) ^ (0:(n_cycles))) # vector with discount weights for QALYs
     
     ## Run STM model at a parameter set for each intervention
     l_model_out_no_trt <- decision_model(l_params_all = l_params_all)

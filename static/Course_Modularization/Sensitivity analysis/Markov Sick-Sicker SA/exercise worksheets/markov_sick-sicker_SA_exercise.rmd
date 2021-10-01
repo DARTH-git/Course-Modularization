@@ -1,11 +1,11 @@
 ---
-title: "Cost-Effectiveness and Decision Modeling in R"
+title: "Markov Sick-Sicker model"
+subtitle: 'Markov Model Exercise: with sensitvity analysis'
 author: "The DARTH workgroup"
-subtitle: SA Markov Model Exercise
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -86,9 +86,9 @@ include_graphics("sick_sicker_diagram.png")
 
 |           **Parameter**            |  **R name** |   **Value**   |
 |:-----------------------------------|:------------|:-------------:|
-| Time horizon                       | `n_t`       | 30 years      |
+| Time horizon                       | `n_cycles`       | 30 years      |
 | Cycle length                       |             | 1 year        |
-| Names of health states             | `v_n`       | H, S1, S2, D  |
+| Names of health states             | `v_names_states`       | H, S1, S2, D  |
 | Annual discount rate (costs/QALYs) | `d_r`       |  3%           |
 | Annual transition probabilities    |             |               |
 | - Disease onset (H to S1), conditional on surviving          | `p_HS1`     |  0.15         |

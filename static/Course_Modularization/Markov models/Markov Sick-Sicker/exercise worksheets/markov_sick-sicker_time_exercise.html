@@ -165,7 +165,7 @@ pre code {
 
 
 <h1 class="title toc-ignore">Markov Sick-Sicker model</h1>
-<h3 class="subtitle">with age dependency</h3>
+<h3 class="subtitle">Markov Model Exercise - with age dependency</h3>
 <h4 class="author">The DARTH workgroup</h4>
 
 </div>
@@ -228,7 +228,7 @@ Schematic representation of the Sick-Sicker model
 <tbody>
 <tr class="odd">
 <td align="left">Time horizon</td>
-<td align="left"><code>n_t</code></td>
+<td align="left"><code>n_cycles</code></td>
 <td align="center">30 years</td>
 </tr>
 <tr class="even">
@@ -238,7 +238,7 @@ Schematic representation of the Sick-Sicker model
 </tr>
 <tr class="odd">
 <td align="left">Names of health states</td>
-<td align="left"><code>v_n</code></td>
+<td align="left"><code>v_names_states</code></td>
 <td align="center">H, S1, S2, D</td>
 </tr>
 <tr class="even">
@@ -273,7 +273,7 @@ Schematic representation of the Sick-Sicker model
 </tr>
 <tr class="even">
 <td align="left">- All-cause mortality (H to D)</td>
-<td align="left"><code>p_HD</code></td>
+<td align="left"><code>v_r_HD</code></td>
 <td align="center"><code>HMD - info below</code></td>
 </tr>
 <tr class="odd">
@@ -353,7 +353,7 @@ Schematic representation of the Sick-Sicker model
 </tr>
 </tbody>
 </table>
-<p>*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, <code>p_HD</code>, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: <span class="math inline">\(r = -log(1-p)\)</span> and <span class="math inline">\(p = 1-e^{(-rt)}\)</span>. The package <code>darthtools</code> also has the functions <code>prob_to_rate</code> and <code>rate_to_prob</code> that might be of use to you.</p>
+<p>*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, <code>v_p_HD</code>, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: <span class="math inline">\(r = -log(1-p)\)</span> and <span class="math inline">\(p = 1-e^{(-rt)}\)</span>. The package <code>darthtools</code> also has the functions <code>prob_to_rate</code> and <code>rate_to_prob</code> that might be of use to you.</p>
 <ul>
 <li><ol style="list-style-type: decimal">
 <li><em>HMD</em> : This is the Human mortality database. We provide you a files called <code>HMD_USA_Mx_2015.csv</code> with the age specific mortality rates. The data has the columns X, Year, Age, Female, Male, Total and OpenInterval. We will use the overall age specific mortality rate from the Total column.</li>
@@ -362,7 +362,7 @@ Schematic representation of the Sick-Sicker model
 </div>
 <div id="age-specific-all-cause-mortality" class="section level2">
 <h2>Age specific all cause mortality</h2>
-<p>The code below shows you how to get the data into your R environment. We also provide this in the template.</p>
+<p>The code below shows you how to get the data into your R environment. We also provide this in the template. You can use function <code>rate_to_prob</code> to convert <code>v_r_HD</code> into <code>v_p_HD</code>.</p>
 <pre><code>##      X Year Age   Female     Male    Total OpenInterval
 ## 1 9103 2015   0 0.005386 0.006404 0.005907        FALSE
 ## 2 9104 2015   1 0.000350 0.000452 0.000402        FALSE

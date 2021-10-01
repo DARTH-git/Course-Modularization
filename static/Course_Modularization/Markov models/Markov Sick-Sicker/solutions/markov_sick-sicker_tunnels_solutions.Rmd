@@ -95,15 +95,15 @@ v_names_str <- c("No Treatment", "Treatment")
 n_str <- length(v_names_str)
 
 # Markov model parameters
-age     <- 25                       # age at baseline
-max_age <- 55                       # maximum age of follow up
-n_t     <- max_age - age            # time horizon, number of cycles
+age      <- 25                       # age at baseline
+max_age  <- 55                       # maximum age of follow up
+n_cycles <- max_age - age            # time horizon, number of cycles
 v_names_states <- c("H", "S1", "S2", "D")  # the 4 states of the model: Healthy (H), Sick (S1), 
-                                    # Sicker (S2), Dead (D)
-n_states <- length(v_names_states)  # number of health states 
+                                     # Sicker (S2), Dead (D)
+n_states <- length(v_names_states)   # number of health states 
 
 # Tunnels
-n_tunnel_size <- n_t
+n_tunnel_size <- n_cycles
 # Sick state
 v_Sick_tunnels <- paste("S1_", seq(1, n_tunnel_size), "Yr", sep = "")
 ### Create variables for time-dependent model
@@ -113,48 +113,48 @@ n_states_tunnels       <- length(v_names_states_tunnels)     # number of states
 # Transition probabilities (per cycle) and hazard ratios
 # Read age-specific mortality rates from csv file
 lt_usa_2005 <- read.csv("HMD_USA_Mx_2015.csv")
-v_r_HD <- lt_usa_2005 %>% 
-          filter(Age >= age & Age <= (max_age-1)) %>%
-          select(Total) %>%
-          as.matrix()
+v_r_HD   <- lt_usa_2005 %>% 
+           filter(Age >= age & Age <= (max_age-1)) %>%
+           select(Total) %>%
+           as.matrix()
 
-p_HD    <- 1 - exp(- v_r_HD)  # probability to die when healthy
-p_HS1   <- 0.15          	    # probability to become sick when healthy
-p_S1H   <- 0.5           	    # probability to become healthy when   
+v_p_HD   <- 1 - exp(- v_r_HD)  # probability to die when healthy
+p_HS1    <- 0.15          	   # probability to become sick when healthy
+p_S1H    <- 0.5           	   # probability to become healthy when   
 
 # Weibull parameters
-l       <- 0.08 # scale
-g       <- 1.1  # shape
+l        <- 0.08 # scale
+g        <- 1.1  # shape
 # Weibull function
-p_S1S2  <- l*g*(1:n_tunnel_size)^{g-1} # probability to become sicker when sick 
-                                       # (time-dependent)
+v_p_S1S2 <- l*g*(1:n_tunnel_size)^{g-1} # probability to become sicker when sick 
+                                        # (time-dependent)
 
-hr_S1   <- 3             	    # hazard ratio of death in sick vs healthy
-hr_S2   <- 10            	    # hazard ratio of death in sicker vs healthy 
-r_HD    <- - log(1 - p_HD)    # rate of death in healthy
-r_S1D   <- hr_S1 * r_HD  	    # rate of death in sick
-r_S2D   <- hr_S2 * r_HD  	    # rate of death in sicker
-p_S1D   <- 1 - exp(-r_S1D)    # probability to die in sick
-p_S2D   <- 1 - exp(-r_S2D)    # probability to die in sicker
+hr_S1    <- 3             	   # hazard ratio of death in sick vs healthy
+hr_S2    <- 10            	   # hazard ratio of death in sicker vs healthy 
+v_r_HD   <- - log(1 - v_p_HD)  # rate of death in healthy
+v_r_S1D  <- hr_S1 * v_r_HD  	 # rate of death in sick
+v_r_S2D  <- hr_S2 * v_r_HD  	 # rate of death in sicker
+v_p_S1D  <- 1 - exp(-v_r_S1D)  # probability to die in sick
+v_p_S2D  <- 1 - exp(-v_r_S2D)  # probability to die in sicker
 
 # Cost and utility inputs      
-c_H     <- 2000               # cost of remaining one cycle in the healthy state
-c_S1    <- 4000               # cost of remaining one cycle in the sick state
-c_S2    <- 15000              # cost of remaining one cycle in the sicker state
-c_trt   <- 12000              # cost of treatment(per cycle)
-c_D     <- 0                  # cost of being in the death state
-u_H     <- 1                  # utility when healthy
-u_S1    <- 0.75               # utility when sick
-u_S2    <- 0.5                # utility when sicker
-u_D     <- 0                  # utility when dead
-u_trt   <- 0.95               # utility when being treated
+c_H      <- 2000               # cost of remaining one cycle in the healthy state
+c_S1     <- 4000               # cost of remaining one cycle in the sick state
+c_S2     <- 15000              # cost of remaining one cycle in the sicker state
+c_trt    <- 12000              # cost of treatment(per cycle)
+c_D      <- 0                  # cost of being in the death state
+u_H      <- 1                  # utility when healthy
+u_S1     <- 0.75               # utility when sick
+u_S2     <- 0.5                # utility when sicker
+u_D      <- 0                  # utility when dead
+u_trt    <- 0.95               # utility when being treated
 
 # Discounting factor
-d_r     <- 0.03   # equal discount of costs and QALYs by 3%
+d_r      <- 0.03   # equal discount of costs and QALYs by 3%
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwc    <- 1 / (1 + d_r) ^ (0:n_cycles) 
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe   <- 1 / (1 + d_r) ^ (0:n_t) 
+v_dwe    <- 1 / (1 + d_r) ^ (0:n_cycles) 
 ```
 
 # 04 Define and initialize matrices and vectors
@@ -165,8 +165,8 @@ v_dwe   <- 1 / (1 + d_r) ^ (0:n_t)
 # create the markov trace matrix M capturing the proportion of the cohort in each state 
 # at each cycle
 m_M_notrt <- m_M_trt <- matrix(NA, 
-                               nrow = n_t + 1, ncol = n_states_tunnels,
-                               dimnames = list(paste("cycle", 0:n_t, sep = " "), v_names_states_tunnels)) 
+                               nrow = n_cycles + 1, ncol = n_states_tunnels,
+                               dimnames = list(paste("cycle", 0:n_cycles, sep = " "), v_names_states_tunnels)) 
 
 head(m_M_notrt) # show first 6 rows of the matrix 
 
@@ -180,35 +180,35 @@ m_M_notrt[1, ] <- m_M_trt[1, ] <- c(1, rep(0, n_tunnel_size), 0, 0)
 ```{r}
 # create the transition probability array for NO treatment
 a_P_notrt <- array(0,  # Create 3-D array
-                   dim = c(n_states_tunnels, n_states_tunnels, n_t),
-                   dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:(n_t-1))) # name dimensions
+                   dim = c(n_states_tunnels, n_states_tunnels, n_cycles),
+                   dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:(n_cycles-1))) # name dimensions
 ```
 
 Fill in the transition probability array:
 
 ```{r}
 # from Healthy
-a_P_notrt["H", "H", ]               <- (1 - p_HD) * (1 - p_HS1)
-a_P_notrt["H", v_Sick_tunnels[1], ] <- (1 - p_HD) * p_HS1
-a_P_notrt["H", "D", ]               <- p_HD
+a_P_notrt["H", "H", ]               <- (1 - v_p_HD) * (1 - p_HS1)
+a_P_notrt["H", v_Sick_tunnels[1], ] <- (1 - v_p_HD) * p_HS1
+a_P_notrt["H", "D", ]               <- v_p_HD
 
 # from Sick
 for(i in 1:(n_tunnel_size - 1)){
-  a_P_notrt[v_Sick_tunnels[i], "H", ]  <- (1 - p_S1D) * p_S1H
+  a_P_notrt[v_Sick_tunnels[i], "H", ]  <- (1 - v_p_S1D) * p_S1H
   a_P_notrt[v_Sick_tunnels[i], v_Sick_tunnels[i + 1], ] <- 
-    (1 - p_S1D) * (1 - (p_S1H + p_S1S2[i]))
-  a_P_notrt[v_Sick_tunnels[i], "S2", ] <- (1 - p_S1D) * p_S1S2[i]
-  a_P_notrt[v_Sick_tunnels[i], "D", ]  <- p_S1D
+    (1 - v_p_S1D) * (1 - (p_S1H + v_p_S1S2[i]))
+  a_P_notrt[v_Sick_tunnels[i], "S2", ] <- (1 - v_p_S1D) * v_p_S1S2[i]
+  a_P_notrt[v_Sick_tunnels[i], "D", ]  <- v_p_S1D
 }
-a_P_notrt[v_Sick_tunnels[n_tunnel_size], "H", ]  <- (1 - p_S1D) * p_S1H
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "H", ]  <- (1 - v_p_S1D) * p_S1H
 a_P_notrt[v_Sick_tunnels[n_tunnel_size], v_Sick_tunnels[n_tunnel_size], ] <- 
-  (1 - p_S1D) * (1 - (p_S1H + p_S1S2[n_tunnel_size]))
-a_P_notrt[v_Sick_tunnels[n_tunnel_size], "S2", ] <- (1 - p_S1D) * p_S1S2[n_tunnel_size]
-a_P_notrt[v_Sick_tunnels[n_tunnel_size], "D", ] <- p_S1D
+  (1 - v_p_S1D) * (1 - (p_S1H + v_p_S1S2[n_tunnel_size]))
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "S2", ] <- (1 - v_p_S1D) * v_p_S1S2[n_tunnel_size]
+a_P_notrt[v_Sick_tunnels[n_tunnel_size], "D", ] <- v_p_S1D
 
 # from Sicker
-a_P_notrt["S2", "S2", ] <- 1 - p_S2D
-a_P_notrt["S2", "D", ]  <- p_S2D
+a_P_notrt["S2", "S2", ] <- 1 - v_p_S2D
+a_P_notrt["S2", "D", ]  <- v_p_S2D
 
 # from Dead
 a_P_notrt["D", "D", ] <- 1
@@ -216,7 +216,7 @@ a_P_notrt["D", "D", ] <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P_notrt, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P_notrt, n_states = n_states_tunnels, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P_notrt, n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
 
 # create transition probability matrix for treatment same as NO treatment
 a_P_trt <- a_P_notrt
@@ -225,7 +225,7 @@ a_P_trt <- a_P_notrt
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){   # loop through the number of cycles
+for (t in 1:n_cycles){   # loop through the number of cycles
   m_M_notrt[t + 1, ] <- t(m_M_notrt[t, ]) %*% a_P_notrt[ , , t]  # estimate the Markov 
                                                                  # trace for cycle the 
                                                                  # next cycle (t + 1)
@@ -279,7 +279,7 @@ plot(age:max_age, v_os_notrt_tunnels, type = 'l',
      xlab = "Age",
      main = "Overall Survival Age-dependent with tunnels")  
 # add grid 
-grid(nx = n_t, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
+grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
      equilogs = TRUE) 
 ```
 
@@ -305,7 +305,7 @@ plot(v_prev_tunnels,
 
 ```{r}
 v_ratio_S1S2_tunnels <- m_M_td_notrt[, "S1"] / m_M_td_notrt[, "S2"]
-plot(0:n_t, v_ratio_S1S2_tunnels,
+plot(0:n_cycles, v_ratio_S1S2_tunnels,
      xlab = "Cycle", 
      ylab = "Ratio S1 vs S2", 
      main = "Ratio of sick and sicker", 

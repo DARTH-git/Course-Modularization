@@ -122,8 +122,7 @@ If you are running it in an R script, the `.json` file will be saved to the path
 If you are running it in an R markdown document, the `.json` file will be saved to the path where the R markdown document is located.
 
 ```{r}
-create_tree(file_name = "RockClimberProblem", dir_name = getwd())
-
+create_tree(file_name = "RockClimberProblem_test", dir_name = getwd())
 ```
 
 ```{r}

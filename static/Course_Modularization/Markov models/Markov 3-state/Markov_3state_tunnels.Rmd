@@ -130,9 +130,7 @@ l    <- 0.08
 g    <- 1.1
 
 v_surv_S <- pweibull(0:n_tunnel_size, l, g, lower.tail = F) # survival curve for Sick state
-v_p_SD <- trans_prob(v_surv_S)  # probability of dying when sick (time-in-state dependent)
-
-
+v_p_SD   <- trans_prob(v_surv_S)  # probability of dying when sick (time-in-state dependent)
 
 ## State rewards
 # Costs and utilities  

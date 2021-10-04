@@ -127,7 +127,7 @@ u_H       <- 1     # utility when healthy
 u_S       <- 0.5   # utility when sick
 u_D       <- 0     # utility when dead
 d_e       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
-d_c       <- 0.03  # discount rate per cycle equal discount of costs and QAL  
+d_c       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
 
 # Discount weight (equal discounting is assumed for costs and effects)
 v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
@@ -171,12 +171,12 @@ Fill in the transition probability array:
 ## Standard of Care
 # from Healthy
 a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
-a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_SoC
-a_P_SoC["Healthy", "Dead",    ] <-  v_p_HD
+a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_SoC["Healthy", "Dead",    ] <-      v_p_HD
 
 # from Sick
 a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
-a_P_SoC["Sick", "Dead", ] <- p_SD
+a_P_SoC["Sick", "Dead", ] <-     p_SD
 
 # from Dead
 a_P_SoC["Dead", "Dead", ] <- 1
@@ -184,12 +184,12 @@ a_P_SoC["Dead", "Dead", ] <- 1
 ## Treatment A
 a_P_trtA <- a_P_SoC
 a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_trtA
+a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
 
 ## Treatment B
 a_P_trtB <- a_P_SoC
 a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) * p_HS_trtB
+a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
 ```
 
 Check if transition array and probabilities are valid.
@@ -274,7 +274,7 @@ plot(v_prev,
 ```{r}
 # per cycle
 # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
-v_tc_SoC  <- m_M_SoC  %*% c(c_H, c_S, c_D)  
+v_tc_SoC  <- m_M_SoC  %*% c(c_H,          c_S, c_D)  
 v_tc_trtA <- m_M_trtA %*% c(c_H + c_trtA, c_S, c_D)  
 v_tc_trtB <- m_M_trtB %*% c(c_H + c_trtB, c_S, c_D)  
 

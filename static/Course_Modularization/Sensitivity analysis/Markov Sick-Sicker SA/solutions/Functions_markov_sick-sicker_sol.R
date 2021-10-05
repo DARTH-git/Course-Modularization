@@ -11,7 +11,7 @@
 #' 
 decision_model <- function(l_params_all, verbose = FALSE) {
   with(as.list(l_params_all), {
-    # compute internal paramters as a function of external parameters
+    # compute internal parameters as a function of external parameters
     r_HD    = - log(1 - p_HD)  # rate of death in healthy
     r_S1D   = hr_S1 * r_HD 	   # rate of death in sick
     r_S2D   = hr_S2 * r_HD  	 # rate of death in sicker

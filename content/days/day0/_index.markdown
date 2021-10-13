@@ -1,7 +1,7 @@
 ---
 title: "October 14 agenda"
 author: ''
-date: "2021-10-12"
+date: "2021-10-13"
 slug: day0
 categories: []
 tags: []
@@ -40,9 +40,9 @@ Here is a tentative timetable:
 
 *Support* available during Zoom office hours:
 
-- 10:00am – 12:00pm Monday, October 25, 2021
+- 10:00am – 12:00pm ET Tuesday, October 26, 2021
 
-- 10:00am – 12:00pm Thursday, October 28, 2021
+- 10:00am – 12:00pm ET Tuesday, November 16, 2021
 
 
 <!-- ## Live session recording: -->

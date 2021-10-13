@@ -19,6 +19,6 @@ The module is **completely asynchronous** and will take 8-10 hours to complete.
 
 *Support* available during Zoom office hours:
 
-- 10:00am – 12:00pm Monday, October 25, 2021
+- 10:00am – 12:00pm ET Tuesday, October 26, 2021
 
-- 10:00am – 12:00pm Thursday, October 28, 2021
+- 10:00am – 12:00pm ET Tuesday, November 16, 2021

@@ -20,4 +20,3 @@ menu:
 ## Case study questions
 
 [Download case study questions](../../../Course_Modularization/Intro, general, packages/Public Health Case Study Questions - DARTH Workshop.docx)
-

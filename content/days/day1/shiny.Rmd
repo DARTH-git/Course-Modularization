@@ -15,8 +15,6 @@ menu:
 
 ## Presentation video
 
-Will be uploaded later.
-
 ```{r, echo=F}
 blogdown::shortcode("vimeo", "631266917")
 ```

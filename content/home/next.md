@@ -6,9 +6,9 @@ title: Upcoming
 weight: 1
 ---
 
-## Workshop completed!
+## Next session: October 14, 2021
 
-Thank you all for joining our workshop, we hope you took something valuable and useful from it. The course website and all materials will be available for 3 weeks. 
+The workshop officially begins at 10:00AM ET on October 14, 2021. 
 
 
 

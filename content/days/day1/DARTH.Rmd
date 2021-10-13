@@ -6,7 +6,7 @@ type: docs
 
 linktitle: Intro to Decision Modeling 
 menu:
-  day1:
+  day11:
     weight: 11
 ---
 

@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Cost-Effectiveness and Decision Modeling using R Workshop"
+title = "Decision Modeling for Public Health"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -252,39 +252,21 @@ enableGitInfo = false
   weight = 1
 
 [[menu.main]]
-  name = "Aug 23"
+  name = "Oct 14"
   weight = 2
+  url = "days/day0/" 
+  identifier = "day0"
+  
+  [[menu.main]]
+  name = "Oct 14 - Nov 28"
+  weight = 3
   url = "days/day1/" 
   identifier = "day1"
 
 [[menu.main]]
-  name = "Aug 24"
-  weight = 3
-  url = "days/day2/" 
-  identifier = "day2"
-  
-[[menu.main]]
-  name = "Aug 25"
-  weight = 4
-  url = "days/day3/" 
-  identifier = "day3"
-  
-[[menu.main]]
-  name = "Aug 26"
-  weight = 5
-  url = "days/day4/" 
-  identifier = "day4"
-  
-[[menu.main]]
-  name = "Aug 27"
-  weight = 6
-  url = "days/day5/" 
-  identifier = "day5"
-  
-[[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/newworkspace-6d91267/shared_invite/zt-uczf8yva-xCCHvd70zlzLq7_SWGm_9Q"
+  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-xaxfz4jl-xdpVSoEkRaG9nXcoVxIT1w"
   weight = 10
   
 # [[menu.main]]

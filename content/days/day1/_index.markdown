@@ -1,27 +1,24 @@
 ---
-title: "August 23 agenda"
+title: "October 14 - November 28 agenda"
 author: ''
-date: "2021-08-17"
+date: "2021-10-13"
 slug: day1
 categories: []
 tags: []
 menu:
   day1:
-    name: "August 23"
+    name: "Oct 14 - Nov 28"
     weight: 1
 toc: yes
 type: docs
 ---
 
-Please complete the below modules on August 23:
+Please complete the *Introduction to R for Decision Modeling* module.
 
-- [Introduction to R for Decision Modeling](https://cea-and-modeling-using-r-workshop.netlify.app/days/day1/welcome/) 
+The module is **completely asynchronous** and will take 8-10 hours to complete.
 
-- [Introduction to Decision Modeling](https://cea-and-modeling-using-r-workshop.netlify.app/days/day1/darth/)
+*Support* available during Zoom office hours:
 
-These modules are **completely asynchronous**.
+- 10:00am – 12:00pm Monday, October 25, 2021
 
-- They will take approximately 5-7 hours to complete
-- Slack support available 9AM - 4PM Central Time
-
-
+- 10:00am – 12:00pm Thursday, October 28, 2021

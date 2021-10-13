@@ -9,14 +9,25 @@ widget: custom
 
 Participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. A self-paced module introducing R concepts specifically for decision modeling will be provided as part of your workshop registration.
 
-**August 23**: Introduction to R for decision modeling and introduction to decision modeling
+- Explain research scenarios that require decision analysis methods
 
-**August 24**: Introduction to cost-effectiveness and decision trees
+- Identify, analyze, and manage data for decision analysis
 
-**August 25**: Markov models
+- Implement and analyze decision trees and Markov models
 
-**August 26**: Microsimulation modeling
+- Implement and analyze microsimulation models
 
-**August 27**: Sensitivity analysis
+- Implement and interpret probabilistic sensitivity analysis
+
+- Implement and interpret model calibration
+
+- Develop competence in R for performing decision analytic techniques
+
+- Create a basic R shiny interface
+
+- Understand good coding practices
+
+- Understand the benefits of R for decision analysis
+
 
 

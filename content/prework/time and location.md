@@ -11,23 +11,39 @@ toc: true
 type: docs
 ---
 
-## When
+## Dates
 
-- Monday, Aug 23: 9:00AM - 12PM 
+**Part I: Foundations of Decision Modeling for Public Health**
 
-- Tuesday, Aug 24: 9:00AM - 12PM 
+- October 14, 2021
 
-- Wednesday, Aug 25: 9:00AM - 12PM 
+- October 14 - November 28, 2021 (asynchronous)
 
-- Thursday, Aug 26: 9:00AM - 12PM 
+**PART II: Hands-On Decision Modeling for Public Health in R**
 
-- Friday, Aug 27: 9:00AM - 12PM 
+- November 29, 2021
 
-Office hours 8:30 - 9:00AM every day
+- November 30, 2021
 
-*Times are Central Time*
+- December 1, 2021
 
-## Where
+- December 2, 2021
+
+**Part III: Advanced Topics for Decision Modeling in Public Health**
+
+- January 24, 2022
+
+- January 25, 2022
+
+- January 26, 2022
+
+- January 28, 2022
+
+## Time
+
+10:00AM - 12:00PM ET
+
+## Location
 
 Virtual meeting on Zoom
 

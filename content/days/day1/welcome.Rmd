@@ -15,9 +15,10 @@ Welcome to the *Introduction to R for Decision Modeling* module!
 Please go through the presentation videos and demos and attempt the exercises in each of the below sections:
 
 - Getting ready
-- Data manipulation
 - Introduction to R
+- Data manipulation
 - Data visualization
-- R tips and debugging
-- Matrix algebra
 - Loops and functions
+- Matrix algebra
+- R tips and debugging
+- R Shiny

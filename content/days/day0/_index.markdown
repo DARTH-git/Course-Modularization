@@ -1,7 +1,7 @@
 ---
 title: "October 14 agenda"
 author: ''
-date: "2021-10-13"
+date: "2021-10-14"
 slug: day0
 categories: []
 tags: []
@@ -21,7 +21,7 @@ type: docs
 
 - Read through case studies
 
-Here is a tentative timetable:
+Here is a tentative timetable (times are in **Eastern Time**):
 
 |                            |            |
 |--------------------------------------------|:------------------|

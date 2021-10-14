@@ -25,7 +25,9 @@ menu:
 
 [Download exercise template](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - template.Rmd)
 
-[Download instructor solutions](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - solutions.Rmd)
+Solutions will be provided later.
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - solutions.Rmd) -->
 
 ## Matrix algebra handout 
 

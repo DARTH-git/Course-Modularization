@@ -15,6 +15,6 @@ menu:
 
 ## Handout
 
-[Download handout](../../../Course_Modularization/Intro, general, packages/R tips and tricks.html)
+[Download handout](../../../Course_Modularization/Intro, general, packages/rtips.html)
 
 This handout is only for your reference.

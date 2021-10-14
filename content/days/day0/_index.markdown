@@ -21,7 +21,7 @@ type: docs
 
 - Read through case studies
 
-Here is a tentative timetable (times are in **Eastern Time**):
+Here is a tentative timetable (times are in **Central Time**):
 
 |                            |            |
 |--------------------------------------------|:------------------|
@@ -40,9 +40,9 @@ Here is a tentative timetable (times are in **Eastern Time**):
 
 *Support* available during Zoom office hours:
 
-- 10:00am – 12:00pm ET Tuesday, October 26, 2021
+- 10:00am – 12:00pm CT Tuesday, October 26, 2021
 
-- 10:00am – 12:00pm ET Tuesday, November 16, 2021
+- 10:00am – 12:00pm CT Tuesday, November 16, 2021
 
 
 <!-- ## Live session recording: -->

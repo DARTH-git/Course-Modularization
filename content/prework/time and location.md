@@ -41,7 +41,7 @@ type: docs
 
 ## Time
 
-10:00AM - 12:00PM ET
+9:00AM - 11:00PM CT
 
 ## Location
 

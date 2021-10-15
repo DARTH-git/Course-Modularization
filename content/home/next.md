@@ -6,9 +6,10 @@ title: Upcoming
 weight: 1
 ---
 
-## Next session: October 14, 2021
+## Next session: November 29, 2021 9:00AM CT
 
-The workshop officially begins at 10:00AM ET on October 14, 2021. 
+Before the next session, please complete the asynchronous module [Introduction to R for Decision Modeling](https://decision-modeling-for-public-health-2021.netlify.app/days/day1/welcome/).
+
 
 
 

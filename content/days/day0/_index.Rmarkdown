@@ -45,8 +45,8 @@ Here is a tentative timetable (times are in **Central Time**):
 - 10:00am – 12:00pm CT Tuesday, November 16, 2021
 
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "592848080") -->
-<!-- ``` -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "632412491")
+```

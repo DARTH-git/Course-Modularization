@@ -1,7 +1,7 @@
 ---
 title: "October 14 agenda"
 author: ''
-date: "2021-10-14"
+date: "2021-10-18"
 slug: day0
 categories: []
 tags: []
@@ -38,7 +38,7 @@ Here is a tentative timetable (times are in **Central Time**):
 
 -   Self-paced, asynchronous; expected workload 8-10 hours
 
-*Support* available during Zoom office hours:
+*Support* available during [Zoom office hours](https://umn.zoom.us/j/98404393065?pwd=UFVBSGF3RDZ6K1BHVkFNNEJ1S0RNUT09):
 
 -   10:00am – 12:00pm CT Tuesday, October 26, 2021
 

@@ -2,9 +2,7 @@
 title: '3-state Markov model in R'
 subtitle: 'with age dependency'
 author: "The DARTH workgroup"
-output:
-  pdf_document: default
-  html_document: default
+output: html_notebook
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:

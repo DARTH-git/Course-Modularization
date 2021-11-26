@@ -25,7 +25,7 @@ If not, please download the above R script to install all R packages required fo
 
 Please go over this short video on intro to `OpenTree`.
 
-```{r}
+```{r, echo = F}
 blogdown::shortcode("vimeo", "646960252")
 ```
 

@@ -1,12 +1,13 @@
 ---
-title: Overview & OpenTree
+title: "Overview & OpenTree"
 date: "`r Sys.Date()`"
-draft: false
-type: docs
+draft: no
+output: pdf_document
 linktitle: Overview & OpenTree
 menu:
   day2:
     weight: 2
+type: docs
 ---
   
 <!-- ## Workshop series overview  -->

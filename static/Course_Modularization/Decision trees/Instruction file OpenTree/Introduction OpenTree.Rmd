@@ -1,7 +1,7 @@
 ---
-title: "OpenTree Demo"
+title: "Introduction OpenTree - Instruction file"
 author: "DARTH workgroup"
-date: "10/6/2021"
+date: "11/7/2021"
 output: html_document
 ---
 
@@ -44,7 +44,7 @@ The function `create_tree()` creates a blank tree and the function `open_tree()`
 Any changes made to the tree in OpenTree are automatically saved as a `.json` file to the working directory. If you are running it in an R script, the `.json` file will be saved to the path on your machine specified in `dir_name`. If you are running it in an R markdown document, the `.json` file will be saved to the path where the R markdown document is located. 
 
 ```{r}
-#create_tree(file_name = "DemoTree", dir_name = getwd())
+create_tree(file_name = "DemoTree", dir_name = getwd())
 open_tree(file_name = "DemoTree", dir_name = getwd())
 ```
 
@@ -58,17 +58,17 @@ n_str          <- length(v_names_str)                   # number of strategies
 wtp            <- 100000                                # willingness to pay threshold
 
 # Probabilities
-p_S         <- 0.52   # probability of getting sick
-p_S_int     <- 0.4    # probability of getting sick under intervention
+p_S       <- 0.52   # probability of getting sick
+p_S_int   <- 0.40    # probability of getting sick under intervention
 
 
 # Costs
 c_S       <- 1200   # cost of viral encephalitis care without complications
-c_H    <- 9000   # cost of viral encephalitis care with complications
+c_H       <- 9000   # cost of viral encephalitis care with complications
 
 # LE
-le_S        <- 7     # remaining life expectancy for sick people
-le_H        <- 10    # remaining life expectancy for healthy people
+le_S      <- 7      # remaining life expectancy for sick people
+le_H      <- 10     # remaining life expectancy for healthy people
 
 ```
 

@@ -11,7 +11,7 @@ menu:
 
 ## Slides
 
-[Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_UMN2021.pptx)
+[Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_CDC2021.pptx)
 
 ## Presentation videos
 

@@ -1,5 +1,5 @@
 ---
-title: "August 26 Schedule"
+title: "December 1 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -23,7 +23,7 @@ Basic agenda:
 **Preparation**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
+- Watch ["Microsimulation Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day4/microsim_videos/)
 
 Here is a tentative timetable:
 
@@ -40,18 +40,16 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete microsimulation model exercise (1-2 hours)
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day5/sa_videos/)
-
-Live office hours available on Zoom 8:30AM-9:00AM
+- Watch [“Sensitivity Analysis” videos (40 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day5/sa_videos/)
 
 Slack support available 1:00PM-4:00PM
 
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "593027038")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "593027038") -->
+<!-- ``` -->
 
 
  

@@ -1,7 +1,7 @@
 ---
 title: "November 30 Schedule"
 author: ''
-date: "2021-11-26"
+date: "2021-11-29"
 slug: day3
 categories: []
 tags: []
@@ -37,7 +37,7 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-<!-- - Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/) -->
+- Watch ["Microsimulation Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day4/microsim_videos/)
 
 Slack support available 1:00PM-4:00PM
 

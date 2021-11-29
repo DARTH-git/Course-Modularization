@@ -23,6 +23,6 @@ menu:
 
 [Download model function template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/functions/Functions_markov_sick-sicker.R)
 
-[Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_SA_solutions.Rmd)
+<!-- [Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_SA_solutions.Rmd) -->
 
-[Download model function solution code](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/Functions_markov_sick-sicker_sol.R)
+<!-- [Download model function solution code](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/Functions_markov_sick-sicker_sol.R) -->

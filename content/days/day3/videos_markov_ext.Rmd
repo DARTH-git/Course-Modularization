@@ -11,7 +11,7 @@ menu:
 
 ## Slides
 
-[Download Markov model extensions slides](../../../Course_Modularization/Markov models/Slides/MarkovModelVariants_UMN2021.pptx)
+[Download Markov model extensions slides](../../../Course_Modularization/Markov models/Slides/MarkovModelVariants_CDC2021.pptx)
 
 ## Presentation video
 

@@ -1,5 +1,5 @@
 ---
-title: "August 25 Schedule"
+title: "November 30 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day3
@@ -18,11 +18,10 @@ type: docs
 Basic agenda:
 
 - Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
 
 **Preparation**:
 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
+- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day3/videos_markov_ext/)
 - Complete cohort state-transition model exercise (1 hour)
 
 Here is a tentative timetable:
@@ -38,17 +37,15 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/)
-
-Live office hours available on Zoom 8:30AM-9:00AM
+<!-- - Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/) -->
 
 Slack support available 1:00PM-4:00PM
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "592378542")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "592378542") -->
+<!-- ``` -->
 
 
 

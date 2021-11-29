@@ -1,17 +1,18 @@
 ---
-title: Overview & OpenTree
+title: "Overview & OpenTree"
 date: "`r Sys.Date()`"
-draft: false
-type: docs
+draft: no
+output: pdf_document
 linktitle: Overview & OpenTree
 menu:
   day2:
     weight: 2
+type: docs
 ---
   
-## Workshop series overview 
+<!-- ## Workshop series overview  -->
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx)
+<!-- [Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx) -->
 
 ## OpenTree installation
 
@@ -20,6 +21,14 @@ For those we went through the "Getting ready" session of the "Introduction to R 
 [Download package-installation R script](../../../Course_Modularization/Intro, general, packages/00_prep.R)
 
 If not, please download the above R script to install all R packages required for this workshop, which includes `OpenTree`. 
+
+## OpenTree intro video
+
+Please go over this short video on intro to `OpenTree`.
+
+```{r, echo = F}
+blogdown::shortcode("vimeo", "646960252")
+```
 
 ## OpenTree demo
 
@@ -39,9 +48,9 @@ Copy and paste the json code from the pop-up to Notepad and save it as "HVEtempl
 
 [Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json)
 
-[Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+<!-- [Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
 
-[Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+<!-- [Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
 
 <!-- ## Exercise -->
 

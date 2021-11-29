@@ -123,8 +123,10 @@ c_trtB    <- 1500  # cost of treatment B (per cycle) in healthy state
 u_H       <- 1     # utility when healthy 
 u_S       <- 0.5   # utility when sick
 u_D       <- 0     # utility when dead
-d_e       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
-d_c       <- 0.03  # discount rate per cycle equal discount of costs and QAL  
+
+# discount rate per cycle equal discount of costs and QALYs by 3%
+d_e       <- 0.03  # discount rate per cycle for effects
+d_c       <- 0.03  # discount rate per cycle for costs   
 
 # Discount weight (equal discounting is assumed for costs and effects)
 v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
@@ -195,7 +197,8 @@ m_P_SoC["Sick", "Dead"] <-     p_SD
 m_P_SoC["Dead", "Dead"] <- 1
 
 ## Treatment A
-m_P_trtA <- m_P_SoC
+# Store the same matrix of SoC in Trt A, only replace different parameters
+m_P_trtA <- m_P_SoC 
 m_P_trtA["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS_trtA)
 m_P_trtA["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS_trtA
 
@@ -208,6 +211,8 @@ m_P_trtB["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS_trtB
 Check if transition probability matrices are valid.  
 
 ```{r}
+# Function in darthtools;
+# verbose = Logical variable to indicate print out of messages. Default = TRUE
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(m_P_SoC,  verbose = TRUE)
 check_transition_probability(m_P_trtA, verbose = TRUE)
@@ -246,12 +251,12 @@ abline(v = which.max(m_M_SoC[, "Sick"]), col = "gray")
 ```
 
 ## 06.2 Overall Survival (OS)
-
+Print the overall survival for the standard of care
 ```{r}
-v_os <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
-v_os <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
+v_os_SoC <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
+v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
 
-plot(v_os, type = 'l', 
+plot(v_os_SoC, type = 'l', 
      ylim = c(0, 1),
      ylab = "Survival probability",
      xlab = "Cycle",
@@ -260,18 +265,21 @@ plot(v_os, type = 'l',
 # add grid 
 grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
      equilogs = TRUE) 
+
+
+
 ```
 
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os)  # summing probability of OS over time  (i.e. life expectancy)
+le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expectancy)
 ```
 
 ## 06.3 Disease prevalence
 
 ```{r}
-v_prev <- m_M_SoC[, "Sick"]/v_os
+v_prev <- m_M_SoC[, "Sick"]/v_os_SoC
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",

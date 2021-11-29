@@ -1,5 +1,5 @@
 ---
-title: "August 24 schedule"
+title: "November 29 schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day2
@@ -18,12 +18,11 @@ type: docs
 Basic agenda:
 
 - Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
 
 **Preparation**:
 
-- [Install OpenTree (10 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/intro_to_decision_analysis/)
-- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day2/videos_markov/)
+- [Install OpenTree (10 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/intro_to_decision_analysis/)
+- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/videos_markov/)
 
 Here is a tentative timetable:
 
@@ -41,15 +40,13 @@ Here is a tentative timetable:
 
 - Complete decision tree exercise (30 minutes)
 - Complete cohort state-transition model exercise (1 hour)
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day3/videos_markov_ext/)
-
-Live office hours available on Zoom 8:30AM-9:00AM
+- As needed, review “Cohort State-Transition Models” videos, especially “history dependence” video 6 
+- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day3/videos_markov_ext/)
 
 Slack support available 1:00PM-4:00PM
 
+<!-- ## Live session recording: -->
 
-## Live session recording:
-
-```{r, echo=F}
-blogdown::shortcode("vimeo", "592848080")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "592848080") -->
+<!-- ``` -->

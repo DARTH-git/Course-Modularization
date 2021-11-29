@@ -9,8 +9,10 @@ menu:
     weight: 5
 ---
 
-## Slides
+To be posted.
 
-[Download dampack slides](../../../Course_Modularization/Intro, general, packages/dampack_UMN2021.pptx)
+<!-- ## Slides -->
+
+<!-- [Download dampack slides](../../../Course_Modularization/Intro, general, packages/dampack_UMN2021.pptx) -->
 
 

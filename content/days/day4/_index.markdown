@@ -1,7 +1,7 @@
 ---
 title: "December 1 Schedule"
 author: ''
-date: "2021-11-29"
+date: "2021-11-30"
 slug: day4
 categories: []
 tags: []
@@ -17,8 +17,8 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
+- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Slack support available 8:30AM-12PM Eastern Time
 
 **Preparation**:
 

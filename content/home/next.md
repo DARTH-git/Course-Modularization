@@ -6,7 +6,7 @@ title: Upcoming
 weight: 1
 ---
 
-## Next session: November 30, 2021 9:00AM CT
+## Next session: November 30, 2021 9:00AM ET
 
 Before the next session, please 
 

@@ -1,7 +1,7 @@
 ---
 title: "November 30 Schedule"
 author: ''
-date: "2021-11-29"
+date: "2021-11-30"
 slug: day3
 categories: []
 tags: []
@@ -17,7 +17,7 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
 
 **Preparation**:
 

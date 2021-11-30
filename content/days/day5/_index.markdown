@@ -1,7 +1,7 @@
 ---
 title: "December 2 Schedule"
 author: ''
-date: "2021-11-29"
+date: "2021-11-30"
 slug: day5
 categories: []
 tags: []

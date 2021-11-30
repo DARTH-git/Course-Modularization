@@ -45,8 +45,10 @@ Here is a tentative timetable:
 
 Slack support available 1:00PM-4:00PM
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "592848080") -->
-<!-- ``` -->
+[Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp).
+
+<!-- # ```{r, echo=F} -->
+<!-- # blogdown::shortcode("vimeo", "592848080") -->
+<!-- # ``` -->

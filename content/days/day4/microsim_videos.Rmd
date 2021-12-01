@@ -11,7 +11,7 @@ menu:
 
 ## Slides
 
-[Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/Microsimulation_Slides_UMN2021.ppt)
+[Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/Microsimulation_Slides_CDC2021.ppt)
 
 ## Presentation videos
 

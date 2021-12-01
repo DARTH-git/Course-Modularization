@@ -1,7 +1,7 @@
 ---
 title: "November 29 schedule"
 author: ''
-date: "2021-11-26"
+date: "2021-12-01"
 slug: day2
 categories: []
 tags: []
@@ -17,7 +17,7 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
 
 **Preparation**:
 
@@ -45,8 +45,10 @@ Here is a tentative timetable:
 
 Slack support available 1:00PM-4:00PM
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "592848080") -->
-<!-- ``` -->
+[Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp)
+
+<!-- # ```{r, echo=F} -->
+<!-- # blogdown::shortcode("vimeo", "592848080") -->
+<!-- # ``` -->

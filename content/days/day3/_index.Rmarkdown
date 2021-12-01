@@ -17,7 +17,7 @@ type: docs
 
 Basic agenda:
 
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
 
 **Preparation**:
 
@@ -37,11 +37,13 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete cohort state-transition model extension exercise (1 hour)
-<!-- - Watch ["Microsimulation Models" videos (30 minutes)](https://cea-and-modeling-using-r-workshop.netlify.app/days/day4/microsim_videos/) -->
+- Watch ["Microsimulation Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day4/microsim_videos/)
 
 Slack support available 1:00PM-4:00PM
 
-<!-- ## Live session recording: -->
+## Live session recording:
+
+[link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5)
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "592378542") -->

@@ -43,7 +43,9 @@ Slack support available 1:00PM-4:00PM
 
 ## Live session recording:
 
-[link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5)
+<!-- [link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5) -->
+
+Recording will be uploaded soon.
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "592378542") -->

@@ -1,7 +1,7 @@
 ---
 title: "November 30 Schedule"
 author: ''
-date: "2021-11-30"
+date: "2021-12-01"
 slug: day3
 categories: []
 tags: []
@@ -41,7 +41,9 @@ Here is a tentative timetable:
 
 Slack support available 1:00PM-4:00PM
 
-<!-- ## Live session recording: -->
+## Live session recording:
+
+[link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5)
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "592378542") -->

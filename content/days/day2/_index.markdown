@@ -1,7 +1,7 @@
 ---
 title: "November 29 schedule"
 author: ''
-date: "2021-11-30"
+date: "2021-12-01"
 slug: day2
 categories: []
 tags: []
@@ -47,7 +47,7 @@ Slack support available 1:00PM-4:00PM
 
 ## Live session recording:
 
-[Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp).
+[Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp)
 
 <!-- # ```{r, echo=F} -->
 <!-- # blogdown::shortcode("vimeo", "592848080") -->

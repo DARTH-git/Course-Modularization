@@ -132,6 +132,22 @@ v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles)
 v_dwe <- 1 / (1 + d_e) ^ (0:n_cycles) 
 ```
 
+## Draw the state-transition cohort model
+
+```{r}
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
+m_P_diag["Healthy", "Sick" ]     = "" 
+m_P_diag["Healthy", "Dead" ]     = ""
+m_P_diag["Healthy", "Healthy" ]  = ""
+m_P_diag["Sick"   , "Dead" ]     = ""
+m_P_diag["Sick"   , "Sick" ]     = ""
+m_P_diag["Dead"   , "Dead" ]     = ""
+layout.fig <- c(2, 1)
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
+        cex = 0.8, box.cex = 0.7, lwd = 1)
+```
+
 # 04 Define and initialize matrices and vectors
 
 ## 04.1 Cohort trace
@@ -252,6 +268,7 @@ grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd")
 
 ```{r}
 v_le <- sum(v_os)  # summing probability of OS over time  (i.e. life expectancy)
+v_le
 ```
 
 ## 06.3 Disease prevalence

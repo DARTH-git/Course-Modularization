@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>DARTH Framework</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="DARTH.css" type="text/css" />
+    <link rel="stylesheet" href="DARTH-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# DARTH Framework
+## made with xaringan
+### DARTH workgroup
+### 2020/01/10 (updated: 2021-04-29)
+
+---
+
+
+
+
+
+
+class: inverse, center, middle
+
+# How most &lt;sup&gt;*&lt;/sup&gt; people currently work
+(&lt;sup&gt;*&lt;/sup&gt;includes me)
+
+---
+
+# Specialized software
+Most of us use **many different software programs** 
+
+and save it without a **clear**, **concise** and **consistent**  naming convention or folder structure.
+
+--
+
+# Result?
+
+---
+
+background-image: url("./figs/slides/File structure Eline dates.png")
+background-size: contain
+background-position: 100% 30%
+class: left, upper, inverse
+
+# Uhm??
+## Right!
+---
+
+background-image: url("./figs/slides/Dropbox_404error.png")
+background-size: 500px
+background-position: 50% 70%
+class: center, upper
+
+# Consequence
+
+.footnote[
+Image from [Dropbox](https://www.dropboxforum.com/t5/Sharing-and-collaboration/Video-won-t-play-when-shared/td-p/247437/page/3)
+]
+
+
+---
+class: inverse, center, middle
+
+# Our motivation: 
+## maximize effectiveness, reduce frustration, facilitate collaboration and increase readability of your work
+---
+
+# Streamline your work using R
+
+R has the potential to facilitate **transparency**, **reproducibility**, and **shareability**
+
+
+## You can use R for
+- Data synthesis
+- Data analysis
+- Reporting
+- Presenting
+
+But this all comes with a **very steep learning curve** which can cause a lot of frustration.
+
+---
+# [DARTH](http://darthworkgroup.com) Framework
+##‘A coding framework for improving transparency in decision modeling’
+
+.center[![paper](./figs/slides/Framework_Paper_figure.png)]
+
+
+---
+
+# Schematic representation 
+
+.center[![Framework](./figs/slides/Coding framework figure.png)]
+
+---
+
+## Good project directory structure example:
+
+- `data`        - all input data (and metadata) used in the analysis 
+- `functions`   - for functions to help us modify the data
+- `R`           - where interactive files for the analysis are stored 
+- `figs`        - for the figures
+- `tables`      - for the tables
+- `output`      - any type of intermediate or output files
+- *you might prefer an extra `cleaned-data` folder*
+- `report`      - for the RMarkdown manuscript or report of results
+
+---
+# DARTH naming convention (1)
+
+.center[![Naming convention tab2](./figs/slides/DARTH_naming convention_tab2.png)]
+
+---
+# DARTH naming convention (2)
+.center[![Naming convention](./figs/slides/darth-naming-convention.png)]
+
+---
+# darthpack
+.center[![Naming convention](./figs/slides/darthpack_github.png)]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"seal": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

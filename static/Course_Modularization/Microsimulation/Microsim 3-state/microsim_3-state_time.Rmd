@@ -295,7 +295,7 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
   te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
   tc_hat  <- mean(tc)       # average (discounted) cost 
-  te_hat  <- mean(te)       # average (discounted) QAL  
+  te_hat  <- mean(te)       # average (discounted) QALY  
   # store the results from the simulation in a list
   results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, 
                   tc_hat = tc_hat, te_hat = te_hat)   

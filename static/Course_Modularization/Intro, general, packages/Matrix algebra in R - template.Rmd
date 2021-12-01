@@ -42,8 +42,8 @@ In `R`, there are three key operations that we can do with matrices, addition (`
 4) The product of the first matrix with the transpose of the second matrix
 
 ```{r}
-m_A <- matrix(1:9,  nrow=3, ncol=3)
-m_B <- matrix(6:14, nrow=3, ncol=3)
+m_A <- matrix(1:9,  nrow = 3, ncol = 3)
+m_B <- matrix(6:14, nrow = 3, ncol = 3)
 ```
 
 ```{r}
@@ -58,8 +58,8 @@ m_B <- matrix(6:14, nrow=3, ncol=3)
 2) Obtain the transpose of the product of `matrix1` and `matrix2` and element-wise multiply the result with `matrix1`
 
 ```{r}
-matrix1 <- matrix(1:9, nrow=3, ncol=3)
-matrix2 <- matrix(c(1,0,0,0,3,4,5,9,2), nrow=3, ncol=3)
+matrix1 <- matrix(1:9, nrow = 3, ncol = 3)
+matrix2 <- matrix(c(1, 0, 0, 0, 3, 4, 5, 9, 2), nrow = 3, ncol = 3)
 
 # 1.
 # Your turn

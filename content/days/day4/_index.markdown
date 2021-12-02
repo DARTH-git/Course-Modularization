@@ -1,7 +1,7 @@
 ---
 title: "December 1 Schedule"
 author: ''
-date: "2021-11-30"
+date: "2021-12-01"
 slug: day4
 categories: []
 tags: []
@@ -45,7 +45,11 @@ Here is a tentative timetable:
 Slack support available 1:00PM-4:00PM
 
 
-<!-- ## Live session recording: -->
+## Live session recording:
+
+[Link](https://us02web.zoom.us/rec/share/7tUN3LBxQ2_MRkCByl030LWqmf6TzGfxnbadL9Z6Z6BRFBuNoJ05EYH6j9O2o9nd.z_PByKw5n7yFnT4f)
+
+Passcode: +8AsHLg#
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "593027038") -->

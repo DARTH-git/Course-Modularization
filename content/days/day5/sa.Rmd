@@ -11,9 +11,9 @@ menu:
 
 ## R code demo & walkthrough - 3-state Markov model with sensitivity analyses    
 
-[Download demo code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA.Rmd)
+[Download demo code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA_time.Rmd)
 
-[Download model function code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state.R)
+[Download model function code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state_time.R)
 
 ## Exercise - Markov Sick-Sicker model with sensitivity analyses
 

@@ -23,4 +23,4 @@ menu:
 
 [Download excercise template](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/templates/microsim_Sick-Sicker_time_template.Rmd)
 
-<!-- [Download excercise solutions](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/microsim_Sick-Sicker_time_solutions.Rmd) -->
+[Download excercise solutions](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/microsim_Sick-Sicker_time_solutions.Rmd)

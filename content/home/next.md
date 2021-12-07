@@ -6,13 +6,11 @@ title: Upcoming
 weight: 1
 ---
 
-## Next session: December 2, 2021 9:00AM ET
+## Next session: January 24, 2022 9:00AM ET
 
 Before the next session, please 
 
-- Complete microsimulation model exercise (1-2 hours)
-
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day5/sa_videos/)
+- Submit [project needs assessment survey](../../../Course_Modularization/Intro, general, packages/Description of own case example_template.docx) to **info@darthworkgroup.com**
 
 
 

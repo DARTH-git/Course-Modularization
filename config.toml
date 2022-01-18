@@ -290,7 +290,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-xaxfz4jl-xdpVSoEkRaG9nXcoVxIT1w"
+  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-zqki3y0x-JaKjwqxmiOWfWjrFohs34g"
   weight = 10
   
 # [[menu.main]]

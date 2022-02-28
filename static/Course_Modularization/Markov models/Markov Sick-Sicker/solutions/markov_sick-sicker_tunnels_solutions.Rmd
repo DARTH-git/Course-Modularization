@@ -73,7 +73,7 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```{r, warning=F, message=F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "dampack")                                               
+p_load("here", "dplyr", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "dampack", "tidyverse")                                               
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
@@ -122,12 +122,13 @@ v_p_HD   <- 1 - exp(- v_r_HD)  # probability to die when healthy
 p_HS1    <- 0.15          	   # probability to become sick when healthy
 p_S1H    <- 0.5           	   # probability to become healthy when   
 
+## History-dependent transition probability of becoming Sicker when Sick
+# conditional on surviving
 # Weibull parameters
-l        <- 0.08 # scale
-g        <- 1.1  # shape
-# Weibull function
-v_p_S1S2 <- l*g*(1:n_tunnel_size)^{g-1} # probability to become sicker when sick 
-                                        # (time-dependent)
+p_S1S2_scale <- 0.08 # scale
+p_S1S2_shape <- 1.1  # shape
+# Weibull hazard
+v_p_S1S21 <- p_S1S2_scale * p_S1S2_shape * (1:n_tunnel_size)^{p_S1S2_shape-1}
 
 hr_S1    <- 3             	   # hazard ratio of death in sick vs healthy
 hr_S2    <- 10            	   # hazard ratio of death in sicker vs healthy 

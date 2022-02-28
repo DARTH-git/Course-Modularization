@@ -111,7 +111,7 @@ p_HD      <- 0.01  # probability of dying when healthy
 p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
 p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
-p_SD      <- 0.1   # probability of dying          
+p_SD      <- 0.1   # probability of dying when sick    
 
 ## State rewards
 # Costs and utilities  

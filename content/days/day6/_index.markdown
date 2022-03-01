@@ -1,7 +1,7 @@
 ---
 title: "March 1, 2022 Schedule"
 author: ''
-date: "2022-02-28"
+date: "2022-03-01"
 slug: day6
 categories: []
 tags: []
@@ -31,7 +31,7 @@ Here is a tentative timetable:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/case studies/ModelBasedCEA_CDC2022.pptx)
+[Download slides](../../../Course_Modularization/case studies/ModelBasedCEA_CDC2022.pdf)
 
 <!-- ## Synchronous session recording -->
 

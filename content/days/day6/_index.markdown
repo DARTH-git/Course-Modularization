@@ -33,12 +33,14 @@ Here is a tentative timetable:
 
 [Download slides](../../../Course_Modularization/case studies/ModelBasedCEA_CDC2022.pdf)
 
-<!-- ## Synchronous session recording -->
+## Synchronous session recording
 
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "477344233") -->
-<!-- blogdown::shortcode("vimeo", "477344531") -->
-<!-- ``` -->
+The live session recording can be found [here](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/Pio7dsa56IiTSb35vx5k7t5-6Ng25cor6VTLgPtTruL1thTK6uW3Zj6Y1oFEOJJ3.oxHo0FoI7bFfK4SU__;!!D0zGoin7BXfl!pS8WrahoHcj65LolRBSq0i1K5_tBvEKOIxdPAF8G4zKSlU5C5tSYkL4968jbB12AwQ8$).
+
+<!-- # ```{r, echo=F} -->
+<!-- # blogdown::shortcode("vimeo", "477344233") -->
+<!-- # blogdown::shortcode("vimeo", "477344531") -->
+<!-- # ``` -->
 
 
   

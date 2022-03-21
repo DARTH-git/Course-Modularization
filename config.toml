@@ -294,6 +294,13 @@ enableGitInfo = false
   identifier = "day6"
 
 [[menu.main]]
+  name = "Mar 21"
+  weight = 9
+  url = "days/day7/" 
+  identifier = "day7"
+
+
+[[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
   url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-14nyrvggh-hw1_K~L3w17cEggU~m8pFQ"

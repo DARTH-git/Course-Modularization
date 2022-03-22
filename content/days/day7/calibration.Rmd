@@ -11,7 +11,10 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx)
+[Download slides - estimating inputs](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx)
+
+[Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx)
+
 
 ## R demo
 

@@ -1,0 +1,34 @@
+---
+title: "March 29, 2022 schedule"
+author: ''
+date: "2022-03-28"
+slug: day8
+categories: []
+tags: []
+menu:
+  day8:
+    name: "Mar 29 schedule"
+    weight: 1
+toc: yes
+type: docs
+---
+
+Basic agenda:
+
+- Synchronous session is from 9:00am - 12:00pm Eastern Time 
+- Slack support available 9:00am - 4:00pm Eastern Time
+
+Here is a tentative timetable:
+
+|                            |            |
+|--------------------------------------------|:------------------|
+| 9:00 – 9:30  |  Calibration exercise solutions  |
+| 9:30 – 10:15 | Calibration examples from fellows and discussion | 
+| 10:15 – 10:30 | Break |
+| 10:30 - 11:00 | Bayesian calibration  |
+| 11:00 - 12:00pm  | Bayesian calibration R code review and exercise |
+
+## Synchronous session recording
+
+<!-- The live session recording can be found [here](https://umn.zoom.us/rec/share/Cah3mAot31zByJnGAY3aSKhDpekihWcY4dQOgRPZzckyObYWI5k6sXjqsFdn78G7.w7BN81VdvS1l-lw8). -->
+

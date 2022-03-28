@@ -299,6 +299,11 @@ enableGitInfo = false
   url = "days/day7/" 
   identifier = "day7"
 
+[[menu.main]]
+  name = "Mar 30"
+  weight = 10
+  url = "days/day8/" 
+  identifier = "day8"
 
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"

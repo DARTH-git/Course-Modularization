@@ -1,5 +1,5 @@
 ---
-title: "March 29, 2022 schedule"
+title: "March 30, 2022 schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day8
@@ -7,7 +7,7 @@ categories: []
 tags: []
 menu:
   day8:
-    name: "Mar 29 schedule"
+    name: "Mar 30 schedule"
     weight: 1
 toc: yes
 type: docs

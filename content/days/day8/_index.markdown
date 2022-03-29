@@ -1,13 +1,13 @@
 ---
-title: "March 29, 2022 schedule"
+title: "March 30, 2022 schedule"
 author: ''
-date: "2022-03-28"
+date: "2022-03-29"
 slug: day8
 categories: []
 tags: []
 menu:
   day8:
-    name: "Mar 29 schedule"
+    name: "Mar 30 schedule"
     weight: 1
 toc: yes
 type: docs

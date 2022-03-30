@@ -1,44 +1,46 @@
 ---
-title: Day 5 schedule
+title: "March 1, 2022 Schedule"
 author: ''
-date: "2020-11-09"
+date: "2022-03-01"
 slug: day6
 categories: []
 tags: []
 menu:
   day6:
-    name: "Day 5 schedule"
+    name: "Mar 1 schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Monday, Nov 9**: *Model Calibration*
-
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+- Synchronous session is from 9:00am - 12:00pm Eastern Time 
 - Slack support available 9:00am - 4:00pm Eastern Time
 
-Here is a tentative timetable for Day 5:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  |   Review: sensitivity analysis model exercise solutions |
-| 9:30 – 9:45 | Code review: Basic model calibration (non-Bayesian) | 
-| 10:00 – 11:00 | Hands-on exercise: Basic model calibration  |
-| 11:00 – 11:30 | Code review: Bayesian model calibration |
-| 11:30 – 12:00 | Hands-on exercise: Bayesian model calibration (to be finished on your own) |
-| 1:00pm – 4:00pm | On your own |
+| 9:00 – 9:30  |  Designing a model-based cost-effectiveness analysis  |
+| 9:30 – 10:00 | Case study 1 discussion - Mengyao Li | 
+| 10:00 – 10:30 | Case study 2 discussion - Emily Pollock  |
+| 10:30 - 10:45 | Break |
+| 10:45 - 11:15 | Case study 3 discussion - Patrick Clay |
+| 11:15 - 12:00pm  | Recap and Q&A |
 
-From 1:00pm to 4:00pm, please do the following on your own:
+## Slides
 
-- Complete model calibration hands-on exercise
-
+[Download slides](../../../Course_Modularization/case studies/ModelBasedCEA_CDC2022.pdf)
 
 ## Synchronous session recording
 
-<!--html_preserve-->{{% vimeo "477344233" %}}<!--/html_preserve--><!--html_preserve-->{{% vimeo "477344531" %}}<!--/html_preserve-->
+The live session recording can be found [here](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/Pio7dsa56IiTSb35vx5k7t5-6Ng25cor6VTLgPtTruL1thTK6uW3Zj6Y1oFEOJJ3.oxHo0FoI7bFfK4SU__;!!D0zGoin7BXfl!pS8WrahoHcj65LolRBSq0i1K5_tBvEKOIxdPAF8G4zKSlU5C5tSYkL4968jbB12AwQ8$).
+
+<!-- # ```{r, echo=F} -->
+<!-- # blogdown::shortcode("vimeo", "477344233") -->
+<!-- # blogdown::shortcode("vimeo", "477344531") -->
+<!-- # ``` -->
 
 
   

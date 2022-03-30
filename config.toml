@@ -286,11 +286,29 @@ enableGitInfo = false
   weight = 7
   url = "days/day5/" 
   identifier = "day5"
+  
+[[menu.main]]
+  name = "Mar 1"
+  weight = 8
+  url = "days/day6/" 
+  identifier = "day6"
+
+[[menu.main]]
+  name = "Mar 21"
+  weight = 9
+  url = "days/day7/" 
+  identifier = "day7"
+
+[[menu.main]]
+  name = "Mar 30"
+  weight = 10
+  url = "days/day8/" 
+  identifier = "day8"
 
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-zqki3y0x-JaKjwqxmiOWfWjrFohs34g"
+  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-14nyrvggh-hw1_K~L3w17cEggU~m8pFQ"
   weight = 10
   
 # [[menu.main]]

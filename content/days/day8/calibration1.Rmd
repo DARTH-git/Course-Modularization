@@ -1,0 +1,46 @@
+---
+title: Model Calibration continued
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Calibration continued
+menu:
+  day8:
+    weight: 2
+---
+
+## Slides
+
+[Download slides - estimating inputs](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx)
+
+[Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx)
+
+## R demo
+
+[Download model function](../../../Course_Modularization/Calibration/Calibration CRS/CRS_MarkovModel_Function.R)
+
+[Download calibration targets data](../../../Course_Modularization/Calibration/Calibration CRS/CRS_CalibTargets.RData)
+
+[Download Bayesian IMIS code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_IMIS.Rmd)
+
+## Exercise worksheet 
+
+[Download exercise worksheet](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/exercise worksheets/SickSicker-CalibrationExercise.html)
+
+## Student template and relevant files
+
+[Download exercise template](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/templates/SickSicker_CalibTemplate.Rmd)
+
+[Download calibration targets data](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/data/SickSicker_CalibTargets.RData)
+
+[Download model function](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/functions/SickSicker_MarkovModel_Function.R)
+
+## Instructor solutions
+
+Instructor solutions will be uploaded later.
+
+<!-- [Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd) -->
+
+<!-- [Download instructor solutions - Nelder Mead](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_NelderMead.Rmd) -->
+
+

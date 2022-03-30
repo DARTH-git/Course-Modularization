@@ -1,36 +1,33 @@
 ---
-title: Day 6 schedule
+title: "March 21, 2022 schedule"
 author: ''
-date: "2020-11-10"
+date: "2022-03-22"
 slug: day7
 categories: []
 tags: []
 menu:
   day7:
-    name: "Day 6 schedule"
+    name: "Mar 21 schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**Tuesday, Nov 10**: *`R` Shiny and Wrap-up*
-
 Basic agenda:
 
-- Synchronous session is from 9:00am - 12:00pm Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 9:00am - 12:00pm Eastern Time
+- Synchronous session is from 9:00am - 12:00pm Eastern Time 
+- Slack support available 9:00am - 4:00pm Eastern Time
 
-Here is a tentative timetable for Day 6:
+Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: model calibration exercise solutions |
-| 9:30 – 10:00| DARTH `R` packages and tools | 
-| 10:00 – 11:30 | `R` Shiny demo  |
-| 11:30 – 12:00 | Wrap-up   |
+| 9:00 – 10:00  |  Estimating model input values  |
+| 10:00 – 10:30 | Model calibration | 
+| 10:30 – 10:45 | Break |
+| 10:45 - 11:15 | R code walk-through |
+| 11:15 - 12:00pm  | Hands-on calibration exercise in R |
 
 ## Synchronous session recording
 
-<!--html_preserve-->{{% vimeo "477719022" %}}<!--/html_preserve-->
-
-
+The live session recording can be found [here](https://umn.zoom.us/rec/share/Cah3mAot31zByJnGAY3aSKhDpekihWcY4dQOgRPZzckyObYWI5k6sXjqsFdn78G7.w7BN81VdvS1l-lw8).

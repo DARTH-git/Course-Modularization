@@ -1,7 +1,7 @@
 ---
 title: "March 30, 2022 schedule"
 author: ''
-date: "2022-03-29"
+date: "2022-03-30"
 slug: day8
 categories: []
 tags: []
@@ -30,5 +30,5 @@ Here is a tentative timetable:
 
 ## Synchronous session recording
 
-<!-- The live session recording can be found [here](https://umn.zoom.us/rec/share/Cah3mAot31zByJnGAY3aSKhDpekihWcY4dQOgRPZzckyObYWI5k6sXjqsFdn78G7.w7BN81VdvS1l-lw8). -->
+The live session recording can be found [here](https://umn.zoom.us/rec/share/BS84rpIVgMbPBAdGe2YJvw6Z8mR0SduMtl8RfHxzqRWqVC1AnLsLURvoq-ADCX2A.LZq4JOhC2l9CuK--).
 

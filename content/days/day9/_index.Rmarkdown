@@ -1,13 +1,13 @@
 ---
-title: "March 30, 2022 schedule"
+title: "April 12, 2022 schedule"
 author: ''
-date: "2022-04-11"
-slug: day8
+date: "`r Sys.Date()`"
+slug: day9
 categories: []
 tags: []
 menu:
-  day8:
-    name: "Mar 30 schedule"
+  day9:
+    name: "Apr 12 schedule"
     weight: 1
 toc: yes
 type: docs
@@ -22,11 +22,12 @@ Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  |  Calibration exercise solutions  |
-| 9:30 – 10:15 | Calibration examples from fellows and discussion | 
+| 9:00 – 9:30  |  Bayesian calibration exercise solutions  |
+| 9:30 – 10:15 | R Shiny presentation | 
 | 10:15 – 10:30 | Break |
-| 10:30 - 11:00 | Bayesian calibration  |
-| 11:00 - 12:00pm  | Bayesian calibration R code review and exercise |
+| 10:30 - 10:45 | R Shiny examples  |
+| 10:45 - 11:00 | Rabies R shiny risk calculator by Kelly Charniga |
+| 11:00 - 12:00pm  | R Shiny  code review and exercise |
 
 ## Synchronous session recording
 

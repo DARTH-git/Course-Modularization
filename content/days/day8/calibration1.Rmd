@@ -37,10 +37,9 @@ menu:
 
 ## Instructor solutions
 
-Instructor solutions will be uploaded later.
+<!-- Instructor solutions will be uploaded later. -->
 
-<!-- [Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd) -->
+[Download instructor solutions - Bayesian IMIS](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_IMIS.Rmd)
 
-<!-- [Download instructor solutions - Nelder Mead](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_NelderMead.Rmd) -->
 
 

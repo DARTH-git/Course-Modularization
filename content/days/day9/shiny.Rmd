@@ -1,0 +1,42 @@
+---
+title: R Shiny
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: R Shiny
+menu:
+  day9:
+    weight: 2
+---
+
+## Slides
+
+[Download slides - R Shiny](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx)
+
+## Shiny App examples
+
+[Simple Markov model Shiny App](https://darkpeakanalytics.shinyapps.io/sadm-mk2/)
+
+[BresMed Shiny App](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/)
+
+[COVID Shiny Apps](https://www.covid-19-mc.ca/)
+
+## Exercise worksheet 
+
+[Download exercise worksheet](../../../Course_Modularization/Shiny/shiny_exercise.html)
+
+## Student template and relevant files
+
+[Download exercise template - ShinyApp.R](../../../Course_Modularization/Shiny/ShinyApp.R)
+
+[Download Functions_Input.R](../../../Course_Modularization/Shiny/Functions_Input.R)
+
+[Download Function_MicroSim_3state.R](../../../Course_Modularization/Shiny/Function_MicroSim_3state.R)
+
+## Instructor solutions
+
+Instructor solutions will be uploaded later.
+
+<!-- [Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd) -->
+
+

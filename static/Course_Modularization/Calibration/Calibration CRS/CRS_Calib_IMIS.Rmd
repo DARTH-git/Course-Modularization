@@ -218,7 +218,7 @@ calc_log_lik <- function(v_params){
   llik_overall <- numeric(n_samp)
   for(j in 1:n_samp) { # j=1
     jj <- tryCatch( { 
-      ###   Run model for parametr set "v_params" ###
+      ###   Run model for parameter set "v_params" ###
       model_res <- run_crs_markov(v_params[j, ])
       
       ###  Calculate log-likelihood of model outputs to targets  ###

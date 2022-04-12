@@ -41,8 +41,8 @@ menu:
 
 ## Instructor solutions
 
-Instructor solutions will be uploaded later.
+[Download instructor solutions - Default Shiny App](../../../Course_Modularization/Shiny/ShinyApp_solutions.R)
 
-<!-- [Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd) -->
+[Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/Shiny/app_solutions.R)
 
 

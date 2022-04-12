@@ -6,9 +6,9 @@ title: Upcoming
 weight: 1
 ---
 
-## Next session: April 12, 2022 9:00AM ET
+## Workshop completed.
 
-**Zoom link** for April 12 can be found [here](https://umn.zoom.us/j/99199138062?pwd=WnRaNE42WVFCMmpjbkp1SUVvZWdnQT09).
+Thank you for your participation in the workshop. This workshop website will remain active for 6 months.
 
 
 

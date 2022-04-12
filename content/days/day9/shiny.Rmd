@@ -21,6 +21,12 @@ menu:
 
 [COVID Shiny Apps](https://www.covid-19-mc.ca/)
 
+## Shiny App R code demo
+
+[Download demo code](../../../Course_Modularization/Shiny/app.R)
+
+[Download dataset](../../../Course_Modularization/Shiny/framingham.csv)
+
 ## Exercise worksheet 
 
 [Download exercise worksheet](../../../Course_Modularization/Shiny/shiny_exercise.html)

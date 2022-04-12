@@ -11,7 +11,7 @@ menu:
 
 ## Slides
 
-[Download slides - R Shiny](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx)
+[Download slides - R Shiny](../../../Course_Modularization/Shiny/ShinySlides_4_11_22.pptx)
 
 ## Shiny App examples
 

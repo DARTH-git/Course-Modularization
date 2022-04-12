@@ -11,7 +11,6 @@
 
 <meta name="author" content="DARTH" />
 
-<meta name="date" content="2020-11-09" />
 
 <title>Decision Modeling for Public Health</title>
 
@@ -170,7 +169,6 @@ pre code {
 <h1 class="title toc-ignore">Decision Modeling for Public Health</h1>
 <h3 class="subtitle">R Shiny interface</h3>
 <h4 class="author">DARTH</h4>
-<h4 class="date">11/09/2020</h4>
 
 </div>
 
@@ -210,6 +208,11 @@ pre code {
 <li><p>The main panel contains a function called <code>plotOutput()</code> that takes our histogram and plots it on the main panel of the App.</p></li>
 </ul>
 <p>To finalize the App, the command <code>shinyApp(ui = ui, server = server)</code> is inserted at the very end.</p>
+<p><strong>Tasks</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Add a scatter plot with eruptions on the y-axis and waiting time on the x-axis below the histogram in the App.</p></li>
+<li><p>Modify the App to allow the user to choose the color of the scatter plot. The user can choose from red, blue, green, orange and purple.</p></li>
+</ol>
 <p><strong>EXERCISE 2</strong> Follow the steps below to build a Shiny App that hosts our simple 3-state microsimulation model with modifiable input parameters.</p>
 <ul>
 <li><p>Make sure to download all relevant files including <code>Function_MicroSim_3state.R</code>, <code>Functions_Input.R</code>, and <code>ShinyApp.R</code>.</p></li>

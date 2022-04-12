@@ -1,7 +1,6 @@
 ---
 title: "Decision Modeling for Public Health"
 author: "DARTH"
-date: "11/09/2020"
 output:
   html_document:
     df_print: paged
@@ -67,6 +66,12 @@ Now we switch to the **UI**,
 - The main panel contains a function called `plotOutput()` that takes our histogram and plots it on the main panel of the App.
 
 To finalize the App, the command `shinyApp(ui = ui, server = server)` is inserted at the very end.
+
+**Tasks**:
+
+1. Add a scatter plot with eruptions on the y-axis and waiting time on the x-axis below the histogram in the App. 
+
+2. Modify the App to allow the user to choose the color of the scatter plot. The user can choose from red, blue, green, orange and purple. 
 
 **EXERCISE 2** Follow the steps below to build a Shiny App that hosts our simple 3-state microsimulation model with modifiable input parameters.
 

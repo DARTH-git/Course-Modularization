@@ -111,6 +111,45 @@ v_dw      <- 1 / (1 + d_r) ^ (times)  # discount weight
 
 Use the function `digitise()` to translate the digitised OS and PFS data into patient level information.
 
+```{r}
+time_interval <- seq(0, 24, by = 3)
+at_risk <- c(205, 172, 156, 143, 137, 120, 111, 101, 97)
+surv_data <- read.csv("PFS-nivo+ipiCM227.csv", header = T)
+surv_data$PFS.survival.rate... <- surv_data$PFS.survival.rate... / 100
+surv_data <- data.frame(k = 1:nrow(surv_data),
+                        Time = surv_data$Months,
+                        Sk = surv_data$PFS.survival.rate...)
+write.table(surv_data, file = "SurvivalUMN.txt", row.names = F)
+surv_data <- read.table("SurvivalUMN.txt", header = T)
+surv_times <- surv_data$Months
+
+n_risk_table <- create_at_risk_table(survival_time = surv_times[1:83],
+                                     Years = time_interval,
+                                     AtRisk = at_risk)
+write.table(n_risk_table, "RiskTableUMN.txt", row.names = F)
+```
+
+```{r, results="hide"}
+# Create IPD and KM data for the OS curves
+digitise(surv_inp   = "OS_Examp.txt", 
+         nrisk_inp  = "OS_Examp_AtRisk.txt", 
+         km_output  = "KMdata_OS.txt", 
+         ipd_output = "IPDdata_OS.txt")
+
+# Create IPD and KM data for the PFS curves (there have been 99 events in the cohort)
+digitise(surv_inp   = "SurvivalUMN.txt", 
+         nrisk_inp  = "RiskTableUMN.txt", 
+         km_output  = "KMdata_UMN.txt", 
+         ipd_output = "IPDdata_UMN.txt")
+
+# Link the IPD files across the two arms of the trial for OS and PFS
+IPD_OS  <- make.ipd(ipd_files = c("IPDdata_OS.txt"), ctr = 1, 
+                    var.labs  = c("time","event","arm"))
+IPD_PFS <- make.ipd(ipd_files = c("IPDdata_PFS.txt"), ctr = 1,
+                    var.labs  = c("time","event","arm"))
+```
+
+
 ```{r, results="hide"}
 # Create IPD and KM data for the OS curves
 digitise(surv_inp   = "OS_Examp.txt", 

@@ -186,7 +186,7 @@ We developed a function `fit.fun` that allows you to fit several parametric surv
 # Select the one with the most appropriate fit
 # Repeat for PFS and OS
 fit_PFS <- fit.fun(time = "PFS_time", status = "PFS_status", data = OS_PFS_data, 
-                   extrapolate = TRUE, times = times)
+                   extrapolate = F, times = times)
 fit_OS  <- fit.fun(time = "OS_time", status  = "OS_status" , data = OS_PFS_data, 
                    extrapolate = TRUE, times = times) 
 ```

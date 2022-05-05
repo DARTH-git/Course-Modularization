@@ -256,7 +256,13 @@ trans_prob <- function(surv){
   # surv: vector of survival probabilities
   # Output:
   # t.p:  matrix of transition probabilities
-  t.p <- 1- surv[-1]/(surv[-length(surv)])
+  d_surv <- surv[-1]/(surv[-length(surv)])
+  t.p <- 1 - d_surv
+  if (sum(t.p < 0) > 0) {
+    message("Negative transition probabilities were set to 0.")
+  }
+  d_surv[d_surv > 1] <- 1
+  t.p <- 1 - d_surv
   return(t.p = t.p)
 }
 

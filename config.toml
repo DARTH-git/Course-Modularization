@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Decision Modeling for Public Health"
+title = "Cost-Effectiveness and Decision Modeling using R Workshop 2022"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/newworkspace-6d91267/shared_invite/zt-uczf8yva-xCCHvd70zlzLq7_SWGm_9Q"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -251,70 +251,70 @@ enableGitInfo = false
   url = "prework/" 
   weight = 1
 
-[[menu.main]]
-  name = "Oct 14"
-  weight = 2
-  url = "days/day0/" 
-  identifier = "day0"
+#[[menu.main]]
+#  name = "Oct 14"
+#  weight = 2
+#  url = "days/day0/" 
+#  identifier = "day0"
   
 [[menu.main]]
-  name = "Oct 14 - Nov 28"
+  name = "Aug 15 - 26"
   weight = 3
   url = "days/day1/" 
   identifier = "day1"
   
 [[menu.main]]
-  name = "Nov 29"
+  name = "Aug 29"
   weight = 4
   url = "days/day2/" 
   identifier = "day2"
   
 [[menu.main]]
-  name = "Nov 30"
+  name = "Aug 30"
   weight = 5
-  url = "days/day3/" 
-  identifier = "day3"
-  
-[[menu.main]]
-  name = "Dec 1"
-  weight = 6
   url = "days/day4/" 
   identifier = "day4"
-
+  
 [[menu.main]]
-  name = "Dec 2"
-  weight = 7
+  name = "Aug 31"
+  weight = 6
   url = "days/day5/" 
   identifier = "day5"
-  
-[[menu.main]]
-  name = "Mar 1"
-  weight = 8
-  url = "days/day6/" 
-  identifier = "day6"
 
-[[menu.main]]
-  name = "Mar 21"
-  weight = 9
-  url = "days/day7/" 
-  identifier = "day7"
-
-[[menu.main]]
-  name = "Mar 30"
-  weight = 10
-  url = "days/day8/" 
-  identifier = "day8"
+#[[menu.main]]
+#  name = "Dec 2"
+#  weight = 7
+#  url = "days/day5/" 
+#  identifier = "day5"
   
-[[menu.main]]
-  name = "Apr 12"
-  weight = 11
-  url = "days/day9/" 
-  identifier = "day9"
+#[[menu.main]]
+# name = "Mar 1"
+# weight = 8
+#  url = "days/day6/" 
+#  identifier = "day6"
+
+# [[menu.main]]
+#  name = "Mar 21"
+#  weight = 9
+#  url = "days/day7/" 
+#  identifier = "day7"
+
+#[[menu.main]]
+#  name = "Mar 30"
+#  weight = 10
+#  url = "days/day8/" 
+#   identifier = "day8"
+  
+#[[menu.main]]
+#  name = "Apr 12"
+#  weight = 11
+#  url = "days/day9/" 
+#  identifier = "day9"
 
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-14nyrvggh-hw1_K~L3w17cEggU~m8pFQ"
+  url = "https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg"
   weight = 12
   
 # [[menu.main]]

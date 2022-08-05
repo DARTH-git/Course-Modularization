@@ -13,6 +13,6 @@ type: docs
 
 We will use Slack as the main platform for online communications. Throughout and after the workshop, we encourage the instructors and the participants to stay connected on Slack to exchange ideas, discuss problems and seek help from each other.
 
-Click [here](https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-14nyrvggh-hw1_K~L3w17cEggU~m8pFQ) to join the Slack workspace for this workshop. Please email `alan.yang@sickkids.ca` if you are unable to join. **After you join, you can access the workspace via its** [URL](https://join.slack.com/t/2021cdcdecisi-vpc7840/shared_invite/zt-14nyrvggh-hw1_K~L3w17cEggU~m8pFQ).
+Click [here](https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg) to join the Slack workspace for this workshop. Please email `alan.yang@sickkids.ca` if you are unable to join. **After you join, you can access the workspace via its** [URL](https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg).
 
 We encourage you to give us a **short introduction about yourself** in the main chat room once you join!!

@@ -9,19 +9,19 @@ menu:
     weight: 4
 ---
 
-## R code demo & walkthrough - 3-state Markov model with sensitivity analyses    
+<!-- ## R code demo & walkthrough - 3-state Markov model with sensitivity analyses     -->
 
-[Download demo code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA_time.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Markov_3state_SA_time.Rmd) -->
 
-[Download model function code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state_time.R)
+<!-- [Download model function code](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/Functions_markov_3state_time.R) -->
 
-## Exercise - Markov Sick-Sicker model with sensitivity analyses
+<!-- ## Exercise - Markov Sick-Sicker model with sensitivity analyses -->
 
-[Download exercise handout](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/exercise worksheets/markov_sick-sicker_SA_exercise.html)
+<!-- [Download exercise handout](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/exercise worksheets/markov_sick-sicker_SA_exercise.html) -->
 
-[Download excercise template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/templates/markov_sick-sicker_SA_template.Rmd)
+<!-- [Download excercise template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/templates/markov_sick-sicker_SA_template.Rmd) -->
 
-[Download model function template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/functions/Functions_markov_sick-sicker.R)
+<!-- [Download model function template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/functions/Functions_markov_sick-sicker.R) -->
 
 <!-- [Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_SA_solutions.Rmd) -->
 

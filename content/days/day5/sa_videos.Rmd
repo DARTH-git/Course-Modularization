@@ -1,17 +1,17 @@
 ---
-title: Sensitivity Analysis lectures
+title: Sensitivity Analysis video lectures
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: SA lectures
+linktitle: SA videos
 menu:
   day5:
     weight: 2
 ---
 
-## Slides
+<!-- ## Slides -->
 
-[Download Sensitivity Analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysisSlides.pptx)
+<!-- [Download Sensitivity Analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysisSlides.pptx) -->
 
 ## Presentation videos
 

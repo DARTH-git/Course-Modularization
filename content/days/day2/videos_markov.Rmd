@@ -1,17 +1,17 @@
 ---
-title: "Cohort state-transition models (cSTM), lectures 1-5"
+title: "Cohort state-transition models (cSTM) video lectures"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "cSTM lectures 1-5"
+linktitle: "cSTM videos"
 menu:
   day2:
     weight: 3
 ---
 
-## Slides
+<!-- ## Slides -->
 
-[Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_CDC2021.pptx)
+<!-- [Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_CDC2021.pptx) -->
 
 ## Presentation videos
 

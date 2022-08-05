@@ -1,9 +1,9 @@
 ---
-title: "Overview & OpenTree"
+title: "Overview & Decision Trees"
 date: "`r Sys.Date()`"
 draft: no
 output: pdf_document
-linktitle: Overview & OpenTree
+linktitle: Overview & Decision Trees
 menu:
   day2:
     weight: 2
@@ -30,27 +30,27 @@ Please go over this short video on intro to `OpenTree`.
 blogdown::shortcode("vimeo", "646960252")
 ```
 
-## OpenTree demo
+<!-- ## OpenTree demo -->
 
-[Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd)
+<!-- [Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd) -->
 
-Copy and paste the json code from the pop-up to Notepad and save it as "RockClimberProblem.json".
+<!-- Copy and paste the json code from the pop-up to Notepad and save it as "RockClimberProblem.json". -->
 
-[Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json)
+<!-- [Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json) -->
 
-## OpenTree exercise
+<!-- ## OpenTree exercise -->
 
-[Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html)
+<!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
 
-[Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd)
+<!-- [Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd) -->
 
-Copy and paste the json code from the pop-up to Notepad and save it as "HVEtemplate.json".
+<!-- Copy and paste the json code from the pop-up to Notepad and save it as "HVEtemplate.json". -->
 
-[Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json)
+<!-- [Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json) -->
 
-[Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+<!-- [Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
 
-[Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+<!-- [Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
 
 <!-- ## Exercise -->
 

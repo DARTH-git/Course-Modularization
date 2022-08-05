@@ -13,35 +13,25 @@ type: docs
 
 ## Dates
 
-**Part I: Foundations of Decision Modeling for Public Health**
+*Workshop preparation*
 
-- October 14, 2021
+- **August 15 – 26**: Complete “Intro to R for Decision Modeling” modules on your own.
 
-- October 14 - November 28, 2021 (asynchronous)
+- **August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT)
 
-**PART II: Hands-On Decision Modeling for Public Health in R**
+*Live workshop sessions*
 
-- November 29, 2021
+- **August 29**: Decision trees and Markov models
 
-- November 30, 2021
+- **August 30**: Microsimulation modeling
 
-- December 1, 2021
+- **August 31**: Sensitivity analysis
 
-- December 2, 2021
+*Daily schedule August 29-31*
 
-**Part III: Advanced Topics for Decision Modeling in Public Health**
+- 8 a.m. – 12 p.m. CDT: Synchronous Zoom sessions with instructors
 
-- January 24, 2022
-
-- January 25, 2022
-
-- January 26, 2022
-
-- January 28, 2022
-
-## Time
-
-9:00AM - 11:00PM CT
+- 1 p.m. – 4 p.m. CDT: Complete hands-on exercises with Slack support
 
 ## Location
 

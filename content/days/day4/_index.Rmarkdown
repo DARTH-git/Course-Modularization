@@ -1,5 +1,5 @@
 ---
-title: "December 1 Schedule"
+title: "August 30 Schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -15,15 +15,10 @@ type: docs
 
 ### Microsimulation Models
 
-Basic agenda:
-
-- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Eastern Time
-
 **Preparation**:
 
-- Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day4/microsim_videos/)
+- Complete cohort state-transition model extension exercises (1-2 hours)
+- Watch "Microsimulation Models" videos (30 minutes)
 
 Here is a tentative timetable:
 
@@ -39,17 +34,16 @@ Here is a tentative timetable:
 
 **Homework**:
 
-- Complete microsimulation model exercise (1-2 hours)
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day5/sa_videos/)
+- Complete microsimulation model exercises (1-2 hours)
+- Watch "Sensitivity Analysis" videos (40 minutes)
 
-Slack support available 1:00PM-4:00PM
+Slack support available 1 p.m. – 4 p.m. CDT
 
+<!-- ## Live session recording: -->
 
-## Live session recording:
+<!-- [Link](https://us02web.zoom.us/rec/share/7tUN3LBxQ2_MRkCByl030LWqmf6TzGfxnbadL9Z6Z6BRFBuNoJ05EYH6j9O2o9nd.z_PByKw5n7yFnT4f) -->
 
-[Link](https://us02web.zoom.us/rec/share/7tUN3LBxQ2_MRkCByl030LWqmf6TzGfxnbadL9Z6Z6BRFBuNoJ05EYH6j9O2o9nd.z_PByKw5n7yFnT4f)
-
-Passcode: +8AsHLg#
+<!-- Passcode: +8AsHLg# -->
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "593027038") -->

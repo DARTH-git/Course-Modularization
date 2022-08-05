@@ -1,5 +1,5 @@
 ---
-title: "November 29 schedule"
+title: "August 29 schedule"
 author: ''
 date: "`r Sys.Date()`"
 slug: day2
@@ -13,16 +13,12 @@ toc: yes
 type: docs
 ---
 
-### Decision Trees and Cohort State-Transition Models
-
-Basic agenda:
-
-- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+### Decision Trees and Cohort State-Transition (Markov) Models
 
 **Preparation**:
 
 - [Install OpenTree (10 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/intro_to_decision_analysis/)
-- [Watch "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/videos_markov/)
+- Watch "Cohort State-Transition Models" videos (30 minutes)
 
 Here is a tentative timetable:
 
@@ -39,15 +35,13 @@ Here is a tentative timetable:
 **Homework**:
 
 - Complete decision tree exercise (30 minutes)
-- Complete cohort state-transition model exercise (1 hour)
-- As needed, review “Cohort State-Transition Models” videos, especially “history dependence” video 6 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day3/videos_markov_ext/)
+- Complete cohort state-transition model exercises (1-2 hours)
 
-Slack support available 1:00PM-4:00PM
+Slack support available 1 p.m. – 4 p.m. CDT
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-[Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp)
+<!-- [Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp) -->
 
 <!-- # ```{r, echo=F} -->
 <!-- # blogdown::shortcode("vimeo", "592848080") -->

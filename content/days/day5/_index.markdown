@@ -1,7 +1,7 @@
 ---
-title: "December 2 Schedule"
+title: "August 31 Schedule"
 author: ''
-date: "2021-11-30"
+date: "2022-08-05"
 slug: day5
 categories: []
 tags: []
@@ -15,15 +15,11 @@ type: docs
 
 ### Sensitivity Analysis
 
-Basic agenda:
-
-- Synchronous session is from 9AM-12PM Central Time and consists of a mix of review, demonstrations and hands-on exercises
-- Slack support available 8:30AM-12PM Central Time
-
 **Preparation**:
 
-- Watch [“Sensitivity Analysis” videos (40 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day5/sa_videos/)
-- Complete microsimulation model exercise (1-2 hours)
+- Watch "Sensitivity Analysis" videos (40 minutes)
+
+- Complete microsimulation model exercises (1-2 hours)
 
 Here is a tentative timetable:
 
@@ -36,7 +32,7 @@ Here is a tentative timetable:
 | 10:45 – 11:45 | Coding exercise: Implement a probabilistic sensitivity analysis |
 | 11:45 - 12:00 | Wrap up |
 
-Slack support available 1:00PM-4:00PM
+Slack support available 1 p.m. – 4 p.m. CDT
 
 <!-- ## Live session recording: -->
 

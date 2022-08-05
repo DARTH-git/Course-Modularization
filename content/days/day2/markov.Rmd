@@ -1,24 +1,24 @@
 ---
-title: "Cohort state-transition models (cSTM) - time-dependent models"
+title: "Cohort state-transition models (cSTM)"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "cSTM time-dependent models"
+linktitle: "cSTM"
 menu:
   day2:
     weight: 4
 ---
 
-## R code demo & walkthrough - 3-state Markov model with time-dependency
+<!-- ## R code demo & walkthrough - 3-state Markov model with time-dependency -->
 
-[Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_time.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_time.Rmd) -->
 
-## Exercise - Markov Sick-Sicker model with time dependency
+<!-- ## Exercise - Markov Sick-Sicker model with time dependency -->
 
-[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_time_exercise.html)
+<!-- [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_time_exercise.html) -->
 
-[Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv)
+<!-- [Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv) -->
 
-[Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_time_template.Rmd)
+<!-- [Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_time_template.Rmd) -->
 
-[Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_time_solutions.Rmd)
+<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_time_solutions.Rmd) -->

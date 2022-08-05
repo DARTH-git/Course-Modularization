@@ -1,17 +1,17 @@
 ---
-title: Microsimulation Models lectures
+title: Microsimulation Models video lectures
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Microsim lectures
+linktitle: Microsim videos
 menu:
   day4:
     weight: 2
 ---
 
-## Slides
+<!-- ## Slides -->
 
-[Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/2021_CDC_Microsimulation_Slides_toShare.pdf)
+<!-- [Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/2021_CDC_Microsimulation_Slides_toShare.pdf) -->
 
 ## Presentation videos
 

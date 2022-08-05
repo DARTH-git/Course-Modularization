@@ -5,12 +5,14 @@ draft: false
 type: docs
 linktitle: "DARTH framework"
 menu:
-  day5:
+  day4:
     weight: 7
 ---
 
 ## Slides
 
-[Download DARTH framework slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/DARTH Framework.pdf)
+[Download DARTH framework - short](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Framework---short-version.html)
+
+[Download DARTH framework slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Coding framework_SMDM_Poster_56'x36'_v1.pdf)
 
 

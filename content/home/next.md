@@ -6,9 +6,13 @@ title: Upcoming
 weight: 1
 ---
 
-## Workshop completed.
+## Workshop preparation
 
-Thank you for your participation in the workshop. This workshop website will remain active for 6 months.
+- **August 15**: Complete "Setup" on your own.
+
+- **August 15 – 26**: Complete “Intro to R for Decision Modeling” modules on your own.
+
+- **August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT)
 
 
 

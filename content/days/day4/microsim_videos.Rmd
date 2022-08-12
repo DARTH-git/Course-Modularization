@@ -1,19 +1,17 @@
 ---
-title: Microsimulation Models video lectures
+title: Microsimulation lecture series
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Microsim videos
+linktitle: Microsim lectures
 menu:
   day4:
-    weight: 2
+    weight: 6
 ---
 
 <!-- ## Slides -->
 
 <!-- [Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/2021_CDC_Microsimulation_Slides_toShare.pdf) -->
-
-## Presentation videos
 
 Microsimulation - Theory
 

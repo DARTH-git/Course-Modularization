@@ -1,12 +1,12 @@
 ---
-title: Microsimulation Models
+title: Microsimulation
 date: "`r Sys.Date()`"
 draft: false
 type: docs
 linktitle: Microsim
 menu:
   day4:
-    weight: 3
+    weight: 7
 ---
 
 <!-- ## R code demo & walkthrough - 3-state Microsimulation model with time-varying mortality     -->

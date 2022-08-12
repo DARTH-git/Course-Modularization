@@ -1,7 +1,7 @@
 ---
 title: "August 15 - 26 agenda"
 author: ''
-date: "2022-08-05"
+date: "2022-08-11"
 slug: day1
 categories: []
 tags: []
@@ -13,8 +13,14 @@ toc: yes
 type: docs
 ---
 
-Please complete *Setup* first. Then, complete the *Introduction to R for Decision Modeling* module.
+**August 15 – 26**: 
 
-The module is **completely asynchronous** and will take 8-10 hours to complete.
+- Complete "Setup" on your own. Install R, R studio, and R packages needed for the workshop (1 hour)
 
-**August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT)
+- Complete the "Intro to R" modules (6-8 hours)
+
+- Watch the "Introduction to Decision Modeling" lecture series (45 minutes)
+
+- Watch the "Cohort State-Transition Modeling" lecture series (45 minutes)
+
+**August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT) [Zoom link](https://umn.zoom.us/j/93315239021?pwd=Z1FFSHJDZ2VPeFVNSFlyT3NDT1pTQT09). Opportunity to connect live with instructors on Zoom. Points of discussion may include troubleshooting R installation issues, clarifying R coding concepts, and/or providing additional context to the goals of decision modeling for those newer to the field. 

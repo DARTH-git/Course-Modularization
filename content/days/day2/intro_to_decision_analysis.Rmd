@@ -1,9 +1,9 @@
 ---
-title: "Overview & Decision Trees"
+title: "Introduction to Decision Modeling"
 date: "`r Sys.Date()`"
 draft: no
 output: pdf_document
-linktitle: Overview & Decision Trees
+linktitle: Intro to Decision Modeling
 menu:
   day2:
     weight: 2
@@ -14,44 +14,46 @@ type: docs
 
 <!-- [Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx) -->
 
-## OpenTree installation
+### Introduction to Decision Analysis lecture videos
 
-For those we went through the "Getting ready" session of the "Introduction to R for Decision Modeling Module", you would have already downloaded the R package `OpenTree` via:
+Introduction to Decision Analysis 1: Intro
 
-[Download package-installation R script](../../../Course_Modularization/Intro, general, packages/00_prep.R)
-
-If not, please download the above R script to install all R packages required for this workshop, which includes `OpenTree`. 
-
-## OpenTree intro video
-
-Please go over this short video on intro to `OpenTree`.
-
-```{r, echo = F}
-blogdown::shortcode("vimeo", "646960252")
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588658361")
 ```
 
-<!-- ## OpenTree demo -->
+Introduction to Decision Analysis 2: Overview
 
-<!-- [Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd) -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588658378")
+```
 
-<!-- Copy and paste the json code from the pop-up to Notepad and save it as "RockClimberProblem.json". -->
+Introduction to Decision Analysis 3: Outcomes
 
-<!-- [Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json) -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588660950")
+```
 
-<!-- ## OpenTree exercise -->
+Introduction to Decision Analysis 4: Strengths and Challenges
 
-<!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588655554")
+```
 
-<!-- [Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd) -->
+Introduction to Decision Analysis 5: Decision Tree Example
 
-<!-- Copy and paste the json code from the pop-up to Notepad and save it as "HVEtemplate.json". -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588655268")
+```
 
-<!-- [Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json) -->
+Introduction to Decision Analysis 6: STM
 
-<!-- [Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588654943")
+```
 
-<!-- [Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
+Introduction to Decision Analysis 7: Which Model
 
-<!-- ## Exercise -->
-
-<!-- [Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf) -->
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588654750")
+```

@@ -1,7 +1,7 @@
 ---
 title: "August 31 Schedule"
 author: ''
-date: "2022-08-05"
+date: "2022-08-11"
 slug: day5
 categories: []
 tags: []
@@ -17,20 +17,28 @@ type: docs
 
 **Preparation**:
 
-- Watch "Sensitivity Analysis" videos (40 minutes)
+- Complete microsimulation hands-on exercise
 
-- Complete microsimulation model exercises (1-2 hours)
+- Watch “Sensitivity Analysis” lecture series
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: Microsimulation model exercise solution |
-| 9:30 – 10:00 |  Code review: Deterministic and probabilistic sensitivity analysis | 
-| 10:00 – 10:30 | Break out exercise: Peer code walk-through |
-| 10:30 – 10:45 | Break |
-| 10:45 – 11:45 | Coding exercise: Implement a probabilistic sensitivity analysis |
-| 11:45 - 12:00 | Wrap up |
+| 08:00 – 08:30 | Review: microsimulation model exercise solutions |
+| 08:30 – 09:00 |  Coding concepts: Making your model a function | 
+| 09:00 – 09:30 | Code review: Deterministic sensitivity analysis |
+| 09:30 – 10:00 | Code review: Probabilistic sensitivity analysis |
+| 10:00 – 10:15 | Break |
+| 10:15 – 11:15 | Hands-on exercise: Deterministic and probabilistic sensitivity analyses |
+| 11:15 – 11:45 | Coding concepts: Organizing your code |
+| 11:45 – 12:00 | Wrap up |
+
+**On your own**:
+
+- Finish up sensitivity analysis hands-on exercise
+
+- Ask us any final questions!
 
 Slack support available 1 p.m. – 4 p.m. CDT
 

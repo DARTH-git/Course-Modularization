@@ -13,29 +13,30 @@ toc: yes
 type: docs
 ---
 
-### Microsimulation Models
-
 **Preparation**:
 
-- Complete cohort state-transition model extension exercises (1-2 hours)
-- Watch "Microsimulation Models" videos (30 minutes)
+- Complete decision tree and cohort state-transition model exercises
+
+- Watch “Microsimulation” lecture series
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: Cohort state-transition model extension exercise |
-| 9:30 – 10:15 | Code review: Microsimulation models in R |
-| 10:15 – 10:30 | Break  |
-| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
-| 11:00 - 11:45 | Coding exercise: Implement a microsimulation model |
-| 11:45 - 12:00 | Programming practices: Organizing your R code |
+| 08:00 – 08:45 | Review: Decision tree and cohort state-transition model exercise solutions |
+| 08:45 – 09:15 | Code review: More complex cohort state-transition models |
+| 09:15 – 10:00 | Hands-on exercise: Adding state time-dependence to a cohort-state transition model  |
+| 10:00 – 10:15 | Break |
+| 10:15 – 10:45 | Code review: Microsimulation models |
+| 10:45 – 11:45 | Hands-on exercise: Microsimulation models |
+| 11:45 – 12:00 | Wrap up |
 
 
-**Homework**:
+**On your own**:
 
-- Complete microsimulation model exercises (1-2 hours)
-- Watch "Sensitivity Analysis" videos (40 minutes)
+- Complete microsimulation hands-on exercise
+
+- Watch “Sensitivity Analysis” lecture series
 
 Slack support available 1 p.m. – 4 p.m. CDT
 

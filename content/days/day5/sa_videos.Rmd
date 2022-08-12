@@ -1,9 +1,9 @@
 ---
-title: Sensitivity Analysis video lectures
+title: Sensitivity Analysis lecture series
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: SA videos
+linktitle: SA lectures
 menu:
   day5:
     weight: 2
@@ -12,8 +12,6 @@ menu:
 <!-- ## Slides -->
 
 <!-- [Download Sensitivity Analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysisSlides.pptx) -->
-
-## Presentation videos
 
 Sensitivity Analysis - Introduction
 
@@ -32,3 +30,4 @@ Sensitivity Analysis - PSA
 ```{r, echo=F}
 blogdown::shortcode("vimeo", "593547119")
 ```
+

@@ -1,7 +1,7 @@
 ---
 title: "November 30 Schedule"
 author: ''
-date: "2021-12-01"
+date: "2022-08-11"
 slug: day3
 categories: []
 tags: []

@@ -13,29 +13,39 @@ toc: yes
 type: docs
 ---
 
-### Decision Trees and Cohort State-Transition (Markov) Models
-
 **Preparation**:
 
+**August 15 – 26**: 
+
+- Complete "Setup" on your own. Install R, R studio, and R packages needed for the workshop (1 hour)
+
+- Complete the "Intro to R" modules (6-8 hours)
+
+- Watch the "Introduction to Decision Modeling" lecture series (45 minutes)
+
+- Watch the "Cohort State-Transition Modeling" lecture series (45 minutes)
+
+**August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT) [Zoom link](https://umn.zoom.us/j/93315239021?pwd=Z1FFSHJDZ2VPeFVNSFlyT3NDT1pTQT09). Opportunity to connect live with instructors on Zoom. Points of discussion may include troubleshooting R installation issues, clarifying R coding concepts, and/or providing additional context to the goals of decision modeling for those newer to the field. 
+
 - [Install OpenTree (10 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/intro_to_decision_analysis/)
-- Watch "Cohort State-Transition Models" videos (30 minutes)
 
 Here is a tentative timetable:
 
 |                            |            |
 |--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Workshop series overview |
-| 9:30 – 9:45 | Introduction to OpenTree | 
-| 9:45 – 10:15 | Exercise: Build a model in OpenTree |
-| 10:15 – 10:30 | Break |
-| 10:30 – 11:00 | Code review: Time-dependent cohort state-transition model in R |
-| 11:00 – 11:30 | Break out exercise: Peer-code walk-through |
-| 11:30 - 12:00 | Coding exercise: Implement a time-dependent cohort state-transition model |
+| 8:00 – 8:30  | Introductions |
+| 8:30 - 9:00 | OpenTree demo | 
+| 09:00 – 10:00 | Hands-on exercise: Decision tree exercise |
+| 10:00 – 10:15 | Break |
+| 10:15 – 10:45 | Code review: Cohort state-transition models (Markov) models |
+| 10:45 – 11:45 | Hands-on exercise: Cohort state-transition models |
+| 11:45 – 12:00 | Wrap up |
 
-**Homework**:
+**On your own**:
 
-- Complete decision tree exercise (30 minutes)
-- Complete cohort state-transition model exercises (1-2 hours)
+- Complete decision tree and cohort state-transition model exercises
+
+- Watch “Microsimulation” lecture series
 
 Slack support available 1 p.m. – 4 p.m. CDT
 

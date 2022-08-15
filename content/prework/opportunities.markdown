@@ -1,14 +1,14 @@
 ---
-title: Opportunities to learn
-date: "2020-11-03"
+title: Other opportunities to learn
+date: "2022-08-15"
 slug: opportunities
 categories: []
 tags: []
-linktitle: "Opportunities to learn"
+linktitle: "Other opportunities to learn"
 menu:
   prework:
-    parent: "Preparation"
-    weight: 8
+    parent: "Other resources"
+    weight: 1
 toc: yes
 type: docs
 ---

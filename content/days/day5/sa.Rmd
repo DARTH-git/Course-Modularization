@@ -3,11 +3,13 @@ title: Sensitivity Analysis
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: SA
+linktitle: SA files
 menu:
   day5:
     weight: 4
 ---
+
+R code and other files used during this workshop session will be posted here for download the morning of Aug. 31.
 
 <!-- ## R code demo & walkthrough - 3-state Markov model with sensitivity analyses     -->
 

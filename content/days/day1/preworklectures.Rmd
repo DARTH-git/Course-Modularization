@@ -1,0 +1,19 @@
+---
+title: "Pre-workshop Lectures"
+date: "`r Sys.Date()`"
+draft: no
+type: docs
+linktitle: Pre-workshop Lectures
+menu:
+  day1:
+    name: Pre-workshop Lectures
+    weight: 3
+---
+
+Please watch the following pre-workshop lecture videos prior to the live session on August 29: 
+
+- Intro to decision modeling lecture videos
+
+- "Opentree" intro video (and install "OpenTree")
+
+- Cohort state-transition modeling (cSTM) lecture videos

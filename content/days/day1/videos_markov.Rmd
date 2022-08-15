@@ -1,0 +1,53 @@
+---
+title: "Cohort state-transition models (cSTM) lecture series"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "cSTM lectures"
+menu:
+  day1:
+    parent: "Pre-workshop Lectures"
+    weight: 3
+---
+
+<!-- ## Slides -->
+
+<!-- [Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_CDC2021.pptx) -->
+
+cSTM lecture 1: Introduction
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550894")
+```
+
+cSTM lecture 2: Overview
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550940")
+```
+
+cSTM lecture 3: Simple 3-State Example
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474551568")
+```
+
+cSTM lecture 4: Calculating Model Outcomes
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474553106")
+```
+
+cSTM lecture 5: Time-Varying State-Transition Models
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560741")
+```
+
+cSTM lecture 6: Tunnels
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560799")
+```
+
+

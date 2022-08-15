@@ -1,14 +1,14 @@
 ---
-title: Preparation
+title: Getting Started
 author: ''
-date: "2020-10-29"
-slug: local
+date: "2022-08-15"
+slug: Getting Started
 categories: []
 tags: []
-linktitle: "Preparation"
+linktitle: "Getting Started"
 menu:
   prework:
-    name: "Preparation"
+    name: "Getting Started"
     weight: 4
 toc: yes
 type: docs

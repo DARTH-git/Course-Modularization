@@ -1,7 +1,7 @@
 ---
 title: "August 29 schedule"
 author: ''
-date: "2022-08-11"
+date: "2022-08-15"
 slug: day2
 categories: []
 tags: []
@@ -15,19 +15,7 @@ type: docs
 
 **Preparation**:
 
-**August 15 – 26**: 
-
-- Complete "Setup" on your own. Install R, R studio, and R packages needed for the workshop (1 hour)
-
-- Complete the "Intro to R" modules (6-8 hours)
-
-- Watch the "Introduction to Decision Modeling" lecture series (45 minutes)
-
-- Watch the "Cohort State-Transition Modeling" lecture series (45 minutes)
-
-**August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT) [Zoom link](https://umn.zoom.us/j/93315239021?pwd=Z1FFSHJDZ2VPeFVNSFlyT3NDT1pTQT09). Opportunity to connect live with instructors on Zoom. Points of discussion may include troubleshooting R installation issues, clarifying R coding concepts, and/or providing additional context to the goals of decision modeling for those newer to the field. 
-
-- [Install OpenTree (10 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day2/intro_to_decision_analysis/)
+Complete pre-workshop preparation modules.
 
 Here is a tentative timetable:
 
@@ -37,7 +25,7 @@ Here is a tentative timetable:
 | 8:30 - 9:00 | OpenTree demo | 
 | 09:00 – 10:00 | Hands-on exercise: Decision tree exercise |
 | 10:00 – 10:15 | Break |
-| 10:15 – 10:45 | Code review: Cohort state-transition models (Markov) models |
+| 10:15 – 10:45 | Code review: Cohort state-transition (Markov) models (cSTM)  |
 | 10:45 – 11:45 | Hands-on exercise: Cohort state-transition models |
 | 11:45 – 12:00 | Wrap up |
 

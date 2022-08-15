@@ -1,0 +1,27 @@
+---
+title: "OpenTree intro video and installation"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "OpenTree"
+menu:
+  day1:
+    parent: "Pre-workshop Lectures"
+    weight: 2
+---
+
+## OpenTree installation
+
+For those we went through the "Getting ready" session of the "Introduction to R for Decision Modeling Module", you would have already downloaded the R package `OpenTree` via:
+
+[Download package-installation R script](../../../Course_Modularization/Intro, general, packages/00_prep.R)
+
+If not, please download the above R script to install all R packages required for this workshop, which includes `OpenTree`. 
+
+## OpenTree intro video
+
+Please go over this short video on intro to `OpenTree`.
+
+```{r, echo = F}
+blogdown::shortcode("vimeo", "646960252")
+```

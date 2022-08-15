@@ -1,14 +1,14 @@
 ---
-title: Preparation
+title: Getting Started
 author: ''
 date: "`r Sys.Date()`"
-slug: local
+slug: Getting Started
 categories: []
 tags: []
-linktitle: "Preparation"
+linktitle: "Getting Started"
 menu:
   prework:
-    name: "Preparation"
+    name: "Getting Started"
     weight: 4
 toc: yes
 type: docs

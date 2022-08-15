@@ -8,8 +8,8 @@ tags: []
 linktitle: "Install software"
 menu:
   prework:
-    parent: "Preparation"
-    weight: 3
+    parent: "Getting Started"
+    weight: 2
 toc: yes
 type: docs
 ---

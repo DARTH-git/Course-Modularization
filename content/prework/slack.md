@@ -4,8 +4,8 @@ draft: false
 linktitle: Set up Slack
 menu:
   prework:
-    parent: Preparation
-    weight: 2
+    parent: Getting Started
+    weight: 1
 title: Set up Slack
 toc: true
 type: docs

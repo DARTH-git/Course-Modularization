@@ -1,25 +1,27 @@
 ---
-title: "August 15 - 26 agenda"
+title: "Pre-workshop Preparation"
 author: ''
-date: "2022-08-11"
+date: "2022-08-15"
 slug: day1
 categories: []
 tags: []
 menu:
   day1:
-    name: "Aug 15 - 26"
+    name: "Pre-workshop Prep"
     weight: 1
 toc: yes
 type: docs
 ---
 
-**August 15 – 26**: 
+The following modules should be completed prior to the start of the workshop on Monday, August 29. These modules may take a number of hours to complete. Please start early in case you encounter difficulties or have questions. If you need assistance, please connect with during our live Zoom office hours [Zoom link](https://umn.zoom.us/j/93315239021?pwd=Z1FFSHJDZ2VPeFVNSFlyT3NDT1pTQT09) on Wednesday, August 24 (10am - 12pm CDT) or via the workshop [Slack workspace](https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg).
 
 - Complete "Setup" on your own. Install R, R studio, and R packages needed for the workshop (1 hour)
 
 - Complete the "Intro to R" modules (6-8 hours)
 
 - Watch the "Introduction to Decision Modeling" lecture series (45 minutes)
+
+- Watch the "Opentree" intro video and install "OpenTree" (10 minutes)
 
 - Watch the "Cohort State-Transition Modeling" lecture series (45 minutes)
 

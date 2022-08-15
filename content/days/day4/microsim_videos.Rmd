@@ -6,7 +6,7 @@ type: docs
 linktitle: Microsim lectures
 menu:
   day4:
-    weight: 6
+    weight: 5
 ---
 
 <!-- ## Slides -->

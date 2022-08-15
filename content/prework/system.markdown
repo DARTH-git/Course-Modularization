@@ -1,15 +1,15 @@
 ---
 title: Install software
 author: ''
-date: "2021-10-12"
+date: "2022-08-15"
 slug: system
 categories: []
 tags: []
 linktitle: "Install software"
 menu:
   prework:
-    parent: "Preparation"
-    weight: 3
+    parent: "Getting Started"
+    weight: 2
 toc: yes
 type: docs
 ---

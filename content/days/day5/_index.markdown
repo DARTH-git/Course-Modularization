@@ -1,7 +1,7 @@
 ---
 title: "August 31 Schedule"
 author: ''
-date: "2022-08-11"
+date: "2022-08-15"
 slug: day5
 categories: []
 tags: []
@@ -13,13 +13,11 @@ toc: yes
 type: docs
 ---
 
-### Sensitivity Analysis
-
 **Preparation**:
 
 - Complete microsimulation hands-on exercise
 
-- Watch “Sensitivity Analysis” lecture series
+- Watch “Sensitivity Analysis (SA)” lecture series
 
 Here is a tentative timetable:
 

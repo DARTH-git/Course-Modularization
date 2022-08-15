@@ -3,11 +3,13 @@ title: Microsimulation
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Microsim
+linktitle: Microsim files
 menu:
   day4:
     weight: 7
 ---
+
+R code and other files used during this workshop session will be posted here for download the morning of Aug. 30
 
 <!-- ## R code demo & walkthrough - 3-state Microsimulation model with time-varying mortality     -->
 

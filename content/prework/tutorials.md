@@ -1,12 +1,12 @@
 ---
 date: "`r Sys.Date()`"
 draft: false
-linktitle: Resources
+linktitle: Additional R resources
 menu:
   prework:
-    parent: Preparation
-    weight: 4
-title: Resources
+    parent: Other resources
+    weight: 1
+title: Additional R resources
 toc: true
 type: docs
 ---

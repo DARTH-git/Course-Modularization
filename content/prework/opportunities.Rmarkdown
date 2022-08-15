@@ -1,14 +1,14 @@
 ---
-title: Opportunities to learn
+title: Other opportunities to learn
 date: "`r Sys.Date()`"
 slug: opportunities
 categories: []
 tags: []
-linktitle: "Opportunities to learn"
+linktitle: "Other opportunities to learn"
 menu:
   prework:
-    parent: "Preparation"
-    weight: 8
+    parent: "Other resources"
+    weight: 2
 toc: yes
 type: docs
 ---

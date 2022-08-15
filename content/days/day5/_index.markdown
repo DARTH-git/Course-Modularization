@@ -17,7 +17,7 @@ type: docs
 
 - Complete microsimulation hands-on exercise
 
-- Watch “Sensitivity Analysis (SA)” lecture series
+- Watch [“Sensitivity Analysis (SA)” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day5/sa_videos/)
 
 Here is a tentative timetable:
 

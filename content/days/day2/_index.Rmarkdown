@@ -33,7 +33,7 @@ Here is a tentative timetable:
 
 - Complete decision tree and cohort state-transition model exercises
 
-- Watch “Microsimulation” lecture series
+- Watch [“Microsimulation” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day4/microsim_videos/)
 
 Slack support available 1 p.m. – 4 p.m. CDT
 

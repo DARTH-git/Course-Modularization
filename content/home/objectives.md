@@ -9,9 +9,9 @@ widget: custom
 
 Participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. A self-paced module introducing R concepts specifically for decision modeling will be provided as part of your workshop registration.
 
-*Workshop preparation*
+*Pre-workshop preparation*
 
-- **August 15 – 26**: Complete “Intro to R for Decision Modeling” modules on your own.
+- **August 15 – 26**: Complete pre-workshop preparation
 
 - **August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT)
 

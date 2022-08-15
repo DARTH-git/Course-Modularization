@@ -1,7 +1,7 @@
 ---
 title: "August 30 Schedule"
 author: ''
-date: "2022-08-11"
+date: "2022-08-15"
 slug: day4
 categories: []
 tags: []
@@ -17,7 +17,7 @@ type: docs
 
 - Complete decision tree and cohort state-transition model exercises
 
-- Watch “Microsimulation” lecture series
+- Watch [“Microsimulation” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day4/microsim_videos/)
 
 Here is a tentative timetable:
 
@@ -36,7 +36,7 @@ Here is a tentative timetable:
 
 - Complete microsimulation hands-on exercise
 
-- Watch “Sensitivity Analysis” lecture series
+- Watch [“Sensitivity Analysis” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day5/sa_videos/)
 
 Slack support available 1 p.m. – 4 p.m. CDT
 

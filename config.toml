@@ -246,8 +246,8 @@ enableGitInfo = false
   align_right = true
 
 [[menu.main]]
-  pre = "<i class=\"fab fa-r-project\"></i>"
-  name = "Setup"
+  #pre = "<i class=\"fab fa-r-project\"></i>"
+  name = "Welcome"
   url = "prework/" 
   weight = 1
 
@@ -258,7 +258,7 @@ enableGitInfo = false
 #  identifier = "day0"
   
 [[menu.main]]
-  name = "Aug 15 - 26"
+  name = "Pre-workshop Prep"
   weight = 3
   url = "days/day1/" 
   identifier = "day1"

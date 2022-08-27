@@ -3,13 +3,12 @@ title: "Decision Trees"
 date: "`r Sys.Date()`"
 draft: no
 output: pdf_document
-linktitle: Decision Trees
+linktitle: Decision tree files
 menu:
   day2:
     weight: 3
 type: docs
 ---
-  
 
 
 <!-- ## OpenTree demo -->
@@ -21,6 +20,16 @@ type: docs
 <!-- [Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json) -->
 
 <!-- ## OpenTree exercise -->
+
+## OpenTree demo
+
+[Download demo slides](../../../Course_Modularization/Decision trees/Slides/CEA and Decision Modeling Overview_with Decision tree slides.pptx)
+
+[Download demo code](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+
+Copy and paste the json code from the pop-up to Notepad and save it as "HVEsolution.json" in the same folder as the demo code.
+
+[Download demo tree JSON file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
 
 <!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
 
@@ -37,3 +46,4 @@ type: docs
 <!-- ## Exercise -->
 
 <!-- [Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf) -->
+

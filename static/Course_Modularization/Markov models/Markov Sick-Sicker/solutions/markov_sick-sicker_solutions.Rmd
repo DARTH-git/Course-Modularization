@@ -8,8 +8,11 @@ keep_tex: yes
 self_contained: no
 ---
 
-This code forms the basis for the state-transition model of the tutorial:
-'An Introductory Tutorial to Cohort State-Transition Models in R for Cost-Effectiveness Analysis'
+Please cite our publications when using this code:
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
+a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press). https://arxiv.org/abs/2108.13552
 
 Authors:
 - Fernando Alarid-Escudero <fernando.alarid@cide.edu>

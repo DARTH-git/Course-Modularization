@@ -25,8 +25,8 @@ Alan Yang, MSc (7)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Division of Public Administration, Center for Research and Teaching in 
+Economics (CIDE), Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
@@ -35,7 +35,16 @@ In collaboration of:
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
- 
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
+a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press). https://arxiv.org/abs/2108.13552
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
+Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
+(Online First):1-18. https://doi.org/10.1177/0272989X221103163
+
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559

@@ -13,7 +13,7 @@ menu:
 
 [Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_tunnels.Rmd)
 
-## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence)
+## Exercise - Markov Sick-Sicker model with state-residence time dependency 
 
 [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html)
 

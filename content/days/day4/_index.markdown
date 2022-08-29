@@ -1,7 +1,7 @@
 ---
 title: "August 30 Schedule"
 author: ''
-date: "2022-08-15"
+date: "2022-08-29"
 slug: day4
 categories: []
 tags: []
@@ -12,6 +12,8 @@ menu:
 toc: yes
 type: docs
 ---
+
+[Live session Zoom link](https://umn.zoom.us/j/95168741121?pwd=NmlRcjZnUXR3N2xVd3B4ZnJjQkFuUT09)
 
 **Preparation**:
 

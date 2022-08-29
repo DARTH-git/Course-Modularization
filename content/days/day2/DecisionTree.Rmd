@@ -31,6 +31,8 @@ Copy and paste the json code from the pop-up to Notepad and save it as "HVEsolut
 
 [Download demo tree JSON file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
 
+[Download demo tree JSON file version 2](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution2.json)
+
 <!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
 
 <!-- [Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd) -->

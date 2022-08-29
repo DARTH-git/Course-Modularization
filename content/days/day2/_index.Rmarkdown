@@ -39,9 +39,11 @@ Here is a tentative timetable:
 
 Slack support available 1 p.m. – 4 p.m. CDT
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- [Link](https://umn.zoom.us/rec/share/oTI0-yFv9OG_hEhJcMj37rMtvH5xZkJRUk1ReO5oIYs9IKhfmRWGXeLwTxd3DMdj.yPOMhza7UX0w_ESp) -->
+[Part 1](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661778234000)
+
+[Part 2](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661786212000)
 
 <!-- # ```{r, echo=F} -->
 <!-- # blogdown::shortcode("vimeo", "592848080") -->

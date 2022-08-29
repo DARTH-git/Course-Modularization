@@ -129,7 +129,7 @@ Any changes made to the tree in OpenTree are automatically saved as a `.json` fi
 
 ```{r}
 #create_tree(file_name = "Helloworld", dir_name = getwd())
-open_tree(file_name = "HVEsolution", dir_name = getwd())
+open_tree(file_name = "HVEsolution2", dir_name = getwd())
 ```
 
 Extract probability weights and outcomes of the decision tree.

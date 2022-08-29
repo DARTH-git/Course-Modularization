@@ -1,8 +1,10 @@
 ---
 title: '3-state Markov model in R'
-subtitle: 'with age dependency'
+subtitle: "With simulation-time dependency"
 author: "The DARTH workgroup"
-output: html_notebook
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -37,9 +39,10 @@ Please cite our publications when using this code:
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
- 
+
 - Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. arXiv:200107824v3. 2021:1-26. http://arxiv.org/abs/2001.07824
+Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2. 
+2020:1-48. http://arxiv.org/abs/2001.07824
 
 - Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
 Microsimulation modeling for health decision sciences using R: A tutorial. 
@@ -48,7 +51,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
+Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -60,13 +63,13 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
 
 ```{r}
-rm(list = ls())  # clear memory (removes all the variables from the workspace)
+rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
 
 # 01 Load packages
@@ -74,37 +77,42 @@ rm(list = ls())  # clear memory (removes all the variables from the workspace)
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("diagram", "dampack") 
-# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load("dplyr", "tidyr", "reshape2", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram", "dampack")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-# No functions needed
+# all functions are in the darthtools package
 ```
 
-# 03 Input model parameters
+# 03 Model input
 
 ```{r}
 ## General setup
+cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
 v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
 n_states        <- length(v_names_states)        # number of health states 
 
-# Discounting factors
-d_c             <- 0.03                          # discount rate for costs 
-d_e             <- 0.03                          # discount rate for QALYs
+### Discounting factors 
+d_c <- 0.03 # annual discount rate for costs 
+d_e <- 0.03 # annual discount rate for QALYs
 
-# Strategy names
+### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
                      "Treatment A", 
                      "Treatment B")  
 n_str           <- length(v_names_str)           # number of strategies
 
-## Transition probabilities
+## Within-cycle correction (WCC) using Simpson's 1/3 rule 
+v_wcc <- gen_wcc(n_cycles = n_cycles,  method = "Simpson1/3")
+
+### Transition probabilities
 p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
 p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
@@ -112,27 +120,26 @@ p_SD      <- 0.1   # probability of dying when sick
 p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
 p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
 # probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
-v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles) 
+v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)   
 
-## State rewards
-# Costs and utilities  
+### State rewards
+#### Costs 
 c_H       <- 400   # cost of one cycle in healthy state
 c_S       <- 1000  # cost of one cycle in sick state
 c_D       <- 0     # cost of one cycle in dead state
 c_trtA    <- 800   # cost of treatment A (per cycle) in healthy state
 c_trtB    <- 1500  # cost of treatment B (per cycle) in healthy state
+#### Utilities
 u_H       <- 1     # utility when healthy 
 u_S       <- 0.5   # utility when sick
 u_D       <- 0     # utility when dead
-d_e       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
-d_c       <- 0.03  # discount rate per cycle equal discount of costs and QALYs by 3%
 
-# Discount weight (equal discounting is assumed for costs and effects)
-v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
-v_dwe <- 1 / (1 + d_e) ^ (0:n_cycles) 
+### Discount weight for costs and effects 
+v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 ```
 
-## Draw the state-transition cohort model
+# 04 Construct state-transition models
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
@@ -148,40 +155,41 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
         cex = 0.8, box.cex = 0.7, lwd = 1)
 ```
 
-# 04 Define and initialize matrices and vectors
-
-## 04.1 Cohort trace
+## 04.1 Initial state vector
 
 ```{r}
-## Initial state vector
 # All starting healthy
-v_s_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
-v_s_init
+v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+v_m_init
+```
 
-## Initialize cohort trace for cSTM for all strategies
+## 04.2 Initialize cohort traces
+
+```{r}
+### Initialize cohort trace for SoC 
 m_M_SoC <- matrix(0, 
                   nrow = (n_cycles + 1), ncol = n_states, 
                   dimnames = list(v_names_cycles, v_names_states))
 # Store the initial state vector in the first row of the cohort trace
-m_M_SoC[1, ] <- v_s_init
-## Initialize cohort traces
-m_M_trtA <- m_M_trtB <- m_M_SoC # structure and initial states remain the same
+m_M_SoC[1, ] <- v_m_init
+
+## Initialize cohort traces for treatments A and B
+# Structure and initial states are the same as for SoC
+m_M_trtA <- m_M_trtB <- m_M_SoC
 ```
 
-## 04.2 Transition probability array
+## 04.3 Create transition probability arrays
 
 ```{r}
-## Initialize transition probability array 
-# all transitions to a non-death state are assumed to be conditional on survival 
+## Create transition probability arrays for strategy SoC 
+### Initialize transition probability array for strategy SoC 
+# All transitions to a non-death state are assumed to be conditional on survival
 a_P_SoC <- array(0,  # Create 3-D array
                 dim = c(n_states, n_states, n_cycles),
                 dimnames = list(v_names_states, v_names_states, 
                                 v_names_cycles[-length(v_names_cycles)])) # name the dimensions of the array 
-```
 
-Fill in the transition probability array:
-
-```{r}
+### Fill in array
 ## Standard of Care
 # from Healthy
 a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
@@ -204,11 +212,8 @@ a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
 a_P_trtB <- a_P_SoC
 a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
 a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
-```
 
-Check if transition array and probabilities are valid.
-
-```{r}
+## Check if transition array and probabilities are valid
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P_SoC,  verbose = TRUE)
 check_transition_probability(a_P_trtA, verbose = TRUE)
@@ -219,41 +224,73 @@ check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles
 check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
+## 04.4 Create transition dynamics arrays
+
+```{r}
+# These arrays will capture transitions from each state to another over time 
+### Initialize transition dynamics array for strategy SoC 
+a_A_SoC <- array(0,
+             dim      = c(n_states, n_states, n_cycles + 1),
+             dimnames = list(v_names_states, v_names_states, 0:n_cycles))
+# Set first slice of a_A_SoC with the initial state vector in its diagonal
+diag(a_A_SoC[, , 1]) <- v_m_init
+### Initialize transition-dynamics array for strategies A and B 
+# Structure and initial states are the same as for SoC
+a_A_trtA <- a_A_trtB <- a_A_SoC
+```
+
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_cycles){  # loop through the number of cycles
-  # estimate the cohort trace for cycle t + 1 using the t-th matrix from the probability array 
-  m_M_SoC [t + 1, ] <- m_M_SoC [t, ] %*% a_P_SoC [, , t] 
-  m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t] 
-  m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t] 
+# Iterative solution of age-dependent cSTM
+for(t in 1:n_cycles){
+  ## Fill in cohort trace
+  # For SoC
+  m_M_SoC[t + 1, ]  <- m_M_SoC[t, ]  %*% a_P_SoC[, , t]
+  # For strategy A
+  m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t]
+  # For strategy B
+  m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t]
+  
+  ## Fill in transition-dynamics array
+  # For SoC
+  a_A_SoC[, , t + 1]  <- diag(m_M_SoC[t, ])  %*% a_P_SoC[, , t]
+  # For strategy A
+  a_A_trtA[, , t + 1] <- diag(m_M_trtA[t, ]) %*% a_P_trtA[, , t]
+  # For strategy B
+  a_A_trtB[, , t + 1] <- diag(m_M_trtB[t, ]) %*% a_P_trtB[, , t]
 }
-head(m_M_SoC)  # print the first few lines of the matrix
+
+## Store the cohort traces in a list 
+l_m_M <- list(SoC =  m_M_SoC,
+              A   =  m_M_trtA,
+              B   =  m_M_trtB)
+names(l_m_M) <- v_names_str
+
+## Store the transition dynamics array for each strategy in a list 
+l_a_A <- list(SoC =  a_A_SoC,
+              A   =  a_A_trtA,
+              B   =  a_A_trtB)
+names(l_a_A) <- v_names_str
 ```
 
-# 06 Compute and Plot Epidemiological Outcomes
+# 06 Plot Outputs
 
-## 06.1 Cohort trace
+## 06.1 Plot the cohort trace for strategies SoC
 
-```{r}
-matplot(m_M_SoC, type = 'l', 
-        ylab = "Probability of state occupancy",
-        xlab = "Cycle",
-        main = "Cohort Trace", lwd = 3)  # create a plot of the data
-legend("right", v_names_states, col = c("black", "red", "green"), 
-       lty = 1:3, bty = "n")  # add a legend to the graph
-
-# plot a vertical line that helps identifying at which cycle the prevalence of sick is highest
-abline(v = which.max(m_M_SoC[, "Sick"]), col = "gray")  
+```{r, message = FALSE}
+plot_trace(m_M_SoC) 
 ```
 
 ## 06.2 Overall Survival (OS)
 
-```{r}
-v_os <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
-v_os <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
+Print the overall survival for the Standard of Care
 
-plot(v_os, type = 'l', 
+```{r}
+v_os_SoC <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
+v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
+
+plot(v_os_SoC, type = 'l', 
      ylim = c(0, 1),
      ylab = "Survival probability",
      xlab = "Cycle",
@@ -267,14 +304,13 @@ grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd")
 ## 06.2.1 Life Expectancy (LE)
 
 ```{r}
-v_le <- sum(v_os)  # summing probability of OS over time  (i.e. life expectancy)
-v_le
+le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expectancy)
 ```
 
-## 06.3 Disease prevalence
+## 06.2.2 Disease prevalence
 
 ```{r}
-v_prev <- m_M_SoC[, "Sick"]/v_os
+v_prev <- m_M_SoC[, "Sick"]/v_os_SoC
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",
@@ -282,60 +318,95 @@ plot(v_prev,
      main = "Disease prevalence")
 ```
 
-# 07 Compute Cost-Effectiveness Outcomes
-
-## 07.1 Mean Costs and QALYs
+# 07 State Rewards 
 
 ```{r}
-# per cycle
-# calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
-v_tc_SoC  <- m_M_SoC  %*% c(c_H,          c_S, c_D)  
-v_tc_trtA <- m_M_trtA %*% c(c_H + c_trtA, c_S, c_D)  
-v_tc_trtB <- m_M_trtB %*% c(c_H + c_trtB, c_S, c_D)  
+## Scale by the cycle length 
+# Vector of state utilities under strategy SoC
+v_u_SoC    <- c(H  = u_H, 
+                S  = u_S,
+                D  = u_D) * cycle_length
+# Vector of state costs under strategy SoC
+v_c_SoC    <- c(H  = c_H, 
+                S  = c_S,
+                D  = c_D) * cycle_length
+# Vector of state utilities under treatment A
+v_u_trtA   <- c(H  = u_H, 
+                S  = u_S, 
+                D  = u_D) * cycle_length
+# Vector of state costs under treatment A
+v_c_trtA   <- c(H  = c_H + c_trtA, 
+                S  = c_S, 
+                D  = c_D) * cycle_length
+# Vector of state utilities under treatment B
+v_u_trtB   <- c(H  = u_H, 
+                S  = u_S, 
+                D  = u_D) * cycle_length
+# Vector of state costs under treatment B
+v_c_trtB   <- c(H  = c_H + c_trtB, 
+                S  = c_S, 
+                D  = c_D) * cycle_length
 
-# calculate expected QALYs by multiplying cohort trace with the utilities for the different health states   
-v_tu_SoC  <- m_M_SoC  %*% c(u_H, u_S, u_D)  
-v_tu_trtA <- m_M_trtA %*% c(u_H, u_S, u_D) 
-v_tu_trtB <- m_M_trtB %*% c(u_H, u_S, u_D) 
+## Store state rewards 
+# Store the vectors of state utilities for each strategy in a list 
+l_u   <- list(SQ = v_u_SoC,
+              A  = v_u_trtA,
+              B  = v_u_trtB)
+# Store the vectors of state cost for each strategy in a list 
+l_c   <- list(SQ = v_c_SoC,
+              A  = v_c_trtA,
+              B  = v_c_trtB)
+
+# assign strategy names to matching items in the lists
+names(l_u) <- names(l_c) <- v_names_str
 ```
 
-## 07.2 Discounted Mean Costs and QALYs
+# 08 Compute expected outcomes 
 
 ```{r}
-# Discount costs by multiplying the cost vector with discount weights (v_dw) 
-tc_d_SoC  <-  t(v_tc_SoC)  %*% v_dwc
-tc_d_trtA <-  t(v_tc_trtA) %*% v_dwc
-tc_d_trtB <-  t(v_tc_trtB) %*% v_dwc
+# Create empty vectors to store total utilities and costs 
+v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
+names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
 
-# Discount QALYS by multiplying the QALYs vector with discount weights (v_dw)
-tu_d_SoC  <-  t(v_tu_SoC)  %*% v_dwe
-tu_d_trtA <-  t(v_tu_trtA) %*% v_dwe
-tu_d_trtB <-  t(v_tu_trtB) %*% v_dwe
-
-# Store them into a vector
-v_tc_d <- c(tc_d_SoC, tc_d_trtA, tc_d_trtB)
-v_tu_d <- c(tu_d_SoC, tu_d_trtA, tu_d_trtB)
-
-# Dataframe with discounted costs and effectiveness
-df_ce <- data.frame(Strategy = v_names_str,
-                    Cost     = v_tc_d, 
-                    Effect   = v_tu_d)
-df_ce
+## Loop through each strategy and calculate total utilities and costs 
+for (i in 1:n_str) {
+  v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
+  v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+  
+  ### Expected QALYs and costs per cycle 
+  ## Vector of QALYs and Costs
+  # Apply state rewards 
+  v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
+  v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
+  
+  ### Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+  # QALYs
+  v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
+  # Costs
+  v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc)
+}
 ```
 
-## 07.3 Compute ICERs of the Markov model
+# 09 Cost-effectiveness analysis (CEA) 
 
 ```{r}
-df_cea <- calculate_icers(cost       = df_ce$Cost,
-                          effect     = df_ce$Effect,
-                          strategies = df_ce$Strategy
-                          )
+## Incremental cost-effectiveness ratios (ICERs) 
+df_cea <- calculate_icers(cost       = v_tot_cost, 
+                          effect     = v_tot_qaly,
+                          strategies = v_names_str)
 df_cea
 ```
 
-## 07.4 Plot frontier of the Markov model
+```{R}
+## CEA table in proper format 
+table_cea <- format_table_cea(df_cea) 
+table_cea
+```
 
 ```{r}
-plot(df_cea, effect_units = "QALYs")
+## CEA frontier 
+plot(df_cea, label = "all", txtsize = 14) +
+  expand_limits(x = max(table_cea$QALYs) + 0.1) +
+  theme(legend.position = c(0.8, 0.3))
 ```
 

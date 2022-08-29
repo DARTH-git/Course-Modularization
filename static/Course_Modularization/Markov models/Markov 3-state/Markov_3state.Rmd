@@ -155,8 +155,8 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 
 ```{r}
 # All starting healthy
-v_s_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
-v_s_init
+v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+v_m_init
 ```
 
 ## 04.2 Initialize cohort traces
@@ -167,7 +167,7 @@ m_M_SoC <- matrix(0,
                   nrow = (n_cycles + 1), ncol = n_states, 
                   dimnames = list(v_names_cycles, v_names_states))
 # Store the initial state vector in the first row of the cohort trace
-m_M_SoC[1, ] <- v_s_init
+m_M_SoC[1, ] <- v_m_init
 
 ## Initialize cohort traces for treatments A and B
 # Structure and initial states are the same as for SoC

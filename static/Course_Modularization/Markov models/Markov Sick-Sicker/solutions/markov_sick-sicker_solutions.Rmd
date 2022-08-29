@@ -28,11 +28,9 @@ Platform: 64-bit operating system, x64-based processor
 Running under: Mac OS 12.2.1
 RStudio: Version 1.4.1717 2009-2021 RStudio, Inc
 
-Implements a time-independent Sick-Sicker cSTM model that evaluates four strategies:
+Implements a time-independent Sick-Sicker cSTM model that evaluates two strategies:
 - Standard of Care (SoC): best available care for the patients with the disease. This scenario reflects the natural history of the disease    
   progression.
-- Strategy A: treatment A is given to patients in the Sick and Sicker states, but does only improves the quality of life  of those in the Sick state.
-- Strategy B: treatment B is given to all sick patients and reduces disease progression from the Sick to Sicker state.
 - Strategy AB: This strategy combines treatment A and treatment B. The disease progression is reduced and individuals in the Sick state have an 
   improved quality of life.
 
@@ -246,7 +244,7 @@ names(l_m_M) <- v_names_str
 
 # 06 Plot Outputs
 
-## 06.1 Plot the cohort trace for strategies SoC and A
+## 06.1 Plot the cohort trace for strategies SoC and AB
 
 ```{r, message = FALSE}
 plot_trace(m_M) 

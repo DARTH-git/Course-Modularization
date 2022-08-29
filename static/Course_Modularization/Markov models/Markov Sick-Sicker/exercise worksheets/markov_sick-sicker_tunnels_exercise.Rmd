@@ -1,15 +1,15 @@
 ---
 title: "Markov Sick-Sicker model"
-subtitle: 'Markov Model Exercise: with various dependencies'
+subtitle: 'With state-residence time dependencey'
 author: "The DARTH workgroup"
 output:
   html_document: default
-  word_document: default
-  pdf_document: default
+word_document: default
+pdf_document: default
 ---
-
+  
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-
+  
 Fernando Alarid-Escudero, PhD (1) 
 
 Eva A. Enns, MS, PhD (2)	
@@ -25,9 +25,9 @@ Petros Pechlivanoglou, PhD (6,7)
 Alan Yang, MSc (7)
 
 In collaboration of: 		
-
+  
 1. Division of Public Administration, Center for Research and Teaching in 
-   Economics (CIDE), Aguascalientes, Mexico
+Economics (CIDE), Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
@@ -36,7 +36,7 @@ In collaboration of:
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
- 
+  
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
@@ -49,7 +49,7 @@ Jalal H. Cohort State-Transition Models in R: A Tutorial. arXiv:200107824v2.
 Microsimulation modeling for health decision sciences using R: A tutorial. 
 Med Decis Making. 2018;38(3):400–22. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
- 
+
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
 Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
@@ -63,20 +63,20 @@ and adapted with proper attribution.
 
 # Exercise I: Variations on the Sick-Sicker Markov Model
 
-Previously, you built a Markov of the Sick-Sicker model. In this exercise, you will expand on that model to incorporate dependence on time since model start and on state residence.
+Previously, you built a Markov of the Sick-Sicker model. In this exercise, you will expand on that model to incorporate dependence on time since model start (simulation-time dependency) and on state-residence time dependency.
 
 **Time since model start**
-
+  
 Healthy individuals are no longer assumed to have a fixed mortality rate. Their mortality rate depends on their age. The Human Mortality Database (HMD) (www.mortality.org) provides these age specific mortality rates (Mx1x1). You can load this data in R using different packages, for example the HMDHFplus, demography or data.table package. Registration (free) on the HMD website is required in order to use the data. For this exercise, we provide you with this mortality rate for the US in the file “HMD_USA_Mx_2015.csv”.
 
 Remember: individuals in S1 and S2 still have an increased mortality relative to healthy individuals, as described in the original exercise. The same hazard ratios are used to calculate the probabilities of dying from S1 and S2 in this exercise. 
 
 **State residence**
-
+  
 It has been recently discovered that the risk of progression from Sick to Sicker increases the longer a person has been sick. This increase follows a Weibull growth curve, calculated as 
 
 $p_{S1S2(t)} = \lambda_\gamma t^{(\gamma-1)}$
-
+  
 where $t$ is the $t$-th cycle (year) that a person has been in the Sick state. $\lambda = 0.08$ and $\gamma = 1.1$ are the scale and shape parameters of the Weibull function, respectively.
 
 We will now expand the model to include age and state residence dependency by adding age varying probabilities for death and tunnel states for S1, as shown in Figure 2.
@@ -105,39 +105,47 @@ Using the template `markov_sick-sicker_tunnels_template.Rmd`, please do the foll
 
 4. Costs and utilities for all tunnel states are the same. Therefore, aggregate the Markov trace back to a healthy sick-sicker-dead trace and estimate total costs and QALYs for both strategies.
 
-5. Estimate incremental costs and QALYs and the ICER.  
+5.	Estimate the cost-effectiveness of Strategy AB vs SoC.
 
-6. Plot the survival curve for the cohort under no treatment. 
+6.	Create a cost-effectiveness table with all results of interest.
 
-|           **Parameter**            |  **R name** |   **Value**   |
-|:-----------------------------------|:------------|:-------------:|
-| Time horizon                       | `n_cycles`       | 30 years      |
-| Cycle length                       |             | 1 year        |
-| Names of health states             | `v_names_states`       | H, S1, S2, D  |
-| Annual discount rate (costs/QALYs) | `d_c` `d_e` |  3%           |
-| Annual transition probabilities    |             |               |
-| - Disease onset (H to S1), conditional on surviving          | `p_HS1`     |  0.15         |
-| - Recovery (S1 to H), conditional on surviving             | `p_S1H`     |  0.5          |
-| - Disease progression (S1 to S2), conditional on surviving   | `v_p_S1S2`    | Weibull function |
-| Annual mortality                   |             |               |
-| - All-cause mortality (H to D)     | `v_r_HD`      | `HMD - info below` |
-| - Hazard ratio of death in S1 vs H | `hr_S1`     |  3            |
-| - Hazard ratio of death in S2 vs H | `hr_S2`     |  10           |
-| Annual costs                       |             |               |
-| - Healthy individuals              | `c_H`       |  $2,000       |
-| - Sick individuals in S1           | `c_S1`      |  $4,000       |
-| - Sick individuals in S2           | `c_S2`      |  $15,000      |
-| - Dead individuals                 | `c_D`       |  $0           |
-| - Additional costs of sick individuals treated in S1 or S2       | `c_trt` | $12,000 |
-| Utility weights                    |             |               |
-| - Healthy individuals              | `u_H`       |  1.00         |
-| - Sick individuals in S1           | `u_S1`      |  0.75         |
-| - Sick individuals in S2           | `u_S2`      |  0.50         |
-| - Dead individuals                 | `u_D`       |  0.00         |
-| Intervention effect                |             |               |
-| - Utility for treated individuals in S1 | `u_trt` |  0.95        |
-
-*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first convert the probability of dying from healthy, `v_p_HD`, to a rate; then multiply this rate by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
+**Table I: Input parameters**
+  
+  |           **Parameter**            |  **R name** |   **Value**   |
+  |:-----------------------------------|:------------|:-------------:|
+  | Cycle length                       | `cycle_length`          | 1  year           |
+  | Age at baseline                    | `n_age_init`            | 25 years old      |
+  | Maximum age of follow-up           | `n_age_max`             | 100 years old     |
+  | Names of health states             | `v_names_states`        | H, S1, S2, D      |
+  | Names of cycles (time horizon)     | `n_cycles`              | (n_age_max - n_age_init) / cycle_length |
+  | Annual discount rate (costs/QALYs) | `d_c`/ `d_e`       | 3%                      |
+  | Annual transition probabilities conditional on surviving   |     |                |
+  | - Rate of becoming S1 when H               | `r_HS1`     |  0.15          |
+  | - Rate of becoming H when S1               | `r_S1H`     |  0.5           |
+  | - Rate of becoming S2 when S1                | `v_p_S1S2`    |   Weibull function         |
+  | Annual mortality                                   |             |                |
+  | - All-cause mortality (H to D)     | `v_r_HD`      | `HMD - info below`   |
+  | - Hazard ratio of death in S1 vs H | `hr_S1`       |  3          |
+  | - Hazard ratio of death in S2 vs H | `hr_S2`       |  10         |
+  | - Hazard ratio of becoming Sicker when Sick under Strategy AB  | `hr_S1S2_trtAB`       |  0.6         |
+  | Annual costs                       |             |               |
+  | - Healthy individuals              | `c_H`       |  $2,000       |
+  | - Sick individuals in S1           | `c_S1`      |  $4,000       |
+  | - Sick individuals in S2           | `c_S2`      |  $15,000      |
+  | - Dead individuals                 | `c_D`       |  $0           |
+  | - Additional costs of sick individuals treated with Strategy AB in S1 or S2       | `c_trtAB` | $25,000 |
+  | Utility weights                    |             |               |
+  | - Healthy individuals              | `u_H`       |  1.00         |
+  | - Sick individuals in S1           | `u_S1`      |  0.75         |
+  | - Sick individuals in S2           | `u_S2`      |  0.50         |
+  | - Dead individuals                 | `u_D`       |  0.00         |
+  | - Utility for individuals treated with Strategy AB in S1 | `u_trtAB` |  0.95        |
+  | Transition rewards              |             |               |
+  | - Disutility when transitioning from H to S1             | `du_HS1`       |  0.01      |
+  | - Increase in cost when transitioning from H to S1           | `ic_HS1`      |  1000         |
+  | - increase in cost when dying          | `ic_D`      |  2000         |
+  
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first multiply the rate of dying from healthy by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
 
 * 1. *HMD* : This is the Human mortality database. We provide you a files called `HMD_USA_Mx_2015.csv` with the age specific mortality rates. The data has the columns X, Year, Age, Female, Male, Total and OpenInterval. We will use the overall age specific mortality rate from the Total column.
 
@@ -165,5 +173,4 @@ v_r_HD <- lt_usa_2015 %>%
   select(Total) %>%
   as.matrix()
 ```
-
 

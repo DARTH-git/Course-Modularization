@@ -1,10 +1,10 @@
 ---
 title: 'Microsimulation Sick-Sicker model with time dependency'
-subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifier, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
+subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
 author: "The DARTH workgroup"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -47,24 +47,29 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns EA, et al. A Multidimensional Array Representation of State-Transition Model Dynamics. Med Decis Mak. https://doi.org/10.1177/0272989X19893973
 
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
+All rights reserved in Canada, the United States and worldwide. Copyright, 
+trademarks, trade names and any and all associated intellectual property are 
+exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
+institutions. These materials may be used, reproduced, modified, distributed 
+and adapted with proper attribution.
+
 \newpage
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+options(scipen = 999)  # disable scientific notation
+rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
 
-```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
-```
-
 # 01 Load packages
 
-```{r}
+```{r }
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 # load (install if required) packages from CRAN
-p_load("here", "devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack")
+p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack")
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
@@ -76,58 +81,64 @@ p_load_gh("DARTH-git/darthtools")
 # No functions needed
 ```
 
-# 03 Input model parameters
+# 03 Model input
 
 ```{r}
-set.seed(1)  # set the seed  
+## General setup 
+set.seed(1)               # set the seed  
+cycle_length   <- 1       # cycle length equal to one year (use 1/12 for monthly)
+n_cycles       <- 30      # time horizon, number of cycles
+n_i            <- 100000  # number of individuals
 
-# Strategy names
-v_names_str <- c("no treatment", "treatment")  # strategy names
-n_str        <- length(v_names_str)            # number of strategies
+# the 4 health states of the model:
+v_names_states <- c("H",  # Healthy (H)
+                    "S1", # Sick (S1)
+                    "S2", # Sicker (S2)
+                    "D")  # Dead (D)
+n_states       <- length(v_names_states) # number of health states 
 
-# Model structure
-v_names_states <- c("H", "S1", "S2", "D")  # the model states names
-n_states <- length(v_names_states)         # the number of health states
+### Discounting factors 
+d_c <- 0.03 # annual discount rate for costs 
+d_e <- 0.03 # annual discount rate for QALYs
 
-# Model parameters 
-n_t      <- 30                       # time horizon, 30 cycles
-n_i      <- 100000                   # number of simulated individuals
-d_r      <- 0.03                     # discount rate of 3% per cycle
-v_dwe    <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_t)) # discount weight 
+### Strategies 
+v_names_str   <- c("Standard of care",   # store the strategy names
+                  "Strategy AB") 
+n_str         <- length(v_names_str)     # number of strategies
 
-# Event probabilities (per cycle)
-# Annual transition probabilities
 # (all non-probabilities are conditional on survival)
-p_HS1   <- 0.15   # probability of becoming sick when healthy
-p_S1H   <- 0.5    # probability of recovering to healthy when sick
-p_S1S2  <- 0.105  # probability of becoming sicker when sick
+p_HS1         <- 0.15     # probability of becoming sick when healthy
+p_S1H         <- 0.5      # probability of recovering to healthy when sick
+p_S1S2_SoC    <- 0.105    # probability of becoming sicker when sick under standard of care
+p_S1S2_trtAB  <- 0.05     # probability of becoming sicker when sick under treatment AB
 
 # Annual probabilities of death
 # load age dependent probability
-# NOTE: if you don't have a data folder but the files in the same folder as your markdown you need 
-# read.csv("mortProb_age.csv") and 
-# read.csv("MyPopulation-AgeDistribution.csv") 
 p_mort   <- read.csv("mortProb_age.csv")
 # load age distribution
 dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
-p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_t - 5)) 
-p_S2D    <- 0.048  # probability to die in S2
+p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
+p_S2D    <- 0.048   # probability to die in S2
 
-# Cost inputs
-c_H     <- 2000    # cost of one cycle in the healthy state
-c_S1    <- 4000    # cost of one cycle in the sick state  
-c_S2    <- 15000   # cost of one cycle in the sicker state
-c_D     <- 0       # cost of one cycle in the dead state
-c_trt   <- 12000   # cost of treatment (per cycle)
+### State rewards 
+#### Costs 
+c_H     <- 2000  # annual cost of being Healthy
+c_S1    <- 4000  # annual cost of being Sick
+c_S2    <- 15000 # annual cost of being Sicker
+c_D     <- 0     # annual cost of being dead
+c_trtAB <- 25000 # annual cost of receiving treatment AB when in Sick
+#### Utilities 
+u_H     <- 1     # annual utility of being Healthy
+u_S1    <- 0.75  # annual utility of being Sick
+u_S2    <- 0.5   # annual utility of being Sicker
+u_D     <- 0     # annual utility of being dead
+u_trtAB <- 0.95  # annual utility when receiving treatment AB when in Sick
 
-# Utility inputs
-u_H     <- 1       # utility when healthy 
-u_S1    <- 0.75    # utility when sick 
-u_S2    <- 0.5     # utility when sicker
-u_D     <- 0       # utility when dead
-u_trt   <- 0.95    # utility when sick and being treated
+### Discount weight for costs and effects 
+v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 ```
 
 # 04 Sample individual level characteristics
@@ -135,44 +146,33 @@ u_trt   <- 0.95    # utility when sick and being treated
 ## 04.1 Static characteristics
 
 ```{r}
-v_x     <- runif(n_i, min = 0.95, max = 1.05) # treatment effect modifier at baseline 
-
+v_x     <- runif(n_i, min = 0.95, max = 1.05)  # treatment effect modifier at baseline 
 # sample from age distribution an initial age for every individual
-# your turn
-
+v_age0  <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
 ```
 
 ## 04.2 Dynamic characteristics 
 
 ```{r}
-# Specify the initial health state of the individuals 
-# everyone begins in the healthy state (in this example)
+# Your turn
 
-# your turn
-     
 ```
 
 ## 04.3 Create a dataframe with the individual characteristics 
 
 ```{r}
-# your turn
-# HINT: df_X <- # data.frame(# ADD ALL CHARACTERISTICS) 
+# Your turn
 
 ```
 
 # 05 Define Simulation Functions
 
-*HINT*: There is no need to make two functions for each strategy. We recommend to make one `Probs()`, one `Costs()` and one `Effs()` function and have a function argument `Trt` which you "switch" on and off (i.e TRUE/FALSE - or 0/1) for the strategy of interest. 
-
 ## 05.1 Probability function
 
-The function that updates the transition probabilities.
-Please make sure you incorporate the time dependency
+The `Probs` function updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-# your turn
-# HINT: In this function you have to incorporate age specific mortality 
-# and incorporate the change in probability of the years spend in the sick state
+# Your turn
 
 ```
 
@@ -181,8 +181,8 @@ Please make sure you incorporate the time dependency
 The `Costs` function estimates the costs at every cycle.
 
 ```{r}
-# your turn
-# Make sure you incorporate the cost of the treatment in the treatment strategy for both sick and sicker
+# Your turn
+
 ```
 
 ## 05.3 Health outcome function
@@ -190,51 +190,55 @@ The `Costs` function estimates the costs at every cycle.
 The `Effs` function to update the utilities at every cycle.
 
 ```{r}
-# your turn
-# HINT: Make sure you incorporate the treatment effect modifier 
-# HINT: Remember treatment improves the quality of life for those in the Sick (S1) state but not for those in the Sicker (S2) state
+# Your turn
+
 ```
 
 ## 05.4 The Microsimulation function
 
-You need to develop the main function `MicroSim()` that runs the microsimulation. 
-
 ```{r}
-# your turn
-# HINT: Build your own `MicroSim` function here that calls the Probs(),  Effs() and Costs() functions and samples the new state for the n_i individuals 
+# Your turn
+
 ```
 
 # 06 Run Microsimulation
 
-You have to run the `Microsim()` function twice. Once for the treatment strategy and once of the no-treatment strategy, as follows:
+```{r}
+# Your turn
 
-- `outcomes_no_trt  <- MicroSim(n_i, df_X, Trt = FALSE, seed = 1)`
-
-- `outcomes_trt     <- MicroSim(n_i, df_X, Trt = TRUE,  seed = 1)`
+```
 
 # 07 Visualize results
 
 ```{r}
-# your turn
-# HINT: use functions from the example code
-```
+# Standard of care
+# Your turn
 
-# 08 Cost Effectiveness Analysis
+```
 
 ```{r}
-# store the mean costs of each strategy in a new variable v_C (vector of costs)
-# remove # below
-# v_C <- c(outcomes_no_trt$tc_hat, outcomes_trt$tc_hat)
+# Strategy AB
+# Your turn
 
-# store the mean QALYs of each strategy in a new variable v_E (vector of effects)
-# remove # below
-# v_E <- c(outcomes_no_trt$te_hat, outcomes_trt$te_hat)
-
-
-# remove # below
-# use dampack to calculate the ICER
-# calculate_icers(cost       = v_C,
-#                 effect     = v_E,
-#                 strategies = v_names_str)
 ```
+
+# 08 Cost-effectiveness analysis (CEA) 
+
+```{r}
+# Your turn
+
+```
+
+```{r}
+## CEA table in proper format 
+# Your turn
+
+```
+
+```{r}
+## CEA frontier 
+# Your turn
+
+```
+
 

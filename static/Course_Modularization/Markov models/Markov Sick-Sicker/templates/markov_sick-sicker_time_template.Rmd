@@ -257,7 +257,7 @@ check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycle
 
 # 06 Plot Outputs
 
-## 06.1 Plot the cohort trace for strategy SoC 
+## 06.1 Plot the cohort trace for strategies SoC and AB
 
 ```{r}
 # your turn

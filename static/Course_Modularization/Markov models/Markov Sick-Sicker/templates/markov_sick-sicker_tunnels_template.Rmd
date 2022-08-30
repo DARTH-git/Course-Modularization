@@ -279,7 +279,7 @@ check_sum_of_transition_array(a_P_tunnels_strAB, n_states = n_states_tunnels, n_
 
 # 06 Plot Outputs
 
-## 06.1 Plot the cohort trace for strategy SoC 
+## 06.1 Plot the cohort trace for strategies SoC and AB
 
 ```{r}
 ## Plot the cohort trace for strategy SoC 

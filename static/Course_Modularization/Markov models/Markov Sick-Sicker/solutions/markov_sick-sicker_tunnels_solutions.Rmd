@@ -330,11 +330,11 @@ names(l_a_A) <- v_names_str
 
 # 06 Plot Outputs
 
-## 06.1 Plot the cohort trace for strategy SoC 
+## 06.1 Plot the cohort trace for strategies SoC and AB
 
 ```{r}
-## Plot the cohort trace for strategy SoC 
-plot_trace(m_M_tunnels_SoC_sum)
+plot_trace(m_M_SoC)
+plot_trace(m_M_strAB)
 ```
 
 # 07 State Rewards 

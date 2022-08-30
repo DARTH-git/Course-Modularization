@@ -8,12 +8,10 @@
 #' @param l_params_all List with all parameters of decision model
 #' @param verbose Logical variable to indicate print out of messages
 #' @return The transition probability array and the cohort trace matrix.
-#' 
+#' @export
 decision_model <- function(l_params_all, verbose = FALSE) {
   with(as.list(l_params_all), {
-    
-    ####### INTERNAL INPUTS #########################################
-    
+    ########################### Process model inputs ###########################
     ## Model states
     v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
     n_states        <- length(v_names_states)        # number of health states 
@@ -24,27 +22,30 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     ## Probability of dying when healthy (age-dependent) - this is now a sequence of numbers
     v_p_HD    = seq(p_HD_min, p_HD_max, length.out = n_cycles)
     
-    ## Initial state vector
-    v_s_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  # All starting healthy
+    # All starting healthy
+    v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
     
-    ####### INITIALIZATION ##########################################
-    
-    ## Initialize cohort trace for cSTM for all strategies
+    ###################### Construct state-transition models ###################
+    ### Initialize cohort trace for SoC 
     m_M_SoC <- matrix(0, 
                       nrow = (n_cycles + 1), ncol = n_states, 
                       dimnames = list(v_names_cycles, v_names_states))
     # Store the initial state vector in the first row of the cohort trace
-    m_M_SoC[1, ] <- v_s_init
-    ## Initialize cohort traces
-    m_M_trtA <- m_M_trtB <- m_M_SoC # structure and initial states remain the same
+    m_M_SoC[1, ] <- v_m_init
     
-    ## Initialize transition probability array
+    ## Initialize cohort traces for treatments A and B
+    # Structure and initial states are the same as for SoC
+    m_M_trtA <- m_M_trtB <- m_M_SoC
+    
+    ## Create transition probability arrays for strategy SoC 
+    ### Initialize transition probability array for strategy SoC 
+    # All transitions to a non-death state are assumed to be conditional on survival
     a_P_SoC <- array(0,  # Create 3-D array
                      dim = c(n_states, n_states, n_cycles),
                      dimnames = list(v_names_states, v_names_states, 
                                      v_names_cycles[-length(v_names_cycles)])) # name the dimensions of the array 
-
-    ## Fill in the transition probability array:
+    
+    ### Fill in array
     ## Standard of Care
     # from Healthy
     a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
@@ -68,6 +69,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
     a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
     
+    ## Check if transition array and probabilities are valid
     # Check that transition probabilities are in [0, 1]
     check_transition_probability(a_P_SoC,  verbose = TRUE)
     check_transition_probability(a_P_trtA, verbose = TRUE)
@@ -77,24 +79,27 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
     check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
     
-    
-    ############# PROCESS ###########################################
-    for (t in 1:n_cycles){  # loop through the number of cycles
-      # estimate the cohort trace for cycle t + 1 using the t-th matrix from the probability array 
-      m_M_SoC [t + 1, ] <- m_M_SoC [t, ] %*% a_P_SoC [, , t] 
-      m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t] 
-      m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t] 
+    # Iterative solution of age-dependent cSTM
+    for(t in 1:n_cycles){
+      ## Fill in cohort trace
+      # For SoC
+      m_M_SoC[t + 1, ]  <- m_M_SoC[t, ]  %*% a_P_SoC[, , t]
+      # For strategy A
+      m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t]
+      # For strategy B
+      m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t]
     }
     
-    ####### RETURN OUTPUT  ###########################################
-    out <- list(m_M_SoC   = m_M_SoC,
-                m_M_trtA  = m_M_trtA,
-                m_M_trtB  = m_M_trtB,
-                a_P_SoC   = a_P_SoC,
-                a_P_trtA  = a_P_trtA,
-                a_P_trtB  = a_P_trtB)
+    ## Store the cohort traces in a list 
+    l_m_M <- list(SoC =  m_M_SoC,
+                  A   =  m_M_trtA,
+                  B   =  m_M_trtB)
+    names(l_m_M) <- v_names_str
     
-    return(out) 
+    ########################################## RETURN OUTPUT  ##########################################
+    out <- list(l_m_M = l_m_M)
+    
+    return(out)
   }
   )
 }
@@ -109,63 +114,126 @@ decision_model <- function(l_params_all, verbose = FALSE) {
 #' @param n_wtp Willingness-to-pay threshold to compute net monetary benefits (
 #' NMB)
 #' @return A dataframe with discounted costs, effectiveness and NMB.
-#' 
-calculate_ce_out <- function(l_params_all, wtp = 10000){ # User defined
+#' @export
+calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
   with(as.list(l_params_all), {
+    ### Run decision model to get transition dynamics array
+    l_m_M <- decision_model(l_params_all = l_params_all)$l_m_M
     
-    ## Strategy names
-    v_names_str     <- c("Standard of Care",         # store the strategy names
-                         "Treatment A", 
-                         "Treatment B")  
-    n_str           <- length(v_names_str)           # number of strategies
+    ### State rewards
+    ## Scale by the cycle length 
+    # Vector of state utilities under strategy SoC
+    v_u_SoC    <- c(H  = u_H, 
+                    S  = u_S,
+                    D  = u_D) * cycle_length
+    # Vector of state costs under strategy SoC
+    v_c_SoC    <- c(H  = c_H, 
+                    S  = c_S,
+                    D  = c_D) * cycle_length
+    # Vector of state utilities under treatment A
+    v_u_trtA   <- c(H  = u_H, 
+                    S  = u_S, 
+                    D  = u_D) * cycle_length
+    # Vector of state costs under treatment A
+    v_c_trtA   <- c(H  = c_H + c_trtA, 
+                    S  = c_S, 
+                    D  = c_D) * cycle_length
+    # Vector of state utilities under treatment B
+    v_u_trtB   <- c(H  = u_H, 
+                    S  = u_S, 
+                    D  = u_D) * cycle_length
+    # Vector of state costs under treatment B
+    v_c_trtB   <- c(H  = c_H + c_trtB, 
+                    S  = c_S, 
+                    D  = c_D) * cycle_length
     
-    # discount weights for costs and effects
-    v_dwc <- 1 / (1 + d_c) ^ (0:n_cycles) 
-    v_dwe <- 1 / (1 + d_e) ^ (0:n_cycles) 
+    ## Store state rewards 
+    # Store the vectors of state utilities for each strategy in a list 
+    l_u   <- list(SQ = v_u_SoC,
+                  A  = v_u_trtA,
+                  B  = v_u_trtB)
+    # Store the vectors of state cost for each strategy in a list 
+    l_c   <- list(SQ = v_c_SoC,
+                  A  = v_c_trtA,
+                  B  = v_c_trtB)
     
-    ## Run STM model at a parameter set 
-    l_model_out <- decision_model(l_params_all = l_params_all)
+    # assign strategy names to matching items in the lists
+    names(l_u) <- names(l_c) <- v_names_str
     
-    ## Cohort traces 
-    m_M_SoC  <- l_model_out$m_M_SoC 
-    m_M_trtA <- l_model_out$m_M_trtA
-    m_M_trtB <- l_model_out$m_M_trtB
+    # Create empty vectors to store total utilities and costs 
+    v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
+    names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
     
-    # per cycle
-    # calculate expected costs by multiplying cohort trace with the cost vector for the different health states   
-    v_tc_SoC  <- m_M_SoC  %*% c(c_H, c_S, c_D)  
-    v_tc_trtA <- m_M_trtA %*% c(c_H + c_trtA, c_S, c_D)  
-    v_tc_trtB <- m_M_trtB %*% c(c_H + c_trtB, c_S, c_D)  
+    ## Loop through each strategy and calculate total utilities and costs 
+    for (i in 1:n_str) {
+      v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
+      v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+      
+      ### Expected QALYs and costs per cycle 
+      ## Vector of QALYs and Costs
+      # Apply state rewards 
+      v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
+      v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
+      
+      ### Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+      # QALYs
+      v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
+      # Costs
+      v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc)
+    }
     
-    # calculate expected QALYs by multiplying cohort trace with the utilities for the different health states   
-    v_tu_SoC  <- m_M_SoC  %*% c(u_H, u_S, u_D)  
-    v_tu_trtA <- m_M_trtA %*% c(u_H, u_S, u_D) 
-    v_tu_trtB <- m_M_trtB %*% c(u_H, u_S, u_D) 
+    ## Vector with discounted net monetary benefits (NMB)
+    v_nmb <- v_tot_qaly * n_wtp - v_tot_cost
     
-    # Discount costs by multiplying the cost vector with discount weights (v_dw) 
-    tc_d_SoC  <-  t(v_tc_SoC)  %*% v_dwc
-    tc_d_trtA <-  t(v_tc_trtA) %*% v_dwc
-    tc_d_trtB <-  t(v_tc_trtB) %*% v_dwc
-    
-    # Discount QALYS by multiplying the QALYs vector with discount weights (v_dw)
-    tu_d_SoC  <-  t(v_tu_SoC)  %*% v_dwe
-    tu_d_trtA <-  t(v_tu_trtA) %*% v_dwe
-    tu_d_trtB <-  t(v_tu_trtB) %*% v_dwe
-    
-    # Store them into a vector
-    v_tc_d <- c(tc_d_SoC, tc_d_trtA, tc_d_trtB)
-    v_tu_d <- c(tu_d_SoC, tu_d_trtA, tu_d_trtB)
-    
-    # Vector with discounted net monetary benefits (NMB)
-    v_nmb_d   <- v_tu_d * wtp - v_tc_d
-    
-    ## Dataframe with discounted costs, effectiveness and NMB
+    ## data.frame with discounted costs, effectiveness and NMB
     df_ce <- data.frame(Strategy = v_names_str,
-                        Cost     = v_tc_d,
-                        Effect   = v_tu_d,
-                        NMB      = v_nmb_d)
+                        Cost     = v_tot_cost,
+                        Effect   = v_tot_qaly,
+                        NMB      = v_nmb)
     
     return(df_ce)
   }
   )
+}
+
+
+#------------------------------------------------------------------------------#
+####             Generate a PSA input parameter dataset                     ####
+#------------------------------------------------------------------------------#
+#' Generate parameter sets for the probabilistic sensitivity analysis (PSA)
+#'
+#' \code{generate_psa_params} generates a PSA dataset of the parameters of the 
+#' cost-effectiveness analysis.
+#' @param n_sim Number of parameter sets for the PSA dataset
+#' @param seed Seed for the random number generation
+#' @return A data.frame with a PSA dataset of he parameters of the 
+#' cost-effectiveness analysis
+#' @export
+generate_psa_params <- function(n_sim = 1000, seed = 071818){
+  set.seed(seed) # set a seed to be able to reproduce the same results
+  df_psa <- data.frame(
+    # Transition probabilities (per cycle)
+    # probability of dying
+    p_SD      = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6),  # from sick          
+    p_HD_min  = 0.003,                                        # from healthy at t = 0
+    p_HD_max  = 0.01,                                         # from healthy at t = n_cycles
+    # probability of becoming sick when healthy, conditional on surviving
+    p_HS_SoC  = rbeta(n_sim, shape1 = 24, shape2 = 450),      # standard of care
+    p_HS_trtA = rbeta(n_sim, shape1 = 15, shape2 = 368),      # treatment A
+    p_HS_trtB = rbeta(n_sim, shape1 = 16, shape2 = 767),      # treatment B    
+
+    ## State rewards
+    # Costs
+    c_H       = rgamma(n_sim, shape = 16, scale = 25),        # cost of one cycle in healthy state
+    c_S       = rgamma(n_sim, shape = 100, scale = 10),       # cost of one cycle in sick state
+    c_D       = 0,                                            # cost of one cycle in dead state
+    c_trtA    = 800,                                          # cost of treatment A (per cycle) in healthy state
+    c_trtB    = 1500,                                         # cost of treatment B (per cycle) in healthy state
+    
+    # Utilities
+    u_H       = rbeta(n_sim, shape1 =  1.5, shape2 = 0.0015), # utility when healthy 
+    u_S       = rbeta(n_sim, shape1 = 49.5, shape2 = 49.5),   # utility when sick
+    u_D       = 0                                             # utility when dead
+  )
+  return(df_psa)
 }

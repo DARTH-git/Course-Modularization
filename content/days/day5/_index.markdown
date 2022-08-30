@@ -1,7 +1,7 @@
 ---
 title: "August 31 Schedule"
 author: ''
-date: "2022-08-29"
+date: "2022-08-30"
 slug: day5
 categories: []
 tags: []
@@ -17,7 +17,9 @@ type: docs
 
 **Preparation**:
 
-- Complete microsimulation hands-on exercise
+- Complete More Complex Cohort state-transition models (cSTM) exercise
+
+- Complete microsimulation exercise
 
 - Watch [“Sensitivity Analysis (SA)” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day5/sa_videos/)
 

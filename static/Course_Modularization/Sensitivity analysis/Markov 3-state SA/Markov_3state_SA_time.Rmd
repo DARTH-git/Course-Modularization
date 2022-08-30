@@ -1,6 +1,6 @@
 ---
 title: '3-state Markov model in R'
-subtitle: 'with OWSA, TWSA, PSA'
+subtitle: "With simulation-time dependency and sensitivity analysis"
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -35,13 +35,25 @@ In collaboration of:
 7. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
- 
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
+a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
+1-21. https://doi.org/10.1177/0272989X221121747
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
+Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
+(Online First):1-18. https://doi.org/10.1177/0272989X221103163
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
+Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
+(Online First):1-18. https://doi.org/10.1177/0272989X221103163
+
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
-
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. arXiv:200107824v3. 2021:1-26. http://arxiv.org/abs/2001.07824
 
 - Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
 Microsimulation modeling for health decision sciences using R: A tutorial. 
@@ -50,7 +62,7 @@ https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. Online First https://doi.org/10.1177/0272989X19893973
+Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
 All rights reserved in Canada, the United States and worldwide. Copyright, 
@@ -62,13 +74,13 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
 
 ```{r}
-rm(list = ls())  # clear memory (removes all the variables from the workspace)
+rm(list = ls())      # clear memory (removes all the variables from the workspace)
 ```
 
 # 01 Load packages
@@ -76,23 +88,318 @@ rm(list = ls())  # clear memory (removes all the variables from the workspace)
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("diagram", "dampack", "reshape2") 
-# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+p_load("dplyr", "tidyr", "reshape2", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram", "dampack")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
 ```
 
 # 02 Load functions
 
 ```{r}
-# Load decision model
-source("Functions_markov_3state_time.R")
+# all functions are in the darthtools package
 ```
 
-# 03 Set up model inputs and functions
+# 03 Model input
 
-# 03.1 Set default / base case input parameters
+```{r}
+## General setup
+cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
+n_cycles        <- 60                            # number of cycles
+v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
+v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+n_states        <- length(v_names_states)        # number of health states 
 
-Create list `l_params_all` to store all input probabilities, cost and utilities.
+### Discounting factors 
+d_c <- 0.03 # annual discount rate for costs 
+d_e <- 0.03 # annual discount rate for QALYs
+
+### Strategies 
+v_names_str     <- c("Standard of Care",         # store the strategy names
+                     "Treatment A", 
+                     "Treatment B")  
+n_str           <- length(v_names_str)           # number of strategies
+
+## Within-cycle correction (WCC) using Simpson's 1/3 rule 
+v_wcc <- gen_wcc(n_cycles = n_cycles,  method = "Simpson1/3")
+
+### Transition probabilities
+p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
+p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
+p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
+p_SD      <- 0.1   # probability of dying when sick
+p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
+p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
+# probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
+v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)   
+
+### State rewards
+#### Costs 
+c_H       <- 400   # cost of one cycle in healthy state
+c_S       <- 1000  # cost of one cycle in sick state
+c_D       <- 0     # cost of one cycle in dead state
+c_trtA    <- 800   # cost of treatment A (per cycle) in healthy state
+c_trtB    <- 1500  # cost of treatment B (per cycle) in healthy state
+#### Utilities
+u_H       <- 1     # utility when healthy 
+u_S       <- 0.5   # utility when sick
+u_D       <- 0     # utility when dead
+
+### Discount weight for costs and effects 
+v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+```
+
+# 04 Construct state-transition models
+
+```{r}
+m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
+m_P_diag["Healthy", "Sick" ]     = "" 
+m_P_diag["Healthy", "Dead" ]     = ""
+m_P_diag["Healthy", "Healthy" ]  = ""
+m_P_diag["Sick"   , "Dead" ]     = ""
+m_P_diag["Sick"   , "Sick" ]     = ""
+m_P_diag["Dead"   , "Dead" ]     = ""
+layout.fig <- c(2, 1)
+plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
+        latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
+        cex = 0.8, box.cex = 0.7, lwd = 1)
+```
+
+## 04.1 Initial state vector
+
+```{r}
+# All starting healthy
+v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+v_m_init
+```
+
+## 04.2 Initialize cohort traces
+
+```{r}
+### Initialize cohort trace for SoC 
+m_M_SoC <- matrix(0, 
+                  nrow = (n_cycles + 1), ncol = n_states, 
+                  dimnames = list(v_names_cycles, v_names_states))
+# Store the initial state vector in the first row of the cohort trace
+m_M_SoC[1, ] <- v_m_init
+
+## Initialize cohort traces for treatments A and B
+# Structure and initial states are the same as for SoC
+m_M_trtA <- m_M_trtB <- m_M_SoC
+```
+
+## 04.3 Create transition probability arrays
+
+```{r}
+## Create transition probability arrays for strategy SoC 
+### Initialize transition probability array for strategy SoC 
+# All transitions to a non-death state are assumed to be conditional on survival
+a_P_SoC <- array(0,  # Create 3-D array
+                dim = c(n_states, n_states, n_cycles),
+                dimnames = list(v_names_states, v_names_states, 
+                                v_names_cycles[-length(v_names_cycles)])) # name the dimensions of the array 
+
+### Fill in array
+## Standard of Care
+# from Healthy
+a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
+a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_SoC["Healthy", "Dead",    ] <-      v_p_HD
+
+# from Sick
+a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
+a_P_SoC["Sick", "Dead", ] <-     p_SD
+
+# from Dead
+a_P_SoC["Dead", "Dead", ] <- 1
+
+## Treatment A
+a_P_trtA <- a_P_SoC
+a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
+a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
+
+## Treatment B
+a_P_trtB <- a_P_SoC
+a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
+a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
+
+## Check if transition array and probabilities are valid
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(a_P_SoC,  verbose = TRUE)
+check_transition_probability(a_P_trtA, verbose = TRUE)
+check_transition_probability(a_P_trtB, verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(a_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+```
+
+# 05 Run Markov model
+
+```{r}
+# Iterative solution of age-dependent cSTM
+for(t in 1:n_cycles){
+  ## Fill in cohort trace
+  # For SoC
+  m_M_SoC[t + 1, ]  <- m_M_SoC[t, ]  %*% a_P_SoC[, , t]
+  # For strategy A
+  m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t]
+  # For strategy B
+  m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t]
+}
+
+## Store the cohort traces in a list 
+l_m_M <- list(SoC =  m_M_SoC,
+              A   =  m_M_trtA,
+              B   =  m_M_trtB)
+names(l_m_M) <- v_names_str
+```
+
+# 06 Plot Outputs
+
+## 06.1 Plot the cohort trace for strategies SoC
+
+```{r, message = FALSE}
+plot_trace(m_M_SoC) 
+```
+
+## 06.2 Overall Survival (OS)
+
+Print the overall survival for the Standard of Care
+
+```{r}
+v_os_SoC <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
+v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
+
+plot(v_os_SoC, type = 'l', 
+     ylim = c(0, 1),
+     ylab = "Survival probability",
+     xlab = "Cycle",
+     main = "Overall Survival")  # create a simple plot showing the OS
+
+# add grid 
+grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd"), 
+     equilogs = TRUE) 
+```
+
+## 06.2.1 Life Expectancy (LE)
+
+```{r}
+le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expectancy)
+```
+
+## 06.2.2 Disease prevalence
+
+```{r}
+v_prev <- m_M_SoC[, "Sick"]/v_os_SoC
+plot(v_prev,
+     ylim = c(0, 1),
+     ylab = "Prevalence",
+     xlab = "Cycle",
+     main = "Disease prevalence")
+```
+
+# 07 State Rewards 
+
+```{r}
+## Scale by the cycle length 
+# Vector of state utilities under strategy SoC
+v_u_SoC    <- c(H  = u_H, 
+                S  = u_S,
+                D  = u_D) * cycle_length
+# Vector of state costs under strategy SoC
+v_c_SoC    <- c(H  = c_H, 
+                S  = c_S,
+                D  = c_D) * cycle_length
+# Vector of state utilities under treatment A
+v_u_trtA   <- c(H  = u_H, 
+                S  = u_S, 
+                D  = u_D) * cycle_length
+# Vector of state costs under treatment A
+v_c_trtA   <- c(H  = c_H + c_trtA, 
+                S  = c_S, 
+                D  = c_D) * cycle_length
+# Vector of state utilities under treatment B
+v_u_trtB   <- c(H  = u_H, 
+                S  = u_S, 
+                D  = u_D) * cycle_length
+# Vector of state costs under treatment B
+v_c_trtB   <- c(H  = c_H + c_trtB, 
+                S  = c_S, 
+                D  = c_D) * cycle_length
+
+## Store state rewards 
+# Store the vectors of state utilities for each strategy in a list 
+l_u   <- list(SQ = v_u_SoC,
+              A  = v_u_trtA,
+              B  = v_u_trtB)
+# Store the vectors of state cost for each strategy in a list 
+l_c   <- list(SQ = v_c_SoC,
+              A  = v_c_trtA,
+              B  = v_c_trtB)
+
+# assign strategy names to matching items in the lists
+names(l_u) <- names(l_c) <- v_names_str
+```
+
+# 08 Compute expected outcomes 
+
+```{r}
+# Create empty vectors to store total utilities and costs 
+v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
+names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
+
+## Loop through each strategy and calculate total utilities and costs 
+for (i in 1:n_str) {
+  v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
+  v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+  
+  ### Expected QALYs and costs per cycle 
+  ## Vector of QALYs and Costs
+  # Apply state rewards 
+  v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
+  v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
+  
+  ### Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+  # QALYs
+  v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
+  # Costs
+  v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc)
+}
+```
+
+# 09 Cost-effectiveness analysis (CEA) 
+
+```{r}
+## Incremental cost-effectiveness ratios (ICERs) 
+df_cea <- calculate_icers(cost       = v_tot_cost, 
+                          effect     = v_tot_qaly,
+                          strategies = v_names_str)
+df_cea
+```
+
+```{R}
+## CEA table in proper format 
+table_cea <- format_table_cea(df_cea) 
+table_cea
+```
+
+```{r}
+## CEA frontier 
+plot(df_cea, label = "all", txtsize = 14) +
+  expand_limits(x = max(table_cea$QALYs) + 0.1) +
+  theme(legend.position = c(0.8, 0.3))
+```
+
+# 10 Deterministic Sensitivity Analysis (DSA)
+
+```{r}
+## Load model, CEA and PSA functions 
+source('Functions_markov_3state_time.R')
+```
+
+## 10.1 Model input for SA
 
 ```{r}
 l_params_all <- list(
@@ -121,12 +428,9 @@ l_params_all <- list(
   # Time horizon
   n_cycles  = 60     # simulation time horizon (number of cycles)
 )
-
-# store the parameter names into a vector
-v_names_params <- names(l_params_all)
 ```
 
-## 03.2 Test model functions
+**Test model functions**
 
 Two functions were defined in the `Functions_markov_3state_time.R` file. The first was the `decision_model()` function which takes in model parameters and outputs the Markov trace for all three strategies. The second is the `calculate_ce_out()` function which calls `decision_model()` and uses the resulting Markov trace to compute the total costs, QALYs, and net monetary benefit (NMB) for each strategy, returning a data frame of costs and QALYs.
 
@@ -145,31 +449,24 @@ v_names_str <- df_ce$Strategy
 n_str <- length(v_names_str)
 ```
 
-
-# 04 Deterministic Sensitivity Analysis
-
-## 04.1 One-way sensitivity analysis (OWSA)
+## 10.2 One-way sensitivity analysis (OWSA)
 
 ```{r}
 options(scipen = 999) # disabling scientific notation in R
-
 # dataframe containing all parameters, their base case values, and the min and 
 # max values of the parameters of interest 
 df_params_owsa <- data.frame(pars = c("c_trtA", "c_trtB", "c_S"),
-                             min  = c(300 , 500, 500),  # min parameter values
+                             min  = c(300 , 500,   500),  # min parameter values
                              max  = c(1200, 2000, 2000)  # max parameter values
                              )
-
 owsa_nmb  <- run_owsa_det(params_range     = df_params_owsa,    # dataframe with parameters for OWSA
                           params_basecase  = l_params_all,      # list with all parameters
                           nsamp            = 100,               # number of parameter values
                           FUN              = calculate_ce_out,  # function to compute outputs
                           outcomes         = c("NMB"),          # output to do the OWSA on
                           strategies       = v_names_str,       # names of the strategies
-                          wtp              = 5000)              # extra argument to pass to FUN
+                          n_wtp            = 5000)              # extra argument to pass to FUN
 ```
-
-## 04.1.1 Plot OWSA
 
 ```{r}
 plot(owsa_nmb, txtsize = 10, n_x_ticks = 4, 
@@ -177,13 +474,19 @@ plot(owsa_nmb, txtsize = 10, n_x_ticks = 4,
      theme(legend.position = "bottom")
 ```
 
-## 04.1.2 Optimal strategy with OWSA
+### 10.2.1 Optimal strategy with OWSA
 
 ```{r}
 owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 ```
 
-## 04.2 Two-way sensitivity analysis (TWSA)
+### 10.2.2 Tornado plot
+
+```{r}
+owsa_tornado(owsa = owsa_nmb)
+```
+
+## 10.3 Two-way sensitivity analysis (TWSA)
 
 ```{r}
 # dataframe containing all parameters, their basecase values, and the min and 
@@ -199,172 +502,191 @@ twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,    # dataframe with p
                          FUN             = calculate_ce_out,  # function to compute outputs
                          outcomes        = "NMB",             # output to do the TWSA on
                          strategies      = v_names_str,       # names of the strategies
-                         wtp             = 5000)              # extra argument to pass to FUN
+                         n_wtp           = 5000)              # extra argument to pass to FUN
 ```
 
-## 04.2.1 Plot TWSA
+### 10.3.1 Plot TWSA
 
 ```{r}
 plot(twsa_nmb)
 ```
 
-# 05 Probabilistic Sensitivity Analysis (PSA)
+# 11 Probabilistic Sensitivity Analysis (PSA) 
 
-## 05.1 Sample from parameter distribution reflecting parameter uncertainty
+## 11.1 Model input
 
 ```{r}
-# Function to generate PSA input dataset
-gen_psa <- function(n_sim = 1000, seed = 071818){
-  set.seed(seed) # set a seed to be able to reproduce the same results
-  df_psa <- data.frame(
-    # Transition probabilities
-    # probability of dying
-    p_SD      = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6),   # from sick          
-    p_HD_min  = 0.003, # from healthy at t = 0
-    p_HD_max  = 0.01,  # from healthy at t = n_cycles
-    # probability of becoming sick when healthy, conditional on surviving
-    p_HS_SoC  = rbeta(n_sim, shape1 = 24, shape2 = 450),  # standard of care
-    p_HS_trtA = rbeta(n_sim, shape1 = 15, shape2 = 368),  # treatment A
-    p_HS_trtB = rbeta(n_sim, shape1 = 16, shape2 = 767),  # treatment B
-    # Costs
-    c_H       = rgamma(n_sim, shape = 16, scale = 25),   # cost of one cycle in healthy state
-    c_S       = rgamma(n_sim, shape = 100, scale = 10),  # cost of one cycle in sick state
-    c_D       = 0,     # cost of one cycle in dead state
-    c_trtA    = 800,   # cost of treatment A (per cycle) in healthy state
-    c_trtB    = 1500,  # cost of treatment B (per cycle) in healthy state
-    # Utilities
-    u_H       = rbeta(n_sim, shape1 =  1.5, shape2 = 0.0015), # utility when healthy 
-    u_S       = rbeta(n_sim, shape1 = 49.5, shape2 = 49.5),   # utility when sick
-    u_D       = 0,     # utility when dead
-    # Discount rates
-    d_e       = 0.03,  # discount rate per cycle equal discount of costs and QALYs by 3%
-    d_c       = 0.03,  # discount rate per cycle equal discount of costs and QALYs by 3%
-    # Time horizon
-    n_cycles  = 60     # simulation time horizon (number of cycles)
-  )
-  return(df_psa)
-}
+# Store the parameter names into a vector
+v_names_params <- names(l_params_all)
 
+## Test functions to generate CE outcomes and PSA dataset 
+# Test function to compute CE outcomes
+calculate_ce_out(l_params_all) 
+
+# Test function to generate PSA input dataset
+generate_psa_params(10) 
+
+## Generate PSA dataset 
 # Number of simulations
 n_sim <- 1000
 
 # Generate PSA input dataset
-df_psa_input <- gen_psa(n_sim = n_sim)
+df_psa_input <- generate_psa_params(n_sim = n_sim)
 # First six observations
 head(df_psa_input)
-```
 
-## 0.5.2 Visualize PSA samples
-```{r}
-# Histogram of parameters
+### Histogram of parameters 
 ggplot(melt(df_psa_input, variable.name = "Parameter"), aes(x = value)) +
-       facet_wrap(~Parameter, scales = "free") +
-       geom_histogram(aes(y = ..density..)) +
-       theme_bw(base_size = 16) + 
-       theme(axis.text = element_text(size=8))
+  facet_wrap(~Parameter, scales = "free") +
+  geom_histogram(aes(y = ..density..)) +
+  ylab("") +
+  theme_bw(base_size = 16) + 
+  theme(axis.text = element_text(size = 6),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+        axis.ticks.y = element_blank()) 
 ```
 
-## 05.3 Conduct probabilistic sensitivity analysis
+## 11.2 Run PSA
+
 ```{r}
-# Initialize dataframes with PSA output 
-# Dataframe of costs
+# Initialize data.frames with PSA output 
+# data.frame of costs
 df_c <- as.data.frame(matrix(0, 
-                      nrow = n_sim,
-                      ncol = n_str))
+                             nrow = n_sim,
+                             ncol = n_str))
 colnames(df_c) <- v_names_str
-# Dataframe of effectiveness
+# data.frame of effectiveness
 df_e <- as.data.frame(matrix(0, 
-                      nrow = n_sim,
-                      ncol = n_str))
+                             nrow = n_sim,
+                             ncol = n_str))
 colnames(df_e) <- v_names_str
 
+# Conduct probabilistic sensitivity analysis
 # Run Markov model on each parameter set of PSA input dataset
-for(i in 1:n_sim){
-  l_out_temp <- calculate_ce_out(df_psa_input[i, ])
-  df_c[i, ] <- l_out_temp$Cost
-  df_e[i, ] <- l_out_temp$Effect
+n_time_init_psa_series <- Sys.time()
+for (i in 1:n_sim) { # i <- 1
+  l_psa_input <- update_param_list(l_params_all, df_psa_input[i,])
+  # Outcomes
+  l_out_ce_temp  <- calculate_ce_out(l_psa_input)
+  df_c[i, ]  <- l_out_ce_temp$Cost  
+  df_e[i, ]  <- l_out_ce_temp$Effect
   # Display simulation progress
-  if(i/(n_sim/10) == round(i/(n_sim/10), 0)) { # display progress every 10%
+  if (i/(n_sim/100) == round(i/(n_sim/100), 0)) { # display progress every 5%
     cat('\r', paste(i/n_sim * 100, "% done", sep = " "))
   }
 }
+n_time_end_psa_series <- Sys.time()
+n_time_total_psa_series <- n_time_end_psa_series - n_time_init_psa_series
+print(paste0("PSA with ", scales::comma(n_sim), " simulations run in series in ", 
+             round(n_time_total_psa_series, 2), " ", 
+             units(n_time_total_psa_series)))
 ```
 
-## 05.4 Create PSA object for dampack
+# 11.3 Visualize PSA results for CEA 
 
 ```{r}
+### Create PSA object 
 l_psa <- make_psa_obj(cost          = df_c, 
                       effectiveness = df_e, 
                       parameters    = df_psa_input, 
                       strategies    = v_names_str)
+l_psa$strategies <- v_names_str
+colnames(l_psa$effectiveness) <- v_names_str
+colnames(l_psa$cost) <- v_names_str
 
-# Save PSA output
-# save(df_psa_input, df_c, df_e, v_names_str, n_str, l_psa,
-#      file = "markov_3state_PSA_dataset.RData")
+# Vector with willingness-to-pay (WTP) thresholds.
+v_wtp <- seq(0, 30000, by = 1000)
 ```
 
-## 05.5 PSA Visualization and Analysis
-
-## 05.5.1 Cost-effectiveness scatter plot
+## 11.3.1 Cost-Effectiveness Scatter plot 
 
 ```{r}
-plot(l_psa, xlim = c(9.5, 22.5))
+### Cost-Effectiveness Scatter plot 
+txtsize <- 13
+gg_scattter <- plot_psa(l_psa, txtsize = txtsize) +
+  ggthemes::scale_color_colorblind() +
+  ggthemes::scale_fill_colorblind() +
+  scale_y_continuous("Cost (Thousand $)", 
+                     breaks = number_ticks(10),
+                     labels = function(x) x/1000) +
+  xlab("Effectiveness (QALYs)") +
+  guides(col = guide_legend(nrow = 2)) +
+  theme(legend.position = "bottom")
+gg_scattter
 ```
 
-## 05.5.2 CEA with probabilistic output
+## 11.3.2 Incremental cost-effectiveness ratios (ICERs) with probabilistic output
 
 ```{r}
+### Incremental cost-effectiveness ratios (ICERs) with probabilistic output 
 # Compute expected costs and effects for each strategy from the PSA
 df_out_ce_psa <- summary(l_psa)
-
-# Calculate incremental cost-effectiveness ratios (ICERs)
 df_cea_psa <- calculate_icers(cost       = df_out_ce_psa$meanCost, 
                               effect     = df_out_ce_psa$meanEffect,
                               strategies = df_out_ce_psa$Strategy)
 df_cea_psa
-
-# Save CEA table with ICERs
-# # As .RData
-# save(df_cea_psa, 
-#      file = "markov_3state_probabilistic_CEA_results.RData")
-# # As .csv
-# write.csv(df_cea_psa, 
-#           file = "markov_3state_probabilistic_CEA_results.csv")
 ```
 
-## 05.5.3 Plot cost-effectiveness frontier
+## 11.3.3 Plot cost-effectiveness frontier with probabilistic output
 
 ```{r}
-plot(df_cea_psa)
+### Plot cost-effectiveness frontier with probabilistic output 
+plot_icers(df_cea_psa, label = "all", txtsize = txtsize) +
+  expand_limits(x = max(table_cea$QALYs) + 0.1) +
+  theme(legend.position = c(0.8, 0.3))
 ```
 
-## 05.5.4 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
+## 11.3.4 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
 ```{r}
-# vector of willingness-to-pay values 
-v_wtp <- seq(from = 0, to = 30000, by = 1000)
-# generate cost-effectiveness acceptability curve
+### Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF) 
 ceac_obj <- ceac(wtp = v_wtp, psa = l_psa)
 # Regions of highest probability of cost-effectiveness for each strategy
 summary(ceac_obj)
 # CEAC & CEAF plot
-plot(ceac_obj)
+gg_ceac <- plot_ceac(ceac_obj, txtsize = txtsize, xlim = c(0, NA), n_x_ticks = 14) +
+  ggthemes::scale_color_colorblind() +
+  ggthemes::scale_fill_colorblind() +
+  theme(legend.position = c(0.8, 0.48))
+gg_ceac
 ```
 
-## 05.5.5 Expected Loss Curves (ELCs)
-
-The expected loss is the the quantification of the foregone benefits when choosing a suboptimal strategy given current evidence.
+## 11.3.5 Expected Loss Curves (ELCs)
 
 ```{r}
+### Expected Loss Curves (ELCs) 
 elc_obj <- calc_exp_loss(wtp = v_wtp, psa = l_psa)
+elc_obj
+
 # ELC plot
-plot(elc_obj, log_y = FALSE)
+gg_elc <- plot_exp_loss(elc_obj, log_y = FALSE, 
+               txtsize = txtsize, xlim = c(0, NA), n_x_ticks = 14,
+               col = "full") +
+  ggthemes::scale_color_colorblind() +
+  ggthemes::scale_fill_colorblind() +
+  # geom_point(aes(shape = as.name("Strategy"))) +
+  scale_y_continuous("Expected Loss (Thousand $)", 
+                     breaks = number_ticks(10),
+                     labels = function(x) x/1000) +
+  theme(legend.position = c(0.4, 0.7),)
+gg_elc
 ```
 
-## 05.5.6 Expected value of perfect information (EVPI)
+## 11.3.6 Expected value of perfect information (EVPI) 
 
 ```{r}
+### Expected value of perfect information (EVPI) 
 evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
 # EVPI plot
-plot(evpi, effect_units = "QALY")
+gg_evpi <- plot_evpi(evpi, effect_units = "QALY", 
+                     txtsize = txtsize, xlim = c(0, NA), n_x_ticks = 14) +
+  scale_y_continuous("EVPI (Thousand $)", 
+                     breaks = number_ticks(10),
+                     labels = function(x) x/1000)
+gg_evpi
 ```
+
+
+

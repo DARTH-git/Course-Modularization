@@ -17,7 +17,9 @@ type: docs
 
 **Preparation**:
 
-- Complete microsimulation hands-on exercise
+- Complete More Complex Cohort state-transition models (cSTM) exercise
+
+- Complete microsimulation exercise
 
 - Watch [“Sensitivity Analysis (SA)” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day5/sa_videos/)
 

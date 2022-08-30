@@ -394,14 +394,14 @@ plot(df_cea, label = "all", txtsize = 16) +
   theme(legend.position = c(0.82, 0.3))
 ```
 
-# 11 Probabilistic Sensitivity Analysis (PSA) 
+# 10 Deterministic Sensitivity Analysis (DSA)
 
 ```{r}
 ## Load model, CEA and PSA functions 
 source('Functions_markov_sick-sicker_time.R')
 ```
 
-## 11.1 Model input
+## 10.1 Model input for SA
 
 ```{r}
 ## List of input parameters 
@@ -441,7 +441,76 @@ l_params_all <- list(
   # Cycle length
   cycle_length = 1
 )
+```
 
+## 10.2 One-way sensitivity analysis (OWSA)
+
+```{r}
+options(scipen = 999) # disabling scientific notation in R
+# data.frame containing all parameters, their base-case values, and the min and 
+# max values of the parameters of interest 
+df_params_owsa <- data.frame(pars = c("r_S1S2", "c_trtAB", "u_S1", "u_trtAB"),
+                             min  = c(0.05 , 18000 , 0.65, 0.80), # min parameter values
+                             max  = c(0.155, 36000 , 0.85, 0.98)  # max parameter values
+                             )
+
+owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with parameters for OWSA
+                          params_basecase = l_params_all,     # list with all parameters
+                          nsamp           = 100,              # number of parameter values
+                          FUN             = calculate_ce_out, # function to compute outputs
+                          outcomes        = c("NMB"),         # output to do the OWSA on
+                          strategies      = v_names_str,      # names of the strategies
+                          n_wtp           = 120000)           # extra argument to pass to FUN
+```
+
+```{r}
+plot(owsa_nmb, txtsize = 10, n_x_ticks = 4, 
+     facet_scales = "free") +
+     theme(legend.position = "bottom")
+```
+
+### 10.2.1 Optimal strategy with OWSA
+
+```{r}
+owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
+```
+
+### 10.2.2 Tornado plot
+
+```{r}
+owsa_tornado(owsa = owsa_nmb)
+```
+
+## 10.3 Two-way sensitivity analysis (TWSA)
+
+```{r}
+# dataframe containing all parameters, their basecase values, and the min and 
+# max values of the parameters of interest
+df_params_twsa <- data.frame(pars = c("c_trtAB", "u_trtAB"),
+                             min  = c(18000, 0.80),  # min parameter values
+                             max  = c(36000, 0.98)  # max parameter values
+                             )
+
+twsa_nmb <- run_twsa_det(params_range    = df_params_twsa,   # data.frame with parameters for TWSA
+                         params_basecase = l_params_all,     # list with all parameters
+                         nsamp           = 40,               # number of parameter values
+                         FUN             = calculate_ce_out, # function to compute outputs
+                         outcomes        = c("NMB"),         # output to do the TWSA on
+                         strategies      = v_names_str,      # names of the strategies
+                         n_wtp           = 120000)           # extra argument to pass to FUN
+```
+
+### 10.3.1 Plot TWSA
+
+```{r}
+plot(twsa_nmb)
+```
+
+# 11 Probabilistic Sensitivity Analysis (PSA) 
+
+## 11.1 Model input
+
+```{r}
 # Store the parameter names into a vector
 v_names_params <- names(l_params_all)
 
@@ -524,10 +593,14 @@ colnames(l_psa$cost) <- v_names_str
 
 # Vector with willingness-to-pay (WTP) thresholds.
 v_wtp <- seq(0, 200000, by = 5000)
+```
 
+## 11.3.1 Cost-Effectiveness Scatter plot 
+
+```{r}
 ### Cost-Effectiveness Scatter plot 
 txtsize <- 13
-gg_scattter <- plot.psa(l_psa, txtsize = txtsize) +
+gg_scattter <- plot_psa(l_psa, txtsize = txtsize) +
   ggthemes::scale_color_colorblind() +
   ggthemes::scale_fill_colorblind() +
   scale_y_continuous("Cost (Thousand $)", 
@@ -539,6 +612,8 @@ gg_scattter <- plot.psa(l_psa, txtsize = txtsize) +
 gg_scattter
 ```
 
+## 11.3.2 Incremental cost-effectiveness ratios (ICERs) with probabilistic output
+
 ```{r}
 ### Incremental cost-effectiveness ratios (ICERs) with probabilistic output 
 # Compute expected costs and effects for each strategy from the PSA
@@ -549,12 +624,16 @@ df_cea_psa <- calculate_icers(cost       = df_out_ce_psa$meanCost,
 df_cea_psa
 ```
 
+## 11.3.3 Plot cost-effectiveness frontier with probabilistic output
+
 ```{r}
 ### Plot cost-effectiveness frontier with probabilistic output 
 plot_icers(df_cea_psa, label = "all", txtsize = txtsize) +
   expand_limits(x = max(table_cea$QALYs) + 0.1) +
   theme(legend.position = c(0.8, 0.3))
 ```
+
+## 11.3.4 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
 ```{r}
 ### Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF) 
@@ -568,6 +647,8 @@ gg_ceac <- plot_ceac(ceac_obj, txtsize = txtsize, xlim = c(0, NA), n_x_ticks = 1
   theme(legend.position = c(0.8, 0.48))
 gg_ceac
 ```
+
+## 11.3.5 Expected Loss Curves (ELCs)
 
 ```{r}
 ### Expected Loss Curves (ELCs) 
@@ -588,6 +669,8 @@ gg_elc <- plot_exp_loss(elc_obj, log_y = FALSE,
 gg_elc
 ```
 
+## 11.3.6 Expected value of perfect information (EVPI) 
+
 ```{r}
 ### Expected value of perfect information (EVPI) 
 evpi <- calc_evpi(wtp = v_wtp, psa = l_psa)
@@ -600,10 +683,3 @@ gg_evpi <- plot_evpi(evpi, effect_units = "QALY",
 gg_evpi
 ```
 
-```{r}
-### Combine all figures into one 
-patched_cea <- (gg_scattter +  gg_ceac + plot_layout(guides = "keep"))/(gg_elc + gg_evpi)
-gg_psa_plots <- patched_cea + 
-  plot_annotation(tag_levels = 'A')
-gg_psa_plots
-```

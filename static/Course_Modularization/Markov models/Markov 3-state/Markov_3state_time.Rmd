@@ -74,7 +74,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -235,21 +235,6 @@ check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles
 check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
-## 04.4 Create transition dynamics arrays
-
-```{r}
-# These arrays will capture transitions from each state to another over time 
-### Initialize transition dynamics array for strategy SoC 
-a_A_SoC <- array(0,
-             dim      = c(n_states, n_states, n_cycles + 1),
-             dimnames = list(v_names_states, v_names_states, 0:n_cycles))
-# Set first slice of a_A_SoC with the initial state vector in its diagonal
-diag(a_A_SoC[, , 1]) <- v_m_init
-### Initialize transition-dynamics array for strategies A and B 
-# Structure and initial states are the same as for SoC
-a_A_trtA <- a_A_trtB <- a_A_SoC
-```
-
 # 05 Run Markov model
 
 ```{r}
@@ -262,14 +247,6 @@ for(t in 1:n_cycles){
   m_M_trtA[t + 1, ] <- m_M_trtA[t, ] %*% a_P_trtA[, , t]
   # For strategy B
   m_M_trtB[t + 1, ] <- m_M_trtB[t, ] %*% a_P_trtB[, , t]
-  
-  ## Fill in transition-dynamics array
-  # For SoC
-  a_A_SoC[, , t + 1]  <- diag(m_M_SoC[t, ])  %*% a_P_SoC[, , t]
-  # For strategy A
-  a_A_trtA[, , t + 1] <- diag(m_M_trtA[t, ]) %*% a_P_trtA[, , t]
-  # For strategy B
-  a_A_trtB[, , t + 1] <- diag(m_M_trtB[t, ]) %*% a_P_trtB[, , t]
 }
 
 ## Store the cohort traces in a list 
@@ -277,12 +254,6 @@ l_m_M <- list(SoC =  m_M_SoC,
               A   =  m_M_trtA,
               B   =  m_M_trtB)
 names(l_m_M) <- v_names_str
-
-## Store the transition dynamics array for each strategy in a list 
-l_a_A <- list(SoC =  a_A_SoC,
-              A   =  a_A_trtA,
-              B   =  a_A_trtB)
-names(l_a_A) <- v_names_str
 ```
 
 # 06 Plot Outputs

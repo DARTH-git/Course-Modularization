@@ -9,9 +9,9 @@ menu:
     weight: 2
 ---
 
-<!-- ## Slides -->
+## Slides
 
-<!-- [Download Sensitivity Analysis slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysisSlides.pptx) -->
+[Download slides](../../../Course_Modularization/Sensitivity analysis/slides/SensitivityAnalysisSlides.pdf)
 
 Sensitivity Analysis - Introduction
 

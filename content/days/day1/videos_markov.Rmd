@@ -10,9 +10,9 @@ menu:
     weight: 3
 ---
 
-<!-- ## Slides -->
+## Slides
 
-<!-- [Download Markov model slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlides_CDC2021.pptx) -->
+[Download slides](../../../Course_Modularization/Markov models/Slides/MarkovModelSlidesAll.pdf)
 
 cSTM lecture 1: Introduction
 

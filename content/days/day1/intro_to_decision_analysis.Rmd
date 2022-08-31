@@ -11,9 +11,9 @@ menu:
 type: docs
 ---
   
-<!-- ## Workshop series overview  -->
+## Slides
 
-<!-- [Download slides](../../../Course_Modularization/Intro, general, packages/DARTH Overview.pptx) -->
+[Download slides](../../../Course_Modularization/Intro, general, packages/DecisionModelingIntroSlides.pdf)
 
 ### Introduction to Decision Analysis lecture videos
 

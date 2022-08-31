@@ -9,9 +9,9 @@ menu:
     weight: 5
 ---
 
-<!-- ## Slides -->
+## Slides
 
-<!-- [Download Microsimulation models slides](../../../Course_Modularization/Microsimulation/Slides/2021_CDC_Microsimulation_Slides_toShare.pdf) -->
+[Download slides](../../../Course_Modularization/Microsimulation/Slides/Microsimulation_Slides.pdf)
 
 Microsimulation - Theory
 

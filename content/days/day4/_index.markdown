@@ -1,7 +1,7 @@
 ---
 title: "August 30 Schedule"
 author: ''
-date: "2022-08-29"
+date: "2022-08-31"
 slug: day4
 categories: []
 tags: []
@@ -42,9 +42,11 @@ Here is a tentative timetable:
 
 Slack support available 1 p.m. – 4 p.m. CDT
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- [Link](https://us02web.zoom.us/rec/share/7tUN3LBxQ2_MRkCByl030LWqmf6TzGfxnbadL9Z6Z6BRFBuNoJ05EYH6j9O2o9nd.z_PByKw5n7yFnT4f) -->
+[Part 1](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661864999000)
+
+[Part 2](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661871963000)
 
 <!-- Passcode: +8AsHLg# -->
 

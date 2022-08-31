@@ -25,8 +25,8 @@ R code and other files used during this workshop session will be posted here for
 
 [Download model function template](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/templates/Functions_markov_sick-sicker_time.R)
 
-<!-- [Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_time_SA_solutions.Rmd) -->
+[Download excercise solutions](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/markov_sick-sicker_time_SA_solutions.Rmd)
 
-<!-- [Download model function solution code](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/Functions_markov_sick-sicker_time.R) -->
+[Download model function solution code](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/solutions/Functions_markov_sick-sicker_time.R)
 
 

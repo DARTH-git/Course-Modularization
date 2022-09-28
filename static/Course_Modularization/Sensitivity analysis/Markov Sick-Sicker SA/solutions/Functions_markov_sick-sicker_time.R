@@ -94,10 +94,10 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ### Check if transition probability matrices are valid
     ## Check that transition probabilities are [0, 1]
-    check_transition_probability(a_P_SoC, verbose = TRUE)
+    check_transition_probability(a_P_SoC,   verbose = TRUE)
     check_transition_probability(a_P_strAB, verbose = TRUE)
     ### Check that all rows for each slice of the array sum to 1
-    check_sum_of_transition_array(a_P_SoC, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+    check_sum_of_transition_array(a_P_SoC,   n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
     check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
     
     #### Run Markov model ####

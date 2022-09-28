@@ -687,6 +687,3 @@ gg_evpi <- plot_evpi(evpi, effect_units = "QALY",
                      labels = function(x) x/1000)
 gg_evpi
 ```
-
-
-

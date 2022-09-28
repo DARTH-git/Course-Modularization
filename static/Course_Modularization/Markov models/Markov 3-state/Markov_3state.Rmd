@@ -67,7 +67,7 @@ and adapted with proper attribution.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = T)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -217,9 +217,9 @@ check_transition_probability(m_P_SoC,  verbose = TRUE)
 check_transition_probability(m_P_trtA, verbose = TRUE)
 check_transition_probability(m_P_trtB, verbose = TRUE)
 ### Check that all rows sum to 1
-check_sum_of_transition_array(m_P_SoC,  n_states = n_states, verbose = TRUE)
-check_sum_of_transition_array(m_P_trtA, n_states = n_states, verbose = TRUE)
-check_sum_of_transition_array(m_P_trtB, n_states = n_states, verbose = TRUE)
+check_sum_of_transition_array(m_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(m_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
 # 05 Run Markov model

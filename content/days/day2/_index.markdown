@@ -1,49 +1,54 @@
 ---
-title: "August 29 schedule"
+title: "Part II: Session 1"
 author: ''
-date: "2022-08-29"
+date: "2022-10-03"
 slug: day2
 categories: []
 tags: []
 menu:
   day2:
-    name: "Schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-[Live session Zoom link](https://umn.zoom.us/j/95168741121?pwd=NmlRcjZnUXR3N2xVd3B4ZnJjQkFuUT09)
+## Decision Trees and Basic Cohort State-Transition Models in R
 
-**Preparation**:
+Monday, December 5, 2022
 
-Complete pre-workshop preparation modules.
+**Readings:**
 
-Here is a tentative timetable:
+- Alarid-Escudero F, et al. An introductory tutorial on cohort state-transition models in R using a cost-effectiveness analysis example. Medical Decision Making, 2022. [https://doi.org/10.1177/0272989X2211031](https://doi.org/10.1177/0272989X2211031)
+
+
+**Schedule:**
 
 |                            |            |
-|--------------------------------------------|:------------------|
-| 8:00 – 8:30  | Introductions |
-| 8:30 - 9:00 | OpenTree demo | 
-| 09:00 – 10:00 | Hands-on exercise: Decision tree exercise |
-| 10:00 – 10:15 | Break |
-| 10:15 – 10:45 | Code review: Cohort state-transition (Markov) models (cSTM)  |
-| 10:45 – 11:45 | Hands-on exercise: Cohort state-transition models |
-| 11:45 – 12:00 | Wrap up |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:15am   | Workshop orientation |
+| 10:15am – 10:45am  | Structuring your R code / Decision trees in R | 
+| 10:45am – 11:15am | Hands-on exercise: Decision tree exercise |
+| 10:45am – 11:15am | Hands-on exercise: Decision tree exercise | 
+| 12:00pm – 12:30pm  | Lunch break | 
+| 12:00pm – 12:30pm | Hands-on exercise: Code your own cohort state-transition model |
+| 1:30pm –  2:00pm | Hands-on exercise: Code your own cohort state-transition model |
 
-**On your own**:
 
-- Complete decision tree and cohort state-transition model exercises
+**Learning objectives:**
 
-- Watch [“Microsimulation” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day4/microsim_videos/)
+- Understand how to organize R code for decision analytic modeling
+-	Implement a decision tree in R
+-	Implement a basic cohort state-transition model in R
+-	Understand how to calculate epidemiological and economic outcomes in a state-transition model
+-	Start understanding how to implement your own model in R
+-	Understand how OpenTree can be used to implement complex decision trees in R
 
-Slack support available 1 p.m. – 4 p.m. CDT
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-[Part 1](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661778234000)
+<!-- [Part 1](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661778234000) -->
 
-[Part 2](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661786212000)
+<!-- [Part 2](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661786212000) -->
 
 <!-- # ```{r, echo=F} -->
 <!-- # blogdown::shortcode("vimeo", "592848080") -->

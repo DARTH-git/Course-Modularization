@@ -2,29 +2,30 @@
 active: true
 date: "`r Sys.Date()`"
 subtitle: ""
-title: Workshop Details
+title: Course Objectives
 weight: 16
 widget: custom
 ---
 
-Participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. A self-paced module introducing R concepts specifically for decision modeling will be provided as part of your workshop registration.
 
-*Pre-workshop preparation*
 
-- **August 15 – 26**: Complete pre-workshop preparation
+- Identify research questions that can be answered with decision analysis models
 
-- **August 24**: Intro to R office hours (10 a.m. – 12 p.m. CDT)
+- Understand the conceptual, mathematical, and computational differences different model types 
 
-*Live workshop sessions*
+- Understand when to use different types of decision analytic models
 
-- **August 29**: Decision trees and Markov models
+- Specify a decision analytic model structure and data needs to answer a research question
 
-- **August 30**: Microsimulation modeling
+- Implement and analyze decision trees, cohort state-transition models, and microsimulations
 
-- **August 31**: Sensitivity analysis
+- Implement and interpret probabilistic sensitivity analysis
 
-*Daily schedule August 29-31*
+- Develop competence in R for performing decision analytic tasks
 
-- 8 a.m. – 12 p.m. CDT: Synchronous Zoom sessions with instructors
+- Create a basic R shiny interface
 
-- 1 p.m. – 4 p.m. CDT: Complete hands-on exercises with Slack support
+- Understand good coding practices
+
+- Understand the benefits of R and other programming languages for decision analysis
+

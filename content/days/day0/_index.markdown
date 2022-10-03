@@ -1,49 +1,26 @@
 ---
-title: "October 14 agenda"
+title: "Part I"
 author: ''
-date: "2021-10-18"
+date: "2022-10-03"
 slug: day0
 categories: []
 tags: []
 menu:
   day0:
-    name: "October 14"
+    name: "Part I"
     weight: 1
 toc: yes
 type: docs
 ---
 
-## Part I: Foundations of Decision Modeling for Public Health
+## Conceptual Foundations of Decision Modeling for Public Health
 
-### Introduction to Decision Modeling
+Each session is 2.5hrs long. Sessions will be recorded.
 
-**Preparation**:
+- **Session 1: Monday, November 14, 2022**: Decision Modeling Overview & Decision Trees
 
--   Read through case studies
+- **Session 2: Tuesday, November 15, 2022**: Cohort State Transition Models
 
-Here is a tentative timetable (times are in **Central Time**):
+- **Session 3: Wednesday, November 16, 2022**: Model Parameterization and Sensitivity Analysis
 
-|               |                                                                        |
-|---------------|:-----------------------------------------------------------------------|
-| 9:00 – 9:15   | The DARTH Workgroup                                                    |
-| 9:15 – 10:00  | Overview of decision modeling and cost-effectiveness analysis          |
-| 10:00 – 10:45 | Break out exercise: Case studies of decision modeling in public health |
-| 10:45 – 11:00 | Preview of hands-on R workshop series                                  |
-
-**Homework**:
-
--   From October 14 - November 28, 2021
-
--   Complete Introduction to R for Decision Modeling
-
--   Self-paced, asynchronous; expected workload 8-10 hours
-
-*Support* available during [Zoom office hours](https://umn.zoom.us/j/98404393065?pwd=UFVBSGF3RDZ6K1BHVkFNNEJ1S0RNUT09):
-
--   10:00am – 12:00pm CT Tuesday, October 26, 2021
-
--   10:00am – 12:00pm CT Tuesday, November 16, 2021
-
-## Live session recording:
-
-{{% vimeo "632412491" %}}
+- **Session 4: Thursday, November 17, 2022**: Microsimulation Modeling

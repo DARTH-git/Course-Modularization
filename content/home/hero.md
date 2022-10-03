@@ -6,8 +6,8 @@ title: Welcome
 weight: 10
 ---
 
-This is the website for the *Cost-Effectiveness and Decision Modeling using R Workshop* workshop.
+This is the website for the *Decision Modeling for Public Health 2022-2023* workshop. All course materials will be uploaded here. Please check this website regularly for new and updated materials. This website will remain active for 6 months after the workshop is completed. 
 
-The [Decision Analysis in R for Technologies in Health (DARTH) workgroup](http://darthworkgroup.com/) in collaboration with the University of Minnesota Division of Health Policy and Management is offering a workshop on cost-effectiveness and decision modeling using R, **August 29 – 31, 2022** as a virtual, hands-on seminar. Instructors Eva Enns, Karen Kuntz, Fernando Alarid-Escudero, and other DARTH co-instructors will cover the principles of cost-effectiveness analysis and decision analytic modeling and will guide participants in implementing decision trees, Markov models, and microsimulation models in R as well as how to use models for cost-effectiveness analysis and deterministic and probabilistic sensitivity analysis.
+
 
 

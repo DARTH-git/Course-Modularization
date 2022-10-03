@@ -1,0 +1,22 @@
+---
+title: Decision Modeling Case Study
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Case study 
+menu:
+  day0:
+    parent: "October 14"
+    weight: 3
+---
+
+## Case study paper
+
+[Download paper](../../../Course_Modularization/Intro, general, packages/Eskander2021_TanningBan.pdf)
+
+## Case study questions
+
+[Download case study questions](../../../Course_Modularization/Intro, general, packages/Public Health Case Study Questions - DARTH Workshop.docx)

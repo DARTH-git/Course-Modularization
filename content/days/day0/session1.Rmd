@@ -1,0 +1,39 @@
+---
+title: "Part I: Session 1"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "Session 1"
+menu:
+  day0:
+    weight: 2
+---
+
+## Decision Modeling Overview & Decision Trees
+
+Monday, November 14, 2022
+
+**Readings:**
+
+- Eskander A, et al. To ban or not to ban tanning bed use for minors: A cost‐effectiveness analysis from multiple US perspectives for invasive melanoma. Cancer. 2021;127(13):2333-41. [https://doi.org/10.1002/cncr.33499](https://doi.org/10.1002/cncr.33499) *Read for high-level understanding. It’s ok if you don’t follow all the model details yet.*
+
+- Cipriano LE, et al. The cost‐effectiveness of expanding newborn screening for up to 21 inherited metabolic disorders using tandem mass spectrometry: results from a decision‐analytic model. Value in Health. 2007;10(2):83-97.[https://doi.org/10.1111/j.1524-4733.2006.00156.x]( https://doi.org/10.1111/j.1524-4733.2006.00156.x)
+
+**Schedule:**
+
+|                            |            |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:15am   | Workshop orientation |
+| 10:15am – 10:45am  | Overview of decision modeling and cost-effectiveness analysis | 
+| 10:45am – 11:15am | Break out exercise: Indoor tanning (Eskander et al.) case study discussion |
+| 11:15am – 12:00pm | Decision Trees |
+| 12:00pm – 12:30pm | Decision tree exercise: Mosquito-borne disease control  |
+
+
+**Learning objectives:**
+
+- Understand the premise of decision analysis as applied to public health and health care
+- Understand the role of perspective in an analysis
+- Identify the inputs needed to conduct a decision or cost-effectiveness analysis
+- Synthesize information into a decision tree
+

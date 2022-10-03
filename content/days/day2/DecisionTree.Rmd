@@ -10,6 +10,7 @@ menu:
 type: docs
 ---
 
+R code and other files used during this workshop session will be posted here for download.
 
 <!-- ## OpenTree demo -->
 
@@ -21,17 +22,17 @@ type: docs
 
 <!-- ## OpenTree exercise -->
 
-## OpenTree demo
+<!-- ## OpenTree demo -->
 
-[Download demo slides](../../../Course_Modularization/Decision trees/Slides/CEA and Decision Modeling Overview_with Decision tree slides.pptx)
+<!-- [Download demo slides](../../../Course_Modularization/Decision trees/Slides/CEA and Decision Modeling Overview_with Decision tree slides.pptx) -->
 
-[Download demo code](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
 
-Copy and paste the json code from the pop-up to Notepad and save it as "HVEsolution.json" in the same folder as the demo code.
+<!-- Copy and paste the json code from the pop-up to Notepad and save it as "HVEsolution.json" in the same folder as the demo code. -->
 
-[Download demo tree JSON file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json)
+<!-- [Download demo tree JSON file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
 
-[Download demo tree JSON file version 2](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution2.json)
+<!-- [Download demo tree JSON file version 2](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution2.json) -->
 
 <!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
 

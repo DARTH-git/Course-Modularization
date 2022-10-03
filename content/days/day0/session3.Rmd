@@ -1,0 +1,38 @@
+---
+title: "Part I: Session 3"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "Session 3"
+menu:
+  day0:
+    weight: 4
+---
+
+## Model Parameterization and Sensitivity Analysis
+
+Wednesday, November 16, 2022
+
+**Readings:**
+
+- Sensitivity analysis example: TBD
+
+
+**Schedule:**
+
+|                            |            |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:30am   | How do we parameterize models? |
+| 10:30am – 11:00am  | Break out activity: discuss data needs of fellow modeling projects | 
+| 11:00am – 12:00pm | Sensitivity analysis |
+| 12:00pm – 12:30pm | R Shiny sensitivity analysis demonstration |
+
+
+**Learning objectives:**
+
+- Understand how decision analytic models are parameterized
+-	Understand how to determine the data needs for a given modeling project
+-	Understand the role of deterministic and probabilistic sensitivity analysis
+-	Appropriately interpret the results from a sensitivity analysis
+
+

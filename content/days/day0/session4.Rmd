@@ -1,0 +1,39 @@
+---
+title: "Part I: Session 4"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "Session 4"
+menu:
+  day0:
+    weight: 5
+---
+
+## Microsimulation Modeling
+
+Thursday, November 17, 2022
+
+**Readings:**
+
+- Microsimulation example: TBD
+
+
+**Schedule:**
+
+|                            |            |
+|---------------|:-----------------------------------------|
+| 10:00am – 11:00am   | Microsimulation modeling |
+| 11:00am – 11:15am | Walk-through modeling project outline template (preparation for Part II) | 
+| 11:15am – 12:15pm | Break out activity: Complete an modeling project proposal |
+| 12:15pm – 12:30pm | Wrap up |
+
+
+**Learning objectives:**
+
+-	Understand the structure of a microsimulation model
+-	Deepen understanding of when to use different types of models
+-	Understand the pros and cons of microsimulations versus cohort state-transition models
+-	Outline a decision analytic model for a topic of interest
+
+
+

@@ -1,5 +1,5 @@
 ---
-title: "August 30 Schedule"
+title: "Part II: Session 3"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -7,46 +7,47 @@ categories: []
 tags: []
 menu:
   day4:
-    name: "Schedule"
     weight: 1
 toc: yes
 type: docs
 ---
 
-[Live session Zoom link](https://umn.zoom.us/j/95168741121?pwd=NmlRcjZnUXR3N2xVd3B4ZnJjQkFuUT09)
+## Microsimulation Modeling in R
 
-**Preparation**:
+Wednesday, December 7, 2022
 
-- Complete decision tree and cohort state-transition model exercises
+**Readings:**
 
-- Watch [“Microsimulation” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day4/microsim_videos/)
+-	TBD
 
-Here is a tentative timetable:
+
+**Schedule:**
 
 |                            |            |
-|--------------------------------------------|:------------------|
-| 08:00 – 08:45 | Review: Decision tree and cohort state-transition model exercise solutions |
-| 08:45 – 09:15 | Code review: More complex cohort state-transition models |
-| 09:15 – 10:00 | Hands-on exercise: Adding state time-dependence to a cohort-state transition model  |
-| 10:00 – 10:15 | Break |
-| 10:15 – 10:45 | Code review: Microsimulation models |
-| 10:45 – 11:45 | Hands-on exercise: Microsimulation models |
-| 11:45 – 12:00 | Wrap up |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:15am  | Moving from a cohort state-transition model to a microsimulation |
+| 10:15am – 11:00am | Code walk-through: Microsimulation | 
+| 11:00am – 12:00pm | Hands-on exercise: Make your model a (simple) microsimulation |
+| 12:00pm – 12:30pm  | Lunch break | 
+| 12:30pm – 1:30pm | Leveraging the power of microsimulation! A fellow-driven discussion |
+| 1:30pm – 2:00pm | Making your model a function: How and why |
 
 
-**On your own**:
+**Learning objectives:**
 
-- Complete microsimulation hands-on exercise
+-	Understand implementation differences between microsimulation and cohort state transition models
+-	Understand how to summarize the output from a microsimulation model
+-	Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
+-	Implement a simple microsimulation in R
+-	Understand how to convert a decision analytic model from an R script to an R function
 
-- Watch [“Sensitivity Analysis” lecture series](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day5/sa_videos/)
 
-Slack support available 1 p.m. – 4 p.m. CDT
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-[Part 1](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661864999000)
+<!-- [Part 1](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661864999000) -->
 
-[Part 2](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661871963000)
+<!-- [Part 2](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661871963000) -->
 
 <!-- Passcode: +8AsHLg# -->
 

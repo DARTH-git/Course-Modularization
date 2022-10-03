@@ -1,0 +1,51 @@
+---
+title: R Shiny
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: R Shiny
+menu:
+  day5:
+    weight: 5
+---
+
+R code and other files used during this workshop session will be posted here for download.
+
+
+<!-- ## Slides -->
+
+<!-- [Download slides - R Shiny](../../../Course_Modularization/Shiny/ShinySlides_4_11_22.pptx) -->
+
+<!-- ## Shiny App examples -->
+
+<!-- [Simple Markov model Shiny App](https://darkpeakanalytics.shinyapps.io/sadm-mk2/) -->
+
+<!-- [BresMed Shiny App](https://bresmed-intrface-hypothetical-car-t-model.shinyapps.io/IntRface_Model-PharmacoEconomics/) -->
+
+<!-- [COVID Shiny Apps](https://www.covid-19-mc.ca/) -->
+
+<!-- ## Shiny App R code demo -->
+
+<!-- [Download demo code](../../../Course_Modularization/Shiny/app.R) -->
+
+<!-- [Download dataset](../../../Course_Modularization/Shiny/framingham.csv) -->
+
+<!-- ## Exercise worksheet  -->
+
+<!-- [Download exercise worksheet](../../../Course_Modularization/Shiny/shiny_exercise.html) -->
+
+<!-- ## Student template and relevant files -->
+
+<!-- [Download exercise template - ShinyApp.R](../../../Course_Modularization/Shiny/ShinyApp.R) -->
+
+<!-- [Download Functions_Input.R](../../../Course_Modularization/Shiny/Functions_Input.R) -->
+
+<!-- [Download Function_MicroSim_3state.R](../../../Course_Modularization/Shiny/Function_MicroSim_3state.R) -->
+
+<!-- ## Instructor solutions -->
+
+<!-- [Download instructor solutions - Default Shiny App](../../../Course_Modularization/Shiny/ShinyApp_solutions.R) -->
+
+<!-- [Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/Shiny/app_solutions.R) -->
+
+

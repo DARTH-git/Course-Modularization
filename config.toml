@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Cost-Effectiveness and Decision Modeling using R Workshop 2022"
+title = "Workshop Website"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -250,43 +250,43 @@ enableGitInfo = false
   name = "Welcome"
   url = "prework/" 
   weight = 1
-
-#[[menu.main]]
-#  name = "Oct 14"
-#  weight = 2
-#  url = "days/day0/" 
-#  identifier = "day0"
   
 [[menu.main]]
-  name = "Pre-workshop Prep"
+  name = "Part I"
+  weight = 2
+  url = "days/day0/" 
+  identifier = "day0"
+  
+[[menu.main]]
+  name = "Part II Prep"
   weight = 3
   url = "days/day1/" 
   identifier = "day1"
   
 [[menu.main]]
-  name = "Aug 29"
+  name = "Part II: Session 1"
   weight = 4
   url = "days/day2/" 
   identifier = "day2"
   
 [[menu.main]]
-  name = "Aug 30"
+  name = "Part II: Session 2"
   weight = 5
-  url = "days/day4/" 
-  identifier = "day4"
+  url = "days/day3/" 
+  identifier = "day3"
   
 [[menu.main]]
-  name = "Aug 31"
+  name = "Part II: Session 3"
   weight = 6
+  url = "days/day4/" 
+  identifier = "day4"
+
+[[menu.main]]
+  name = "Part II: Session 4"
+  weight = 7
   url = "days/day5/" 
   identifier = "day5"
 
-#[[menu.main]]
-#  name = "Dec 2"
-#  weight = 7
-#  url = "days/day5/" 
-#  identifier = "day5"
-  
 #[[menu.main]]
 # name = "Mar 1"
 # weight = 8
@@ -314,7 +314,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/umnrworkshop2022/shared_invite/zt-1dsod5ibm-LYpHOOvLz_h_hm97LBZ_Hg"
+  url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"
   weight = 12
   
 # [[menu.main]]

@@ -1,0 +1,14 @@
+---
+title: "R Self-Assessment Quiz"
+date: "`r Sys.Date()`"
+draft: no
+type: docs
+linktitle: R Self-Assessment Quiz
+menu:
+  day1:
+    name: R Self-Assessment Quiz
+    weight: 3
+---
+
+For with significant experience in R or if you are unsure, complete the this R Self-Assessment Quiz to determine if you need to review some or all 
+of the "Introduction to R" modules.

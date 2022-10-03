@@ -1,53 +1,52 @@
 ---
-title: "November 30 Schedule"
+title: "Part II: Session 2"
 author: ''
-date: "2022-08-29"
+date: "2022-10-03"
 slug: day3
 categories: []
 tags: []
 menu:
   day3:
-    name: Schedule
     weight: 1
 toc: yes
 type: docs
 ---
 
-[Live session Zoom link](https://umn.zoom.us/j/95168741121?pwd=NmlRcjZnUXR3N2xVd3B4ZnJjQkFuUT09)
+## Time-Dependent Cohort State Transition Models
 
-### Cohort State-Transition Models with History Dependence
+Tuesday, December 6, 2022
 
-Basic agenda:
+**Readings:**
 
-- Synchronous session is from 9AM-12PM Eastern Time and consists of a mix of review, demonstrations and hands-on exercises
+-	Alarid-Escudero F, et al. A Tutorial on Time-Dependent Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022. [https://doi.org/10.1177/0272989X221121747](https://doi.org/10.1177/0272989X221121747)
 
-**Preparation**:
 
-- [Watch "history dependence" of "Cohort State-Transition Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day3/videos_markov_ext/)
-- Complete cohort state-transition model exercise (1 hour)
-
-Here is a tentative timetable:
+**Schedule:**
 
 |                            |            |
-|--------------------------------------------|:------------------|
-| 9:00 – 9:30  | Review: Time-dependent cohort state-transition model exercise |
-| 9:30 – 10:15 | Code review: Cohort state-transition models with history dependence; calculating epidemiologic and economic outcomes; `dampack` R package |
-| 10:15 – 10:30 | Break |
-| 10:30 – 11:00 | Break out exercise: Peer-code walk-through  |
-| 11:00 - 12:00 | Coding exercise: Implement a cohort state-transition model extensions |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:15am   | Naming variables in R |
+| 10:15am – 10:30am  | Review of types of time-dependency in cohort state transition models | 
+| 10:30am – 11:15am | Code walk-through: Time-dependent cohort state-transition models |
+| 11:15am – 12:00pm | Hands-on exercise: Add time-dependency to your cohort state-transition model | 
+| 12:00pm – 12:30pm  | Lunch break | 
+| 12:30pm – 1:00pm | Hands-on exercise: continued |
+| 1:00pm –  2:00pm | What kind of data do you need? A fellow-driven discussion |
 
-**Homework**:
 
-- Complete cohort state-transition model extension exercise (1 hour)
-- Watch ["Microsimulation Models" videos (30 minutes)](https://decision-modeling-for-public-health-2021.netlify.app/days/day4/microsim_videos/)
+**Learning objectives:**
 
-Slack support available 1:00PM-4:00PM
+-	Appreciate the importance of consistent variable naming in code
+-	Understand the difference between simulation time and state residence time dependencies and their implementation
+-	Implement your own cohort state-transition model with time-dependency in R
+-	Identify the data needs of your own modeling project
 
-## Live session recording:
 
-<!-- [link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5) -->
+<!-- ## Live session recording: -->
 
-Recording will be uploaded soon.
+<!-- <!-- [link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5) --> -->
+
+<!-- Recording will be uploaded soon. -->
 
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "592378542") -->

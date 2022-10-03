@@ -1,24 +1,27 @@
 ---
-title: "Cohort state-transition models (cSTM) - history dependence"
+title: "Cohort state-transition models (cSTM) - time dependence"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "cSTM with history dependence"
+linktitle: "cSTM with time dependence"
 menu:
   day3:
     weight: 4
 ---
-## R code demo & walkthrough - 3-state Markov model with state-residence time dependency (history dependence)
 
-[Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_tunnels.Rmd)
+R code and other files used during this workshop session will be posted here for download.
 
-## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence)
+<!-- ## R code demo & walkthrough - 3-state Markov model with state-residence time dependency (history dependence) -->
 
-[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html)
+<!-- [Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state_tunnels.Rmd) -->
 
-[Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv)
+<!-- ## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence) -->
 
-[Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_tunnels_template.Rmd)
+<!-- [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html) -->
 
-[Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd)
+<!-- [Download data](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/HMD_USA_Mx_2015.csv) -->
+
+<!-- [Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_tunnels_template.Rmd) -->
+
+<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd) -->
 

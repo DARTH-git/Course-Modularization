@@ -1,0 +1,38 @@
+---
+title: "Part I: Session 2"
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: "Session 2"
+menu:
+  day0:
+    weight: 3
+---
+
+## Cohort State Transition Models
+
+Tuesday, November 15, 2022
+
+**Readings:**
+
+- Cohort state transition model example: TBD
+
+
+**Schedule:**
+
+|                            |            |
+|---------------|:-----------------------------------------|
+| 10:00am – 10:45am   | Cohort state-transition models |
+| 10:45am – 11:30am  | Cohort state-transition model exercise: Managing residential toxin exposures | 
+| 11:30am – 11:45am | Conceptualizing model structure |
+| 11:45am – 12:15pm | Break out activity: discuss fellow modeling project ideas |
+| 12:15pm – 12:30pm | Model structure Q&A  |
+
+
+**Learning objectives:**
+
+-	Understand the assumptions and mathematics behind cohort state-transition models
+-	Understand how cohort state-transition models can be extended to reflect time-varying and time-dependent dynamics
+-	Begin to understand when to use different types of models
+-	Synthesize information into a state-transition model
+

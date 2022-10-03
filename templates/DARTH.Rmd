@@ -1,0 +1,34 @@
+---
+title: Intro to Decision Modeling
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+
+linktitle: Intro to Decision Modeling 
+menu:
+  day11:
+    weight: 11
+---
+
+Welcome to the *Introduction to Decision Modeling* module!
+
+Please go through the presentation video with slides below:
+
+## Slides
+
+<!-- To be uploaded. -->
+
+[Download slides](../../../Course_Modularization/Intro, general, packages/DecisionModelingIntroSlides_2021.pptx)
+
+## Presentation videos
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588658361")
+blogdown::shortcode("vimeo", "588658378")
+blogdown::shortcode("vimeo", "588660950")
+blogdown::shortcode("vimeo", "588655554")
+blogdown::shortcode("vimeo", "588655268")
+blogdown::shortcode("vimeo", "588654943")
+blogdown::shortcode("vimeo", "588654750")
+```
+

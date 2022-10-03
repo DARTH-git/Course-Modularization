@@ -15,11 +15,11 @@ type: docs
 
 Part II Preparation (complete prior to the first session)
 
-* Follow [installation instructions](https://umn-cea-decision-modeling-workshop-2022.netlify.app/prework/getting-started/) to install R, RStudio, and R packages required for the workshop
+* Follow [installation instructions](https://decision-modeling-cdc-2022-23.netlify.app/prework/getting-started/) to install R, RStudio, and R packages required for the workshop
 * Ensure an appropriate background in R:
   + For those with little or no experience in R, complete the [Introduction to 
-  R](https://umn-cea-decision-modeling-workshop-2022.netlify.app/days/day1/welcome/) self-paced modules (6-8hrs to complete)
-  + For with significant experience in R or if you are unsure, complete the [R Self-Assessment Quiz]() to determine if you need to review some or all 
+  R](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/welcome/) self-paced modules (6-8hrs to complete)
+  + For with significant experience in R or if you are unsure, complete the [R Self-Assessment Quiz](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/rquiz/) to determine if you need to review some or all 
   of the "Introduction to R" modules.
 
 

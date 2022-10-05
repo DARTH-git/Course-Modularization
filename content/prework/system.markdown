@@ -1,7 +1,7 @@
 ---
 title: Install software
 author: ''
-date: "2022-08-15"
+date: "2022-10-05"
 slug: system
 categories: []
 tags: []
@@ -22,7 +22,7 @@ In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on
 
 ## Install R
 
-Download `R` version 4.1.1 from [here](https://cran.r-project.org/bin/windows/base/old/4.1.1/). Download the file `R-4.1.1-win.exe` and follow the installation procedure.
+Download `R` version 4.2.1 from [here](https://cran.r-project.org/bin/windows/base/old/4.2.1/). Download the file `R-4.2.1-win.exe` and follow the installation procedure.
 
 ## Install RStudio
 

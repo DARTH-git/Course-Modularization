@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 1"
 author: ''
-date: "2022-10-03"
+date: "2022-10-05"
 slug: day2
 categories: []
 tags: []

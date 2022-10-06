@@ -19,7 +19,7 @@ blogdown::shortcode("vimeo", "472448727")
 
 Eva Enns, PhD, is an Associate Professor at the University of Minnesota’s School of Public Health, in the division of Health Policy and Management. She has a bachelor’s degree in electrical engineering from the Massachusetts Institute of Technology, and holds both a Master’s and a PhD in electrical engineering from Stanford University. She develops mathematical models of the spread of infectious diseases that help evaluate strategies aimed at mitigating disease impact through prevention and/or treatment. Her aim is to inform better infectious disease prevention, management, and control policies as well as to develop new methodologies or tools to better address issues surrounding infectious disease outbreaks.
 
-**Fernando Alarid-Escudero, PhD** <a href="https://www.cide.edu/dap/en/profesores/profesor/?id=277" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/feralaes" target="_blank"><i class="fab fa-github"></i></a> 
+**Fernando Alarid-Escudero, PhD** <a href="https://profiles.stanford.edu/fernando-alarid-escudero" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/feralaes" target="_blank"><i class="fab fa-github"></i></a> 
 
 ```{r, echo=F}
 blogdown::shortcode("vimeo", "473565068")

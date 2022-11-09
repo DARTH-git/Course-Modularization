@@ -15,7 +15,8 @@ Thursday, November 17, 2022
 
 **Readings:**
 
-- Microsimulation example: TBD
+- Knudsen AB, Rutter CM, Peterse EF, Lietz AP, Seguin CL, Meester RG, Perdue LA, Lin JS, Siegel RL, Doria-Rose VP, Feuer EJ. Colorectal cancer screening: an updated modeling study for the US Preventive Services Task Force. JAMA. 2021;325(19):1998-2011. [https://doi.org/10.1001/jama.2021.5746](https://doi.org/10.1001/jama.2021.5746)
+
 
 
 **Schedule:**

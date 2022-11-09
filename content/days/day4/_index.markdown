@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 3"
 author: ''
-date: "2022-10-03"
+date: "2022-11-09"
 slug: day4
 categories: []
 tags: []
@@ -18,7 +18,7 @@ Wednesday, December 7, 2022
 
 **Readings:**
 
--	TBD
+-	Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Medical Decision Making. 2018;38(3):400-22. [https://doi.org/10.1177/0272989X18754513](https://doi.org/10.1177/0272989X18754513)
 
 
 **Schedule:**

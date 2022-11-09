@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 4"
 author: ''
-date: "2022-10-03"
+date: "2022-11-09"
 slug: day5
 categories: []
 tags: []
@@ -18,7 +18,7 @@ Thursday, December 8, 2022
 
 **Readings:**
 
--	TBD
+-	Briggs AH, Weinstein MC, Fenwick E, et al. Model parameter estimation and uncertainty analysis: a report of the ISPOR-SMDM modeling good research practices task force-6. Value in Health. 2012;15(5):835-842. [https://doi.org/10.1177/0272989x12458348](https://doi.org/10.1177/0272989x12458348)
 
 **Watch:**
 

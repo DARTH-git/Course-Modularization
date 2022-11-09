@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 1"
 author: ''
-date: "2022-10-05"
+date: "2022-11-09"
 slug: day2
 categories: []
 tags: []
@@ -18,7 +18,9 @@ Monday, December 5, 2022
 
 **Readings:**
 
-- Alarid-Escudero F, et al. An introductory tutorial on cohort state-transition models in R using a cost-effectiveness analysis example. Medical Decision Making, 2022. [https://doi.org/10.1177/0272989X2211031](https://doi.org/10.1177/0272989X2211031)
+- Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, Jalal H, Kao SY, Yang A, Enns EA. A need for change! A coding framework for improving transparency in decision modeling. Pharmacoeconomics. 2019; 37(11):1329-39. [https://doi.org/10.1007/s40273-019-00837-x](https://doi.org/10.1007/s40273-019-00837-x)
+
+- Alarid-Escudero F, Krijkamp E, Enns EA, Yang A, Hunink MGM, Pechlivanoglou P, Jalal H An introductory tutorial on cohort state-transition models in R using a cost-effectiveness analysis example. Medical Decision Making, 2022 (Epub June 30). [https://doi.org/10.1177/0272989X221103163](https://doi.org/10.1177/0272989X221103163)
 
 
 **Schedule:**

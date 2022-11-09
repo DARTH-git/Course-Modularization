@@ -15,7 +15,10 @@ Wednesday, November 16, 2022
 
 **Readings:**
 
-- Sensitivity analysis example: TBD
+- Briggs AH, Weinstein MC, Fenwick E, et al. Model parameter estimation and uncertainty analysis: a report of the ISPOR-SMDM modeling good research practices task force-6. Value in Health. 2012;15(5):835-842. [https://doi.org/10.1177/0272989x12458348](https://doi.org/10.1177/0272989x12458348)
+
+- Lin JK, Lerman BJ, Barnes JI, Boursiquot BC, Tan YJ, Robinson AQ, Davis KL, Owens DK, Goldhaber-Fiebert JD. Cost effectiveness of chimeric antigen receptor T-cell therapy in relapsed or refractory pediatric B-cell acute lymphoblastic leukemia. Journal of Clinical Oncology. 2018;36(32):3192-202. [https://doi.org/10.1200/JCO.2018.79.0642](https://doi.org/10.1200/JCO.2018.79.0642)
+
 
 
 **Schedule:**

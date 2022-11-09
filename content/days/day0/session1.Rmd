@@ -37,3 +37,8 @@ Monday, November 14, 2022
 - Identify the inputs needed to conduct a decision or cost-effectiveness analysis
 - Synthesize information into a decision tree
 
+**Exercises**:
+
+[Day 1 - Exercise - Mosquito-borne disease Decision Tree](../../../Course_Modularization/noncode exercises/Day 1 - Exercise - Mosquito-borne disease Decision Tree.pdf)
+
+

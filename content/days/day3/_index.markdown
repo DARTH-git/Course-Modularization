@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 2"
 author: ''
-date: "2022-10-03"
+date: "2022-11-09"
 slug: day3
 categories: []
 tags: []
@@ -41,18 +41,3 @@ Tuesday, December 6, 2022
 -	Implement your own cohort state-transition model with time-dependency in R
 -	Identify the data needs of your own modeling project
 
-
-<!-- ## Live session recording: -->
-
-<!-- <!-- [link](https://umn.zoom.us/rec/share/HitMhMocc970GAyHG0_u9MilT69CloYa93CvSM-OEQOKCaNValgAPMMAMcd77Sf0.LfkahLUxzfZX4iZ5) --> -->
-
-<!-- Recording will be uploaded soon. -->
-
-<!-- ```{r, echo=F} -->
-<!-- blogdown::shortcode("vimeo", "592378542") -->
-<!-- ``` -->
-
-
-
-
- 

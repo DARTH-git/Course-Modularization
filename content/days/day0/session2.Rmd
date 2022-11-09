@@ -36,3 +36,10 @@ Tuesday, November 15, 2022
 -	Begin to understand when to use different types of models
 -	Synthesize information into a state-transition model
 
+**Exercises**:
+
+[Day 2 - Exercise - Toxin exposure cSTM](../../../Course_Modularization/noncode exercises/Day 2 - Exercise - Toxin exposure cSTM.pdf)
+
+
+
+

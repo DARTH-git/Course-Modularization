@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Workshop Website"
+title = "Decision Modeling for Public Health 2022-2023"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -254,38 +254,70 @@ enableGitInfo = false
 [[menu.main]]
   name = "Part I"
   weight = 2
-  url = "days/day0/" 
   identifier = "day0"
   
 [[menu.main]]
-  name = "Part II Prep"
+  name = "Session 1"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day0/session1"
+  weight = 1
+  parent = "day0"
+  
+[[menu.main]]
+  name = "Session 2"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day0/session2"
+  weight = 2
+  parent = "day0"
+
+[[menu.main]]
+  name = "Session 3"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day0/session3"
   weight = 3
-  url = "days/day1/" 
+  parent = "day0"
+  
+[[menu.main]]
+  name = "Session 4"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day0/session4"
+  weight = 4
+  parent = "day0"
+
+[[menu.main]]
+  name = "Part II"
+  weight = 3
   identifier = "day1"
+
+[[menu.main]]
+  name = "Part II Prep"
+  weight = 1
+  url = "days/day1/" 
+  parent = "day1"
   
 [[menu.main]]
   name = "Part II: Session 1"
-  weight = 4
+  weight = 2
   url = "days/day2/" 
-  identifier = "day2"
+  parent = "day1"
   
 [[menu.main]]
   name = "Part II: Session 2"
-  weight = 5
+  weight = 3
   url = "days/day3/" 
-  identifier = "day3"
+  parent = "day1"
   
 [[menu.main]]
   name = "Part II: Session 3"
-  weight = 6
+  weight = 4
   url = "days/day4/" 
-  identifier = "day4"
+  parent = "day1"
 
 [[menu.main]]
   name = "Part II: Session 4"
-  weight = 7
+  weight = 5
   url = "days/day5/" 
-  identifier = "day5"
+  parent = "day1"
 
 #[[menu.main]]
 # name = "Mar 1"

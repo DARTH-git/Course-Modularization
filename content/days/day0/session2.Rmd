@@ -38,7 +38,7 @@ Tuesday, November 15, 2022
 
 **Exercises**:
 
-[Day 2 - Exercise - Toxin exposure cSTM](../../../Course_Modularization/noncode exercises/Day 2 - Exercise - Toxin exposure cSTM.pdf)
+[Day 2 - Exercise - Toxin exposure cSTM](../../../Course_Modularization/CDC 2022-23/Day 2 - Exercise - Toxin exposure cSTM.pdf)
 
 
 

@@ -22,8 +22,8 @@ Tuesday, November 15, 2022
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 10:00am – 10:45am   | Cohort state-transition models |
-| 10:45am – 11:30am  | Cohort state-transition model exercise: Managing residential toxin exposures | 
+| 10:00am – 10:45am   | [Cohort state-transition models](../../../Course_Modularization/CDC 2022-23/Day 2 - State-tranisiton models - CDC 2022.pdf) |
+| 10:45am – 11:30am  | [Cohort state-transition model exercise: Managing residential toxin exposures](../../../Course_Modularization/CDC 2022-23/Day 2 - Exercise - Toxin exposure cSTM.pdf) | 
 | 11:30am – 11:45am | Conceptualizing model structure |
 | 11:45am – 12:15pm | Break out activity: discuss fellow modeling project ideas |
 | 12:15pm – 12:30pm | Model structure Q&A  |
@@ -38,8 +38,6 @@ Tuesday, November 15, 2022
 
 **Exercises**:
 
+[Day 2 - State-tranisiton models slides](../../../Course_Modularization/CDC 2022-23/Day 2 - State-tranisiton models - CDC 2022.pdf)
+
 [Day 2 - Exercise - Toxin exposure cSTM](../../../Course_Modularization/CDC 2022-23/Day 2 - Exercise - Toxin exposure cSTM.pdf)
-
-
-
-

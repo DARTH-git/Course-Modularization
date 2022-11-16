@@ -36,7 +36,7 @@ Tuesday, November 15, 2022
 -	Begin to understand when to use different types of models
 -	Synthesize information into a state-transition model
 
-**Exercises**:
+**Materials**:
 
 [Day 2 - State-tranisiton models slides](../../../Course_Modularization/CDC 2022-23/Day 2 - State-tranisiton models - CDC 2022.pdf)
 

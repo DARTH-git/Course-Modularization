@@ -38,4 +38,13 @@ Wednesday, November 16, 2022
 -	Understand the role of deterministic and probabilistic sensitivity analysis
 -	Appropriately interpret the results from a sensitivity analysis
 
+**Materials**
+
+[Day 3 - Estimating input parameters slides](../../../Course_Modularization/CDC 2022-23/Estimating_Input_parameters_in_decision_modeling.pptx)
+
+
+
+
+
+
 

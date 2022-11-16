@@ -40,7 +40,11 @@ Wednesday, November 16, 2022
 
 **Materials**
 
-[Day 3 - Estimating input parameters slides](../../../Course_Modularization/CDC 2022-23/Estimating_Input_parameters_in_decision_modeling.pptx)
+[Day 3 - Input parameters slides](../../../Course_Modularization/CDC 2022-23/Day 3 - Input_parameters_CDC.pdf)
+
+[Day 3 - Sensitivity analysis slides](../../../Course_Modularization/CDC 2022-23/Day 3- Sensitivity Analysis - CDC 2022.pdf)
+
+[Day 3 - Description of own case example template](../../../Course_Modularization/CDC 2022-23/Day 4 - Description of own case example_template.docx)
 
 
 

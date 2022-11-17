@@ -41,3 +41,7 @@ Tuesday, November 15, 2022
 [Day 2 - State-tranisiton models slides](../../../Course_Modularization/CDC 2022-23/Day 2 - State-tranisiton models - CDC 2022.pdf)
 
 [Day 2 - Exercise - Toxin exposure cSTM](../../../Course_Modularization/CDC 2022-23/Day 2 - Exercise - Toxin exposure cSTM.pdf)
+
+**Live session recording**
+
+[Link](https://umn.zoom.us/rec/share/kWsZB_-OMjSj4i8A2S4LajDIKayDlk7ZnfCXMQ70LD52G28sccoCz5dSzycS6gBn.UzaZsix2pTpyaQYK)

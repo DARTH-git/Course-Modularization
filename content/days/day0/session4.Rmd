@@ -23,8 +23,8 @@ Thursday, November 17, 2022
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 10:00am – 11:00am   | Microsimulation modeling |
-| 11:00am – 11:15am | Walk-through modeling project outline template (preparation for Part II) | 
+| 10:00am – 11:00am   | [Microsimulation modeling](../../../Course_Modularization/CDC 2022-23/Day 4- Microsimulation - CDC 2022.pdf) |
+| 11:00am – 11:15am | [Walk-through modeling project outline template (preparation for Part II)]((../../../Course_Modularization/CDC 2022-23/Day 4 - Description of own case example_template.docx)) | 
 | 11:15am – 12:15pm | Break out activity: Complete an modeling project proposal |
 | 12:15pm – 12:30pm | Wrap up |
 
@@ -36,5 +36,11 @@ Thursday, November 17, 2022
 -	Understand the pros and cons of microsimulations versus cohort state-transition models
 -	Outline a decision analytic model for a topic of interest
 
+[Day 4 - Microsimulation slides](../../../Course_Modularization/CDC 2022-23/Day 4- Microsimulation - CDC 2022.pdf)
 
+[Day 4 - Description of own case example template](../../../Course_Modularization/CDC 2022-23/Day 4 - Description of own case example_template.docx)
+
+**Live session recording**
+
+[Link](https://umn.zoom.us/rec/share/d_r8OqA1xpOf8X90uVLz6BpwXvSQ9GF7uluBcy6XHv1cRtlmV85y3rlp0h97e_Hv.ZX8R_Ar0pd7XlSRO)
 

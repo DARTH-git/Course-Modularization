@@ -20,6 +20,11 @@ p_load("abind",  "dampack", "data.table", "DES", "devtools", "diagram", "dplyr",
        "scales", "scatterplot3d", "stringr", "survHE", "survminer", "shiny",
        "tidyverse", "tidyr", "tm", "triangle", "truncnorm") 
 
+# When you get the question:
+#"There is a binary version available but the source version is later: binary source needs_compilation # tm  0.7-8  0.7-9              TRUE"
+# Do you want to install from sources the package which needs compilation (Yes/no/cancel)
+# Type YES
+
 
 # Enter an empty line to skip updates when prompted
 install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org") 

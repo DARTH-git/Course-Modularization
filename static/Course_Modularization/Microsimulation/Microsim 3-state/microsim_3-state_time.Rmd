@@ -171,7 +171,7 @@ head(df_X) # print the first rows of the dataframe
 The `Probs` function updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, Trt="SoC") { 
+Probs <- function(M_t, df_X, Trt ="SoC") { 
   # Arguments:
     # M_t:  health state occupied at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
@@ -223,7 +223,7 @@ Probs <- function(M_t, df_X, Trt="SoC") {
 The `Costs` function estimates the costs at every cycle.
 
 ```{r}
-Costs <- function (M_t, Trt="SoC") {
+Costs <- function (M_t, Trt = "SoC") {
   # Arguments:
     # M_t: health state occupied at cycle t (character variable)
   # Returns: 
@@ -257,14 +257,14 @@ Effs <- function (M_t) {
   # Arguments:
     # M_t: health state occupied at cycle t (character variable)
   # Returns: 
-    # QALYs accrued this cycle
+    # QALYs accrued this cycle 
   
   q_t <- c() 
   q_t[M_t == "Healthy"] <- u_H  # QALYs accrued by being healthy this cycle
   q_t[M_t == "Sick"]    <- u_S  # QALYs accrued by being sick this cycle
   q_t[M_t == "Dead"]    <- u_D  # QALYs at dead state
   
-  return(q_t)  # return the QALYs accrued this cycle
+  return(q_t)  # return the QALYs accrued this cycle #*NOTE: This is the case in our example where the cycle length is 1 year
 }
 ```
 
@@ -273,11 +273,12 @@ Effs <- function (M_t) {
 Below we develop the microsimulation function that allows the model to be run.
 
 ```{r}
-MicroSim <- function(n_i, df_X, seed = 1, Trt="SoC") {
+MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
   # Arguments:  
     # n_i: number of individuals
     # df_X: data frame with individual data 
     # seed: seed for the random number generator, default is 1
+    # Trt: treatment 
   # Returns:
     # results: data frame with total cost and QALYs
   
@@ -317,6 +318,7 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt="SoC") {
     # update time since illness onset for t + 1 
     # NOTE: this code has a "reset of history" for time being sick
     # once someone is not "Sick" anymore, we reset n_cycles_s (set back to zero)
+    # when you don't want a "reset" replace the last zero with teh current value
     df_X$n_cycles_s <- if_else(m_M[, t + 1] == "Sick", df_X$n_cycles_s + 1, 0) 
     
     # Display simulation progress

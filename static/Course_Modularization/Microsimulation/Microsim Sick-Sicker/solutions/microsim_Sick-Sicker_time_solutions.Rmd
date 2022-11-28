@@ -176,7 +176,7 @@ head(df_X)  # print the first rows of the dataframe
 The `Probs` function updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, t, Trt="Standard of care") { 
+Probs <- function(M_t, df_X, t, Trt = "Standard of care") { 
   # Arguments:
     # M_t:  health state occupied by individual i at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
@@ -274,6 +274,7 @@ Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
     # QALYs accrued this cycle
   
   u_t <- 0                          # by default the utility for everyone is zero
+  
   u_t[M_t == "H"]    <- u_H         # update the utility if healthy
   if (Trt == "Standard of care") {  # update the utility if sick under standard of care
     u_t[M_t == "S1"] <- u_S1
@@ -281,6 +282,7 @@ Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
   # update the utility if sick but on treatment AB (adjust for individual effect modifier) 
     u_t[M_t == "S1"] <- u_trtAB * df_X$x[M_t == "S1"]  
   }
+  
   u_t[M_t == "S2"]   <- u_S2        # update the utility if sicker
   u_t[M_t == "D"]    <- u_D         # update the utility if dead
   
@@ -292,7 +294,7 @@ Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
 ## 05.4 The Microsimulation function
 
 ```{r}
-MicroSim <- function(n_i, df_X, Trt="Standard of care", seed = 1) {
+MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1) {
   # Arguments:  
     # n_i : number of individuals
     # df_X: data frame with individual characteristics data 
@@ -319,14 +321,14 @@ MicroSim <- function(n_i, df_X, Trt="Standard of care", seed = 1) {
     m_M [, 1] <- as.character(df_X$M_init) # initial health state at cycle 0 for individual i
   
     # calculate costs per individual during cycle 0
-    m_C[, 1]  <- Costs(m_M[, 1], Trt=Trt)     
+    m_C[, 1]  <- Costs(m_M[, 1], Trt = Trt)     
     # calculate QALYs per individual during cycle 0
-    m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt=Trt)   
+    m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt = Trt)   
     
     # open a loop for time running cycles 1 to n_cycles 
     for (t in 1:n_cycles) {
       # calculate the transition probabilities for the cycle based on  health state t
-      m_P <- Probs(m_M[, t], df_X, t, Trt=Trt)             
+      m_P <- Probs(m_M[, t], df_X, t, Trt = Trt)             
       # check if transition probabilities are between 0 and 1
       check_transition_probability(m_P, verbose = TRUE)
       # check if checks if each of the rows of the transition probabilities matrix sum to one

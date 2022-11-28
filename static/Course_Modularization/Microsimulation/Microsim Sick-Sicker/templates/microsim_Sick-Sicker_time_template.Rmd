@@ -103,7 +103,7 @@ d_e <- 0.03 # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str   <- c("Standard of care",   # store the strategy names
-                  "Strategy AB") 
+                   "Strategy AB") 
 n_str         <- length(v_names_str)     # number of strategies
 
 # (all non-probabilities are conditional on survival)

@@ -253,18 +253,20 @@ Costs <- function (M_t, Trt = "SoC") {
 The `Effs` function to update the utilities at every cycle.
 
 ```{r}
-Effs <- function (M_t) {
+Effs <- function (M_t, cl = 1) {
   # Arguments:
     # M_t: health state occupied at cycle t (character variable)
+     # cl:   cycle length (default is 1)
   # Returns: 
     # QALYs accrued this cycle 
   
   q_t <- c() 
-  q_t[M_t == "Healthy"] <- u_H  # QALYs accrued by being healthy this cycle
-  q_t[M_t == "Sick"]    <- u_S  # QALYs accrued by being sick this cycle
-  q_t[M_t == "Dead"]    <- u_D  # QALYs at dead state
+  q_t[M_t == "Healthy"] <- u_H  # utility for being healthy this cycle
+  q_t[M_t == "Sick"]    <- u_S  # utility for being sick this cycle
+  q_t[M_t == "Dead"]    <- u_D  # utility for dead state
   
-  return(q_t)  # return the QALYs accrued this cycle #*NOTE: This is the case in our example where the cycle length is 1 year
+  QALYs <- q_t * cl  # calculate the QALYs during cycle t
+  return(QALYs)      # return the QALYs accrued this cycle
 }
 ```
 
@@ -297,7 +299,7 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
  
   m_M[, 1] <- as.character(df_X$M_init) # initial health state
   m_C[, 1] <- Costs(m_M[, 1])  # costs accrued during cycle 0
-  m_E[, 1] <- Effs(m_M[, 1])   # QALYs accrued during cycle 0
+  m_E[, 1] <- Effs(m_M[, 1], cl = 1)   # QALYs accrued during cycle 0
   
   # open a loop for time running cycles 1 to n_cycles 
   for (t in 1:n_cycles) {
@@ -313,7 +315,7 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
     # calculate costs per individual during cycle t + 1
     m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt = Trt)  
     # calculate QALYs per individual during cycle t + 1
-    m_E[, t + 1]  <- Effs (m_M[, t + 1])  
+    m_E[, t + 1]  <- Effs (m_M[, t + 1], cl = 1)  
     
     # update time since illness onset for t + 1 
     # NOTE: this code has a "reset of history" for time being sick

@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 2"
 author: ''
-date: "2022-11-09"
+date: "2022-11-29"
 slug: day3
 categories: []
 tags: []
@@ -12,7 +12,7 @@ toc: yes
 type: docs
 ---
 
-## Time-Dependent Cohort State Transition Models
+## Time-Dependent Cohort State Transition Models (cSTM)
 
 Tuesday, December 6, 2022
 
@@ -26,9 +26,9 @@ Tuesday, December 6, 2022
 |                            |            |
 |---------------|:-----------------------------------------|
 | 10:00am – 10:15am   | Naming variables in R |
-| 10:15am – 10:30am  | Review of types of time-dependency in cohort state transition models | 
-| 10:30am – 11:15am | Code walk-through: Time-dependent cohort state-transition models |
-| 11:15am – 12:00pm | Hands-on exercise: Add time-dependency to your cohort state-transition model | 
+| 10:15am – 10:30am  | Review of types of time-dependency in cSTMs | 
+| 10:30am – 11:15am | Code walk-through: Time-dependent cSTMs |
+| 11:15am – 12:00pm | Hands-on exercise: Add time-dependency to your cSTM | 
 | 12:00pm – 12:30pm  | Lunch break | 
 | 12:30pm – 1:00pm | Hands-on exercise: continued |
 | 1:00pm –  2:00pm | What kind of data do you need? A fellow-driven discussion |

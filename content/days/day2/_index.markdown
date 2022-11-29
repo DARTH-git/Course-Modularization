@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 1"
 author: ''
-date: "2022-11-09"
+date: "2022-11-29"
 slug: day2
 categories: []
 tags: []
@@ -30,10 +30,10 @@ Monday, December 5, 2022
 | 10:00am – 10:15am   | Workshop orientation |
 | 10:15am – 10:45am  | Structuring your R code / Decision trees in R | 
 | 10:45am – 11:15am | Hands-on exercise: Decision tree exercise |
-| 10:45am – 11:15am | Hands-on exercise: Decision tree exercise | 
+| 11:15am – 12:00pm | Code walk-through: Cohort state-transition models | 
 | 12:00pm – 12:30pm  | Lunch break | 
-| 12:00pm – 12:30pm | Hands-on exercise: Code your own cohort state-transition model |
-| 1:30pm –  2:00pm | Hands-on exercise: Code your own cohort state-transition model |
+| 12:30pm – 1:30pm | Hands-on exercise: Code your own cohort state-transition model |
+| 1:30pm –  2:00pm | OpenTree demo|
 
 
 **Learning objectives:**

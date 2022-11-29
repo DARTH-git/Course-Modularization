@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 4"
 author: ''
-date: "2022-11-09"
+date: "2022-11-29"
 slug: day5
 categories: []
 tags: []
@@ -22,7 +22,7 @@ Thursday, December 8, 2022
 
 **Watch:**
 
--	Video: Introduction to R Shiny
+-	[Video: Introduction to R Shiny](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/shiny/)
 
 **Schedule:**
 

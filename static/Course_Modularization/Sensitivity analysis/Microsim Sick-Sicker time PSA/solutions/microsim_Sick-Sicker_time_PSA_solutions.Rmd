@@ -95,7 +95,7 @@ v_names_states <- c("H", "S1", "S2", "D")  # the model states names
 n_states <- length(v_names_states)         # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle
 v_dwe <- v_dwc <- 1 / ((1 + d_r) ^ (0:n_cycles))    # discount weight 
-v_names_str <- c("no treatment", "treatment")  # strategy names
+v_names_str <- c("Soc", "treatmentAB")  # strategy names
 n_str <- length(v_names_str)      # number of strategies
 
 ### Event probabilities (per cycle)
@@ -107,9 +107,9 @@ p_S1S2_trtAB  <- 0.05     # probability of becoming sicker when sick under treat
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv("mortProb_age.csv")
+p_mort   <- read.csv("solutions/mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv")
+dist_Age <- read.csv("solutions/MyPopulation-AgeDistribution.csv")
 
 # probability to die in S1 by cycle (increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
@@ -155,7 +155,7 @@ v_Ts_init <- rep(0, n_i)  # since all individuals start healthy this value is ze
 ## 04.3 Create a dataframe with the individual characteristics 
 
 ```{r}
-df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_cycles_s = v_Ts_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
+df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_cycles_s = v_Ts_init, M_init = v_M_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
 ```
 
 # 05 Define Simulation Functions
@@ -165,14 +165,16 @@ df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_cycles_s = v_Ts_init) # 
 The function that updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, t, Trt="Standard of care") { 
+Probs <- function(M_t, df_X, t, Trt = "Standard of care") { 
   # Arguments:
     # M_t:  health state occupied by individual i at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
     # t:    current cycle 
-# Returns: 
+    # Trt:  treatment
+  # Returns: 
     # transition probabilities for that cycle
-    # Treatment specific transition probabilities
+  
+  # Treatment specific transition probabilities
   if (Trt == "Standard of care") {
     p_S1S2 <- p_S1S2_SoC
   } else if (Trt == "Strategy AB") {
@@ -183,9 +185,9 @@ Probs <- function(M_t, df_X, t, Trt="Standard of care") {
   m_p_t           <- matrix(0, nrow = n_states, ncol = n_i) 
   rownames(m_p_t) <-  v_names_states  # give the state names to the rows
   
-  # look up baseline probability and rate of dying based on individual characteristics
+  # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, p_mort, by = c("Age"))
-  p_HD     <- p_HD_all[M_t == "H","p_HD"]
+  p_HD     <- p_HD_all[M_t == "H", "p_HD"]
   
   # update the m_p with the appropriate probabilities   
   # (all non-death probabilities are conditional on survival) 
@@ -211,10 +213,10 @@ Probs <- function(M_t, df_X, t, Trt="Standard of care") {
   m_p_t["H",  M_t == "D"]  <- 0
   m_p_t["S1", M_t == "D"]  <- 0
   m_p_t["S2", M_t == "D"]  <- 0 
-  m_p_t["D",  M_t == "D"]  <- 1                                                        
+  m_p_t["D",  M_t == "D"]  <- 1  
   
   return(t(m_p_t))
-}       
+}      
 ```
 
 ## 05.2 Cost function
@@ -252,40 +254,44 @@ The `Effs` function to update the utilities at every cycle.
 
 ```{r}
 Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
-  # Arguments:  
-    # M_t:  health state occupied by individual i at cycle t (character variable)
+  # Arguments:
+    # M_t: health state occupied by individual i at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
-    # Trt:  is the individual treated? (default is FALSE) 
+    # Trt:  Treatment
     # cl:   cycle length (default is 1)
   # Returns:
     # QALYs accrued this cycle
-   u_t <- 0                          # by default the utility for everyone is zero
+  
+  u_t <- 0                          # by default the utility for everyone is zero
+  
   u_t[M_t == "H"]    <- u_H         # update the utility if healthy
   if (Trt == "Standard of care") {  # update the utility if sick under standard of care
     u_t[M_t == "S1"] <- u_S1
   } else if (Trt == "Strategy AB") {
   # update the utility if sick but on treatment AB (adjust for individual effect modifier) 
     u_t[M_t == "S1"] <- u_trtAB * df_X$x[M_t == "S1"]  
-  }                 # update the utility if dead
-   u_t[M_t == "S2"]   <- u_S2        # update the utility if sicker
+  }
+  
+  u_t[M_t == "S2"]   <- u_S2        # update the utility if sicker
   u_t[M_t == "D"]    <- u_D         # update the utility if dead
-
-  QALYs <-  u_t * cl  # calculate the QALYs during cycle t
-  return(QALYs)       # return the QALYs
+  
+  QALYs <- u_t * cl  # calculate the QALYs during cycle t
+  return(QALYs)      # return the QALYs accrued this cycle
 }
+
 ```
 
-# 06 Run Microsimulation
+## 05.4 The Microsimulation function
 
 ```{r}
-MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
+MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1) {
   # Arguments:  
-    # n_i:  number of individuals
+    # n_i : number of individuals
     # df_X: data frame with individual characteristics data 
-    # Trt:  is this the individual receiving treatment? (default is FALSE)
-    # seed: default is 1
+    # Trt : treatment
+    # seed: seed for the random number generator, default is 1
   # Returns:
-    # results: data frame with total cost and QALYs  
+    # results: data frame with total cost and QALYs
   
   set.seed(seed) # set the seed
   
@@ -298,25 +304,26 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
   # m_C is used to store the costs information over time for every individual
   # m_E is used to store the effects information over time for every individual
   
-  m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_cycles + 1, 
-                                     dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
-                                                     paste("cycle", 0:n_cycles, sep = " ")))  
+  m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_cycles + 1, 
+                               dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
+                                               paste("cycle", 0:n_cycles, sep = " ")))  
 
-    m_M [, 1] <- v_M_init    # initial health state at cycle 0 for individual i
+    m_M [, 1] <- as.character(df_X$M_init) # initial health state at cycle 0 for individual i
   
     # calculate costs per individual during cycle 0
-    m_C[, 1]  <- Costs(m_M[, 1], Trt)     
+    m_C[, 1]  <- Costs(m_M[, 1], Trt = Trt)     
     # calculate QALYs per individual during cycle 0
-    m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt)   
+    m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt = Trt)   
     
     # open a loop for time running cycles 1 to n_cycles 
     for (t in 1:n_cycles) {
       # calculate the transition probabilities for the cycle based on  health state t
-      m_P <- Probs(m_M[, t], df_X, t)             
+      m_P <- Probs(m_M[, t], df_X, t, Trt = Trt)             
       # check if transition probabilities are between 0 and 1
       check_transition_probability(m_P, verbose = TRUE)
       # check if checks if each of the rows of the transition probabilities matrix sum to one
-      check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_cycles, verbose = TRUE)
+      ## NOTE: to make this function work n_states = n_i in a Microsimulation
+      check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_cycles, verbose = TRUE) ##
       # sample the current health state and store that state in matrix m_M 
       m_M[, t + 1]  <- samplev(m_P, 1)                  
       # calculate costs per individual during cycle t + 1
@@ -337,25 +344,25 @@ MicroSim <- function(n_i, df_X, Trt = FALSE, seed = 1) {
     } # close the loop for the time points 
   
   # calculate  
-  tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
-  te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
-  tc_hat  <- mean(tc)       # average (discounted) cost 
-  te_hat  <- mean(te)       # average (discounted) QALYs
-  
+  tc <- m_C %*% v_dwc  # total (discounted) cost per individual
+  te <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
+  tc_hat <- mean(tc)   # average (discounted) cost 
+  te_hat <- mean(te)   # average (discounted) QALY 
   # store the results from the simulation in a list
-  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, 
-                  tc_hat = tc_hat, te_hat = te_hat)   
+  results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, tc_hat = tc_hat, 
+                  te_hat = te_hat)   
   
   return(results)  # return the results
 
 } # end of the MicroSim function  
 
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
-# In this example the outcomes are of the simulation are stored in the variables `outcomes_no_tr` and `outcomes_trt`.
+# In this example the outcomes are of the simulation are stored in the variables `outcomes_SoC` and `outcomes_trtAB`.
 
 # Run the simulation for both no treatment and treatment options
 outcomes_SoC <- MicroSim(n_i, df_X, Trt = "Standard of care", seed = 1)
 outcomes_trtAB    <- MicroSim(n_i, df_X, Trt = "Strategy AB",  seed = 1)
+
 ```
 
 # 07 Visualize results
@@ -471,7 +478,7 @@ colnames(df_e) <- v_names_str
 ## 09.1 Load function of microsimulation model
 
 ```{r}
-source("Function_Microsim_Sick-Sicker_time.R")
+source("solutions/Function_Microsim_Sick-Sicker_time.R")
 # Test microsimulation function
 calculate_ce_out(df_psa_input[1,])
 ```

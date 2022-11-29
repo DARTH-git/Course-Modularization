@@ -27,10 +27,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
     v_age0 <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
     
     ## 04.2 Dynamic characteristics 
-    # sample from age distribution an initial age for every individual
-    v_age0 <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
-    # a vector with the time of being sick at the start of the model  
-    
+
     # Specify the initial health state of the individuals 
     # everyone begins in the healthy state (in this example)
     # a vector with the initial health state for all individuals
@@ -38,7 +35,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
     v_Ts_init <- rep(0, n_i)  # since all individuals start healthy this value is zero for everyone
     
     ## 04.3 Create a dataframe with the individual characteristics 
-    df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_ts = v_Ts_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
+    df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0,  n_cycles_s = v_Ts_init) # create a dataframe with an ID number for every individual, the individual treatment effect modifier and the age of the individuals 
     
     ## 05.1 Probability function
     Probs <- function(M_t, df_X, t) { 

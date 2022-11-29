@@ -133,15 +133,15 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       n_states <- length(v_names_states) # the number of health states
       
       # create three matrices called m_M, m_C and m_E
-      # number of rows is equal to the n_i, the number of columns is equal to n_t  
-      # (the initial state and all the n_t cycles)
+      # number of rows is equal to the n_i, the number of columns is equal to n_cycles  
+      # (the initial state and all the n_cycles cycles)
       # m_M is used to store the health state information over time for every individual
       # m_C is used to store the costs information over time for every individual
       # m_E is used to store the effects information over time for every individual
       
-      m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_t + 1, 
+      m_M <- m_C <- m_E <- m_Ts <-  matrix(nrow = n_i, ncol = n_cycles + 1, 
                                            dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
-                                                           paste("cycle", 0:n_t, sep = " ")))  
+                                                           paste("cycle", 0:n_cycles, sep = " ")))  
       
       m_M [, 1] <- v_M_init    # initial health state at cycle 0 for individual i
       
@@ -150,14 +150,14 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # calculate QALYs per individual during cycle 0
       m_E[, 1]  <- Effs (m_M[, 1], df_X, Trt)   
       
-      # open a loop for time running cycles 1 to n_t 
-      for (t in 1:n_t) {
+      # open a loop for time running cycles 1 to n_cycles 
+      for (t in 1:n_cycles) {
         # calculate the transition probabilities for the cycle based on  health state t
         m_P <- Probs(m_M[, t], df_X, t)             
         # check if transition probabilities are between 0 and 1
         check_transition_probability(m_P, verbose = TRUE)
         # check if checks if each of the rows of the transition probabilities matrix sum to one
-        check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
+        check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_cycles, verbose = TRUE)
         # sample the current health state and store that state in matrix m_M 
         m_M[, t + 1]  <- samplev(m_P, 1)                  
         # calculate costs per individual during cycle t + 1
@@ -171,8 +171,8 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
         df_X$Age[m_M[, t + 1] != "D"]  <- df_X$Age[m_M[, t + 1] != "D"] + 1
         
         # Display simulation progress
-        if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
-          cat('\r', paste(t/n_t * 100, "% done", sep = " "))
+        if(t/(n_cycles/10) == round(t/(n_cycles/10), 0)) { # display progress every 10%
+          cat('\r', paste(t/n_cycles * 100, "% done", sep = " "))
         }
         
       } # close the loop for the time points 

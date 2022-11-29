@@ -95,8 +95,8 @@ p_load_gh("DARTH-git/dampack", "DARTH-git/darthtools")
 set.seed(1)  # set the seed  
 
 # Model structure 
-n_t   <- 30                       # time horizon, 30 cycles
-n_i   <- 100000                   # number of simulated individuals
+n_cycles   <- 30                       # time horizon, 30 cycles
+n_i        <- 100000                   # number of simulated individuals
 v_names_states <- c("H", "S1", "S2", "D")  # the model states names
 n_states <- length(v_names_states)         # the number of health states
 d_r   <- 0.03                     # discount rate of 3% per cycle

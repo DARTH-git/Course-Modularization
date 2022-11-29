@@ -235,7 +235,7 @@ Probs <- function(M_t, df_X, t, Trt = "Standard of care") {
 The `Costs` function estimates the costs at every cycle.
 
 ```{r}
-Costs <- function (M_t, Trt="Standard of care") {
+Costs <- function (M_t, Trt = "Standard of care") {
   # Arguments:
     # M_t: health state occupied by individual i at cycle t (character variable)
     # Trt: Treatment 
@@ -274,8 +274,8 @@ Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
     # QALYs accrued this cycle
   
   u_t <- 0                          # by default the utility for everyone is zero
-  
   u_t[M_t == "H"]    <- u_H         # update the utility if healthy
+  
   if (Trt == "Standard of care") {  # update the utility if sick under standard of care
     u_t[M_t == "S1"] <- u_S1
   } else if (Trt == "Strategy AB") {

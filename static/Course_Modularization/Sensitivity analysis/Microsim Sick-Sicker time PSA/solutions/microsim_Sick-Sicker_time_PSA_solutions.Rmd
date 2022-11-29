@@ -224,7 +224,7 @@ Probs <- function(M_t, df_X, t, Trt = "Standard of care") {
 The `Costs` function estimates the costs at every cycle.
 
 ```{r}
-Costs <- function (M_t, Trt="Standard of care") {
+Costs <- function (M_t, Trt = "Standard of care") {
   # Arguments:
     # M_t: health state occupied by individual i at cycle t (character variable)
     # Trt: is the individual being treated? (default is FALSE) 
@@ -486,7 +486,7 @@ calculate_ce_out(df_psa_input[1,])
 ## 09.2 Run microsimulation model on each parameter set of PSA input dataset
 
 ```{r}
-start.time <-proc.time()
+start.time <- proc.time()
 for(i in 1:n_sim){
   df_ce_psa <- calculate_ce_out(df_psa_input[i, ])
    df_c[i, ] <- df_ce_psa$Cost   # take the cost from the PSA run and store in df_c

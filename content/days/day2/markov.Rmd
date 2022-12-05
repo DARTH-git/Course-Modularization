@@ -13,7 +13,7 @@ menu:
 
 [Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state.Rmd)
 
-## Exercise - Markov Sick-Sicker model with state-residence time dependency
+## Exercise - cohort state-transition Sick-Sicker model 
 
 [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 

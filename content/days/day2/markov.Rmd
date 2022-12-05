@@ -9,16 +9,14 @@ menu:
     weight: 5
 ---
 
-R code and other files used during this workshop session will be posted here for download.
+[Download slides](../../../Course_Modularization/CDC 2022-23/part 2/Day 1 - cSTM rates and probs - CDC 2022.pdf)
 
-<!-- ## R code demo & walkthrough - 3-state Markov model  -->
+[Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state.Rmd)
 
-<!-- [Download demo code](../../../Course_Modularization/Markov models/Markov 3-state/Markov_3state.Rmd) -->
+## Exercise - Markov Sick-Sicker model with state-residence time dependency
 
-<!-- ## Exercise - Markov Sick-Sicker model  -->
+[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
 
-<!-- [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html) -->
+[Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd)
 
-<!-- [Download excercise template](../../../Course_Modularization/Markov models/Markov Sick-Sicker/templates/markov_sick-sicker_template.Rmd) -->
-
-<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_solutions.Rmd) -->
+<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd) -->

@@ -10,43 +10,7 @@ menu:
 type: docs
 ---
 
-R code and other files used during this workshop session will be posted here for download.
+[Download slides](../../../Course_Modularization/CDC 2022-23/part 2/Day 1 - Decision Trees Hands on - CDC 2022.pptx)
 
-<!-- ## OpenTree demo -->
-
-<!-- [Download demo - Rock Climber Problem](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/decision_tree_RockClimber_CEA_OpenTree.Rmd) -->
-
-<!-- Copy and paste the json code from the pop-up to Notepad and save it as "RockClimberProblem.json". -->
-
-<!-- [Download RockClimber tree.json file](../../../Course_Modularization/Decision trees/Decision Tree RockClimber/RockClimberProblem.json) -->
-
-<!-- ## OpenTree exercise -->
-
-<!-- ## OpenTree demo -->
-
-<!-- [Download demo slides](../../../Course_Modularization/Decision trees/Slides/CEA and Decision Modeling Overview_with Decision tree slides.pptx) -->
-
-<!-- [Download demo code](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
-
-<!-- Copy and paste the json code from the pop-up to Notepad and save it as "HVEsolution.json" in the same folder as the demo code. -->
-
-<!-- [Download demo tree JSON file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
-
-<!-- [Download demo tree JSON file version 2](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution2.json) -->
-
-<!-- [Download exercise handout](../../../Course_Modularization/Decision trees/Decision Tree HVE/exercise worksheets/decision_tree_HVE_exercise.html) -->
-
-<!-- [Download exercise template](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/decision_tree_HVE_OpenTree_template.Rmd) -->
-
-<!-- Copy and paste the json code from the pop-up to Notepad and save it as "HVEtemplate.json". -->
-
-<!-- [Download HVEtemplate.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/templates/HVEtemplate.json) -->
-
-<!-- [Download solutions](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/decision_tree_HVE_OpenTree_solutions.Rmd) -->
-
-<!-- [Download solution tree.json file](../../../Course_Modularization/Decision trees/Decision Tree HVE/solutions/HVEsolution.json) -->
-
-<!-- ## Exercise -->
-
-<!-- [Download exercise worksheet](../../../Course_Modularization/Intro, general, packages/DARTH_IndecisivesAnonymous_ModelingExercise.pdf) -->
+[Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/DecisionTreeExample_SprayNoSpray.Rmd)
 

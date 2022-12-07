@@ -100,15 +100,6 @@ v_names_str     <- c("Standard of Care",         # store the strategy names
 n_str           <- length(v_names_str)           # number of strategies
 
 ### Transition probabilities
-p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
-p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
-p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
-p_SD      <- 0.1   # probability of dying when sick
-p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
-p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
-# probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
-v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)   
-
 # (all non-dead probabilities are conditional on survival)
 p_HS_SoC    <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_HS_trtA   <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
@@ -171,7 +162,7 @@ head(df_X) # print the first rows of the dataframe
 The `Probs` function updates the transition probabilities of every cycle is shown below.
 
 ```{r}
-Probs <- function(M_t, df_X, Trt ="SoC") { 
+Probs <- function(M_t, df_X, Trt = "SoC") { 
   # Arguments:
     # M_t:  health state occupied at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
@@ -350,9 +341,9 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
 # 06 Run Microsimulation
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
 # Run the simulation model
-outcomes_SoC  <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt="SoC")
-outcomes_trtA <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt="A")
-outcomes_trtB <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt="B")
+outcomes_SoC  <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt = "SoC")
+outcomes_trtA <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt = "A")
+outcomes_trtB <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt = "B")
 ```
 
 # 07 Visualize results

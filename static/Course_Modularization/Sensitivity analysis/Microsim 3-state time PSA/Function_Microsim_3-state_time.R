@@ -34,7 +34,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
     # create a data frame with each individual's 
     # ID number, treatment effect modifier, age and initial time in sick state 
     df_X  <- data.frame(ID = 1:n_i, Sex = v_sex, n_cycles_s = v_Ts_init, M_init = v_M_init)
-    # NOTE: we use n_cycles_s for the number of times being sick, we start the data frame with the initial "history" of time being sick by saving v_Ts_init. However, during the simulation this value is updated and therefore called numer of times being sick.
+    # NOTE: we use n_cycles_s for the number of times being sick, we start the data frame with the initial "history" of time being sick by saving v_Ts_init. However, during the simulation this value is updated and therefore called number of times being sick.
     head(df_X) # print the first rows of the dataframe
     
     # 05 Define Simulation Functions
@@ -112,7 +112,6 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       
       return(c_t)  # return costs accrued this cycle
     }
-    
     
     ## 05.3 Health outcome function
     #The `Effs` function to update the utilities at every cycle.

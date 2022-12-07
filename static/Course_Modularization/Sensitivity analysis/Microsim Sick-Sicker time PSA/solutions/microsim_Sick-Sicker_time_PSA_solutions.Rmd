@@ -492,7 +492,7 @@ for(i in 1:n_sim){
    df_c[i, ] <- df_ce_psa$Cost   # take the cost from the PSA run and store in df_c
    df_e[i, ] <- df_ce_psa$Effec  # take the cost from the PSA run and store in df_e
   # Display simulation progress
-  if(i/(n_sim/10) == round(i/(n_sim/10),0)) { # display progress every 10%
+  if(i/(n_sim/10) == round(i/(n_sim/10), 0)) { # display progress every 10%
     cat('\r', paste('            ', 'Overall progress: ', i/n_sim * 100, "% done", 
                     sep = " "))
   }

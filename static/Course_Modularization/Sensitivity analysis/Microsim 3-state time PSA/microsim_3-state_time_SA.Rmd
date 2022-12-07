@@ -10,21 +10,14 @@ output:
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
 Fernando Alarid-Escudero, PhD (1) 
-
 Eva A. Enns, MS, PhD (2)	
-
 M.G. Myriam Hunink, MD, PhD (3,4)
-
 Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
+Eline Krijkamp, MSc (3)	
 Petros Pechlivanoglou, PhD (6,7)
-
 Alan Yang, MSc (7)
 
 In collaboration of: 		
-
 1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
    Aguascalientes, Mexico
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
@@ -100,15 +93,6 @@ v_names_str     <- c("Standard of Care",         # store the strategy names
 n_str           <- length(v_names_str)           # number of strategies
 
 ### Transition probabilities
-p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
-p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
-p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
-p_SD      <- 0.1   # probability of dying when sick
-p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
-p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
-# probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
-v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)   
-
 # (all non-dead probabilities are conditional on survival)
 p_HS_SoC    <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
 p_HS_trtA   <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
@@ -130,8 +114,12 @@ c_trtB     <- 1500  # cost of treatment B (per cycle) in healthy state
 u_H        <- 1     # utility when healthy 
 u_S        <- 0.5   # utility when sick
 u_D        <- 0     # utility when dead
+```
 
-### Discount weight for costs and effects 
+## 03.2 Calculate internal model parameters
+
+```{r}
+### Cycle-specific discount weight for costs and effects 
 v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 ```
@@ -406,71 +394,60 @@ plot(df_cea, label = "all", txtsize = 14) +
   theme(legend.position = c(0.8, 0.3))
 ```
 
-
-# 09 Probabilistic Sensitivity Analysis (PSA)
-
+# 9 Sensitivity analysis
+# 9.1 Make a list of the input parameters
 ```{r}
-# Function that generates random sample for PSA
 
+## List of input parameters 
+l_params_all <- list(
+ 
+  ### Transition probabilities
+  # (all non-dead probabilities are conditional on survival)
+  p_HS_SoC    = 0.05,  # probability of becoming sick when healthy, conditional on surviving, under standard of care
+  p_HS_trtA   = 0.04,  # probability of becoming sick when healthy, conditional on surviving, under treatment A
+  p_HS_trtB   = 0.02,  # probability of becoming sick when healthy, conditional on surviving, under treatment B
+  p_HD_female = 0.0382,  # probability healthy -> dead when female
+  p_HD_male   = 0.0463,  # probability healthy -> dead when male
+  df_p_HD     = data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male)),
+  # probability to die in sick state by cycle of being sick
+  p_SD        = c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_cycles - 5)) ,
 
-gen_psa <- function(n_sim = 1000, seed = 071818){
-  set.seed(seed) # set a seed to be able to reproduce the same results
   
-  df_psa <- data.frame(
-    # Transition probabilities (per cycle)
-    
-    # probability of becoming sick when healthy, conditional on surviving
-    p_HS_SoC  = rbeta(n_sim, shape1 = 24, shape2 = 450),      # under standard of care
-    p_HS_trtA = rbeta(n_sim, shape1 = 15, shape2 = 368),      # under treatment A
-    p_HS_trtB = rbeta(n_sim, shape1 = 16, shape2 = 767),      # under treatment B    
+  ## State rewards
+  # Costs
+  c_H       = 400,      # cost of one cycle in Healthy 
+  c_S       = 1000,      # cost of one cycle in Sick 
+  c_D       = 0,         # cost of being dead (per cycle)
+  c_trtA    = 800,     # cost of treatment A (per cycle) in healthy state
+  c_trtB    = 1500,     # cost of treatment B (per cycle) in healthy state
+  
+  # Utilities
+  u_H        = 1,     # utility when healthy 
+  u_S        = 0.5,   # utility when sick
+  u_D        = 0,     # utility when dead
+  
+  # Discount rates
+  d_c        = 0.03,     # annual discount rate for costs 
+  d_e        = 0.03,     # annual discount rate for QALYs
+  # Cycle length
+  cycle_length = 1
 
-    # probability of dying
-    p_SD      = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6),  # when sick         
-    p_HD_min  = 0.003,                                        # from healthy at t = 0
-    p_HD_max  = 0.01,                                         # from healthy at t = n_cycles
-    
-    # (all non-dead probabilities are conditional on survival)
-    p_HS_SoC    <- 0.05,  # probability of becoming sick when healthy, conditional on surviving, under standard of care
-    p_HS_trtA   <- 0.04,  # probability of becoming sick when healthy, conditional on surviving, under treatment A
-    p_HS_trtB   <- 0.02 , # probability of becoming sick when healthy, conditional on surviving, under treatment B
-    p_HD_female <- 0.0382,  # probability healthy -> dead when female
-    p_HD_male   <- 0.0463,  # probability healthy -> dead when male
-    df_p_HD     <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male)),
-    # probability to die in sick state by cycle of being sick
-    p_SD        <- c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_cycles - 5)) ,
-
-    
-
-    
-    ## State rewards
-    # Costs
-    c_H       = rgamma(n_sim, shape = 16, scale = 25),        # cost of one cycle in healthy state
-    c_S       = rgamma(n_sim, shape = 100, scale = 10),       # cost of one cycle in sick state
-    c_D       = 0,                                            # cost of one cycle in dead state
-    c_trtA    = rgamma(n_sim, shape = 400, scale = 2),        # cost of treatment A (per cycle) in healthy state
-    c_trtB    = rgamma(n_sim, shape = 501, scale = 3),        # cost of treatment B (per cycle) in healthy state
-    
-    # Utilities
-    u_H       = rbeta(n_sim, shape1 =  1.5, shape2 = 0.0015), # utility when healthy 
-    u_S       = rbeta(n_sim, shape1 = 49.5, shape2 = 49.5),   # utility when sick
-    u_D       = 0                                             # utility when dead
-  )
-
-  return(df_psa)
-}
-
-# Try it
-gen_psa(10) 
-
-# Decrease number of individuals since PSA takes a lot of time
-n_i <- 10000
-
+)
 ```
 
 ## 09.1 Load function of microsimulation model
 ```{r}
 source("Function_Microsim_3-state_time.R")
-# Test microsimulation function
-calculate_ce_out(df_psa_input[1,])
 ```
+
+## 09.2 Run the function with the list of parameters
+```{r}
+df_ce <- calculate_ce_out(l_params_all)
+
+# use dampack to calculate the ICER
+calculate_icers(cost       = df_ce$Cost,
+                effect     = df_ce$Effect,
+                strategies = df_ce$Strategy)
+```
+
 

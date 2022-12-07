@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 2"
 author: ''
-date: "2022-11-29"
+date: "2022-12-07"
 slug: day3
 categories: []
 tags: []
@@ -40,4 +40,8 @@ Tuesday, December 6, 2022
 -	Understand the difference between simulation time and state residence time dependencies and their implementation
 -	Implement your own cohort state-transition model with time-dependency in R
 -	Identify the data needs of your own modeling project
+
+## Live session recording
+
+[Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/eMEwH3jiSYrjEulduTOu99uIV1peEPStj9w7TNgZXR3e60Mx2ygzYqvZtIHZU3Yu.EfV3LnuK4zOGXKsO__;!!D0zGoin7BXfl!9jT4d6b4ykOjuSkn6syCZWYV2YLuaWm82Lj46pve9L8UX_N2wcxaWqsc8ge_XChWXoM7HnUra3aahXYrxw$)
 

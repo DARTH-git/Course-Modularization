@@ -28,3 +28,11 @@ menu:
 [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_template.Rmd)
 
 <!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_tunnels_SOLUTIONS.Rmd) -->
+
+## R code demo & walkthrough - Make your model a function 
+
+[Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/microsim_3-state_time_SA.Rmd)
+
+[Download demo R script](../../../Course_Modularization/CDC 2022-23/part 2/Function_Microsim_3-state_time.R)
+
+

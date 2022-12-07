@@ -8,31 +8,25 @@ output:
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-
 Fernando Alarid-Escudero, PhD (1) 
-
 Eva A. Enns, MS, PhD (2)	
-
 M.G. Myriam Hunink, MD, PhD (3,4)
-
 Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
-Petros Pechlivanoglou, PhD (6,7)
-
-Alan Yang, MSc (7)
+Eline M. Krijkamp, PhD (6)	
+Petros Pechlivanoglou, PhD (7,8)
+Alan Yang, MSc (8)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Stanford University, Stanford, CA, USA
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+5. University of Ottawa, Ottawa, ON, Canada
+6. Erasmus University, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
+
 
 Please cite our publications when using this code:
  
@@ -78,6 +72,7 @@ p_load_gh("DARTH-git/darthtools")
 ```
 
 # 03 Model input
+## 03.1 Define model input parameters
 
 ```{r}
 ## General setup
@@ -106,9 +101,8 @@ p_HS_trtA   <- 0.04  # probability of becoming sick when healthy, conditional on
 p_HS_trtB   <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
 p_HD_female <- 0.0382  # probability healthy -> dead when female
 p_HD_male   <- 0.0463  # probability healthy -> dead when male
-df_p_HD     <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male))
-# probability to die in sick state by cycle of being sick
-p_SD        <- c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_cycles - 5)) 
+df_p_HD     <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male)) #dataframe for sex specific mortality when healthy 
+p_SD        <- c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_cycles - 5)) # probability to die in sick state by cycle of being sick
 
 ### State rewards
 #### Costs 
@@ -122,9 +116,15 @@ u_H        <- 1     # utility when healthy
 u_S        <- 0.5   # utility when sick
 u_D        <- 0     # utility when dead
 
-### Discount weight for costs and effects 
+```
+
+## 03.2 Calculate internal model parameters
+
+```{r}
+### Cycle-specific discount weight for costs and effects 
 v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+
 ```
 
 # 04 Sample individual level characteristics
@@ -350,21 +350,21 @@ outcomes_trtB <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, Trt = "B")
 
 ```{r}
 # Standard of Care
-plot(density(outcomes_SoC$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
+plot(density(outcomes_SoC$tc), main = paste("Total cost per person"),  xlab = "Cost ($)")
 plot(density(outcomes_SoC$te), main = paste("Total QALYs per person"), xlab = "QALYs")
 plot_trace_microsim(outcomes_SoC$m_M)      # health state trace
 ```
 
 ```{r}
 # Treatment A
-plot(density(outcomes_trtA$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
+plot(density(outcomes_trtA$tc), main = paste("Total cost per person"),  xlab = "Cost ($)")
 plot(density(outcomes_trtA$te), main = paste("Total QALYs per person"), xlab = "QALYs")
 plot_trace_microsim(outcomes_trtA$m_M)     # health state trace
 ```
 
 ```{r}
 # Treatment B
-plot(density(outcomes_trtB$tc), main = paste("Total cost per person"), xlab = "Cost ($)")
+plot(density(outcomes_trtB$tc), main = paste("Total cost per person"),  xlab = "Cost ($)")
 plot(density(outcomes_trtB$te), main = paste("Total QALYs per person"), xlab = "QALYs")
 plot_trace_microsim(outcomes_trtB$m_M)     # health state trace
 ```

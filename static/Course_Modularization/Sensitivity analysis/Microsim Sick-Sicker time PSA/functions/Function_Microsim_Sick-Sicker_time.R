@@ -10,7 +10,7 @@
 # In collaboration of: 		
 # 1 Center for Research and Teaching in Economics (CIDE), Drug Policy Program, Mexico
 # 2 University of Minnesota School of Public Health, Minneapolis, MN, USA
-# 3 Erasmus MC, Rotterdam, The Netherlands
+# 3 Erasmus University, Rotterdam, The Netherlands
 # 4 Harvard T.H. Chan School of Public Health, Boston, USA
 # 5 University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
 # 6 The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada

@@ -1,5 +1,5 @@
 ---
-title: 'Markov Sick-Sicker model in R'
+title: 'Cohort State-Transition Sick-Sicker model in R'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -16,7 +16,7 @@ Cost-Effectiveness Analysis Example. Medical Decision Making, 2022
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
 Authors:
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
+- Fernando Alarid-Escudero <falarid@stanford.edu>
 - Eline Krijkamp
 - Eva A. Enns
 - Alan Yang
@@ -305,14 +305,14 @@ df_cea
 
 ```{R}
 ## CEA table in proper format 
-# your turn
+# your turn #
 table_cea <- format_table_cea(df_cea) 
 table_cea
 ```
 
 ```{r}
 ## CEA frontier 
-# your turn
+# your turn #
 plot(df_cea, label = "all", txtsize = 14) +
   expand_limits(x = max(table_cea$QALYs) + 0.1) +
   theme(legend.position = c(0.85, 0.3))

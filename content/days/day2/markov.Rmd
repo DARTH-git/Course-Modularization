@@ -19,4 +19,4 @@ menu:
 
 [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd)
 
-<!-- [Download excercise solutions](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_tunnels_solutions.Rmd) -->
+[Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_SOLUTIONS.Rmd)

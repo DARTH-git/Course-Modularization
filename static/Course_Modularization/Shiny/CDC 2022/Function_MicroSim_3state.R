@@ -43,7 +43,7 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       # create matrix of state transition probabilities
       m_p_t           <- matrix(0, nrow = n_states, ncol = n_i)  
       # give the state names to the rows
-      rownames(m_p_t) <-  v_n                               
+      rownames(m_p_t) <-  v_names_states                               
       
       # lookup baseline probability and rate of dying based on individual characteristics
       p_HD_all <- inner_join(df_X, m_p_HD, by = c("Sex") )
@@ -110,29 +110,29 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       set.seed(seed) # set a seed to be able to reproduce the same results
       
       # create three matrices called m_M, m_C and m_E
-      # number of rows is equal to the n_i, the number of columns is equal to n_t 
-      # (the initial state and all the n_t cycles)
+      # number of rows is equal to the n_i, the number of columns is equal to n_cycles 
+      # (the initial state and all the n_cycles cycles)
       # m_M is used to store the health state information over time for every individual
       # m_C is used to store the costs information over time for every individual
       # m_E is used to store the effects information over time for every individual
       
-      m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_t + 1, 
+      m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_cycles + 1, 
                                    dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
-                                                   paste("cycle", 0:n_t, sep = " ")))  
+                                                   paste("cycle", 0:n_cycles, sep = " ")))  
       
       m_M[, 1] <- v_M_init         # initial health state
       v_Ts     <- v_Ts_init        # initialize time since illness onset
       m_C[, 1] <- Costs(m_M[, 1])  # costs accrued  during cycle 0
       m_E[, 1] <- Effs( m_M[, 1])  # QALYs accrued  during cycle 0
       
-      # open a loop for time running cycles 1 to n_t 
-      for (t in 1:n_t) {
+      # open a loop for time running cycles 1 to n_cycles 
+      for (t in 1:n_cycles) {
         # calculate the transition probabilities for the cycle based on health state t
         m_P <- Probs(m_M[, t], df_X, v_Ts)  
         # check if transition probabilities are between 0 and 1
         check_transition_probability(m_P, verbose = TRUE)
         # check if each of the rows of the transition probabilities matrix sum to one
-        check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_t, verbose = TRUE)
+        check_sum_of_transition_array(m_P, n_states = n_i, n_cycles = n_cycles, verbose = TRUE)
         # sample the current health state and store that state in matrix m_M
         m_M[, t + 1]  <- samplev(m_P)    
         # calculate costs per individual during cycle t + 1
@@ -144,8 +144,8 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
         v_Ts <- if_else(m_M[, t + 1] == "sick", v_Ts + 1, 0) 
         
         # # Display simulation progress
-        # if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
-        #   cat('\r', paste(t/n_t * 100, "% done", sep = " "))
+        # if(t/(n_cycles/10) == round(t/(n_cycles/10), 0)) { # display progress every 10%
+        #   cat('\r', paste(t/n_cycles * 100, "% done", sep = " "))
         # }
         
       } # close the loop for the time points 

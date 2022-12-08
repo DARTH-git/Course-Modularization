@@ -1,7 +1,7 @@
 ---
 title: "Part II: Session 4"
 author: ''
-date: "2022-11-29"
+date: "2022-12-08"
 slug: day5
 categories: []
 tags: []
@@ -45,9 +45,9 @@ Thursday, December 8, 2022
 -	Understand how R Shiny can be used in decision analysis applications
 
 
-<!-- ## Live session recording: -->
+## Live session recording:
 
-<!-- [Part 1](https://drive.google.com/file/d/1fm4xUP21zrDyE1RkymobgsG4HpMTPkmE/view?usp=sharing) -->
+[Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/CuKdB9SR_jHLXYh74lzX-rkQXt0oT3hxGGAXDLEWnej0xxiEkTfMaBNGq1NcUL0F.vUiSX1EdGaJRd5Sa__;!!D0zGoin7BXfl!6KM-Jn-F3wGV6fMyXipiiNmSczJvCc8Lvz_74c5LofwMAjn1nHHS5cNg9YYmfJdc3_Or1t4JwUGb9ll9OQ$)
 
 <!-- [Part 2](https://umn.zoom.us/rec/share/M5jya-ZBZEy-45aOh5q501c_pyO1TMEJty8SFq58To8Ru9G4e7kQ4pEHzp-Zcno6.QHssLWj8rGdQVzx2?startTime=1661963237000) -->
 

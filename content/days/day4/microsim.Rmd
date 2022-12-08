@@ -27,7 +27,7 @@ menu:
 
 [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_template.Rmd)
 
-<!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_tunnels_SOLUTIONS.Rmd) -->
+[Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_solutions.Rmd)
 
 ## R code demo & walkthrough - Make your model a function 
 

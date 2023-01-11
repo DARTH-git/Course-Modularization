@@ -7,7 +7,7 @@
 # Run the code LINE BY LINE , in the specified order below
 ############################################################
 # first download and use this package to conveniently install other packages
-install.packages('pacman')
+ install.packages('pacman')
 library(pacman) 
 
 

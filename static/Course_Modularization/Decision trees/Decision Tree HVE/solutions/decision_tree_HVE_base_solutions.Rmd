@@ -1,6 +1,6 @@
 ---
 title: 'Three-strategy decision tree in R - HVE'
-subtitle: with "OpenTree"
+subtitle: 'with "OpenTree'
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -19,11 +19,11 @@ M.G. Myriam Hunink, MD, PhD (3,4)
 
 Hawre J. Jalal, MD, PhD (5) 
 
-Eline M. Krijkamp, MSc (3)	
+Eline Krijkamp, MSc (6)	
 
-Petros Pechlivanoglou, PhD (6,7)
+Petros Pechlivanoglou, PhD (7,8)
 
-Alan Yang, MSc (7)
+Alan Yang, MSc (8)
 
 In collaboration of: 		
 
@@ -33,8 +33,9 @@ In collaboration of:
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
 5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+6. Erasmus School of Health Policy and Management, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
 
 Please cite our publications when using this code:
  
@@ -211,7 +212,8 @@ df_output
 
 
 ## 05 Cost-Effectiveness Analysis
-
+For the cost-effectiveness we make use uf the `calculate_icers` function from the `dampack` package.
+You can find more information about this package by typing `??calculate_icers` in your Console.
 ```{r}
 # create the transition probability matrix for NO treatment
 decision_tree_HVE_cea  <- calculate_icers(cost       = df_output$Cost,
@@ -223,7 +225,7 @@ decision_tree_HVE_cea
 ## 05.1 Plot frontier of Decision Tree
 
 ```{r}
-plot(decision_tree_HVE_cea, effect_units = "QALYs", label="all")
+plot(decision_tree_HVE_cea, effect_units = "QALYs", label = "all")
 ```
 
 

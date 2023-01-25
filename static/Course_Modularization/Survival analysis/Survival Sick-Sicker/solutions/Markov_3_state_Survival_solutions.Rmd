@@ -157,7 +157,7 @@ p_S1D     <- trans_prob(surv_prob(best_S1D,  times = times))
 ```{r}
 # create the cohort trace
 m_M <- matrix(NA, 
-              nrow = n_t + 1 ,  # create Markov trace (n.t + 1 because R doesn't 
+              nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                 # understand cycle 0)
               ncol = n_states, 
               dimnames = list(0:n_t, v_names_states))

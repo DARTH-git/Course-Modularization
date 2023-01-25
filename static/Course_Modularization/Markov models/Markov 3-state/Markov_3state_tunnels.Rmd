@@ -8,53 +8,42 @@ output:
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-
 Fernando Alarid-Escudero, PhD (1) 
-
 Eva A. Enns, MS, PhD (2)	
-
 M.G. Myriam Hunink, MD, PhD (3,4)
-
 Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
-Petros Pechlivanoglou, PhD (6,7)
-
-Alan Yang, MSc (7)
+Eline Krijkamp, PhD (6)	
+Petros Pechlivanoglou, PhD (7,8)
+Alan Yang, MSc (8)
 
 In collaboration of: 		
 
-1. Division of Public Administration, Center for Research and Teaching in 
-   Economics (CIDE), Aguascalientes, Mexico
+1. Stanford University, Stanford, CA, USA
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+5. University of Ottawa, Ottawa, ON, Canada
+6. Erasmus University, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
+
 
 Please cite our publications when using this code:
-
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
-a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
-1-21. https://doi.org/10.1177/0272989X221121747
 
 - Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
 Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
 Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
+a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
+1-21. https://doi.org/10.1177/0272989X221121747
+
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
 
-- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
-Microsimulation modeling for health decision sciences using R: A tutorial. 
-Med Decis Making. 2018;38(3):400–22. 
-https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
- 
 - Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
 Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
@@ -65,6 +54,7 @@ trademarks, trade names and any and all associated intellectual property are
 exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
 institutions. These materials may be used, reproduced, modified, distributed 
 and adapted with proper attribution.
+
 
 \newpage
 

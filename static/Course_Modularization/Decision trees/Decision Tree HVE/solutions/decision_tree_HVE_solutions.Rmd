@@ -2,8 +2,8 @@
 title: 'Three-strategy decision tree in R - HVE'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 keep_tex: yes
 self_contained: no
 ---
@@ -167,34 +167,50 @@ v_qaly_tx     <- c(q_VE_comp ,          # HVE, complications
                    q_VE      ,          # HVE, no complications
                    q_VE_comp ,          # OVE, complications
                    q_VE)                # OVE, no complications
+
+# loss due to biopsy
+v_qaly_biopsy <-  c(q_death_biopsy - q_loss_biopsy,   # biopsy complications
+                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., HVE w/tx, complications 
+                    q_VE           - q_loss_biopsy,   # no biopsy comp., HVE w/tx, no complications
+                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., OVE, complications
+                    q_VE           - q_loss_biopsy )  # no biopsy comp., OVE, no complications
   
-  
-v_qaly_biopsy <- -q_loss_biopsy     +   # loss due to biopsy
-                  c(q_death_biopsy  ,   # biopsy complications
-                    q_VE_comp       ,   # no biopsy comp., HVE w/tx, complications 
-                    q_VE            ,   # no biopsy comp., HVE w/tx, no complications
-                    q_VE_comp       ,   # no biopsy comp., OVE, complications
-                    q_VE)               # no biopsy comp., OVE, no complications
-  
+
+
+
 # Create vector of costs for each strategy 
+# cost of no treatment 
 v_cost_no_tx  <- c(c_VE_comp ,          # HVE, complications
                    c_VE      ,          # HVE, no complications
                    c_VE_comp ,          # OVE, complications
                    c_VE)                # OVE, no complications
-  
-v_cost_tx     <- c_tx +                 # cost of treatment
-                 c(c_VE_comp ,          # HVE, complications
-                   c_VE      ,          # HVE, no complications
-                   c_VE_comp ,          # OVE, complications
-                   c_VE)                # OVE, no complications
-  
-v_cost_biopsy <- c_biopsy           +   # cost of biopsy procedure
-                 c(c_death_biopsy   ,   # cost of death (zero)
-                   c_VE_comp + c_tx ,   # no biopsy comp., HVE w/tx, complications 
-                   c_VE      + c_tx ,   # no biopsy comp., HVE w/tx, no complications
-                   c_VE_comp        ,   # no biopsy comp., OVE, complications
-                   c_VE)                # no biopsy comp., OVE, no complications
+
+# cost of treatment
+v_cost_tx     <- c(c_VE_comp + c_tx,    # HVE, complications
+                   c_VE      + c_tx,    # HVE, no complications
+                   c_VE_comp + c_tx,    # OVE, complications
+                   c_VE      + c_tx)  # OVE, no complications
+
+# cost of biopsy procedure
+v_cost_biopsy <- c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
+                   c_VE_comp + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, complications 
+                   c_VE      + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, no complications
+                   c_VE_comp        + c_biopsy,   # no biopsy comp., OVE, complications
+                   c_VE             + c_biopsy )  # no biopsy comp., OVE, no complications
  
+## STAR MATERIAL ##  
+# Extra funfact about coding
+# When you like to add a specific cost to all elements of a vector you can also add the costs before the vector. The vector for the cost of the biopsy for example could also be coded as follows:
+
+# cost of biopsy procedure
+#v_cost_biopsy <- c_biopsy + 
+#                    c(c_death_biopsy,     # cost of death (zero)
+#                      c_VE_comp + c_tx,   # no biopsy comp., HVE w/tx, complications 
+#                      c_VE      + c_tx,   # no biopsy comp., HVE w/tx, no complications
+#                      c_VE_comp       ,   # no biopsy comp., OVE, complications
+#                      c_VE)               # no biopsy comp., OVE, no complications
+####################
+
 
 
 # Calculate expected complications for each strategy 

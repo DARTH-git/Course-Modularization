@@ -93,8 +93,14 @@ v_names_states_tunnels <- c("H", v_Sick_tunnel, "S2", "D") # health state names
 n_states_tunnels <- length(v_names_states_tunnels)         # number of health states
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+# Comment out/ for the relevant country
+# USA
+#d_c <- d_e <- 0.03  # annual discount rate for costs and QALY
+# Canada
+#d_c <- d_e <- 0.015 # annual discount rate for costs 
+# NL
+d_c <- 0.04         # annual discount rate for costs 
+d_e <- 0.015        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str <- c("Standard of care",      # store the strategy names

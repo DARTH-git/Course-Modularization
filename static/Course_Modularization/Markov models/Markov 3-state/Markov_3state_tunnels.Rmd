@@ -35,26 +35,11 @@ Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a
 Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
-a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
-1-21. https://doi.org/10.1177/0272989X221121747
-
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
 
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
-
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
-
+- Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). https://doi.org/10.1007/s40273-019-00837-x
 
 \newpage
 
@@ -92,12 +77,12 @@ p_load_gh("DARTH-git/darthtools")
 cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
-v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+v_names_states  <- c("H", "S", "D")  # state names
 n_states        <- length(v_names_states)        # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_c <- 0.03        # annual discount rate for costs 
+d_e <- 0.03        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
@@ -121,7 +106,7 @@ v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)
 ### Tunnels
 n_tunnel_size           <- n_cycles
 # Sick state
-v_Sick_tunnel           <- paste("Sick_", seq(1, n_tunnel_size), "Yr", sep = "")
+v_Sick_tunnel           <- paste("S_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for time-dependent model
 v_names_states_tunnels  <- c("Healthy", v_Sick_tunnel, "Dead")   # state names
 n_states_tunnels        <- length(v_names_states_tunnels)        # number of states
@@ -156,12 +141,12 @@ v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
-m_P_diag["Healthy", "Sick" ]     = "" 
-m_P_diag["Healthy", "Dead" ]     = ""
-m_P_diag["Healthy", "Healthy" ]  = ""
-m_P_diag["Sick"   , "Dead" ]     = ""
-m_P_diag["Sick"   , "Sick" ]     = ""
-m_P_diag["Dead"   , "Dead" ]     = ""
+m_P_diag["H", "H" ]    = ""
+m_P_diag["H", "S" ]    = "" 
+m_P_diag["H", "D" ]    = ""
+m_P_diag["S"   , "S" ] = ""
+m_P_diag["S"   , "D" ] = ""
+m_P_diag["D"   , "D" ] = ""
 layout.fig <- c(2, 1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
         latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
@@ -204,29 +189,29 @@ a_P_tunnels_SoC <- array(0,  # Create 3-D array
 
 ### Fill in array
 ## from Healthy
-a_P_tunnels_SoC["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_SoC)
-a_P_tunnels_SoC["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_SoC
-a_P_tunnels_SoC["Healthy", "Dead", ]     <-      v_p_HD
+a_P_tunnels_SoC["H", "H", ]  <- (1 - v_p_HD) * (1 - p_HS_SoC)
+a_P_tunnels_SoC["H", "S_1Yr", ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_tunnels_SoC["H", "D", ]     <-      v_p_HD
 ## from Sick
 for(i in 1:(n_tunnel_size - 1)){ 
   a_P_tunnels_SoC[v_Sick_tunnel[i], v_Sick_tunnel[i + 1], ] <- 1 - v_p_SD[i]
-  a_P_tunnels_SoC[v_Sick_tunnel[i], "Dead", ] <- v_p_SD[i]
+  a_P_tunnels_SoC[v_Sick_tunnel[i], "D", ] <- v_p_SD[i]
 }
 
 a_P_tunnels_SoC[v_Sick_tunnel[n_tunnel_size], v_Sick_tunnel[n_tunnel_size], ] <- 1 - v_p_SD[n_tunnel_size]
-a_P_tunnels_SoC[v_Sick_tunnel[n_tunnel_size], "Dead", ] <- v_p_SD[n_tunnel_size]
+a_P_tunnels_SoC[v_Sick_tunnel[n_tunnel_size], "D", ] <- v_p_SD[n_tunnel_size]
 # from Dead
-a_P_tunnels_SoC["Dead", "Dead", ] <- 1
+a_P_tunnels_SoC["D", "D", ] <- 1
 
 ## Treatment A
 a_P_tunnels_trtA <- a_P_tunnels_SoC
-a_P_tunnels_trtA["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_tunnels_trtA["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtA
+a_P_tunnels_trtA["H", "H", ]     <- (1 - v_p_HD) * (1 - p_HS_trtA)
+a_P_tunnels_trtA["H", "S_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtA
 
 ## Treatment B
 a_P_tunnels_trtB <- a_P_tunnels_SoC
-a_P_tunnels_trtB["Healthy", "Healthy", ]  <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_tunnels_trtB["Healthy", "Sick_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtB
+a_P_tunnels_trtB["H", "H", ]     <- (1 - v_p_HD) * (1 - p_HS_trtB)
+a_P_tunnels_trtB["H", "S_1Yr", ] <- (1 - v_p_HD) *      p_HS_trtB
 
 # Check if transition array and probabilities are valid
 # Check that transition probabilities are in [0, 1]
@@ -278,15 +263,15 @@ for (t in 1:n_cycles){
 }
 
 # Create aggregated trace
-m_M_tunnels_SoC_sum  <- cbind(Healthy = m_M_tunnels_SoC[, "Healthy"], 
+m_M_tunnels_SoC_sum  <- cbind(Healthy = m_M_tunnels_SoC[, "H"], 
                               Sick    = rowSums(m_M_tunnels_SoC[, 2:(n_tunnel_size + 1)]), 
-                              Dead    = m_M_tunnels_SoC[, "Dead"])
-m_M_tunnels_trtA_sum <- cbind(Healthy = m_M_tunnels_trtA[, "Healthy"], 
+                              Dead    = m_M_tunnels_SoC[, "D"])
+m_M_tunnels_trtA_sum <- cbind(Healthy = m_M_tunnels_trtA[, "H"], 
                               Sick    = rowSums(m_M_tunnels_trtA[, 2:(n_tunnel_size + 1)]), 
-                              Dead    = m_M_tunnels_trtA[, "Dead"])
-m_M_tunnels_trtB_sum <- cbind(Healthy = m_M_tunnels_trtB[, "Healthy"], 
+                              Dead    = m_M_tunnels_trtA[, "D"])
+m_M_tunnels_trtB_sum <- cbind(Healthy = m_M_tunnels_trtB[, "H"], 
                               Sick    = rowSums(m_M_tunnels_trtB[, 2:(n_tunnel_size + 1)]), 
-                              Dead    = m_M_tunnels_trtB[, "Dead"])
+                              Dead    = m_M_tunnels_trtB[, "D"])
 
 ## Store the cohort traces in a list 
 l_m_M <- list(m_M_tunnels_SoC_sum,      
@@ -313,7 +298,7 @@ plot_trace(m_M_tunnels_SoC_sum)
 ## 06.2 Overall Survival (OS)
 
 ```{r}
-v_os <- 1 - m_M_tunnels_SoC_sum[, "Dead"]    # calculate the overall survival (OS) probability
+v_os <- 1 - m_M_tunnels_SoC_sum[, "D"]    # calculate the overall survival (OS) probability
 v_os <- rowSums(m_M_tunnels_SoC_sum[, 1:2])  # alternative way of calculating the OS probability   
 
 # create a simple plot showing the OS
@@ -335,7 +320,7 @@ v_le <- sum(v_os) # summing probablity of OS over time  (i.e. life expectancy)
 ## 06.3 Disease prevalence
 
 ```{r}
-v_prev <- m_M_tunnels_SoC_sum[, "Sick"]/v_os
+v_prev <- m_M_tunnels_SoC_sum[, "S"]/v_os
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",
@@ -355,7 +340,7 @@ v_u_SoC <- c(H  = u_H,
              S  = v_u_S_SoC, 
              D  = u_D) * cycle_length
 # Vector of costs per cycle for Sick under strategy SoC
-v_c_S_SoC <- rep(c_S, n_tunnel_size)
+v_c_S_SoC        <- rep(c_S, n_tunnel_size)
 names(v_c_S_SoC) <- v_Sick_tunnel
 # Vector of costs per cycle under strategy SoC
 v_c_SoC <- c(H  = c_H,

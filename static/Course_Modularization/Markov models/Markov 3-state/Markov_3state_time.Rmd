@@ -35,25 +35,12 @@ Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a
 Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
-a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
-1-21. https://doi.org/10.1177/0272989X221121747
-
 - Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
 
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
+- Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). https://doi.org/10.1007/s40273-019-00837-x
 
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
 
 \newpage
 
@@ -95,8 +82,8 @@ v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
 n_states        <- length(v_names_states)        # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_c <- 0.03        # annual discount rate for costs 
+d_e <- 0.03        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names

@@ -78,7 +78,7 @@ p_load_gh("DARTH-git/darthtools")
 cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
-v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+v_names_states  <- c("H", "S", "D")  # state names
 n_states        <- length(v_names_states)        # number of health states 
 
 ### Discounting factors 
@@ -125,12 +125,12 @@ v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
-m_P_diag["Healthy", "Sick" ]     = "" 
-m_P_diag["Healthy", "Dead" ]     = ""
-m_P_diag["Healthy", "Healthy" ]  = ""
-m_P_diag["Sick"   , "Dead" ]     = ""
-m_P_diag["Sick"   , "Sick" ]     = ""
-m_P_diag["Dead"   , "Dead" ]     = ""
+m_P_diag["H", "H" ] = ""
+m_P_diag["H", "S" ] = "" 
+m_P_diag["H", "D" ] = ""
+m_P_diag["S", "S" ] = ""
+m_P_diag["S", "D" ] = ""
+m_P_diag["D", "D" ] = ""
 layout.fig <- c(2, 1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
         latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
@@ -141,7 +141,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 
 ```{r}
 # All starting healthy
-v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+v_m_init <- c("H" = 1, "S" = 0, "D" = 0)  
 v_m_init
 ```
 
@@ -174,26 +174,26 @@ a_P_SoC <- array(0,  # Create 3-D array
 ### Fill in array
 ## Standard of Care
 # from Healthy
-a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
-a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_SoC
-a_P_SoC["Healthy", "Dead",    ] <-      v_p_HD
+a_P_SoC["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
+a_P_SoC["H", "S", ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_SoC["H", "D", ] <-      v_p_HD
 
 # from Sick
-a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
-a_P_SoC["Sick", "Dead", ] <-     p_SD
+a_P_SoC["S", "S", ] <- 1 - p_SD
+a_P_SoC["S", "D", ] <-     p_SD
 
 # from Dead
-a_P_SoC["Dead", "Dead", ] <- 1
+a_P_SoC["D", "D", ] <- 1
 
 ## Treatment A
 a_P_trtA <- a_P_SoC
-a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
+a_P_trtA["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
+a_P_trtA["H", "S", ] <- (1 - v_p_HD) *      p_HS_trtA
 
 ## Treatment B
 a_P_trtB <- a_P_SoC
-a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
+a_P_trtB["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
+a_P_trtB["H", "S", ] <- (1 - v_p_HD) *      p_HS_trtB
 
 ## Check if transition array and probabilities are valid
 # Check that transition probabilities are in [0, 1]
@@ -240,7 +240,7 @@ plot_trace(m_M_SoC)
 Print the overall survival for the Standard of Care
 
 ```{r}
-v_os_SoC <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
+v_os_SoC <- 1 - m_M_SoC[, "D"]    # calculate the overall survival (OS) probability
 v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
 
 plot(v_os_SoC, type = 'l', 
@@ -263,7 +263,7 @@ le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expec
 ## 06.2.2 Disease prevalence
 
 ```{r}
-v_prev <- m_M_SoC[, "Sick"]/v_os_SoC
+v_prev <- m_M_SoC[, "S"]/v_os_SoC
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",

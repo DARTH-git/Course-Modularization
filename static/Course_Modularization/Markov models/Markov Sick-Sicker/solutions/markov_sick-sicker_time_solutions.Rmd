@@ -3,8 +3,8 @@ title: 'Markov Sick-Sicker model in R'
 subtitle: "With simulation-time dependency"
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 keep_tex: yes
 self_contained: no
 ---

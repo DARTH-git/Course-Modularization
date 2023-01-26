@@ -3,18 +3,20 @@ title: 'Simple 3-state microsimulation model'
 subtitle: 'Includes sex specific probability of dying when healthy and state occupation: probability of dying when sick depends on the time of being sick'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
+
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-Fernando Alarid-Escudero, PhD (1) 
-Eva A. Enns, MS, PhD (2)	
-M.G. Myriam Hunink, MD, PhD (3,4)
-Hawre J. Jalal, MD, PhD (5) 
-Eline M. Krijkamp, PhD (6)	
-Petros Pechlivanoglou, PhD (7,8)
-Alan Yang, MSc (8)
+
+- Fernando Alarid-Escudero, PhD (1)
+- Eva A. Enns, MS, PhD (2)
+- M.G. Myriam Hunink, MD, PhD (3,4)
+- Hawre J. Jalal, MD, PhD (5)
+- Eline Krijkamp, PhD (6)
+- Petros Pechlivanoglou, PhD (7,8)
+- Alan Yang, MSc (8)
 
 In collaboration of: 		
 
@@ -80,7 +82,7 @@ set.seed(1)                                      # set the seed
 cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
-v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+v_names_states  <- c("H", "S", "D")              # state names, Healthy (H), Sick (S), Dead (D)
 n_states        <- length(v_names_states)        # number of health states 
 n_i             <- 10000                         # number of individuals
 
@@ -141,7 +143,7 @@ v_sex <- sample(x = c("Female", "Male"), prob = c(0.5, 0.5), size = n_i, replace
 ```{r}
 # Specify the initial health state of the individuals 
 # everyone begins in the healthy state (in this example)
-v_M_init  <- rep("Healthy", times = n_i)   
+v_M_init  <- rep("H", times = n_i)   
 v_Ts_init <- rep(0, n_i)  # a vector with the time of being sick at the start of the model 
 ```
 
@@ -186,24 +188,24 @@ Probs <- function(M_t, df_X, Trt = "SoC") {
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, df_p_HD, by = c("Sex"))
-  p_HD     <- p_HD_all[M_t == "Healthy", "p_HD"]
+  p_HD     <- p_HD_all[M_t == "H", "p_HD"]
   
   # update m_p_t with the appropriate probabilities 
   # (all non-death probabilities are conditional on survival)
   # transition probabilities when Healthy 
-  m_p_t["Healthy", M_t == "Healthy"] <- (1 - p_HD) * (1 - p_HS)
-  m_p_t["Sick",    M_t == "Healthy"] <- (1 - p_HD) *      p_HS 
-  m_p_t["Dead",    M_t == "Healthy"] <-      p_HD              
+  m_p_t["H", M_t == "H"] <- (1 - p_HD) * (1 - p_HS)
+  m_p_t["S", M_t == "H"] <- (1 - p_HD) *      p_HS 
+  m_p_t["D", M_t == "H"] <-      p_HD              
   
   # transition probabilities when Sick 
-  m_p_t["Healthy", M_t == "Sick"]    <-  0
-  m_p_t["Sick",    M_t == "Sick"]    <-  1 - p_SD[df_X$n_cycles_s]
-  m_p_t["Dead",    M_t == "Sick"]    <-      p_SD[df_X$n_cycles_s]     
+  m_p_t["H", M_t == "S"] <-  0
+  m_p_t["S", M_t == "S"] <-  1 - p_SD[df_X$n_cycles_s]
+  m_p_t["D", M_t == "S"] <-      p_SD[df_X$n_cycles_s]     
  
   # transition probabilities when Dead
-  m_p_t["Healthy", M_t == "Dead"]    <- 0
-  m_p_t["Sick",    M_t == "Dead"]    <- 0
-  m_p_t["Dead",    M_t == "Dead"]    <- 1  
+  m_p_t["H", M_t == "D"] <- 0
+  m_p_t["S", M_t == "D"] <- 0
+  m_p_t["D", M_t == "D"] <- 1  
   
   return(t(m_p_t))
 }       
@@ -231,9 +233,9 @@ Costs <- function (M_t, Trt = "SoC") {
   }
   
   c_t <- c()
-  c_t[M_t == "Healthy"] <- c_H + c_trt  # costs accrued by being healthy this cycle
-  c_t[M_t == "Sick"]    <- c_S          # costs accrued by being sick this cycle
-  c_t[M_t == "Dead"]    <- c_D          # costs at dead state
+  c_t[M_t == "H"] <- c_H + c_trt  # costs accrued by being healthy this cycle
+  c_t[M_t == "S"] <- c_S          # costs accrued by being sick this cycle
+  c_t[M_t == "D"] <- c_D          # costs at dead state
   
   return(c_t)  # return costs accrued this cycle
 }
@@ -252,9 +254,9 @@ Effs <- function (M_t, cl = 1) {
     # QALYs accrued this cycle 
   
   q_t <- c() 
-  q_t[M_t == "Healthy"] <- u_H  # utility for being healthy this cycle
-  q_t[M_t == "Sick"]    <- u_S  # utility for being sick this cycle
-  q_t[M_t == "Dead"]    <- u_D  # utility for dead state
+  q_t[M_t == "H"] <- u_H  # utility for being healthy this cycle
+  q_t[M_t == "S"] <- u_S  # utility for being sick this cycle
+  q_t[M_t == "D"] <- u_D  # utility for dead state
   
   QALYs <- q_t * cl  # calculate the QALYs during cycle t
   return(QALYs)      # return the QALYs accrued this cycle
@@ -312,7 +314,7 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
     # NOTE: this code has a "reset of history" for time being sick
     # once someone is not "Sick" anymore, we reset n_cycles_s (set back to zero)
     # when you don't want a "reset" replace the last zero with teh current value
-    df_X$n_cycles_s <- if_else(m_M[, t + 1] == "Sick", df_X$n_cycles_s + 1, 0) 
+    df_X$n_cycles_s <- if_else(m_M[, t + 1] == "S", df_X$n_cycles_s + 1, 0) 
     
     # Display simulation progress
     if(t/(n_cycles/10) == round(t/(n_cycles/10), 0)) { # display progress every 10%

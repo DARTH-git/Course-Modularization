@@ -153,16 +153,16 @@ p_S1S2_trtAB <- rate_to_prob(r = r_S1S2_trtAB, t = cycle_length)
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
-m_P_diag["Healthy", "Sick"] = "" 
-m_P_diag["Healthy", "Dead" ] = "" 
-m_P_diag["Healthy", "Healthy" ] = "" 
-m_P_diag["Sick",    "Healthy" ] = "" 
-m_P_diag["Sick",    "Sicker"] = "" 
-m_P_diag["Sick",    "Dead" ] = "" 
-m_P_diag["Sick",    "Sick"] = "" 
-m_P_diag["Sicker",  "Dead" ] = "" 
-m_P_diag["Sicker",  "Sicker"] = "" 
-m_P_diag["Dead",    "Dead"  ] = "" 
+m_P_diag["H" , "S1"] = "" 
+m_P_diag["H" , "D" ] = "" 
+m_P_diag["H" , "H" ] = "" 
+m_P_diag["S1", "H" ] = "" 
+m_P_diag["S1", "S2"] = "" 
+m_P_diag["S1", "D" ] = "" 
+m_P_diag["S1", "S1"] = "" 
+m_P_diag["S2", "D" ] = "" 
+m_P_diag["S2", "S2"] = "" 
+m_P_diag["D", "D"  ] = "" 
 layout.fig <- c(3, 1)
 
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,  
@@ -333,7 +333,7 @@ df_cea <- calculate_icers(cost       = v_tot_cost,
 df_cea
 ```
 
-```{R}
+```{r}
 ## CEA table in proper format 
 table_cea <- format_table_cea(df_cea) 
 table_cea

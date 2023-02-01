@@ -12,7 +12,7 @@
 <meta name="author" content="The DARTH workgroup" />
 
 
-<title>Decision Modeling in R workshop</title>
+<title>Cohort State-Transition Sick-Sicker model in R</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -355,212 +355,340 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Decision Modeling in R workshop</h1>
-<h3 class="subtitle">Decision Tree Exercise</h3>
+<h1 class="title toc-ignore">Cohort State-Transition Sick-Sicker model
+in R</h1>
+<h3 class="subtitle">With state-residence time dependencey</h3>
 <h4 class="author">The DARTH workgroup</h4>
 
 </div>
 
 
-<p>Developed by the Decision Analysis in R for Technologies in Health
-(DARTH) workgroup: Fernando Alarid-Escudero, PhD (1) Eva A. Enns, MS,
-PhD (2)<br />
-M.G. Myriam Hunink, MD, PhD (3,4) Hawre J. Jalal, MD, PhD (5) Eline
-Krijkamp, PhD (6) Petros Pechlivanoglou, PhD (7,8) Alan Yang, MSc
-(8)</p>
-<p>In collaboration of:</p>
-<ol style="list-style-type: decimal">
-<li>Stanford University, Stanford, CA, USA</li>
-<li>University of Minnesota School of Public Health, Minneapolis, MN,
-USA</li>
-<li>Erasmus MC, Rotterdam, The Netherlands</li>
-<li>Harvard T.H. Chan School of Public Health, Boston, USA</li>
-<li>University of Ottawa, Ottawa, ON, Canada</li>
-<li>Erasmus University, Rotterdam, The Netherlands</li>
-<li>University of Toronto, Toronto ON, Canada</li>
-<li>The Hospital for Sick Children, Toronto ON, Canada</li>
-</ol>
-<p>Please cite our publications when using this code:</p>
-<ul>
-<li><p>Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E,
-Hunink MG. An Overview of R in Health Decision Sciences. Med Decis
-Making. 2017; 37(3): 735-746. <a href="https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559" class="uri">https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559</a></p></li>
-<li><p>Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A
-Need for Change! A Coding Framework for Improving Transparency in
-Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <a href="https://doi.org/10.1007/s40273-019-00837-x" class="uri">https://doi.org/10.1007/s40273-019-00837-x</a></p></li>
-</ul>
-<p>Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
-INSTITUTIONS. All rights reserved in Canada, the United States and
-worldwide. Copyright, trademarks, trade names and any and all associated
-intellectual property are exclusively owned by THE HOSPITAL FOR Sick
-CHILDREN and the collaborating institutions. These materials may be
-used, reproduced, modified, distributed and adapted with proper
-attribution.</p>
-<div id="exercise-i-treatment-for-viral-encephalitis-a-decision-tree" class="section level1">
-<h1>Exercise I: Treatment for Viral encephalitis – A Decision Tree</h1>
-<p>Viral encephalitis can be caused by herpes viruses (HVE) or other
-viruses (OVE). Herpes viruses cause approximately 52% of cases of viral
-encephalitis. Without treatment, the risk of complications (death or
-severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug,
-vidarabine, decreases the likelihood of complications due to HVE from
-71% down to 36%. However, among OVE patients, treatment with vidarabine
-is associated with severe side effects, increasing the risk of
-complications from the 1% baseline to 20%. It is possible to obtain a
-definitive diagnosis of HVE by means of a brain biopsy, but the
-procedure itself also has a 0.5% probability of being fatal.</p>
-<p>You are tasked with evaluating the healthcare costs and benefits
-associated with three possible management strategies (no treatment,
-vidarabine treatment, or brain biopsy followed by vidarabine treatment
-for those who are diagnosed with HVE). Benefits will be measured in
-terms of quality-adjusted life-years (QALYs).</p>
-<p>The healthcare cost of a case of viral encephalitis without
-complications is $1,200; however, if complications occur, the cost rises
-to $9,000. The cost of vidarabine treatment is $9,500, while a brain
-biopsy is a $25,000 procedure.</p>
-<p>A patient who recovers from viral encephalitis without complications
-has an average of 20 remaining QALYs; however, a patient who experiences
-complications has an average of 19 remaining QALYs. Since a brain biopsy
-is an unpleasant procedure, patients who undergo it also experience a
-one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.</p>
-<p>Parameters are summarized in Table 1. Use the code template provided
-in the “decision_tree_HVE_template.Rmd” example as starting points for
-this exercise.</p>
-<div id="tasks" class="section level2">
-<h2>Tasks</h2>
-<ol style="list-style-type: decimal">
-<li><p>Access the HVE template decision tree using OpenTree (function
-open_tree() ).</p></li>
-<li><p>The code template contains calculations for the “No Treatment”
-strategy. Use OpenTree and couple it with R code that calculates the
-expected outcomes for the two other strategies.</p></li>
-<li><p>Use the <code>calculate_icers()</code> function from the
-<code>dampack</code> package to calculate the incremental costs, QALYs,
-ICERs and Incremantal NMB of each strategy, using a willingness to pay
-of $100,000/QALY. Type <code>?calculate_icers()</code> to see function
-documentation.</p></li>
-<li><p>Plot the cost-effectiveness frontier using the
-“<code>plot()</code>” function and the output from the
-<code>calculate_icers()</code> function (see step 3 above)</p></li>
-</ol>
-<p><strong>Table I: Input parameters</strong></p>
-<table>
-<colgroup>
-<col width="49%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"><strong>Parameter</strong></th>
-<th align="left"><strong>R name</strong></th>
-<th align="center"><strong>Value</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Prevalence of HVE</td>
-<td align="left"><code>p_HVE</code></td>
-<td align="center">0.52</td>
-</tr>
-<tr class="even">
-<td align="left">Probability of complications without treatment</td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td align="left">- HVE</td>
-<td align="left"><code>p_HVE_comp</code></td>
-<td align="center">0.71</td>
-</tr>
-<tr class="even">
-<td align="left">- OVE</td>
-<td align="left"><code>p_OVE_comp</code></td>
-<td align="center">0.01</td>
-</tr>
-<tr class="odd">
-<td align="left">Probability of complications with vidarabine
-treatment</td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td align="left">- HVE</td>
-<td align="left"><code>p_HVE_comp_tx</code></td>
-<td align="center">0.36</td>
-</tr>
-<tr class="odd">
-<td align="left">- OVE</td>
-<td align="left"><code>p_OVE_comp_tx</code></td>
-<td align="center">0.20</td>
-</tr>
-<tr class="even">
-<td align="left">Probability of complications due to brain biopsy</td>
-<td align="left"><code>p_biopsy_death</code></td>
-<td align="center">0.005</td>
-</tr>
-<tr class="odd">
-<td align="left">Quality-adjusted life-years (QALYs)</td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td align="left">- Remaining QALYs without VE complications</td>
-<td align="left"><code>q_VE</code></td>
-<td align="center">20</td>
-</tr>
-<tr class="odd">
-<td align="left">- Remaining QALYs with VE complications</td>
-<td align="left"><code>q_VE_comp</code></td>
-<td align="center">19</td>
-</tr>
-<tr class="even">
-<td align="left">- QALY loss due to brain biopsy</td>
-<td align="left"><code>q_loss_biopsy</code></td>
-<td align="center">0.01</td>
-</tr>
-<tr class="odd">
-<td align="left">- QALY of death due to brain biopsy</td>
-<td align="left"><code>q_death_biopsy</code></td>
-<td align="center">$0</td>
-</tr>
-<tr class="even">
-<td align="left">Healthcare costs</td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td align="left">- Cost of viral encephalitis without complications</td>
-<td align="left"><code>c_VE</code></td>
-<td align="center">$1,200</td>
-</tr>
-<tr class="even">
-<td align="left">- Cost of viral encephalitis with complications</td>
-<td align="left"><code>c_VE_comp</code></td>
-<td align="center">$9,000</td>
-</tr>
-<tr class="odd">
-<td align="left">- Vidarabine treatment</td>
-<td align="left"><code>c_tx</code></td>
-<td align="center">$9,500</td>
-</tr>
-<tr class="even">
-<td align="left">- Brain biopsy</td>
-<td align="left"><code>c_biopsy</code></td>
-<td align="center">$25,000</td>
-</tr>
-<tr class="odd">
-<td align="left">- Willingness-to-pay</td>
-<td align="left"><code>wtp</code></td>
-<td align="center">$100,000/QALY</td>
-</tr>
-<tr class="even">
-<td align="left">- Cost of death due to brain biopsy</td>
-<td align="left"><code>c_death_biopsy</code></td>
-<td align="center">$0</td>
-</tr>
-</tbody>
-</table>
+<p>This code forms the basis for the state-transition model of the
+tutorial: ‘A Tutorial on Time-Dependent Cohort State-Transition Models
+in R using a Cost-Effectiveness Analysis Example’</p>
+<p>Authors: - Fernando Alarid-Escudero <a href="mailto:fernando.alarid@cide.edu" class="email">fernando.alarid@cide.edu</a> - Eline Krijkamp - Eva A.
+Enns - Alan Yang - M.G. Myriam Hunink - Petros Pechlivanoglou - Hawre
+Jalal Please cite the article when using this code</p>
+<p>To program this tutorial we used: R version 4.0.5 (2021-03-31)
+Platform: 64-bit operating system, x64-based processor Running under:
+Mac OS 12.2.1 RStudio: Version 1.4.1717 2009-2021 RStudio, Inc</p>
+<p>This code implements a state-residence time-dependent Sick-Sicker
+cSTM model to conduct a CEA of two strategies: - Standard of Care (SoC):
+best available care for the patients with the disease. This scenario
+reflects the natural history of the disease progression. - Strategy AB:
+This strategy combines treatment A and treatment B. The disease
+progression is reduced, and individuals in the Sick state have an
+improved quality of life.</p>
+<div style="page-break-after: always;"></div>
+<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit
+this document.</p>
+<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
+<div id="load-packages" class="section level1">
+<h1>01 Load packages</h1>
+<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load(&quot;devtools&quot;,&quot;diagram&quot;,&quot;dampack&quot;,&quot;scales&quot;,&quot;dplyr&quot;)
+
+# load (install if required) packages from GitHub
+# install_github(&quot;DARTH-git/darthtools&quot;, force = TRUE) #Uncomment if there is a newer version
+p_load_gh(&quot;DARTH-git/darthtools&quot;)</code></pre>
 </div>
+<div id="load-functions" class="section level1">
+<h1>02 Load functions</h1>
+<pre class="r"><code># all functions are in the darthtools package</code></pre>
+</div>
+<div id="model-input" class="section level1">
+<h1>03 Model input</h1>
+<div id="define-model-input-parameters" class="section level2">
+<h2>03.1 Define model input parameters</h2>
+<pre class="r"><code>## General setup 
+cycle_length &lt;- 1   # cycle length equal to one year (use 1/12 for monthly)
+n_age_init   &lt;- 25  # age at baseline
+n_age_max    &lt;- 100 # maximum age of follow up
+n_cycles     &lt;- (n_age_max - n_age_init)/cycle_length # number of cycles
+# Age labels 
+v_age_names  &lt;- paste(rep(n_age_init:(n_age_max - 1), each = 1 / cycle_length), 
+                      (1:(1 / cycle_length)) - 1, 
+                      sep = &quot;.&quot;)
+# the 4 health states of the model:
+v_names_states &lt;- c(&quot;H&quot;,  # Healthy (H)
+                    &quot;S1&quot;, # Sick (S1)
+                    &quot;S2&quot;, # Sicker (S2)
+                    &quot;D&quot;)  # Dead (D)
+
+n_states &lt;- length(v_names_states)   # number of health states 
+
+### Tunnel inputs 
+# Number of tunnels, note: in our example the number of tunnels is identical to the number of cycles
+n_tunnel_size    &lt;- n_cycles
+# Vector with cycles for tunnels
+v_cycles_tunnel  &lt;- 1:n_tunnel_size
+# Vector with names for tunnel states of Sick state
+v_Sick_tunnel    &lt;- paste(&quot;S1_&quot;, seq(1, n_tunnel_size), &quot;Yr&quot;, sep = &quot;&quot;)
+# Create variables for model with tunnels
+v_names_states_tunnels &lt;- c(&quot;H&quot;, v_Sick_tunnel, &quot;S2&quot;, &quot;D&quot;)      # health state names
+n_states_tunnels       &lt;- length(v_names_states_tunnels)         # number of health states
+
+### Discounting factors 
+d_c &lt;- 0.03 # annual discount rate for costs 
+d_e &lt;- 0.03 # annual discount rate for QALYs
+
+### Strategies 
+v_names_str &lt;- c(&quot;Standard of Care&quot;,      # store the strategy names
+                 &quot;Strategy AB&quot;) 
+n_str       &lt;- length(v_names_str)        # number of strategies
+
+## Within-cycle correction (WCC) using Simpson&#39;s 1/3 rule 
+v_wcc  &lt;- gen_wcc(n_cycles = n_cycles, method = &quot;Simpson1/3&quot;) 
+
+### Transition rates (annual), and hazard ratios (HRs) 
+r_HS1  &lt;- 0.15  # constant annual rate of becoming Sick when Healthy
+r_S1H  &lt;- 0.5   # constant annual rate of becoming Healthy when Sick
+hr_S1  &lt;- 3     # hazard ratio of death in Sick vs Healthy 
+hr_S2  &lt;- 10    # hazard ratio of death in Sicker vs Healthy 
+
+### Effectiveness of treatment AB 
+hr_S1S2_trtAB &lt;- 0.6  # hazard ratio of becoming Sicker when Sick under treatment AB
+
+# Weibull parameters for state-residence-dependent transition rate of 
+# becoming Sicker when Sick conditional on surviving
+r_S1S2_scale &lt;- 0.08 # scale
+r_S1S2_shape &lt;- 1.1  # shape
+
+## Age-dependent mortality rates 
+lt_usa_2015 &lt;- read.csv(&quot;HMD_USA_Mx_2015.csv&quot;)
+# Extract age-specific all-cause mortality for ages in model time horizon
+v_r_mort_by_age_yr &lt;- lt_usa_2015 %&gt;% 
+                        dplyr::filter(Age &gt;= n_age_init &amp; Age &lt; n_age_max) %&gt;%
+                        dplyr::select(Total) %&gt;%
+                        as.matrix() # anyone above 100 have the same mortality
+
+### State rewards 
+#### Costs 
+c_H     &lt;- 2000  # annual cost of being Healthy
+c_S1    &lt;- 4000  # annual cost of being Sick
+c_S2    &lt;- 15000 # annual cost of being Sicker
+c_D     &lt;- 0     # annual cost of being dead
+c_trtAB &lt;- 25000 # annual cost of receiving treatment AB
+#### Utilities 
+u_H     &lt;- 1     # annual utility of being Healthy
+u_S1    &lt;- 0.75  # annual utility of being Sick
+u_S2    &lt;- 0.5   # annual utility of being Sicker
+u_D     &lt;- 0     # annual utility of being dead
+u_trtAB &lt;- 0.95  # annual utility when receiving treatment AB
+
+### Transition rewards 
+du_HS1 &lt;- 0.01  # disutility when transitioning from Healthy to Sick
+ic_HS1 &lt;- 1000  # increase in cost when transitioning from Healthy to Sick
+ic_D   &lt;- 2000  # increase in cost when dying</code></pre>
+</div>
+<div id="calculate-internal-model-parameters" class="section level2">
+<h2>03.2 Calculate internal model parameters</h2>
+<pre class="r"><code>### Cycle-specific discount weight for costs and effects 
+v_dwc  &lt;- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+v_dwe  &lt;- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+
+
+### Calculate cycle-specific transition probabilities
+
+## Constant transition probabilities
+p_HS1      &lt;- rate_to_prob(r = r_HS1,  t = cycle_length) # probability of becoming Sick when Healthy conditional on surviving 
+p_S1H      &lt;- rate_to_prob(r = r_S1H,  t = cycle_length) # probability of becoming Healthy when Sick conditional on surviving
+
+## Simulation time-dependent transition probabilities
+# Age-specific transition rates to the Dead from Healthy
+# Expand the vector by number of cycles per year (1/cycle_length):
+v_r_HDage &lt;- rep(v_r_mort_by_age_yr, each = 1 / cycle_length)
+# Compute mortality rates for Sick and Sicker states (relative to age-specific mortality)
+v_r_S1Dage &lt;- v_r_HDage * hr_S1 # Age-specific mortality rate in the Sick state 
+v_r_S2Dage &lt;- v_r_HDage * hr_S2 # Age-specific mortality rate in the Sicker state 
+# transform rates to probabilities adjusting by cycle length
+v_p_HDage  &lt;- rate_to_prob(v_r_HDage,  t = cycle_length) # Age-specific mortality risk in the Healthy state 
+v_p_S1Dage &lt;- rate_to_prob(v_r_S1Dage, t = cycle_length) # Age-specific mortality risk in the Sick state
+v_p_S2Dage &lt;- rate_to_prob(v_r_S2Dage, t = cycle_length) # Age-specific mortality risk in the Sicker state
+
+## State-residence time-dependent transition probabilities
+# Weibull transition rate from Sick to Sicker
+v_r_S1S2_tunnels &lt;-  (v_cycles_tunnel      * r_S1S2_scale) ^ r_S1S2_shape - 
+                    ((v_cycles_tunnel - 1) * r_S1S2_scale) ^ r_S1S2_shape
+# transform rates to probabilities adjusting by cycle length
+v_p_S1S2_tunnels &lt;- rate_to_prob(v_r_S1S2_tunnels, t = cycle_length)
+# Apply hazard ratio to rate to obtain transition rate of becoming Sicker when Sick for treatment AB
+v_r_S1S2_tunnels_trtAB &lt;- v_r_S1S2_tunnels * hr_S1S2_trtAB
+# transform rates to probabilities adjusting by cycle length
+v_p_S1S2_tunnels_trtAB &lt;- rate_to_prob(r = v_r_S1S2_tunnels_trtAB, t = cycle_length)
+
+### Calculate cycle-specific state rewards
+#### Costs
+v_c_SoC   &lt;- c(c_H, rep(c_S1,           n_tunnel_size), c_S2,           c_D) * cycle_length # Standard of Care
+v_c_strAB &lt;- c(c_H, rep(c_S1 + c_trtAB, n_tunnel_size), c_S2 + c_trtAB, c_D) * cycle_length # Treatment AB
+#### QALYs
+v_q_SoC  &lt;-  c(u_H, rep(u_S1,    n_tunnel_size), u_S2, u_D) * cycle_length    # Standord of Care
+v_q_strAB &lt;- c(u_H, rep(u_trtAB, n_tunnel_size), u_S2, u_D) * cycle_length # Treatment AB</code></pre>
+</div>
+</div>
+<div id="construct-state-transition-models" class="section level1">
+<h1>04 Construct state-transition models</h1>
+<div id="initial-state-vector" class="section level2">
+<h2>04.1 Initial state vector</h2>
+<pre class="r"><code># All starting healthy
+v_m_init_tunnels &lt;- c(1, rep(0, n_tunnel_size), 0, 0) </code></pre>
+</div>
+<div id="initialize-cohort-traces-with-tunnels" class="section level2">
+<h2>04.2 Initialize cohort traces with tunnels</h2>
+<pre class="r"><code>### Initialize cohort trace for state-residece dependent cSTM under SoC 
+m_M_tunnels_SoC &lt;- matrix(0, 
+                          nrow     = (n_cycles + 1), ncol = n_states_tunnels, 
+                          dimnames = list(0:n_cycles, v_names_states_tunnels))
+# Store the initial state vector in the first row of the cohort trace
+m_M_tunnels_SoC[1, ] &lt;- v_m_init_tunnels
+
+### Initialize cohort trace for strategy AB
+# Structure and initial states are the same as for SoC
+m_M_tunnels_strAB &lt;- m_M_tunnels_SoC # Strategy AB</code></pre>
+</div>
+<div id="create-transition-probability-arrays" class="section level2">
+<h2>04.3 Create transition probability arrays</h2>
+<pre class="r"><code>## Create transition probability arrays for strategy SoC 
+### Initialize transition probability array for strategy SoC 
+# All transitions to a non-death state are assumed to be conditional on survival
+a_P_tunnels_SoC &lt;- array(0, 
+                         dim = c(n_states_tunnels, n_states_tunnels, n_cycles),
+                         dimnames = list(v_names_states_tunnels, 
+                                         v_names_states_tunnels, 
+                                         0:(n_cycles - 1)))
+### Fill in array
+# your turn #
+
+## From H
+a_P_tunnels_SoC[&quot;H&quot;, &quot;H&quot;, ]              &lt;- (1 - v_p_HDage) * (1 - p_HS1)
+a_P_tunnels_SoC[&quot;H&quot;, v_Sick_tunnel[1], ] &lt;- (1 - v_p_HDage) *      p_HS1
+a_P_tunnels_SoC[&quot;H&quot;, &quot;D&quot;, ]              &lt;-      v_p_HDage
+
+## From S1
+for (i in 1:n_tunnel_size) {
+  a_P_tunnels_SoC[v_Sick_tunnel[i], &quot;H&quot;, ]  &lt;- (1 - v_p_S1Dage) * p_S1H
+  a_P_tunnels_SoC[v_Sick_tunnel[i], &quot;S2&quot;, ] &lt;- (1 - v_p_S1Dage) * v_p_S1S2_tunnels[i]
+  a_P_tunnels_SoC[v_Sick_tunnel[i], &quot;D&quot;, ]  &lt;-      v_p_S1Dage
+  # tunnel state transitions
+  if (i == n_tunnel_size) {
+    # If reaching last tunnel state, ensure that the cohort that does not
+    # transition out of the Sick state, remain in the last Sick tunnel state
+    a_P_tunnels_SoC[v_Sick_tunnel[i],v_Sick_tunnel[i], ] &lt;- 
+      (1 - v_p_S1Dage) * (1 - (p_S1H + v_p_S1S2_tunnels[i]))
+  } 
+  else{
+    a_P_tunnels_SoC[v_Sick_tunnel[i], v_Sick_tunnel[i + 1], ] &lt;- 
+      (1 - v_p_S1Dage) * (1 - (p_S1H + v_p_S1S2_tunnels[i]))
+  }
+}
+
+## From S2
+a_P_tunnels_SoC[&quot;S2&quot;, &quot;S2&quot;, ] &lt;- 1 - v_p_S2Dage
+a_P_tunnels_SoC[&quot;S2&quot;, &quot;D&quot;, ]  &lt;-     v_p_S2Dage
+
+## From D
+a_P_tunnels_SoC[&quot;D&quot;, &quot;D&quot;, ] &lt;- 1
+
+
+### Initialize transition probability matrix for strategy AB 
+a_P_tunnels_strAB &lt;- a_P_tunnels_SoC
+# Update only transition probabilities from S1 involving v_p_S1S2_tunnels
+# your turn #
+## From S1
+for (i in 1:n_tunnel_size) {
+  a_P_tunnels_strAB[v_Sick_tunnel[i], &quot;H&quot;, ]  &lt;- (1 - v_p_S1Dage) * p_S1H
+  a_P_tunnels_strAB[v_Sick_tunnel[i], &quot;S2&quot;, ] &lt;- (1 - v_p_S1Dage) * v_p_S1S2_tunnels_trtAB[i]
+  a_P_tunnels_strAB[v_Sick_tunnel[i], &quot;D&quot;, ]  &lt;-      v_p_S1Dage
+  if (i == n_tunnel_size) {
+    # If reaching last tunnel state, ensure that the cohort that does not
+    # transition out of the Sick state, remain in the last Sick tunnel state
+    a_P_tunnels_strAB[v_Sick_tunnel[i], v_Sick_tunnel[i], ] &lt;- 
+      (1 - v_p_S1Dage) * (1 - (p_S1H + v_p_S1S2_tunnels_trtAB[i]))
+  } 
+  else{
+    a_P_tunnels_strAB[v_Sick_tunnel[i], v_Sick_tunnel[i + 1], ] &lt;- 
+      (1 - v_p_S1Dage) * (1 - (p_S1H + v_p_S1S2_tunnels_trtAB[i]))
+  }
+}
+
+## Check if transition probability arrays are valid 
+### Check that transition probabilities are [0, 1] 
+check_transition_probability(a_P_tunnels_SoC,   verbose = TRUE)
+check_transition_probability(a_P_tunnels_strAB, verbose = TRUE)
+### Check that all rows for each slice of the array sum to 1 
+check_sum_of_transition_array(a_P_tunnels_SoC,   n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_tunnels_strAB, n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)</code></pre>
+</div>
+</div>
+<div id="run-markov-model" class="section level1">
+<h1>05 Run Markov model</h1>
+<pre class="r"><code>## Loop over time
+# Calculate cohort state based on previous state and appropriate time-slice of transition array
+# your turn #
+for (t in 1:n_cycles) {
+  ## Fill in cohort trace
+  # For SoC
+  m_M_tunnels_SoC[t + 1, ]   &lt;- m_M_tunnels_SoC[t, ]   %*% a_P_tunnels_SoC[, , t]
+  # For strategy AB
+  m_M_tunnels_strAB[t + 1, ] &lt;- m_M_tunnels_strAB[t, ] %*% a_P_tunnels_strAB[, , t]
+}
+
+
+# Create aggregated trace
+# your turn #
+m_M_tunnels_SoC_sum   &lt;- cbind(H  = m_M_tunnels_SoC[, &quot;H&quot;], 
+                               S1 = rowSums(m_M_tunnels_SoC[, 2:(n_tunnel_size + 1)]), 
+                               S2 = m_M_tunnels_SoC[, &quot;S2&quot;],
+                               D  = m_M_tunnels_SoC[, &quot;D&quot;])
+
+m_M_tunnels_strAB_sum &lt;- cbind(H  = m_M_tunnels_strAB[, &quot;H&quot;], 
+                               S1 = rowSums(m_M_tunnels_strAB[, 2:(n_tunnel_size + 1)]), 
+                               S2 = m_M_tunnels_strAB[, &quot;S2&quot;],
+                               D  = m_M_tunnels_strAB[, &quot;D&quot;])</code></pre>
+</div>
+<div id="plot-outputs" class="section level1">
+<h1>06 Plot Outputs</h1>
+<div id="plot-the-cohort-trace-for-strategies-soc-and-ab" class="section level2">
+<h2>06.1 Plot the cohort trace for strategies SoC and AB</h2>
+<pre class="r"><code>## Plot the cohort trace for strategy SoC 
+# your turn #
+plot_trace(m_M_tunnels_SoC_sum)</code></pre>
+</div>
+</div>
+<div id="compute-expected-outcomes" class="section level1">
+<h1>07 Compute expected outcomes</h1>
+<pre class="r"><code># Create empty vectors to store total costs and QALYs
+v_tot_cost &lt;- v_tot_qaly &lt;- vector(mode = &quot;numeric&quot;, length = n_str)
+names(v_tot_qaly) &lt;- names(v_tot_cost) &lt;- v_names_str
+
+### Expected discounted cost for each strategy
+# your turn #
+v_tot_cost[&quot;Standard of Care&quot;] &lt;- t(m_M_tunnels_SoC   %*% v_c_SoC)   %*% (v_dwe * v_wcc)
+v_tot_cost[&quot;Strategy AB&quot;]      &lt;- t(m_M_tunnels_strAB %*% v_c_strAB) %*% (v_dwe * v_wcc)
+
+### Expected discounted QALYs for each strategy
+# your turn #
+v_tot_qaly[&quot;Standard of Care&quot;] &lt;- t(m_M_tunnels_SoC   %*% v_q_SoC)   %*% (v_dwe * v_wcc)
+v_tot_qaly[&quot;Strategy AB&quot;]      &lt;- t(m_M_tunnels_strAB %*% v_q_strAB) %*% (v_dwe * v_wcc)</code></pre>
+</div>
+<div id="cost-effectiveness-analysis-cea" class="section level1">
+<h1>08 Cost-effectiveness analysis (CEA)</h1>
+<pre class="r"><code>## Incremental cost-effectiveness ratios (ICERs) 
+# your turn #
+df_cea &lt;- calculate_icers(cost       = v_tot_cost, 
+                          effect     = v_tot_qaly,
+                          strategies = v_names_str)
+df_cea</code></pre>
+<pre class="r"><code>## CEA table in proper format 
+# your turn #
+table_cea &lt;- format_table_cea(df_cea) 
+table_cea</code></pre>
+<pre class="r"><code>## CEA frontier 
+# your turn #
+plot_icers(df_cea, label = &quot;all&quot;, txtsize = 16) +
+  expand_limits(x = max(table_cea$QALYs) + 0.1) +
+  theme(legend.position = c(0.8, 0.3))</code></pre>
 </div>
 
 

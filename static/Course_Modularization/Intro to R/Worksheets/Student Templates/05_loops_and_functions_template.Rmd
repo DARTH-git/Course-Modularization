@@ -265,7 +265,7 @@ mean_own(1:10)
 mean(1:10)
 ```
 
-**EXERCISE 6** Write a function that converts Fahrenheit to Celsius. The formula is (F-12) * 5 / 9. Test your function on 100 degrees Fahrenheit. 
+**EXERCISE 6** Write a function that converts Fahrenheit to Celsius. The formula is (F-32) * 5 / 9. Test your function on 100 degrees Fahrenheit. 
 
 ```{r}
 # Your turn

@@ -92,7 +92,7 @@ There are quite some steps you need to take in order to create a microsimulation
 
 |           **Parameter**            |  **R name** |   **Value**   |
 |:-----------------------------------|:------------|:-------------:|
-| Time horizon                       | `n_cycles`       | 30 years      |
+| Time horizon                       | `n_cycles`  | 30 years      |
 | Cycle length                       |             | 1 year        |
 | Names of simulated individuals     | `n_i`       | 100000          |
 | Names of health states             | `v_names_states`       | H, S1, S2, D  |

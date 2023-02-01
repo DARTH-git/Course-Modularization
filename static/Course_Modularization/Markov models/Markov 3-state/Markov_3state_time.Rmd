@@ -78,7 +78,7 @@ p_load_gh("DARTH-git/darthtools")
 cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
-v_names_states  <- c("H", "S", "D")  # state names
+v_names_states  <- c("H", "S", "D")              # state names
 n_states        <- length(v_names_states)        # number of health states 
 
 ### Discounting factors 
@@ -302,13 +302,13 @@ v_c_trtB   <- c(H  = c_H + c_trtB,
 
 ## Store state rewards 
 # Store the vectors of state utilities for each strategy in a list 
-l_u   <- list(SQ = v_u_SoC,
-              A  = v_u_trtA,
-              B  = v_u_trtB)
+l_u   <- list(SoQ = v_u_SoC,
+              A   = v_u_trtA,
+              B   = v_u_trtB)
 # Store the vectors of state cost for each strategy in a list 
-l_c   <- list(SQ = v_c_SoC,
-              A  = v_c_trtA,
-              B  = v_c_trtB)
+l_c   <- list(SoQ = v_c_SoC,
+              A   = v_c_trtA,
+              B   = v_c_trtB)
 
 # assign strategy names to matching items in the lists
 names(l_u) <- names(l_c) <- v_names_str

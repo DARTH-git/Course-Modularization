@@ -13,8 +13,8 @@ decision_model <- function(l_params_all, verbose = FALSE) {
   with(as.list(l_params_all), {
     ########################### Process model inputs ###########################
     ## Model states
-    v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
-    n_states        <- length(v_names_states)        # number of health states 
+    v_names_states  <- c("H", "S", "D")       # state names, Healthy (H), Sick (S), Dead(D)
+    n_states        <- length(v_names_states) # number of health states 
     
     ## Cycle names
     v_names_cycles  <- paste("cycle", 0:n_cycles)
@@ -23,7 +23,7 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     v_p_HD    = seq(p_HD_min, p_HD_max, length.out = n_cycles)
     
     # All starting healthy
-    v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+    v_m_init <- c("H" = 1, "S" = 0, "D" = 0)  
     
     ###################### Construct state-transition models ###################
     ### Initialize cohort trace for SoC 
@@ -48,26 +48,26 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     ### Fill in array
     ## Standard of Care
     # from Healthy
-    a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
-    a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_SoC
-    a_P_SoC["Healthy", "Dead",    ] <-      v_p_HD
+    a_P_SoC["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
+    a_P_SoC["H", "S",    ] <- (1 - v_p_HD) *      p_HS_SoC
+    a_P_SoC["H", "D",    ] <-      v_p_HD
     
     # from Sick
-    a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
-    a_P_SoC["Sick", "Dead", ] <-     p_SD
+    a_P_SoC["S", "S", ] <- 1 - p_SD
+    a_P_SoC["S", "D", ] <-     p_SD
     
     # from Dead
-    a_P_SoC["Dead", "Dead", ] <- 1
+    a_P_SoC["D", "D", ] <- 1
     
     ## Treatment A
     a_P_trtA <- a_P_SoC
-    a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-    a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
+    a_P_trtA["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
+    a_P_trtA["H", "S",    ] <- (1 - v_p_HD) *      p_HS_trtA
     
     ## Treatment B
     a_P_trtB <- a_P_SoC
-    a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-    a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
+    a_P_trtB["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
+    a_P_trtB["H", "S",    ] <- (1 - v_p_HD) *      p_HS_trtB
     
     ## Check if transition array and probabilities are valid
     # Check that transition probabilities are in [0, 1]
@@ -149,13 +149,13 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     
     ## Store state rewards 
     # Store the vectors of state utilities for each strategy in a list 
-    l_u   <- list(SQ = v_u_SoC,
-                  A  = v_u_trtA,
-                  B  = v_u_trtB)
+    l_u   <- list(SoQ = v_u_SoC,
+                  A   = v_u_trtA,
+                  B   = v_u_trtB)
     # Store the vectors of state cost for each strategy in a list 
-    l_c   <- list(SQ = v_c_SoC,
-                  A  = v_c_trtA,
-                  B  = v_c_trtB)
+    l_c   <- list(SoQ = v_c_SoC,
+                  A   = v_c_trtA,
+                  B   = v_c_trtB)
     
     # assign strategy names to matching items in the lists
     names(l_u) <- names(l_c) <- v_names_str

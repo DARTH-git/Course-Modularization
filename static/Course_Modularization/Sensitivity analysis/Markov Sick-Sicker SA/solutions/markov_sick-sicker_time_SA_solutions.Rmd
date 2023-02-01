@@ -72,7 +72,7 @@ n_age_init   <- 25  # age at baseline
 n_age_max    <- 100 # maximum age of follow up
 n_cycles     <- (n_age_max - n_age_init)/cycle_length # time horizon, number of cycles
 # Age labels 
-v_age_names  <- paste(rep(n_age_init:(n_age_max-1), each = 1/cycle_length), 
+v_age_names  <- paste(rep(n_age_init:(n_age_max - 1), each = 1/cycle_length), 
                       1:(1/cycle_length), 
                       sep = ".")
 # the 4 health states of the model:

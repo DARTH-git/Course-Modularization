@@ -3,10 +3,10 @@ title: "Intro to R for Decision Modeling"
 author: "SickKids and DARTH"
 date: "11/2/2020"
 output:
-  pdf_document: default
-  word_document: default
   html_document:
     df_print: paged
+  word_document: default
+  pdf_document: default
 subtitle: Plotting
 ---
 
@@ -305,7 +305,7 @@ boxplot(AGE ~ SEX ,data=data_small,
 The following command creates a histogram showing the distribution of `AGE` with appropriate labelling.
 
 ```{r}
-hist(data_small$BMI, main = 'Histogram of age', xlab = 'age')
+hist(data_small$AGE, main = 'Histogram of age', xlab = 'age')
 ```
 
 **EXERCISE 9** Create a histogram of BMI with smaller sized bins (hint: explore `?hist()` and the `breaks` option).

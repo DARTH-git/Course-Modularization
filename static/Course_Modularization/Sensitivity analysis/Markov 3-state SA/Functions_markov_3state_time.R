@@ -71,13 +71,13 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ## Check if transition array and probabilities are valid
     # Check that transition probabilities are in [0, 1]
-    check_transition_probability(a_P_SoC,  verbose = TRUE)
-    check_transition_probability(a_P_trtA, verbose = TRUE)
-    check_transition_probability(a_P_trtB, verbose = TRUE)
+    check_transition_probability(a_P_SoC,  verbose = verbose)
+    check_transition_probability(a_P_trtA, verbose = verbose)
+    check_transition_probability(a_P_trtB, verbose = verbose)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(a_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-    check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-    check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+    check_sum_of_transition_array(a_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = verbose)
+    check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
+    check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
     
     # Iterative solution of age-dependent cSTM
     for(t in 1:n_cycles){

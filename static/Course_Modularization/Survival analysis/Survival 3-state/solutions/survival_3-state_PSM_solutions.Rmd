@@ -305,6 +305,331 @@ surv_prob(best_OS, times = times) # extract survival probabilities
 trans_prob(surv_prob(best_OS, times = times)) # convert survival probabilities to transition probabilities
 ```
 
+```{r}
+pacman::p_load(devtools, tidyverse, flexsurv, cansim, survHE, MortalityLaws)
+# install_version("MortalityLaws", version = "1.9.9", repos = "http://cran.us.r-project.org")
+## Life table data:
+
+  lifetable <- get_cansim("13-10-0114-01", refresh=FALSE)
+  lifetable2 <- lifetable %>%
+    filter(GEO == "Canada" &
+             REF_DATE == "2017/2019" &
+             Sex == "Both sexes" &
+             Element == "Death probability between age x and x+1 (qx)")
+  lifetable2$Year = parse_number(as.character(lifetable2$'Age group'))
+  
+## I was using mortalityLaws package to calculate gompertz parameters,  I’ll have to find a new approach, but just showing code as is to follow along. 
+  
+  mort_reg <- MortalityLaw(x = lifetable2$Year, qx = lifetable2$val_norm,
+                           law = "gompertz", fit.this.x = 60:105)
+  
+## This was the set up and generation of baseline probabilities used in modified partsurv
+  
+  c_l       <- 1/12                    # cycle length (a month)
+  n_t       <- n_t                   # number of years (20 years)
+  times     <- seq(0, n_t, c_l)        # the cycles in years
+  
+  os.surv.genpop <- 1 - flexsurv::pgompertz(times, shape = mort_reg$coefficients[2], rate = mort_reg$coefficients[1])
+```
+
+
+```{r}
+ l_d.data = NULL; l_vc.data = NULL; par = FALSE; chol = FALSE;
+                        time = times; v_names_states; PA = FALSE; n_sim = 100; seed = 421;
+                       warn = TRUE; surv_probs = FALSE; pfs_surv = NULL; os_surv = NULL; os_model=0;
+                       GPM = FALSE; 
+
+pfs_survHE = fit_PFS;
+                    os_survHE  = fit_OS;
+                    choose_PFS = choose_PFS; 
+                    choose_OS  = choose_OS;
+                    time = times; 
+                    v_names_states = v_names_states
+PA = T; n_sim = 1000
+surv_probs = TRUE
+pfs_surv = pfs.surv; os_surv = os.surv
+```
+
+```{r}
+surv_to_haz <- function(surv) {
+  # Calculate the log survival probabilities
+  log_survival_probabilities <- log(surv)
+  # Calculate differences in log survival probabilities
+  diff_log_survival <- diff(log_survival_probabilities)
+  # Calculate differences in times
+  diff_times <- diff(times)
+  # Divide differences in log survival probabilities by differences in times
+  hazard_rates <- -diff_log_survival / diff_times
+  # Add NA to the start to make 'hazard_rates' the same length as 'times' and 'survival_probabilities'
+  hazard_rates <- c(0, hazard_rates)
+  return(hazard_rates)
+}
+
+trans_prob <- function(surv){
+  d_surv <- surv[-1]/(surv[-length(surv)])
+  d_surv[is.na(d_surv)] <- 0
+  t.p <- 1 - d_surv
+  if (sum(t.p < 0) > 0) {
+    message("Negative transition probabilities were set to 0.")
+  }
+  d_surv[d_surv > 1] <- 1
+  t.p <- 1 - d_surv
+  return(t.p = t.p)
+}
+
+trans_to_surv <- function(t.p) {
+  surv <- numeric(length(t.p) + 1)
+  surv[1] <- 1
+  for (i in 1:length(t.p)) {
+    surv[i + 1] <- surv[i] * (1 - t.p[i])
+  }
+  return(surv)
+}
+
+
+```
+
+```{R}
+partsurv <- function(pfs_survHE = NULL, os_survHE = NULL, l_d.data = NULL, l_vc.data = NULL, par = FALSE, chol = FALSE,
+                     choose_PFS = NULL, choose_OS = NULL, time = times, v_names_states, PA = FALSE, n_sim = 100, seed = 421,
+                     warn = TRUE, surv_probs = FALSE, pfs_surv = NULL, os_surv = NULL,
+                     GPM = FALSE, baseline.model = TRUE, os.surv.genpop = NULL, os.haz.genpop = NULL){
+    set.seed(seed)
+    deter <- ifelse(PA == 1, 0, 1) # determine if analysis is deterministic or probabilistic
+
+    if (surv_probs == T) { # if directly supplying survival probs
+      pfs.surv <- pfs_surv
+      os.surv  <- os_surv
+      dist_PFS <- choose_PFS
+      dist_OS  <- choose_OS
+      chosen_models <- paste0("PFS: ", dist_PFS, ", ", "OS: ", dist_OS) # chosen model names
+    } else { # below are code for not directly supplying survival probs
+
+      # make sure distribution names for PFS and OS are correct
+      if (!choose_PFS %in% c("Exponential", "Weibull (AFT)", "Gamma", "log-Normal",
+                             "log-Logistic", "Gompertz", "Exponential Cure", "Weibull (AFT) Cure", "Gamma Cure", "log-Normal Cure",
+                             "log-Logistic Cure", "Gompertz Cure")) {
+        stop(paste0("Incorrect distribution name for PFS, select from: Exponential, Weibull (AFT), Gamma, log-Normal,
+                 log-Logistic, Gompertz, Exponential Cure, Weibull (AFT) Cure, Gamma Cure, log-Normal Cure,
+                 log-Logistic Cure, Gompertz Cure."))
+      }
+
+      if (!choose_OS %in% c("Exponential", "Weibull (AFT)", "Gamma", "log-Normal",
+                            "log-Logistic", "Gompertz", "Exponential Cure", "Weibull (AFT) Cure", "Gamma Cure", "log-Normal Cure",
+                            "log-Logistic Cure", "Gompertz Cure")) {
+        stop(paste0("Incorrect distribution name for OS, select from: Exponential, Weibull (AFT), Gamma, log-Normal,
+                 log-Logistic, Gompertz, Exponential Cure, Weibull (AFT) Cure, Gamma Cure, log-Normal Cure,
+                 log-Logistic Cure, Gompertz Cure."))
+      }
+
+
+      if (par == TRUE) {
+        dist_PFS <- choose_PFS
+        dist_OS  <- choose_OS
+        # deal with Cholesky decomposition
+        if (chol == TRUE) {
+          for (i in 1:length(l_vc.data)) {
+            l_vc.data[[i]][lower.tri(l_vc.data[[i]])] <- 0  # make sure the lower triangle of the Cholesky decomposition is 0
+            l_vc.data[[i]] <- crossprod(l_vc.data[[i]])     # transform Cholesky decomposition into the original variance-covariance matrix
+          }
+        }
+      } else {
+        dist_PFS <- choose_PFS
+        dist_OS  <- choose_OS
+      }
+
+      chosen_models <- paste0("PFS: ", dist_PFS, ", ", "OS: ", dist_OS) # chosen model names
+
+      # Calculate survival probabilities
+      if (deter == 0) { # probabilistic
+        if (par == TRUE) { # if choose to use parameter mean estimates and variance-covariance matrix instead of IPD
+          # randomly draw parameter values from multivariate normal distribution
+          param_draws_PFS <- model.rmvnorm(dist.v  = dist_PFS,
+                                           d.data  = l_d.data$PFS,
+                                           vc.data = l_vc.data$PFS,
+                                           n_sim   = n_sim,
+                                           seed    = seed)
+          param_draws_OS  <- model.rmvnorm(dist.v  = dist_OS,
+                                           d.data  = l_d.data$OS,
+                                           vc.data = l_vc.data$OS,
+                                           n_sim   = n_sim,
+                                           seed    = seed)
+          # obtain survival probabilities
+          pfs.surv <- os.surv <- matrix(NA, nrow = length(time), ncol = n_sim)
+          for (j in 1:n_sim) {
+            pfs.surv[, j] <- model.dist(dist.v = dist_PFS, d.data = param_draws_PFS[j, ], t = time)
+            os.surv [, j] <- model.dist(dist.v = dist_OS,  d.data = param_draws_OS[j, ],  t = time)
+          }
+        } else { # use survival models
+          # Model-setup
+          # model objects
+          pfs_survHE <- pfs_survHE$model.objects
+          os_survHE <-  os_survHE$model.objects
+          # model names
+          mod.pfs <- names(pfs_survHE$models)
+          mod.os <- names(os_survHE$models)
+          # chosen model index based on name
+          mod.pfs.chosen <- which(mod.pfs == dist_PFS)
+          mod.os.chosen  <- which(mod.os == dist_OS)
+          fit_PFS <- make.surv(pfs_survHE,
+                               mod = mod.pfs.chosen,
+                               nsim = n_sim,
+                               t = times)
+          fit_OS  <- make.surv(os_survHE,
+                               mod = mod.os.chosen,
+                               nsim = n_sim,
+                               t = times)
+          pfs.surv <- surv_prob(fit_PFS, PA = TRUE)
+          os.surv  <- surv_prob( fit_OS, PA = TRUE)
+        }
+      } else { # deterministic
+        if (par == TRUE) { # if choose to use parameter mean estimates and variance-covariance matrix instead of IPD
+          # randomly draw parameter values from multivariate normal distribution
+          # param_draws_PFS <- model.rmvnorm(dist.v  = dist_PFS,
+          #                                  d.data  = l_d.data[[1]],
+          #                                  vc.data = l_vc.data[[1]],
+          #                                  n_sim   = 1)
+          # param_draws_OS  <- model.rmvnorm(dist.v  = dist_OS,
+          #                                  d.data  = l_d.data[[2]],
+          #                                  vc.data = l_vc.data[[2]],
+          #                                  n_sim   = 1)
+          # obtain survival probabilities
+          pfs.surv <- model.dist(dist.v = dist_PFS, d.data =  l_d.data[[1]], t = time)
+          os.surv  <- model.dist(dist.v = dist_OS,  d.data =  l_d.data[[2]], t = time)
+        } else { # use survival models
+          # Model-setup
+          # model objects
+          pfs_survHE <- pfs_survHE$model.objects
+          os_survHE <-  os_survHE$model.objects
+          # model names
+          mod.pfs <- names(pfs_survHE$models)
+          mod.os <- names(os_survHE$models)
+          pfs.surv <- surv_prob(pfs_survHE$models[[which(mod.pfs == dist_PFS)]], time = times)
+          os.surv  <- surv_prob( os_survHE$models[[which(mod.os  ==  dist_OS)]], time = times)
+        }
+      }
+    } # end of code for if not directly supplying survival probs
+
+    if (GPM == FALSE) { # not adjust for GPM (General Population Mortality)
+      # if PFS > OS, make PFS = OS
+      if (warn == T) {check_PFS_OS(os.surv - pfs.surv)}     # print warning message if PFS > OS
+      if (deter == 0) { # probabilistic
+        pfs.surv <- as.matrix(pfs.surv)
+        os.surv  <- as.matrix(os.surv)
+        for (i in 1:ncol(pfs.surv)) {
+          pfs.surv[,i][pfs.surv[,i] > os.surv[,i]] <- os.surv[,i][pfs.surv[,i] > os.surv[,i]]
+        }
+      } else { # deterministic
+        pfs.surv[pfs.surv > os.surv] <- os.surv[pfs.surv > os.surv]
+      }
+    } else { # adjust for GPM
+      # if PFS > OS, make PFS = OS
+      os.surv.rel <- os.surv
+      check_PFS_OS(os.surv.rel * os.surv.genpop - pfs.surv) # print warning message if PFS > OS
+      if (deter == 0) { # probabilistic
+        if (baseline.model==T) {
+        pfs.surv <- as.matrix(pfs.surv)
+        os.surv.rel  <- as.matrix(os.surv.rel)
+        os.surv <- os.surv.rel
+        for (i in 1:ncol(pfs.surv)) {
+          os.surv[,i] <- os.surv.rel[,i]*os.surv.genpop
+          pfs.surv[,i][pfs.surv[,i] > os.surv[,i]] <- os.surv[,i][pfs.surv[,i] > os.surv[,i]]
+        }
+        } else if (baseline.model==F & surv_probs == F) {
+            # Extract hazard and adjust for GPM
+            os_haz_flexsurv <- apply(os.surv, 2, surv_to_haz)
+            os_haz <- os_haz_flexsurv + os.haz.genpop
+            os.surv <- apply(os_haz, 2, function(x) exp(-cumsum(x)))
+        } else if (baseline.model==F & surv_probs == T) {
+            # Extract transition probabilities and adjust for GPM
+            os_trans <- apply(os.surv, 2, trans_prob)
+            os_trans_genpop <- trans_prob(os.surv.genpop)
+            for (i in 1:ncol(os_trans)) {
+              os_trans[,i][os_trans[,i] < os_trans_genpop] <- os_trans_genpop
+            }
+            os.surv <- apply(os_trans, 2, trans_to_surv)
+        }
+      } else { # deterministic
+        if (baseline.model==T) {
+          os.surv <- os.surv.rel * os.surv.genpop
+          pfs.surv[pfs.surv > os.surv] <- os.surv[pfs.surv > os.surv] 
+        } else if (baseline.model==F & surv_probs == F) {
+            # Extract hazard and adjust for GPM
+            os_flexsurv <- os_survHE$models[[which(mod.os  ==  dist_OS)]]
+            os_haz_flexsurv <- summary(os_flexsurv, type="hazard", t=times)[[1]][,2]
+            os_haz <- os_haz_flexsurv + os.haz.genpop
+            os.surv <-  exp(-cumsum(os_haz))
+        } else if (baseline.model==F & surv_probs == T) { 
+            # Extract transition probabilities and adjust for GPM
+            os_trans <- trans_prob(os.surv)
+            os_trans_genpop <- trans_prob(os.surv.genpop)
+            os_trans[os_trans < os_trans_genpop] <- os_trans_genpop
+            os.surv <- trans_to_surv(os_trans)
+          }
+        }
+      }
+
+    # Calculate state occupation proportions
+    Sick                 <- os.surv - pfs.surv    # estimate the probability of remaining in the progressed state
+    Healthy              <- pfs.surv              # probability of remaining stable
+    Dead                 <- 1 - os.surv           # probability of being Dead
+    trace <- abind(Healthy,
+                   Sick,
+                   Dead, rev.along = 0)
+    # Calculate area under survival curve (expected survival)
+    if (deter == 0) { # probabilistic
+      pfs.expected.surv <- mean(apply(pfs.surv, 2, function(x){expected_surv(time = times, surv = x)}))
+      os.expected.surv  <- mean(apply(os.surv,  2, function(x){expected_surv(time = times, surv = x)}))
+    } else { # deterministic
+      pfs.expected.surv <- expected_surv(time = times, surv = pfs.surv)
+      os.expected.surv  <- expected_surv(time = times, surv = os.surv)
+    }
+
+    # Calculate transition probabilities
+    if (deter == 0) { # probabilistic
+      pfs.trans.prob <- apply(pfs.surv, 2, trans_prob)
+      os.trans.prob  <- apply( os.surv, 2, trans_prob)
+    } else { # deterministic
+      pfs.trans.prob <- trans_prob(pfs.surv)
+      os.trans.prob  <- trans_prob(os.surv)
+    }
+
+    # Calculate Markov trace
+    if (deter == 0){ # probabilistic
+      trace      <- aperm(trace, perm = c(1,3,2)) # Markov trace of all simulations
+      mean.trace <- apply(trace, 1:2, mean)       # average Markov trace across simulations
+      CI         <- apply(trace, 1:2, quantile, probs = c(0.025, 0.975)) # trace confidence intervals
+      CI         <- aperm(CI, perm = c(2,3,1))
+      dimnames(mean.trace)[[2]] <- v_names_states
+      dimnames(CI)[[3]] <- c("low", "high")
+      dimnames(CI)[[2]] <- v_names_states
+      dimnames(trace)[[2]] <- v_names_states
+
+      # List of items to return
+      res <- list(trace = trace, CI = CI, Mean = mean.trace, # Markov trace
+                  pfs.expected.surv = pfs.expected.surv, os.expected.surv = os.expected.surv, # expected survival
+                  pfs.surv = pfs.surv, os.surv = os.surv, # survival probabilities
+                  pfs.trans.prob = pfs.trans.prob, os.trans.prob = os.trans.prob, # transition probabilities
+                  chosen_models = chosen_models # chosen model names
+      )
+    } else { # deterministic
+      dimnames(trace)[[2]] <- v_names_states
+
+      # List of items to return
+      res <- list(trace = trace, # Markov trace
+                  pfs.expected.surv = pfs.expected.surv, os.expected.surv = os.expected.surv, # expected survival
+                  pfs.surv = pfs.surv, os.surv = os.surv, # survival probabilities
+                  pfs.trans.prob = pfs.trans.prob, os.trans.prob = os.trans.prob, # transition probabilities
+                  chosen_models = chosen_models # chosen model names
+      )
+    }
+
+    return(res)
+  }
+
+```
+
+
 ## 04.2 Partitioned Survival model
 
 ```{r}

@@ -1,7 +1,7 @@
 ---
-title: "Part II: Session 1"
+title: "Day 1"
 author: ''
-date: "2022-12-06"
+date: "2023-07-20"
 slug: day2
 categories: []
 tags: []
@@ -14,7 +14,7 @@ type: docs
 
 ## Decision Trees and Basic Cohort State-Transition Models in R
 
-Monday, December 5, 2022
+Wednesday, August 23, 2023
 
 **Readings:**
 
@@ -46,9 +46,9 @@ Monday, December 5, 2022
 -	Understand how OpenTree can be used to implement complex decision trees in R
 
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-[Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/8jx-9QDSN-OKINCyRKDQDBmk8l_TTpupr9W6k80qSogh1Dynb66-TdMSFd64UuKl.hTIcxzqmesP2mPxW__;!!D0zGoin7BXfl!-Q-siYB3O3odUjCkgJ6-SQe5xFSFXDF46p3nR_aLUlUDQHhIaVKmpVEwIJ3_MwI2uTYIsqlT76pC4KKQzg$)
+<!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/8jx-9QDSN-OKINCyRKDQDBmk8l_TTpupr9W6k80qSogh1Dynb66-TdMSFd64UuKl.hTIcxzqmesP2mPxW__;!!D0zGoin7BXfl!-Q-siYB3O3odUjCkgJ6-SQe5xFSFXDF46p3nR_aLUlUDQHhIaVKmpVEwIJ3_MwI2uTYIsqlT76pC4KKQzg$) -->
 
 <!-- [Part 1](https://umn.zoom.us/rec/share/ZJvL2tV2vmQeJarWijaSf5B2DU-VYaGocGQeW2Rkjhl1TJk9ZX5puYmf_70ucA-v.I2JgzJ6NHWAAzPib?startTime=1661778234000) -->
 

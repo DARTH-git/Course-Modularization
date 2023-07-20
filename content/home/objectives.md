@@ -23,8 +23,6 @@ widget: custom
 
 - Develop competence in R for performing decision analytic tasks
 
-- Create a basic R shiny interface
-
 - Understand good coding practices
 
 - Understand the benefits of R and other programming languages for decision analysis

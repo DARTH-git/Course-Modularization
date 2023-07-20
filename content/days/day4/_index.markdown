@@ -1,7 +1,7 @@
 ---
-title: "Part II: Session 3"
+title: "Day 2"
 author: ''
-date: "2022-12-07"
+date: "2023-07-20"
 slug: day4
 categories: []
 tags: []
@@ -14,7 +14,7 @@ type: docs
 
 ## Microsimulation Modeling in R
 
-Wednesday, December 7, 2022
+Thursday, August 24, 2023
 
 **Readings:**
 
@@ -43,9 +43,9 @@ Wednesday, December 7, 2022
 
 
 
-## Live session recording:
+<!-- ## Live session recording: -->
 
-[Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/pUR-16z0rkBocoSObaW2SlV_ZqBc0dcPUTpnLnlM4SjFlKZjrZZOOSjepsZNEJgc.f1ZFoplFMT-Ufkqd__;!!D0zGoin7BXfl!65pB8GkTsosLU0HUnWQCKQU1J2-Rlv7uKmTTInFtNnF71JiTMz_VXl8XPKxFATjfcU7vj-Tvjy3gAQBVjw$)
+<!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/pUR-16z0rkBocoSObaW2SlV_ZqBc0dcPUTpnLnlM4SjFlKZjrZZOOSjepsZNEJgc.f1ZFoplFMT-Ufkqd__;!!D0zGoin7BXfl!65pB8GkTsosLU0HUnWQCKQU1J2-Rlv7uKmTTInFtNnF71JiTMz_VXl8XPKxFATjfcU7vj-Tvjy3gAQBVjw$) -->
 
 <!-- [Part 1](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661864999000) -->
 

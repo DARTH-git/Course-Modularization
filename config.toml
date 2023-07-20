@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Decision Modeling for Public Health 2022-2023"
+title = "Cost-Effectiveness and Decision Modeling using R"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -245,79 +245,79 @@ enableGitInfo = false
   # Align the main menu to the right of the page? (true/false)
   align_right = true
 
-[[menu.main]]
+#[[menu.main]]
   #pre = "<i class=\"fab fa-r-project\"></i>"
-  name = "Welcome"
-  url = "prework/" 
+ # name = "Welcome"
+ # url = "prework/" 
+ # weight = 1
+  
+#[[menu.main]]
+#  name = "Part I"
+#  weight = 2
+#  identifier = "day0"
+  
+[[menu.main]]
+  name = "August 23"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day2"
   weight = 1
+#  parent = "day0"
   
 [[menu.main]]
-  name = "Part I"
+  name = "August 24"
+  # pre = "<i class=\"fas fa-clock\"></i>"
+  url = "/days/day4"
   weight = 2
-  identifier = "day0"
-  
-[[menu.main]]
-  name = "Session 1"
-  # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day0/session1"
-  weight = 1
-  parent = "day0"
-  
-[[menu.main]]
-  name = "Session 2"
-  # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day0/session2"
-  weight = 2
-  parent = "day0"
+ # parent = "day0"
 
 [[menu.main]]
-  name = "Session 3"
+  name = "August 25"
   # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day0/session3"
+  url = "/days/day5"
   weight = 3
-  parent = "day0"
+  #parent = "day0"
   
-[[menu.main]]
-  name = "Session 4"
+#[[menu.main]]
+  #name = "Session 4"
   # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day0/session4"
-  weight = 4
-  parent = "day0"
+#  url = "/days/day0/session4"
+ # weight = 4
+#  parent = "day0"
 
-[[menu.main]]
-  name = "Part II"
-  weight = 3
-  identifier = "day1"
+#[[menu.main]]
+ # name = "Part II"
+#  weight = 3
+#  identifier = "day1"
 
-[[menu.main]]
-  name = "Part II Prep"
-  weight = 1
-  url = "days/day1/" 
-  parent = "day1"
+#[[menu.main]]
+#  name = "Part II Prep"
+#  weight = 1
+# url = "days/day1/" 
+#  parent = "day1"
   
-[[menu.main]]
-  name = "Part II: Session 1"
-  weight = 2
-  url = "days/day2/" 
-  parent = "day1"
+#[[menu.main]]
+#  name = "Part II: Session 1"
+#  weight = 2
+#  url = "days/day2/" 
+#  parent = "day1"
   
-[[menu.main]]
-  name = "Part II: Session 2"
-  weight = 3
-  url = "days/day3/" 
-  parent = "day1"
+#[[menu.main]]
+#  name = "Part II: Session 2"
+#  weight = 3
+#  url = "days/day3/" 
+#  parent = "day1"
   
-[[menu.main]]
-  name = "Part II: Session 3"
-  weight = 4
-  url = "days/day4/" 
-  parent = "day1"
+#[[menu.main]]
+#  name = "Part II: Session 3"
+#  weight = 4
+#  url = "days/day4/" 
+#  parent = "day1"
 
-[[menu.main]]
-  name = "Part II: Session 4"
-  weight = 5
-  url = "days/day5/" 
-  parent = "day1"
+#[[menu.main]]
+#  name = "Part II: Session 4"
+#  weight = 5
+#  url = "days/day5/" 
+#  parent = "day1"
 
 #[[menu.main]]
 # name = "Mar 1"

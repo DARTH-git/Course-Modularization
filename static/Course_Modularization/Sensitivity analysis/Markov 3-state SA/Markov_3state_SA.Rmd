@@ -499,7 +499,11 @@ owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 ### 10.2.2 Tornado plot
 
 ```{r}
-owsa_tornado(owsa = owsa_nmb)
+tornado <- owsa_tornado(owsa = owsa_nmb)
+tornado + labs(title="Tornado plot",
+               subtitle="c_trtA_yr: min = €300, max = €1,200\nc_trtB_yr: min = €500, max = €2,000\nc_S_yr:    min = €500, max = €2,000",
+               x = "Outcome (Net Monetary Benefit in €)") +
+  theme(plot.subtitle=element_text(size=12, face="plain", color="black"))
 ```
 
 ## 10.3 Two-way sensitivity analysis (TWSA)

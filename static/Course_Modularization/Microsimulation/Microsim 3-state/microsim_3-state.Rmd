@@ -3,36 +3,32 @@ title: 'Simple 3-state microsimulation model'
 subtitle: 'Includes age and sex specific probability of dying when Healthy'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
+
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
-Fernando Alarid-Escudero, PhD (1) 
-
-Eva A. Enns, MS, PhD (2)	
-
-M.G. Myriam Hunink, MD, PhD (3,4)
-
-Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
-Petros Pechlivanoglou, PhD (6,7)
-
-Alan Yang, MSc (7)
+- Fernando Alarid-Escudero, PhD (1)
+- Eva A. Enns, MS, PhD (2)
+- M.G. Myriam Hunink, MD, PhD (3,4)
+- Hawre J. Jalal, MD, PhD (5)
+- Eline Krijkamp, PhD (6)
+- Petros Pechlivanoglou, PhD (7,8)
+- Alan Yang, MSc (8)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Stanford University, Stanford, CA, USA
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+5. University of Ottawa, Ottawa, ON, Canada
+6. Erasmus University, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
+
 
 Please cite our publications when using this code:
  
@@ -45,16 +41,10 @@ Microsimulation modeling for health decision sciences using R: A tutorial.
 Med Decis Making. 2018;38(3):400–22. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
  
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
+- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MGM, Jalal H. 
 A Multidimensional Array Representation of State-Transition Model Dynamics. 
 Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
 
-Copyright 2017, THE HOSPITAL FOR Sick CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
 
 \newpage
 
@@ -89,9 +79,9 @@ p_load_gh("DARTH-git/darthtools")
 set.seed(1)  # set the seed  
 
 # Model structure
-v_names_states <- c("Healthy", "Sick", "Dead")  # vector with state names
+v_names_states <- c("H", "S", "D")  # vector with state names, Healthy (H), Sick (S), Dead (D)
 n_states    <- length(v_names_states)  # number of states
-n_t         <- 60                      # number of cycles
+n_cycles    <- 60                      # number of cycles
 n_i         <- 10000                   # number of individuals
 d_e         <- d_c <- 0.03             # equal discount of costs and QALYs 
 
@@ -114,9 +104,9 @@ u_S         <- 0.85    # utility when Sick
 u_D         <- 0       # utility when Dead 
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc       <- 1 / (1 + d_e) ^ (0:n_t) 
+v_dwc       <- 1 / (1 + d_e) ^ (0:n_cycles) 
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe       <- 1 / (1 + d_c) ^ (0:n_t) 
+v_dwe       <- 1 / (1 + d_c) ^ (0:n_cycles) 
 
 m_p_HD      <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male))
 ```
@@ -136,7 +126,7 @@ df_X  <- data.frame(ID = 1:n_i, Sex = v_sex)
 ```{r}
 # Specify the initial health state of the individuals 
 # everyone begins in the Healthy state (in this example)
-v_M_init  <- rep("Healthy", times = n_i)   
+v_M_init  <- rep("H", times = n_i)   
 ```
 
 # 05 Define Simulation Functions
@@ -159,24 +149,24 @@ Probs <- function(M_t, df_X) {
   
   # lookup baseline probability and rate of dying based on individual characteristics
   p_HD_all <- inner_join(df_X, m_p_HD, by = c("Sex"))
-  p_HD     <- p_HD_all[M_t == "Healthy", "p_HD"]
+  p_HD     <- p_HD_all[M_t == "H", "p_HD"]
   
   # update m_p_t with the appropriate probabilities   
   # (all non-death probabilities are conditional on survival)
   # transition probabilities when Healthy 
-  m_p_t["Healthy", M_t == "Healthy"] <- (1 - p_HD) * (1 - p_HS)
-  m_p_t["Sick",    M_t == "Healthy"] <- (1 - p_HD) *      p_HS 
-  m_p_t["Dead",    M_t == "Healthy"] <-      p_HD              
+  m_p_t["H", M_t == "H"] <- (1 - p_HD) * (1 - p_HS)
+  m_p_t["S", M_t == "H"] <- (1 - p_HD) *      p_HS 
+  m_p_t["D", M_t == "H"] <-      p_HD              
   
   # transition probabilities when Sick 
-  m_p_t["Healthy", M_t == "Sick"]    <-  0
-  m_p_t["Sick",    M_t == "Sick"]    <-  1 - p_SD
-  m_p_t["Dead",    M_t == "Sick"]    <-      p_SD     
+  m_p_t["H", M_t == "S"] <-  0
+  m_p_t["S", M_t == "S"] <-  1 - p_SD
+  m_p_t["D", M_t == "S"] <-      p_SD     
  
   # transition probabilities when Dead
-  m_p_t["Healthy", M_t == "Dead"]    <- 0
-  m_p_t["Sick",    M_t == "Dead"]    <- 0
-  m_p_t["Dead",    M_t == "Dead"]    <- 1                         
+  m_p_t["H", M_t == "D"] <- 0
+  m_p_t["S", M_t == "D"] <- 0
+  m_p_t["D", M_t == "D"] <- 1                         
   return(t(m_p_t))
 }     
 ```
@@ -193,9 +183,9 @@ Costs <- function (M_t) {
     # costs accrued in this cycle
   
   c_t <- c()
-  c_t[M_t == "Dead"]    <- c_D  # costs at Dead state
-  c_t[M_t == "Healthy"] <- c_H  # costs accrued by being Healthy this cycle
-  c_t[M_t == "Sick"]    <- c_S  # costs accrued by being Sick this cycle
+  c_t[M_t == "D"] <- c_D  # costs at Dead state
+  c_t[M_t == "H"] <- c_H  # costs accrued by being Healthy this cycle
+  c_t[M_t == "S"] <- c_S  # costs accrued by being Sick this cycle
   
   return(c_t)  # return costs accrued this cycle
 }
@@ -213,9 +203,9 @@ Effs <- function (M_t) {
     # QALYs accrued this cycle
   
   q_t <- c() 
-  q_t[M_t == "Dead"]    <- u_D  # QALYs at Dead state
-  q_t[M_t == "Healthy"] <- u_H  # QALYs accrued by being Healthy this cycle
-  q_t[M_t == "Sick"]    <- u_S  # QALYs accrued by being Sick this cycle
+  q_t[M_t == "D"] <- u_D  # QALYs at Dead state
+  q_t[M_t == "H"] <- u_H  # QALYs accrued by being Healthy this cycle
+  q_t[M_t == "S"] <- u_S  # QALYs accrued by being Sick this cycle
   
   return(q_t)  # return the QALYs accrued this cycle
 }
@@ -242,30 +232,30 @@ MicroSim <- function(n_i, df_X, seed = 1) {
   # m_C is used to store the costs information over time for every individual
   # m_E is used to store the effects information over time for every individual
   
-  m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_t + 1, 
+  m_M <- m_C <- m_E <-  matrix(nrow = n_i, ncol = n_cycles + 1, 
                                        dimnames = list(paste("ind"  , 1:n_i, sep = " "), 
-                                                       paste("cycle", 0:n_t, sep = " ")))  
+                                                       paste("cycle", 0:n_cycles, sep = " ")))  
  
   m_M[, 1] <- v_M_init         # initial health state 
   m_C[, 1] <- Costs(m_M[, 1])  # costs accrued during cycle 0
   m_E[, 1] <- Effs(m_M[, 1])   # QALYs accrued during cycle 0
   
   # open a loop for time running cycles 1 to n_t 
-  for (t in 1:n_t) {
+  for (t in 1:n_cycles) {
     # calculate the transition probabilities for the cycle based on health state t
     m_P <- Probs(m_M[, t], df_X) 
     # check if transition probabilities are between 0 and 1
     check_transition_probability(m_P, verbose = TRUE)
     # check if each of the rows of the transition probabilities matrix sum to one
-    check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_t, verbose = TRUE)
+    check_sum_of_transition_array(m_P, n_rows = n_i, n_cycles = n_cycles, verbose = TRUE)
     # sample the current health state and store that state in matrix m_M 
     m_M[, t + 1]  <- samplev(m_P, 1)       
     m_C[, t + 1]  <- Costs(m_M[, t + 1])  # calculate costs 
     m_E[, t + 1]  <- Effs (m_M[, t + 1])  # calculate QALYs 
     
     # Display simulation progress
-    if(t/(n_t/10) == round(t/(n_t/10), 0)) { # display progress every 10%
-      cat('\r', paste(t/n_t * 100, "% done", sep = " "))
+    if(t/(n_cycles/10) == round(t/(n_cycles/10), 0)) { # display progress every 10%
+      cat('\r', paste(t/n_cycles * 100, "% done", sep = " "))
     }
     
   } # close the loop for the time points 

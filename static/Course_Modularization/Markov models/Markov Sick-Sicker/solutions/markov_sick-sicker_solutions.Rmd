@@ -16,7 +16,7 @@ Cost-Effectiveness Analysis Example. Medical Decision Making, 2022
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
 Authors:
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
+- Fernando Alarid-Escudero
 - Eline Krijkamp
 - Eva A. Enns
 - Alan Yang
@@ -77,16 +77,19 @@ cycle_length <- 1         # cycle length equal to one year (use 1/12 for monthly
 n_age_init   <- 25        # age at baseline
 n_age_max    <- 100       # maximum age of follow up
 n_cycles     <- (n_age_max - n_age_init)/cycle_length # time horizon, number of cycles
-v_names_states <- c("H",  # the 4 health states of the model:
-                    "S1", # Healthy (H), Sick (S1), Sicker (S2), Dead (D)
-                    "S2", 
-                    "D") 
-                                          
+v_names_states <- c("H",  # the 4 health states of the model:Healthu (H)
+                    "S1",   # (S1)
+                    "S2",   # (S2)
+                    "D")     # (D)
+# NOTE: For our parameter values of costs and utilities we use
+# just letters for the health states 
+# Healthy (H), Sick (S1), Sicker (S2), Dead (D)                                          
+
 n_states <- length(v_names_states)    # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_c <- 0.03        # annual discount rate for costs 
+d_e <- 0.03        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str <- c("Standard of care",  # store the strategy names
@@ -171,7 +174,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.7,
 
 ```{r}
 # All starting healthy
-v_m_init <- c(H = 1, S1 = 0, S2 = 0, D = 0) # initial state vector
+v_m_init <- c(Healthy = 1, Sick = 0, Sicker = 0, Dead = 0) # initial state vector
 v_m_init
 ```
 
@@ -202,19 +205,19 @@ m_P <- matrix(0,
                               v_names_states)) # define row and column names
 ### Fill in matrix 
 # From H
-m_P["H", "H"]   <- (1 - p_HD) * (1 - p_HS1)
-m_P["H", "S1"]  <- (1 - p_HD) *      p_HS1 
-m_P["H", "D"]   <-      p_HD
+m_P["Healthy", "Healthy"] <- (1 - p_HD) * (1 - p_HS1)
+m_P["Healthy", "Sick"]    <- (1 - p_HD) *      p_HS1 
+m_P["Healthy", "Dead"]    <-      p_HD
 # From S1
-m_P["S1", "H"]  <- (1 - p_S1D) *       p_S1H
-m_P["S1", "S1"] <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2))
-m_P["S1", "S2"] <- (1 - p_S1D) *               p_S1S2
-m_P["S1", "D"]  <-      p_S1D
+m_P["Sick", "Healthy"]   <- (1 - p_S1D) *       p_S1H
+m_P["Sick", "Sick"]      <- (1 - p_S1D) * (1 - (p_S1H + p_S1S2))
+m_P["Sick", "Sicker"]    <- (1 - p_S1D) *               p_S1S2
+m_P["Sick", "Dead"]      <-      p_S1D
 # From S2
-m_P["S2", "S2"] <- 1 - p_S2D
-m_P["S2", "D"]  <-     p_S2D
+m_P["Sicker", "Sicker"]  <- 1 - p_S2D
+m_P["Sicker", "Dead"]    <-     p_S2D
 # From D
-m_P["D", "D"]   <- 1
+m_P["Dead", "Dead"]             <- 1
 
 ### Initialize transition probability matrix for strategy AB 
 m_P_strAB <- m_P
@@ -262,25 +265,25 @@ plot_trace(m_M_strAB)
 ```{r}
 ## Scale by the cycle length 
 # Vector of state utilities under strategy SoC
-v_u_SoC    <- c(H  = u_H, 
-                S1 = u_S1, 
-                S2 = u_S2, 
-                D  = u_D) * cycle_length
+v_u_SoC    <- c(Healthy = u_H, 
+                Sick    = u_S1, 
+                Sicker  = u_S2, 
+                Dead    = u_D) * cycle_length
 # Vector of state costs under strategy SoC
-v_c_SoC    <- c(H  = c_H, 
-                S1 = c_S1,
-                S2 = c_S2, 
-                D  = c_D) * cycle_length
+v_c_SoC    <- c(Healthy = c_H, 
+                Sick    = c_S1,
+                Sicker  = c_S2, 
+                Dead    = c_D) * cycle_length
 # Vector of state utilities under strategy AB
-v_u_strAB  <- c(H  = u_H, 
-                S1 = u_trtAB, 
-                S2 = u_S2, 
-                D  = u_D) * cycle_length
+v_u_strAB  <- c(Healthy = u_H, 
+                Sick    = u_trtAB, 
+                Sicker  = u_S2, 
+                Dead    = u_D) * cycle_length
 # Vector of state costs under strategy AB
-v_c_strAB  <- c(H  = c_H, 
-                S1 = c_S1 + c_trtAB, 
-                S2 = c_S2 + c_trtAB, 
-                D  = c_D) * cycle_length
+v_c_strAB  <- c(Healthy = c_H, 
+                Sick    = c_S1 + c_trtAB, 
+                Sicker  = c_S2 + c_trtAB, 
+                Dead    = c_D) * cycle_length
 
 ## Store state rewards 
 # Store the vectors of state utilities for each strategy in a list 
@@ -330,7 +333,7 @@ df_cea <- calculate_icers(cost       = v_tot_cost,
 df_cea
 ```
 
-```{R}
+```{r}
 ## CEA table in proper format 
 table_cea <- format_table_cea(df_cea) 
 table_cea

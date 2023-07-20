@@ -8,43 +8,27 @@ output:
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-
 Fernando Alarid-Escudero, PhD (1) 
-
 Eva A. Enns, MS, PhD (2)	
-
 M.G. Myriam Hunink, MD, PhD (3,4)
-
 Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
-Petros Pechlivanoglou, PhD (6,7)
-
-Alan Yang, MSc (7)
+Eline Krijkamp, PhD (6)	
+Petros Pechlivanoglou, PhD (7,8)
+Alan Yang, MSc (8)
 
 In collaboration of: 		
 
-1. Division of Public Administration, Center for Research and Teaching in 
-   Economics (CIDE), Aguascalientes, Mexico
+1. Stanford University, Stanford, CA, USA
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+5. University of Ottawa, Ottawa, ON, Canada
+6. Erasmus University, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
+
 
 Please cite our publications when using this code:
-
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
-a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 (In press):
-1-21. https://doi.org/10.1177/0272989X221121747
-
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
-Cost-Effectiveness Analysis Example. Medical Decision Making, 2022 
-(Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
 - Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
 Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
@@ -55,21 +39,8 @@ Cost-Effectiveness Analysis Example. Medical Decision Making, 2022
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
 
-- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
-Microsimulation modeling for health decision sciences using R: A tutorial. 
-Med Decis Making. 2018;38(3):400–22. 
-https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
- 
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Mak. 2020;40(2):242-248. https://doi.org/10.1177/0272989X19893973
+- Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). https://doi.org/10.1007/s40273-019-00837-x
 
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
 
 \newpage
 
@@ -107,12 +78,12 @@ p_load_gh("DARTH-git/darthtools")
 cycle_length    <- 1                             # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                            # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
-v_names_states  <- c("Healthy", "Sick", "Dead")  # state names
+v_names_states  <- c("H", "S", "D")              # state names
 n_states        <- length(v_names_states)        # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_c <- 0.03        # annual discount rate for costs 
+d_e <- 0.03        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
@@ -154,12 +125,12 @@ v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 
 ```{r}
 m_P_diag <- matrix(0, nrow = n_states, ncol = n_states, dimnames = list(v_names_states, v_names_states))
-m_P_diag["Healthy", "Sick" ]     = "" 
-m_P_diag["Healthy", "Dead" ]     = ""
-m_P_diag["Healthy", "Healthy" ]  = ""
-m_P_diag["Sick"   , "Dead" ]     = ""
-m_P_diag["Sick"   , "Sick" ]     = ""
-m_P_diag["Dead"   , "Dead" ]     = ""
+m_P_diag["H", "H" ] = ""
+m_P_diag["H", "S" ] = "" 
+m_P_diag["H", "D" ] = ""
+m_P_diag["S", "S" ] = ""
+m_P_diag["S", "D" ] = ""
+m_P_diag["D", "D" ] = ""
 layout.fig <- c(2, 1)
 plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,  
         latex = T, arr.type = "curved", relsize = 0.85, box.prop = 0.8, 
@@ -170,7 +141,7 @@ plotmat(t(m_P_diag), t(layout.fig), self.cex = 0.5, curve = 0, arr.pos = 0.8,
 
 ```{r}
 # All starting healthy
-v_m_init <- c("Healthy" = 1, "Sick" = 0, "Dead" = 0)  
+v_m_init <- c("H" = 1, "S" = 0, "D" = 0)  
 v_m_init
 ```
 
@@ -203,26 +174,26 @@ a_P_SoC <- array(0,  # Create 3-D array
 ### Fill in array
 ## Standard of Care
 # from Healthy
-a_P_SoC["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
-a_P_SoC["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_SoC
-a_P_SoC["Healthy", "Dead",    ] <-      v_p_HD
+a_P_SoC["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_SoC)
+a_P_SoC["H", "S", ] <- (1 - v_p_HD) *      p_HS_SoC
+a_P_SoC["H", "D", ] <-      v_p_HD
 
 # from Sick
-a_P_SoC["Sick", "Sick", ] <- 1 - p_SD
-a_P_SoC["Sick", "Dead", ] <-     p_SD
+a_P_SoC["S", "S", ] <- 1 - p_SD
+a_P_SoC["S", "D", ] <-     p_SD
 
 # from Dead
-a_P_SoC["Dead", "Dead", ] <- 1
+a_P_SoC["D", "D", ] <- 1
 
 ## Treatment A
 a_P_trtA <- a_P_SoC
-a_P_trtA["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
-a_P_trtA["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtA
+a_P_trtA["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtA)
+a_P_trtA["H", "S", ] <- (1 - v_p_HD) *      p_HS_trtA
 
 ## Treatment B
 a_P_trtB <- a_P_SoC
-a_P_trtB["Healthy", "Healthy", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
-a_P_trtB["Healthy", "Sick",    ] <- (1 - v_p_HD) *      p_HS_trtB
+a_P_trtB["H", "H", ] <- (1 - v_p_HD) * (1 - p_HS_trtB)
+a_P_trtB["H", "S", ] <- (1 - v_p_HD) *      p_HS_trtB
 
 ## Check if transition array and probabilities are valid
 # Check that transition probabilities are in [0, 1]
@@ -269,7 +240,7 @@ plot_trace(m_M_SoC)
 Print the overall survival for the Standard of Care
 
 ```{r}
-v_os_SoC <- 1 - m_M_SoC[, "Dead"]    # calculate the overall survival (OS) probability
+v_os_SoC <- 1 - m_M_SoC[, "D"]    # calculate the overall survival (OS) probability
 v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
 
 plot(v_os_SoC, type = 'l', 
@@ -292,7 +263,7 @@ le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expec
 ## 06.2.2 Disease prevalence
 
 ```{r}
-v_prev <- m_M_SoC[, "Sick"]/v_os_SoC
+v_prev <- m_M_SoC[, "S"]/v_os_SoC
 plot(v_prev,
      ylim = c(0, 1),
      ylab = "Prevalence",
@@ -331,13 +302,13 @@ v_c_trtB   <- c(H  = c_H + c_trtB,
 
 ## Store state rewards 
 # Store the vectors of state utilities for each strategy in a list 
-l_u   <- list(SQ = v_u_SoC,
-              A  = v_u_trtA,
-              B  = v_u_trtB)
+l_u   <- list(SoQ = v_u_SoC,
+              A   = v_u_trtA,
+              B   = v_u_trtB)
 # Store the vectors of state cost for each strategy in a list 
-l_c   <- list(SQ = v_c_SoC,
-              A  = v_c_trtA,
-              B  = v_c_trtB)
+l_c   <- list(SoQ = v_c_SoC,
+              A   = v_c_trtA,
+              B   = v_c_trtB)
 
 # assign strategy names to matching items in the lists
 names(l_u) <- names(l_c) <- v_names_str

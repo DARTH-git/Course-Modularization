@@ -10,30 +10,25 @@ self_contained: no
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
-Fernando Alarid-Escudero, PhD (1) 
-
-Eva A. Enns, MS, PhD (2)	
-
-M.G. Myriam Hunink, MD, PhD (3,4)
-
-Hawre J. Jalal, MD, PhD (5) 
-
-Eline M. Krijkamp, MSc (3)	
-
-Petros Pechlivanoglou, PhD (6,7)
-
-Alan Yang, MSc (7)
+- Fernando Alarid-Escudero, PhD (1)
+- Eva A. Enns, MS, PhD (2)
+- M.G. Myriam Hunink, MD, PhD (3,4)
+- Hawre J. Jalal, MD, PhD (5)
+- Eline Krijkamp, PhD (6)
+- Petros Pechlivanoglou, PhD (7,8)
+- Alan Yang, MSc (8)
 
 In collaboration of: 		
 
-1. Drug Policy Program, Center for Research and Teaching in Economics (CIDE) - CONACyT, 
-   Aguascalientes, Mexico
+1. Stanford University, Stanford, CA, USA
 2. University of Minnesota School of Public Health, Minneapolis, MN, USA
 3. Erasmus MC, Rotterdam, The Netherlands
 4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-6. University of Toronto, Toronto ON, Canada
-7. The Hospital for Sick Children, Toronto ON, Canada
+5. University of Ottawa, Ottawa, ON, Canada
+6. Erasmus University, Rotterdam, The Netherlands
+7. University of Toronto, Toronto ON, Canada
+8. The Hospital for Sick Children, Toronto ON, Canada
+
 
 Please cite our publications when using this code:
  
@@ -41,21 +36,10 @@ Please cite our publications when using this code:
 An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
 https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
  
-- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
-Microsimulation modeling for health decision sciences using R: A tutorial. 
-Med Decis Making. 2018;38(3):400–22. 
-https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
- 
-- Krijkamp EM, Alarid-Escudero F, Enns E, Pechlivanoglou P, Hunink MM, Jalal H. 
-A Multidimensional Array Representation of State-Transition Model Dynamics. 
-Med Decis Making. 2020 Online first. https://doi.org/10.1177/0272989X19893973
+- Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A Need for Change! 
+ A Coding Framework for Improving Transparency in Decision Modeling. 
+ PharmacoEconomics 37, 1329–1339 (2019). https://doi.org/10.1007/s40273-019-00837-x
 
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
 
 \newpage
 
@@ -167,34 +151,50 @@ v_qaly_tx     <- c(q_VE_comp ,          # HVE, complications
                    q_VE      ,          # HVE, no complications
                    q_VE_comp ,          # OVE, complications
                    q_VE)                # OVE, no complications
+
+# loss due to biopsy
+v_qaly_biopsy <-  c(q_death_biopsy - q_loss_biopsy,   # biopsy complications
+                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., HVE w/tx, complications 
+                    q_VE           - q_loss_biopsy,   # no biopsy comp., HVE w/tx, no complications
+                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., OVE, complications
+                    q_VE           - q_loss_biopsy )  # no biopsy comp., OVE, no complications
   
-  
-v_qaly_biopsy <- -q_loss_biopsy     +   # loss due to biopsy
-                  c(q_death_biopsy  ,   # biopsy complications
-                    q_VE_comp       ,   # no biopsy comp., HVE w/tx, complications 
-                    q_VE            ,   # no biopsy comp., HVE w/tx, no complications
-                    q_VE_comp       ,   # no biopsy comp., OVE, complications
-                    q_VE)               # no biopsy comp., OVE, no complications
-  
+
+
+
 # Create vector of costs for each strategy 
+# cost of no treatment 
 v_cost_no_tx  <- c(c_VE_comp ,          # HVE, complications
                    c_VE      ,          # HVE, no complications
                    c_VE_comp ,          # OVE, complications
                    c_VE)                # OVE, no complications
-  
-v_cost_tx     <- c_tx +                 # cost of treatment
-                 c(c_VE_comp ,          # HVE, complications
-                   c_VE      ,          # HVE, no complications
-                   c_VE_comp ,          # OVE, complications
-                   c_VE)                # OVE, no complications
-  
-v_cost_biopsy <- c_biopsy           +   # cost of biopsy procedure
-                 c(c_death_biopsy   ,   # cost of death (zero)
-                   c_VE_comp + c_tx ,   # no biopsy comp., HVE w/tx, complications 
-                   c_VE      + c_tx ,   # no biopsy comp., HVE w/tx, no complications
-                   c_VE_comp        ,   # no biopsy comp., OVE, complications
-                   c_VE)                # no biopsy comp., OVE, no complications
+
+# cost of treatment
+v_cost_tx     <- c(c_VE_comp + c_tx,    # HVE, complications
+                   c_VE      + c_tx,    # HVE, no complications
+                   c_VE_comp + c_tx,    # OVE, complications
+                   c_VE      + c_tx)  # OVE, no complications
+
+# cost of biopsy procedure
+v_cost_biopsy <- c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
+                   c_VE_comp + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, complications 
+                   c_VE      + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, no complications
+                   c_VE_comp        + c_biopsy,   # no biopsy comp., OVE, complications
+                   c_VE             + c_biopsy )  # no biopsy comp., OVE, no complications
  
+## STAR MATERIAL ##  
+# Extra funfact about coding
+# When you like to add a specific cost to all elements of a vector you can also add the costs before the vector. The vector for the cost of the biopsy for example could also be coded as follows:
+
+# cost of biopsy procedure
+#v_cost_biopsy <- c_biopsy + 
+#                    c(c_death_biopsy,     # cost of death (zero)
+#                      c_VE_comp + c_tx,   # no biopsy comp., HVE w/tx, complications 
+#                      c_VE      + c_tx,   # no biopsy comp., HVE w/tx, no complications
+#                      c_VE_comp       ,   # no biopsy comp., OVE, complications
+#                      c_VE)               # no biopsy comp., OVE, no complications
+####################
+
 
 
 # Calculate expected complications for each strategy 
@@ -251,7 +251,7 @@ decision_tree_HVE_cea
 ## 05.1 Plot frontier of Decision Tree
 
 ```{r}
-plot(decision_tree_HVE_cea, effect_units = "QALYs", label="all")
+plot(decision_tree_HVE_cea, effect_units = "QALYs", label = "all")
 ```
 
 

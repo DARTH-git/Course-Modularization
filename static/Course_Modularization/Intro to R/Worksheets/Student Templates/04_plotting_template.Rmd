@@ -283,7 +283,7 @@ The `~` symbol is frequently used in `R` to define formulas (which we will see i
 The following command creates a histogram showing the distribution of `AGE` with appropriate labelling.
 
 ```{r}
-hist(data_small$BMI, main = 'Histogram of age', xlab = 'age')
+hist(data_small$AGE, main = 'Histogram of age', xlab = 'age')
 ```
 
 **EXERCISE 9** Create a histogram of BMI with smaller sized bins (hint: explore `?hist()` and the `breaks` option).

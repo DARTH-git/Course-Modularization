@@ -16,7 +16,7 @@ Cost-Effectiveness Analysis Example. Medical Decision Making, 2022
 (Online First):1-18. https://doi.org/10.1177/0272989X221103163
 
 Authors:
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
+- Fernando Alarid-Escudero
 - Eline Krijkamp
 - Eva A. Enns
 - Alan Yang
@@ -39,6 +39,7 @@ Implements a time-independent Sick-Sicker cSTM model that evaluates four strateg
 - Strategy B: treatment B is given to all sick patients and reduces disease progression from the Sick to Sicker state.
 - Strategy AB: This strategy combines treatment A and treatment B. The disease progression is reduced and individuals in the Sick state have an 
   improved quality of life.
+  
 
 \newpage
 
@@ -85,8 +86,14 @@ v_names_states <- c("H",  # the 4 health states of the model:
 n_states <- length(v_names_states)    # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+# Comment out/ for the relevant country
+# USA
+#d_c <- d_e <- 0.03  # annual discount rate for costs and QALY
+# Canada
+#d_c <- d_e <- 0.015 # annual discount rate for costs 
+# NL
+d_c <- 0.04         # annual discount rate for costs 
+d_e <- 0.015        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str <- c("Standard of care",  # store the strategy names
@@ -288,7 +295,6 @@ names(l_m_M) <- v_names_str
 
 ```{r}
 ## Incremental cost-effectiveness ratios (ICERs) 
-# your turn
 
 ```
 

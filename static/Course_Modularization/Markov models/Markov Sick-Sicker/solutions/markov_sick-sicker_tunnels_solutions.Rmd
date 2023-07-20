@@ -9,9 +9,10 @@ output:
 
 This code forms the basis for the state-transition model of the tutorial: 
 'A Tutorial on Time-Dependent Cohort State-Transition Models in R using a Cost-Effectiveness Analysis Example' 
+Medical Decision Making. 2023;43(1):21-41. doi:10.1177/0272989X221121747
 
 Authors: 
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
+- Fernando Alarid-Escudero 
 - Eline Krijkamp
 - Eva A. Enns
 - Alan Yang
@@ -89,12 +90,12 @@ v_cycles_tunnel  <- 1:n_tunnel_size
 # Vector with names for tunnel states of Sick state
 v_Sick_tunnel    <- paste("S1_", seq(1, n_tunnel_size), "Yr", sep = "")
 # Create variables for model with tunnels
-v_names_states_tunnels <- c("H", v_Sick_tunnel, "S2", "D") # health state names
+v_names_states_tunnels <- c("H", v_Sick_tunnel, "S", "D") # health state names
 n_states_tunnels <- length(v_names_states_tunnels)         # number of health states
 
 ### Discounting factors 
-d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_c <- 0.03        # annual discount rate for costs 
+d_e <- 0.03        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str <- c("Standard of care",      # store the strategy names
@@ -346,7 +347,7 @@ v_u_S1_SoC        <- rep(u_S1, n_tunnel_size)
 names(v_u_S1_SoC) <- v_Sick_tunnel
 # Vector of utilities under strategy SoC
 v_u_SoC <- c(H  = u_H, 
-             v_u_S1_SoC, 
+             S1 = v_u_S1_SoC, 
              S2 = u_S2,
              D  = u_D) * cycle_length
 # Vector of costs per cycle for S1 under strategy SoC
@@ -354,7 +355,7 @@ v_c_S1_SoC <- rep(c_S1, n_tunnel_size)
 names(v_c_S1_SoC) <- v_Sick_tunnel
 # Vector of costs per cycle under strategy SoC
 v_c_SoC <- c(H  = c_H,
-             v_c_S1_SoC, 
+             S1 = v_c_S1_SoC, 
              S2 = c_S2,
              D  = c_D) * cycle_length
 
@@ -363,7 +364,7 @@ v_u_S1_strAB        <- rep(u_trtAB, n_tunnel_size)
 names(v_u_S1_strAB) <- v_Sick_tunnel
 # Vector of  utilities under strategy AB
 v_u_strAB <- c(H  = u_H, 
-               v_u_S1_strAB, 
+               S1 = v_u_S1_strAB, 
                S2 = u_S2, 
                D  = u_D) * cycle_length
 # Vector of costs per cycle for S1 under strategy AB
@@ -371,7 +372,7 @@ v_c_S1_strAB        <- rep(c_S1 + c_trtAB, n_tunnel_size)
 names(v_c_S1_strAB) <- v_Sick_tunnel
 # Vector of costs per cycle under strategy AB
 v_c_strAB <- c(H  = c_H, 
-               v_c_S1_strAB, 
+               S1 = v_c_S1_strAB, 
                S2 = c_S2 + c_trtAB, 
                D  = c_D) * cycle_length
 

@@ -1,7 +1,7 @@
 ---
 title: Install software
 author: ''
-date: "2022-10-05"
+date: "2023-07-21"
 slug: system
 categories: []
 tags: []

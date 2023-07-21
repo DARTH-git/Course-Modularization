@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Cost-Effectiveness and Decision Modeling using R"
+title = "Introduction to R Module"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"}
+  #discussion = {name = "Slack workspace", url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -257,24 +257,24 @@ enableGitInfo = false
 #  identifier = "day0"
   
 [[menu.main]]
-  name = "August 23"
+  name = "Begin Module"
   # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day2"
+  url = "/days/day1"
   weight = 1
 #  parent = "day0"
   
-[[menu.main]]
-  name = "August 24"
+#[[menu.main]]
+ # name = "August 24"
   # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day4"
-  weight = 2
+ # url = "/days/day4"
+ # weight = 2
  # parent = "day0"
 
-[[menu.main]]
-  name = "August 25"
-  # pre = "<i class=\"fas fa-clock\"></i>"
-  url = "/days/day5"
-  weight = 3
+# [[menu.main]]
+#  name = "August 25"
+#   pre = "<i class=\"fas fa-clock\"></i>"
+ # url = "/days/day5"
+ # weight = 3
   #parent = "day0"
   
 #[[menu.main]]
@@ -343,11 +343,11 @@ enableGitInfo = false
 #  url = "days/day9/" 
 #  identifier = "day9"
 
-[[menu.main]]
-  pre = "<i class=\"fas fa-comments fa-lg\"></i>"
-  name = "Slack"
-  url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"
-  weight = 12
+#[[menu.main]]
+#  pre = "<i class=\"fas fa-comments fa-lg\"></i>"
+#  name = "Slack"
+#  url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"
+#  weight = 12
   
 # [[menu.main]]
 #   pre = "<i class=\"fas fa-headset fa-lg\"></i>"

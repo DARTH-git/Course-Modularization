@@ -6,33 +6,12 @@ title:
 weight: 1
 ---
 
-# Next steps
+# Module Details
 
-- August 15-24: Complete “Intro to R for Decision Modeling” modules on your own.
+- Asynchronous video lectures (2-3 hours)
 
-- August 21: Intro to R office hours (11:00am - 1:00pm Eastern Time)
+- Asynchronous completion of hands-on exercises (6-8 hours)
 
-### Workshop Schedule
-
-- August 23: Decision trees and Markov models
-
-- August 24: Microsimulation modeling
-
-- August 25: Sensitivity analysis
-
-### Workshop Details
-
-- Asynchronous preparation (1-2 hours)
-
-- Live interactive session (11:00am - 03:00pm Eastern Time in-person/zoom)
-
-- Asynchronous completion of homework assignments (1-2 hours)
-
-*Approximately 4 hours of lectures and assignments with approximately 4 hours of self-paced modules daily*
-
-### Zoom Link
-
-Will be posted soon.
 
 
 

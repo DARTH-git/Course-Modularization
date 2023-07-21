@@ -2,28 +2,27 @@
 active: true
 date: "`r Sys.Date()`"
 subtitle: ""
-title: Course Objectives
+title: Module Objectives
 weight: 16
 widget: custom
 ---
 
 
+- Learn the basics of R
 
-- Identify research questions that can be answered with decision analysis models
+- Learn about computation abilities, packages, and other functionality R offers
 
-- Understand the conceptual, mathematical, and computational differences different model types 
+- Understand different data types in R
 
-- Understand when to use different types of decision analytic models
+- Perform simple mathematical operations in R
 
-- Specify a decision analytic model structure and data needs to answer a research question
+- Visualize data using R 
 
-- Implement and analyze decision trees, cohort state-transition models, and microsimulations
+- Conduct statistical and data analysis using R
 
-- Implement and interpret probabilistic sensitivity analysis
-
-- Develop competence in R for performing decision analytic tasks
+- Learn about useful tips and tricks when using R
 
 - Understand good coding practices
 
-- Understand the benefits of R and other programming languages for decision analysis
+- Understand the benefits of R for health services research
 

@@ -1,16 +1,16 @@
 ---
-title: "Introduction to R for Decision Modeling"
+title: "Module Overview"
 date: "`r Sys.Date()`"
 draft: no
 type: docs
-linktitle: Intro to R
+linktitle: Overview
 menu:
   day1:
     name: Intro to R
     weight: 2
 ---
 
-Welcome to the *Introduction to R for Decision Modeling* module!
+Welcome to the *Introduction to R* module!
 
 Please go through the presentation videos and demos and attempt the exercises in each of the below sections:
 
@@ -22,3 +22,5 @@ Please go through the presentation videos and demos and attempt the exercises in
 - Matrix algebra
 - R tips and debugging
 - R Shiny
+
+We highly recommend attempting the exercises before going through the solutions. 

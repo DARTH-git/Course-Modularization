@@ -5,7 +5,7 @@ draft: no
 type: docs
 linktitle: R Quiz
 menu:
-  day1:
+  day2:
     name: R Quiz
     weight: 3
 ---

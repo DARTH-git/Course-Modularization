@@ -1,12 +1,12 @@
 ---
 title: "Part II Preparation"
 author: ''
-date: "2022-10-03"
+date: "2023-07-21"
 slug: day1
 categories: []
 tags: []
 menu:
-  day1:
+  day2:
     name: "Part II Prep"
     weight: 1
 toc: yes

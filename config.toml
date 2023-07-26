@@ -6,7 +6,7 @@
 
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
-baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
+baseurl = "https://chic-cat-e5e1ac.netlify.app/"
 
 # Title of your site
 title = "Cost-Effectiveness and Decision Modeling using R"

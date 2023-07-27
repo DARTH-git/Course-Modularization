@@ -2,11 +2,11 @@
 active: true
 date: "`r Sys.Date()`"
 img: R_background.png
-title: 
+title: Next steps
 weight: 1
 ---
 
-# Next steps
+### Important Dates
 
 - August 15-24: Complete “Intro to R for Decision Modeling” modules on your own.
 

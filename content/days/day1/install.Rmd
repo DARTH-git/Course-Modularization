@@ -7,7 +7,7 @@ linktitle: Install software
 menu:
   day1:
     name: Install software
-    weight: 1
+    weight: 2
 ---
 
 In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop.

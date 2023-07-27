@@ -7,7 +7,7 @@ linktitle: Overview
 menu:
   day1:
     name: Intro to R
-    weight: 2
+    weight: 3
 ---
 
 Welcome to the *Introduction to R* module!

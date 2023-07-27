@@ -15,7 +15,7 @@ type: docs
 
 Module Preparation 
 
-* Follow [installation instructions](https://decision-modeling-cdc-2022-23.netlify.app/prework/getting-started/) to install R, RStudio, and R packages required for the workshop.
+* Follow [installation instructions](https://intro-to-r-mod.netlify.app/days/day1/install/) to install R, RStudio, and R packages required for the workshop.
 
 
 

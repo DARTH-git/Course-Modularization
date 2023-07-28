@@ -82,7 +82,7 @@ enableGitInfo = false
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
-  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"}
+  discussion = {name = "Slack workspace", url = "https://join.slack.com/t/sickkids-jl65143/shared_invite/zt-2070uwyzo-IePxMwx97QwLcTE5UBkx4A"}
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
@@ -245,11 +245,11 @@ enableGitInfo = false
   # Align the main menu to the right of the page? (true/false)
   align_right = true
 
-#[[menu.main]]
-  #pre = "<i class=\"fab fa-r-project\"></i>"
- # name = "Welcome"
- # url = "prework/" 
- # weight = 1
+[[menu.main]]
+  pre = "<i class=\"fab fa-r-project\"></i>"
+ name = "Welcome"
+ url = "prework/" 
+ weight = 1
   
 #[[menu.main]]
 #  name = "Part I"
@@ -260,21 +260,21 @@ enableGitInfo = false
   name = "August 23"
   # pre = "<i class=\"fas fa-clock\"></i>"
   url = "/days/day2"
-  weight = 1
+  weight = 2
 #  parent = "day0"
   
 [[menu.main]]
   name = "August 24"
   # pre = "<i class=\"fas fa-clock\"></i>"
   url = "/days/day4"
-  weight = 2
+  weight = 3
  # parent = "day0"
 
 [[menu.main]]
   name = "August 25"
   # pre = "<i class=\"fas fa-clock\"></i>"
   url = "/days/day5"
-  weight = 3
+  weight = 4
   #parent = "day0"
   
 #[[menu.main]]
@@ -346,7 +346,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/cdcdecisionmo-fqo8107/shared_invite/zt-1h4zeiolx-2EQXpZ071j9x2fZv5w3QPg"
+  url = "https://join.slack.com/t/sickkids-jl65143/shared_invite/zt-2070uwyzo-IePxMwx97QwLcTE5UBkx4A"
   weight = 12
   
 # [[menu.main]]

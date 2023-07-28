@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 author: ''
-date: "2022-08-15"
+date: "2023-07-28"
 slug: Getting Started
 categories: []
 tags: []
@@ -14,9 +14,7 @@ toc: yes
 type: docs
 ---
 
-## Virtual attendance
-
-- The workshop will be offered virtually via Zoom (online/teaching platform)
+## Communications
 
 - We will use Slack as our primary communication platform
 

@@ -245,11 +245,11 @@ enableGitInfo = false
   # Align the main menu to the right of the page? (true/false)
   align_right = true
 
-[[menu.main]]
-  pre = "<i class=\"fab fa-r-project\"></i>"
- name = "Welcome"
- url = "prework/" 
- weight = 1
+#[[menu.main]]
+#  pre = "<i class=\"fab fa-r-project\"></i>"
+# name = "Welcome"
+# url = "prework/" 
+# weight = 1
   
 #[[menu.main]]
 #  name = "Part I"

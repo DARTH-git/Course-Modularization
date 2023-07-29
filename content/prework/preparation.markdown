@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 author: ''
-date: "2023-07-28"
+date: "2023-07-29"
 slug: Getting Started
 categories: []
 tags: []

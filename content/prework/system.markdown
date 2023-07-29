@@ -1,7 +1,7 @@
 ---
 title: Install software
 author: ''
-date: "2022-10-05"
+date: "2023-07-29"
 slug: system
 categories: []
 tags: []
@@ -16,7 +16,7 @@ type: docs
 
 In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop.
 
-- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install R v4.1.1 and Rstudio on your computers as soon as possible. 
+- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install R v4.2.1 and Rstudio on your computers as soon as possible. 
 
 - If you will be using a personal machine, please follow the installation instructions below.
 

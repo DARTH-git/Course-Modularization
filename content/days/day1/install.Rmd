@@ -10,9 +10,9 @@ menu:
     weight: 2
 ---
 
-In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop.
+In this workshop/course, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop/course.
 
-- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install R v4.1.1 and Rstudio on your computers as soon as possible. 
+- If you will be using a company-issued computer to participate in the workshop/course, please work with your IT office to install R v4.1.1 and Rstudio on your computers as soon as possible. 
 
 - If you will be using a personal machine, please follow the installation instructions below.
 

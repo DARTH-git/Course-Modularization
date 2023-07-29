@@ -1,7 +1,7 @@
 ---
 title: "Preparation"
 author: ''
-date: "2023-07-28"
+date: "2023-07-29"
 slug: day1
 categories: []
 tags: []
@@ -13,7 +13,7 @@ toc: yes
 type: docs
 ---
 
-Follow [installation instructions](https://intro-to-r-mod.netlify.app/days/day1/install/) to install R, RStudio, and R packages required for the workshop.
+Follow [installation instructions](https://intro-to-r-mod.netlify.app/days/day1/install/) to install R, RStudio, and R packages required for the workshop/course.
 
 
 

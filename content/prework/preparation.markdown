@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 author: ''
-date: "2023-07-28"
+date: "2023-07-29"
 slug: Getting Started
 categories: []
 tags: []
@@ -24,9 +24,12 @@ You'll need to complete the following items:
 
 [Set up Slack](../slack/)
 
-This is our main platform for communications for participants and instructors for this workshop. **Everyone should complete this step**.
+This is our main platform for communications for participants and instructors for this workshop **Everyone should complete this step**.
 
 [Install software](../system/)
 
-We will use `R` and RStudio for this workshop. **Everyone should complete this step**.
+We will use `R` and RStudio for this workshop **Everyone should complete this step**.
 
+[Introduction to R](../introtor/)
+
+Please go through the introduction to R module to learn the fundamentals of R that we will need for the workshop **Everyone should complete this step**.

@@ -1,0 +1,17 @@
+---
+title: Introduction to R module
+author: ''
+date: "`r Sys.Date()`"
+slug: introtor
+categories: []
+tags: []
+linktitle: "Intro to R"
+menu:
+  prework:
+    parent: "Getting Started"
+    weight: 3
+toc: yes
+type: docs
+---
+
+Prior to the start of the workshop, please go through the [Introduction to R module](https://intro-to-r-mod.netlify.app/) to learn the fundamentals and functionality of R that we will need for the workshop. 

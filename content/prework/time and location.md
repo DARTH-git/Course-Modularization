@@ -5,7 +5,7 @@ linktitle: Time and Location
 menu:
   prework:
     parent: Welcome
-    weight: 1
+    weight: 2
 title: Time and location
 toc: true
 type: docs

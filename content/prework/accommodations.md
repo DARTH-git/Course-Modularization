@@ -5,7 +5,7 @@ linktitle: How to attend virtually
 menu:
   prework:
     parent: Welcome
-    weight: 2
+    weight: 3
 title: A virtual workshop
 toc: true
 type: docs

@@ -9,7 +9,7 @@ linktitle: "Install software"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 2
+    weight: 7
 toc: yes
 type: docs
 ---

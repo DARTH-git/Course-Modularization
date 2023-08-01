@@ -5,7 +5,7 @@ linktitle: Set up Slack
 menu:
   prework:
     parent: Getting Started
-    weight: 1
+    weight: 6
 title: Set up Slack
 toc: true
 type: docs

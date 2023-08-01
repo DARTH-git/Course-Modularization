@@ -1,15 +1,14 @@
 ---
 title: Getting Started
 author: ''
-date: "2023-07-29"
+date: "2023-08-01"
 slug: Getting Started
 categories: []
 tags: []
-linktitle: "Getting Started"
 menu:
   prework:
     name: "Getting Started"
-    weight: 4
+    weight: 5
 toc: yes
 type: docs
 ---

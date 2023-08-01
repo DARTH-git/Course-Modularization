@@ -6,7 +6,7 @@ slug: instructors
 menu:
   prework:
     parent: "Welcome"
-    weight: 3
+    weight: 4
 title: "Instructors"
 type: docs
 ---

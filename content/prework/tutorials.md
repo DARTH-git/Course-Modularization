@@ -5,7 +5,7 @@ linktitle: Additional R resources
 menu:
   prework:
     parent: Other resources
-    weight: 1
+    weight: 10
 title: Additional R resources
 toc: true
 type: docs

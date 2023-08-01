@@ -15,3 +15,5 @@ type: docs
 ---
 
 Prior to the start of the workshop, please go through the [Introduction to R module](https://intro-to-r-mod.netlify.app/) to learn the fundamentals and functionality of R that we will need for the workshop. 
+
+**Right click "Introduction to R module" above and select "Open link in new tab". 

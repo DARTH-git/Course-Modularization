@@ -2,7 +2,7 @@
 title: Set up Slack
 author: ''
 date: "`r Sys.Date()`"
-slug: system
+slug: slack
 categories: []
 tags: []
 linktitle: "Slack"

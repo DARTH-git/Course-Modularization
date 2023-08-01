@@ -29,7 +29,7 @@ Wednesday, August 23, 2023
 |---------------|:-----------------------------------------|
 | 11:00am – 11:15am  | Workshop orientation  |
 | 11:15am – 11:45am | Structuring your R code / Decision trees in R | 
-| 11:45am – 12:45pm | Code walk-through: Cohort state-transition models |
+| 11:45am – 12:45pm | Code walk-through: Cohort state-transition models (cSTM) |
 | 12:45pm – 1:15pm  | Lunch break | 
 | 1:15pm – 2:15pm | Hands-on exercise: Code your own cohort state-transition model |
 | 2:15pm – 3:00pm | Incorporating time dependency in cSTM - other advanced topics |

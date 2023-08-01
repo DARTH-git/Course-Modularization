@@ -24,17 +24,17 @@ Friday, August 25, 2023
 
 <!-- -	[Video: Introduction to R Shiny](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/shiny/) -->
 
-**Schedule:**
+**Schedule (EST):**
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 10:00am – 10:45am | Code walk-through: Deterministic and probabilistic sensitivity analysis|
-| 10:45am – 12:00pm | Hands-on exercise: Implement sensitivity analyses on your model | 
-| 12:00pm – 12:30pm | Lunch break|
-| 12:30pm – 1:00pm  | Code walk-through: Structure of an R Shiny app | 
-| 1:00pm –  1:45pm | Hands-on exercise: Modify an R Shiny app |
-| 1:45pm –  2:00pm| Wrap up |
-
+| 11:00am – 11:15am | Review of day 2 |
+| 11:15am – 11:30am | Breakout rooms:  from a model to a function | 
+| 11:30am – 12:00pm | Code walk-through: Deterministic sensitivity analysis |
+| 12:00pm – 12:30pm  | Code walk-through: Probabilistic sensitivity analysis | 
+| 12:30pm – 1:00pm | Lunch break |
+| 1:00pm – 2:00pm | Hands-on exercise: Implement sensitivity analyses on cSTM |
+| 2:00pm – 3:00pm | Advanced topics: VOI |
 
 **Learning objectives:**
 

@@ -13,8 +13,6 @@ menu:
     weight: 10
 ---
 
-## Handout
-
 [Download handout](../../../Course_Modularization/Intro, general, packages/rtips.html)
 
-This handout is only for your reference.
+This handout is only for your reference. Right click "Download handout" above and select "Open link in new tab" to open the html file.

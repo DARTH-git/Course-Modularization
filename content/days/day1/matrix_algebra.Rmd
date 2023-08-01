@@ -13,6 +13,12 @@ menu:
     weight: 9
 ---
 
+## Presentation video
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "506504682")
+```
+
 ## Slides
 
 [Download slides](../../../Course_Modularization/Intro, general, packages/matrixAlgebraSlidesExtra.pptx)

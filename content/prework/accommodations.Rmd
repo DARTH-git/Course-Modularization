@@ -1,7 +1,7 @@
 ---
 date: "`r Sys.Date()`"
 draft: false
-linktitle: How to attend virtually
+linktitle: Virtual attendance guide
 slug: accommodations
 menu:
   prework:

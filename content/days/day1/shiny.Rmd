@@ -1,12 +1,12 @@
 ---
-title: Intro to R Shiny
+title: R Shiny (optional)
 
 date: "`r Sys.Date()`"
 
 draft: false
 type: docs
 
-linktitle: R Shiny
+linktitle: R Shiny (optional)
 menu:
   day1:
     parent: "Intro to R"

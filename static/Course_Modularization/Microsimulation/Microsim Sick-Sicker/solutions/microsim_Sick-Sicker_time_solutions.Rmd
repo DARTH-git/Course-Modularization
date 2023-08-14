@@ -1,13 +1,22 @@
 ---
-title: 'Microsimulation Sick-Sicker model with time dependency'
+title: 'Microsimulation Sick-Sicker model with time dependency - Excerise'
 subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
 author: "The DARTH workgroup"
 output:
   html_document: default
   pdf_document: default
 ---
+\newpage
 
-Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE) #Change `eval` to `TRUE` if you want to knit this document. 
+
+options(scipen = 999)  # disable scientific notation
+rm(list = ls())        # clear memory (removes all the variables from the workspace)
+
+```
+
+This work is developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
 - Fernando Alarid-Escudero, PhD (1)
 - Eva A. Enns, MS, PhD (2)
@@ -28,30 +37,9 @@ In collaboration of:
 7. University of Toronto, Toronto ON, Canada
 8. The Hospital for Sick Children, Toronto ON, Canada
 
+Please acknowledge our work. See details to cite below. 
 
-Please cite our publications when using this code:
- 
-- Jalal H, Pechlivanoglou P, Krijkamp E, Alarid-Escudero F, Enns E, Hunink MG. 
-An Overview of R in Health Decision Sciences. Med Decis Making. 2017; 37(3): 735-746. 
-https://journals.sagepub.com/doi/abs/10.1177/0272989X16686559
- 
- 
-- Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MGM, Pechlivanoglou P. 
-Microsimulation modeling for health decision sciences using R: A tutorial. 
-Med Decis Making. 2018;38(3):400–22. 
-https://journals.sagepub.com/doi/abs/10.1177/0272989X18754513
- 
-- Alarid-Escudero, F., Krijkamp, E.M., Pechlivanoglou, P. et al. A Need for Change!  
-A Coding Framework for Improving Transparency in Decision Modeling. 
-PharmacoEconomics 37, 1329–1339 (2019). https://doi.org/10.1007/s40273-019-00837-x 
-
-
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-All rights reserved in Canada, the United States and worldwide. Copyright, 
-trademarks, trade names and any and all associated intellectual property are 
-exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating 
-institutions. These materials may be used, reproduced, modified, distributed 
-and adapted with proper attribution.
+See student template for excersice description. 
 
 \newpage
 
@@ -409,12 +397,6 @@ df_cea
 ```
 
 ```{r}
-## CEA table in proper format 
-table_cea <- format_table_cea(df_cea)
-table_cea
-```
-
-```{r}
 ## CEA frontier 
 plot(df_cea, label = "all", txtsize = 16) +
   expand_limits(x = max(table_cea$QALYs) + 0.1) +
@@ -422,3 +404,22 @@ plot(df_cea, label = "all", txtsize = 16) +
 ```
 
 
+```{r}
+## CEA table in proper format 
+table_cea <- format_table_cea(df_cea)
+table_cea
+```
+
+We kindly request you to add the following Acknowledgement paragraph to your further work where DARTH code formed the basis. We also like to remind you that you can add other sources where you got your code from to this section. 
+
+
+# Acknowlegdement
+For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
+
+The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
+
+
+Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
+
+# Copyright for assignment work
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.

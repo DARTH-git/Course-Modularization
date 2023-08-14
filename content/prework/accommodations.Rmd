@@ -1,0 +1,23 @@
+---
+date: "`r Sys.Date()`"
+draft: false
+linktitle: How to attend virtually
+slug: accommodations
+menu:
+  prework:
+    parent: "Welcome"
+    weight: 3
+title: "How to attend virtually"
+type: docs
+---
+
+The workshop will also be offered virtually via Zoom. If you have not used Zoom before, please follow setup instructions [here](../../../Course_Modularization/Intro, general, packages/Zoom information.docx).
+
+## List of things you will need 
+
+- Your computer
+- A working microphone
+- Stable Internet connection
+- A webcam (optional, we'd like to meet you!)
+
+

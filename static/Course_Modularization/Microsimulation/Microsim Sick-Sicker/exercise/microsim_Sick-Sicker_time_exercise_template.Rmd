@@ -30,11 +30,6 @@ This work is developed by the Decision Analysis in R for Technologies in Health 
 - Petros Pechlivanoglou, PhD
 - Alan Yang, MSc
 
-In collaboration of:
-```{r, eval = TRUE, echo = FALSE}
-source("../DARTH_affiliations_script.R")
-print(v_DARTH_affiliations)
-```
 Please acknowledge our work. See details to cite below. 
 
 # Exercise: A Microsimulation model – The Sick-Sicker model
@@ -44,7 +39,7 @@ In this exercise, we will model a hypothetical disease using an individual-based
 ```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(here)) install.packages('here')
 if (!require(knitr)) install.packages('knitr')
-include_graphics("../figures/sick_sicker_diagram_time.png")
+include_graphics("../figures/sick_sicker_diagram_microsim.png")
 ```
 
 Advantages of using a microsimulation implementation is the ability to incorporate variation in the baseline characteristics for every individual and to keep track of state-residence. To illustrate this, we assume that individual mortality rates depend on baseline characteristics as well as time spend in the sick health state. 
@@ -131,11 +126,12 @@ n_cycles       <- 30      # time horizon, number of cycles
 n_i            <- 100000  # number of individuals
 
 # the 4 health states of the model:
-v_names_states <- c("H",  # Healthy (H)
-                    "S1", # Sick (S1)
-                    "S2", # Sicker (S2)
-                    "D")  # Dead (D)
-n_states       <- length(v_names_states) # number of health states 
+v_names_states  <- c("H",  # Healthy (H)
+                     "S1", # Sick (S1)
+                     "S2", # Sicker (S2)
+                     "D")  # Dead (D)
+v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
+n_states        <- length(v_names_states) # number of health states               
 
 ### Discounting factors 
 d_c <- 0.03 # annual discount rate for costs 
@@ -146,6 +142,7 @@ v_names_str   <- c("Standard of care",   # store the strategy names
                    "Strategy AB") 
 n_str         <- length(v_names_str)     # number of strategies
 
+### Transition probabilities 
 # (all non-probabilities are conditional on survival)
 p_HS1         <- 0.15     # probability of becoming sick when healthy
 p_S1H         <- 0.5      # probability of recovering to healthy when sick
@@ -176,6 +173,10 @@ u_S2    <- 0.5   # annual utility of being Sicker
 u_D     <- 0     # annual utility of being dead
 u_trtAB <- 0.95  # annual utility when receiving treatment AB when in Sick
 
+```
+
+## 03.2 Calculate internal model parameters
+``` {r}
 ### Discount weight for costs and effects 
 v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
@@ -186,8 +187,9 @@ v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 ## 04.1 Static characteristics
 
 ```{r}
-v_x     <- runif(n_i, min = 0.95, max = 1.05)  # treatment effect modifier at baseline 
-# sample from age distribution an initial age for every individual
+# sample the treatment effect modifier at baseline 
+v_x     <- runif(n_i, min = 0.95, max = 1.05) 
+# sample from the age distribution the initial age for every individual
 v_age0  <- sample(x = dist_Age$age, prob = dist_Age$prop, size = n_i, replace = TRUE) 
 ```
 
@@ -197,8 +199,8 @@ Here you need to specify the information regarding the initial health states of 
 ```{r}
 # Your turn
 
-#v_M_init  <- [YOUR TURN]  # Specify the initial health state of the individuals 
-#v_Ts_init <- [YOUR TURN]  # everyone begins in the healthy state (in this example)
+#v_M_init          <- [YOUR TURN]  # Specify the initial health state of the individuals 
+#v_n_cycles_s_init <- [YOUR TURN]  # everyone begins in the healthy state (in this example)
 ```
 
 ## 04.3 Create a dataframe with the individual characteristics 
@@ -209,7 +211,7 @@ Now, it is time to merge the static and dynamic individual characteristics in on
 # create a data frame with each individual's 
 # ID number, treatment effect modifier, age and initial time in sick state and initial health state at the start of the simulation
 
-#df_X <- df_X <- data.frame(ID = 1:n_i, x = v_x, Age = v_age0, n_cycles_s = v_Ts_init, M_init = v_M_init) 
+#df_X <- YOUR TURN
 
 #head(df_X)  # print the first rows of the dataframe
 ```
@@ -224,7 +226,8 @@ Start making the functions `Probs()`, `Costs()` and `Effs()`. Make sure they are
 ## 05.1 Probability function
 The `Probs` function updates the transition probabilities of every cycle is shown below. Important: 
 (1) The probability from Sick (S1) to Sicker (S2) (`p_S1S2`) depends on the type of treatment. Make sure you incorporate this in the function 
-(2) The probability from Sick to dead (`p_S1D`) depends on the number of cycles you have been in sick (`n_cycles_s`)
+(2) The probability to die when you are healthy now depends on age (example 3-state used sex)
+(3) The probability from Sick to dead (`p_S1D`) depends on the number of cycles you have been in sick (`n_cycles_s`)
 
 Please be reminded that the probabilities of transitioning from one state to the other (except to the Dead state) are conditional on staying alive. 
 ```{r}
@@ -247,11 +250,14 @@ Remember treatment is given to both individuals in Sick and Sicker but only impr
 ## 05.3 Health outcome function
 
 The `Effs` function to update the utilities at every cycle.
-Remember treatment is given to both individuals in Sick and Sicker but only improved the quality of life of those in Sick. This utility has to be adjusted for the adjust for individual effect modifier. 
+Remember treatment is given to both individuals in Sick and Sicker but only improved the quality of life of those in Sick in addition this utility has to be adjusted for the adjust for individual effect modifier. 
 ```{r}
 # Your turn
+# note the equation is more complicated compared to the 3-state example. Use the coding skills you learned so far to implement all the functionalists. This does require adding more arguments to the function and be creative with the if and else if statements. 
 
 #Effs <- function ( YOUR TURN)
+
+
 ```
 
 
@@ -272,7 +278,7 @@ Run the microsimulation model for both Standard of care and Strategy AB using a 
 
 # 06 Run Microsimulation
 
-```{r}
+```{r, eval = TRUE, echo = TRUE, warning = FALSE, message = FALSE, results = FALSE }
 # Your turn
 #outcomes_SoC   <- MicroSim(YOUR TURN)  # Run for Standard of Care
 #outcomes_trtAB <- MicroSim(YOUR TURN) # Run simulation for strategy AB

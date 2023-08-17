@@ -1,7 +1,7 @@
 ---
 title: "Day 3"
 author: ''
-date: "2023-08-01"
+date: "2023-08-17"
 slug: day5
 categories: []
 tags: []
@@ -16,41 +16,42 @@ type: docs
 
 Friday, August 25, 2023
 
+**Video lectures**
+
+{{% vimeo "506091491" %}}
+{{% vimeo "473705896" %}}
+{{% vimeo "473709355" %}}
+
 **Readings:**
 
--	Briggs AH, Weinstein MC, Fenwick E, et al. Model parameter estimation and uncertainty analysis: a report of the ISPOR-SMDM modeling good research practices task force-6. Value in Health. 2012;15(5):835-842. [https://doi.org/10.1177/0272989x12458348](https://doi.org/10.1177/0272989x12458348)
+-   Briggs AH, Weinstein MC, Fenwick E, et al. Model parameter estimation and uncertainty analysis: a report of the ISPOR-SMDM modeling good research practices task force-6. Value in Health. 2012;15(5):835-842. <https://doi.org/10.1177/0272989x12458348>
 
 <!-- **Watch:** -->
-
-<!-- -	[Video: Introduction to R Shiny](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/shiny/) -->
+<!-- -  [Video: Introduction to R Shiny](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/shiny/) -->
 
 **Schedule (EST):**
 
-|                            |            |
-|---------------|:-----------------------------------------|
-| 11:00am – 11:15am | Review of day 2 |
-| 11:15am – 11:30am | Breakout rooms:  from a model to a function | 
-| 11:30am – 12:00pm | Code walk-through: Deterministic sensitivity analysis |
-| 12:00pm – 12:30pm  | Code walk-through: Probabilistic sensitivity analysis | 
-| 12:30pm – 1:00pm | Lunch break |
-| 1:00pm – 2:00pm | Hands-on exercise: Implement sensitivity analyses on cSTM |
-| 2:00pm – 3:00pm | Advanced topics: VOI |
+|                   |                                                           |
+|-------------------|:----------------------------------------------------------|
+| 11:00am – 11:15am | Review of day 2                                           |
+| 11:15am – 11:30am | Breakout rooms: from a model to a function                |
+| 11:30am – 12:00pm | Code walk-through: Deterministic sensitivity analysis     |
+| 12:00pm – 12:30pm | Code walk-through: Probabilistic sensitivity analysis     |
+| 12:30pm – 1:00pm  | Lunch break                                               |
+| 1:00pm – 2:00pm   | Hands-on exercise: Implement sensitivity analyses on cSTM |
+| 2:00pm – 3:00pm   | Advanced topics: VOI                                      |
 
 **Learning objectives:**
 
--	Make your model code into an R function
--	Implement deterministic and probabilistic sensitivity analyses in R
--	Visualize and interpret sensitivity analysis results in R
--	Understand the basic code structure of an R Shiny app
--	Understand how R Shiny can be used in decision analysis applications
-
+-   Make your model code into an R function
+-   Implement deterministic and probabilistic sensitivity analyses in R
+-   Visualize and interpret sensitivity analysis results in R
+-   Understand the basic code structure of an R Shiny app
+-   Understand how R Shiny can be used in decision analysis applications
 
 <!-- ## Live session recording: -->
-
 <!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/CuKdB9SR_jHLXYh74lzX-rkQXt0oT3hxGGAXDLEWnej0xxiEkTfMaBNGq1NcUL0F.vUiSX1EdGaJRd5Sa__;!!D0zGoin7BXfl!6KM-Jn-F3wGV6fMyXipiiNmSczJvCc8Lvz_74c5LofwMAjn1nHHS5cNg9YYmfJdc3_Or1t4JwUGb9ll9OQ$) -->
-
 <!-- [Part 2](https://umn.zoom.us/rec/share/M5jya-ZBZEy-45aOh5q501c_pyO1TMEJty8SFq58To8Ru9G4e7kQ4pEHzp-Zcno6.QHssLWj8rGdQVzx2?startTime=1661963237000) -->
-
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "593547119") -->
 <!-- ``` -->

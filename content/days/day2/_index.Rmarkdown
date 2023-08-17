@@ -16,6 +16,36 @@ type: docs
 
 Wednesday, August 23, 2023
 
+**Video lectures**
+
+Decision tree:
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588655268")
+```
+
+Cohort State-Transition Models:
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550894")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474550940")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474551568")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474553106")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "474560741")
+```
+
 **Readings:**
 
 - Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, Jalal H, Kao SY, Yang A, Enns EA. A need for change! A coding framework for improving transparency in decision modeling. Pharmacoeconomics. 2019; 37(11):1329-39. [https://doi.org/10.1007/s40273-019-00837-x](https://doi.org/10.1007/s40273-019-00837-x)

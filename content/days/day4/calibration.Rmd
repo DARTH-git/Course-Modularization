@@ -9,19 +9,19 @@ menu:
     weight: 5
 ---
 
-[Download slides - estimating inputs](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx)
+<!-- [Download slides - estimating inputs](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx) -->
 
-[Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx)
+<!-- [Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx) -->
 
-## R code demo & walkthrough - Model calibartion
+<!-- ## R code demo & walkthrough - Model calibartion -->
 
-[Download model function](../../../Course_Modularization/Calibration/Calibration CRS/CRS_MarkovModel_Function.R)
+<!-- [Download model function](../../../Course_Modularization/Calibration/Calibration CRS/CRS_MarkovModel_Function.R) -->
 
-[Download calibration targets data](../../../Course_Modularization/Calibration/Calibration CRS/CRS_CalibTargets.RData)
+<!-- [Download calibration targets data](../../../Course_Modularization/Calibration/Calibration CRS/CRS_CalibTargets.RData) -->
 
-[Download random search code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_RandomSearch.Rmd)
+<!-- [Download random search code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_RandomSearch.Rmd) -->
 
-[Download Nelder Mead code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_NelderMead.Rmd)
+<!-- [Download Nelder Mead code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_NelderMead.Rmd) -->
 
 <!-- ## Exercise - Calibrating the Markov Sick-Sicker model -->
 

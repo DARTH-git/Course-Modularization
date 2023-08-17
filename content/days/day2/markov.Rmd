@@ -9,14 +9,14 @@ menu:
     weight: 4
 ---
 
-[Download slides](../../../Course_Modularization/CDC 2022-23/part 2/Day 1 - cSTM rates and probs - CDC 2022.pdf)
+<!-- [Download slides](../../../Course_Modularization/CDC 2022-23/part 2/Day 1 - cSTM rates and probs - CDC 2022.pdf) -->
 
-[Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state.Rmd) -->
 
-## Exercise - cohort state-transition Sick-Sicker model 
+<!-- ## Exercise - cohort state-transition Sick-Sicker model  -->
 
-[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html)
+<!-- [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_exercise.html) -->
 
-[Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd)
+<!-- [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd) -->
 
 <!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_SOLUTIONS.Rmd) -->

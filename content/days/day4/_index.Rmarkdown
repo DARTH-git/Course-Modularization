@@ -16,6 +16,24 @@ type: docs
 
 Thursday, August 24, 2023
 
+**Video lectures**
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473484372")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473071949")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473414536")
+```
+
+```{r, echo=F}
+blogdown::shortcode("vimeo", "473464649")
+```
+
 **Readings:**
 
 -	Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Medical Decision Making. 2018;38(3):400-22. [https://doi.org/10.1177/0272989X18754513](https://doi.org/10.1177/0272989X18754513)

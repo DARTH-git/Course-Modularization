@@ -18,39 +18,54 @@ Thursday, August 24, 2023
 
 **Video lectures**
 
-{{% vimeo "473484372" %}}
-{{% vimeo "473071949" %}}
-{{% vimeo "473414536" %}}
-{{% vimeo "473464649" %}}
+[Microsimulation - 1. Theory](https://vimeo.com/473484372/b270d78171?share=copy)
+
+[Microsimulation - 2. Efficiency](https://vimeo.com/473071949/3491a03c0d?share=copy)
+
+[Microsimulation - 3. Implementation](https://vimeo.com/473414536/85887de382?share=copy)
+
+[Microsimulation - 4. State-residence](https://vimeo.com/473464649/31c07bcb78?share=copy)
 
 **Readings:**
 
--   Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Medical Decision Making. 2018;38(3):400-22. <https://doi.org/10.1177/0272989X18754513>
+-	Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Medical Decision Making. 2018;38(3):400-22. [https://doi.org/10.1177/0272989X18754513](https://doi.org/10.1177/0272989X18754513)
+
 
 **Schedule (EST):**
 
-|                   |                                                        |
-|-------------------|:-------------------------------------------------------|
-| 11:00am – 11:15am | cSTM to microsimulation - review of day 1              |
-| 11:15am – 11:45am | Making your model a function: How and why              |
-| 11:45am – 12:45pm | Code walk through: Microsimulation                     |
-| 12:45pm – 1:15pm  | Lunch break                                            |
-| 1:15pm – 2:15pm   | Hands-on exercise: Code your own microsimulation model |
-| 2:15pm – 3:00pm   | Advanced topics: calibration                           |
+|                            |            |
+|---------------|:-----------------------------------------|
+| 11:00am – 11:15am  | cSTM to microsimulation - review of day 1  |
+| 11:15am – 11:45am | Making your model a function: How and why | 
+| 11:45am – 12:45pm | Code walk through: Microsimulation  |
+| 12:45pm – 1:15pm  | Lunch break | 
+| 1:15pm – 2:15pm | Hands-on exercise: Code your own microsimulation model |
+| 2:15pm – 3:00pm | Advanced topics: calibration |
+
 
 **Learning objectives:**
 
--   Understand implementation differences between microsimulation and cohort state transition models
--   Understand how to summarize the output from a microsimulation model
--   Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
--   Implement a simple microsimulation in R
--   Understand how to convert a decision analytic model from an R script to an R function
+-	Understand implementation differences between microsimulation and cohort state transition models
+-	Understand how to summarize the output from a microsimulation model
+-	Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
+-	Implement a simple microsimulation in R
+-	Understand how to convert a decision analytic model from an R script to an R function
+
+
 
 <!-- ## Live session recording: -->
+
 <!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/pUR-16z0rkBocoSObaW2SlV_ZqBc0dcPUTpnLnlM4SjFlKZjrZZOOSjepsZNEJgc.f1ZFoplFMT-Ufkqd__;!!D0zGoin7BXfl!65pB8GkTsosLU0HUnWQCKQU1J2-Rlv7uKmTTInFtNnF71JiTMz_VXl8XPKxFATjfcU7vj-Tvjy3gAQBVjw$) -->
+
 <!-- [Part 1](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661864999000) -->
+
 <!-- [Part 2](https://umn.zoom.us/rec/share/4jBzT9UezfMTk1AU2czpyQIsaOE9AxeX7rSguMMpBIG8eH6_kTjOH9JwJ68jOHgX.IhhXpDuMb7UfqAvU?startTime=1661871963000) -->
+
 <!-- Passcode: +8AsHLg# -->
+
 <!-- ```{r, echo=F} -->
 <!-- blogdown::shortcode("vimeo", "593027038") -->
 <!-- ``` -->
+
+
+ 

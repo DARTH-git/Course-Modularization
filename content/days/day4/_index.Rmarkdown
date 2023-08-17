@@ -18,21 +18,13 @@ Thursday, August 24, 2023
 
 **Video lectures**
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473484372")
-```
+[Microsimulation - 1. Theory](https://vimeo.com/473484372/b270d78171?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473071949")
-```
+[Microsimulation - 2. Efficiency](https://vimeo.com/473071949/3491a03c0d?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473414536")
-```
+[Microsimulation - 3. Implementation](https://vimeo.com/473414536/85887de382?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473464649")
-```
+[Microsimulation - 4. State-residence](https://vimeo.com/473464649/31c07bcb78?share=copy)
 
 **Readings:**
 

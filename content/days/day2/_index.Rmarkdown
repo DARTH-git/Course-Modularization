@@ -18,33 +18,21 @@ Wednesday, August 23, 2023
 
 **Video lectures**
 
-Decision tree:
+Decision trees:
 
-```{r, echo=T}
-blogdown::shortcode("vimeo", "588655268")
-```
+[Decision trees](https://vimeo.com/588655268/d8132e81b4?share=copy)
 
 Cohort State-Transition Models:
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474550894")
-```
+[STM 1: Introduction](https://vimeo.com/474550894/f090f42dbe?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474550940")
-```
+[STM 2: Overview](https://vimeo.com/474550940/f56df95c06?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474551568")
-```
+[STM 3: Simple 3-State Example](https://vimeo.com/474551568/a27c4f3716?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474553106")
-```
+[STM 4: Outcomes](https://vimeo.com/474553106/b3c028d047?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "474560741")
-```
+[STM 5: Time-Varying State-Transition Models](https://vimeo.com/474560741/e0b3674579?share=copy)
 
 **Readings:**
 

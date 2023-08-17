@@ -18,17 +18,11 @@ Friday, August 25, 2023
 
 **Video lectures**
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "506091491")
-```
+[Sensitivity Analysis - 00 Introduction](https://vimeo.com/506091491/5e07e24203?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473705896")
-```
+[Sensitivity Analysis - 01 DSA](https://vimeo.com/473705896/08aaee5604?share=copy)
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473709355")
-```
+[Sensitivity Analysis - 02 PSA](https://vimeo.com/473709355/7575dd9894?share=copy)
 
 **Readings:**
 

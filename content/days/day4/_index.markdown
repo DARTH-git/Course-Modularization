@@ -18,6 +18,8 @@ Thursday, August 24, 2023
 
 **Video lectures**
 
+**Right click below links and select "Open link in new tab". 
+
 [Microsimulation - 1. Theory](https://vimeo.com/473484372/b270d78171?share=copy)
 
 [Microsimulation - 2. Efficiency](https://vimeo.com/473071949/3491a03c0d?share=copy)

@@ -18,6 +18,8 @@ Friday, August 25, 2023
 
 **Video lectures**
 
+**Right click below links and select "Open link in new tab". 
+
 [Sensitivity Analysis - 00 Introduction](https://vimeo.com/506091491/5e07e24203?share=copy)
 
 [Sensitivity Analysis - 01 DSA](https://vimeo.com/473705896/08aaee5604?share=copy)

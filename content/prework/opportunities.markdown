@@ -1,6 +1,6 @@
 ---
 title: Other opportunities to learn
-date: "2022-08-15"
+date: "2023-08-01"
 slug: opportunities
 categories: []
 tags: []
@@ -8,7 +8,7 @@ linktitle: "Other opportunities to learn"
 menu:
   prework:
     parent: "Other resources"
-    weight: 1
+    weight: 11
 toc: yes
 type: docs
 ---

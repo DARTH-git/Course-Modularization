@@ -1,7 +1,7 @@
 ---
 title: Welcome
 author: ''
-date: "2022-10-03"
+date: "2023-08-01"
 slug: welcome
 categories: []
 tags: []
@@ -13,10 +13,10 @@ toc: yes
 type: docs
 ---
 
-This site is the official home for all information related to the Decision Modeling for Public Health Workshop. This is the place to find all the information you'll need to get the most out of this workshop, including software, R packages, and additional resources. 
+This site is the official home for all information related to the Cost-Effectiveness and Decision Modeling Workshop. This is the place to find all the information you'll need to get the most out of this workshop, including software, R packages, and additional resources. 
 
 ## Orientation
 
-Please use the menus to the left to guide you through all the workshop set-up instructions.
+Please use the menus to the left to guide you through all the set-up instructions.
 
-We look forward to virtually meeting you all!
+We look forward to meeting you all!

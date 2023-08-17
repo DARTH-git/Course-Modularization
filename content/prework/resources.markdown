@@ -1,15 +1,14 @@
 ---
 title: Other resources
 author: ''
-date: "2022-08-15"
+date: "2023-08-01"
 slug: Other resources
 categories: []
 tags: []
-linktitle: "Other resources"
 menu:
   prework:
     name: "Other resources"
-    weight: 5
+    weight: 9
 toc: yes
 type: docs
 ---

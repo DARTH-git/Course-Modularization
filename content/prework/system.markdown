@@ -1,7 +1,7 @@
 ---
 title: Install software
 author: ''
-date: "2022-10-05"
+date: "2023-08-01"
 slug: system
 categories: []
 tags: []
@@ -9,20 +9,20 @@ linktitle: "Install software"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 2
+    weight: 7
 toc: yes
 type: docs
 ---
 
-In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop.
+In this workshop, we will use `R` and RStudio. Please install `R` and RStudio on your machine prior to the start of the workshop
 
-- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install R v4.1.1 and Rstudio on your computers as soon as possible. 
+- If you will be using a company-issued computer to participate in the workshop, please work with your IT office to install R v4.3.1 and Rstudio on your computers as soon as possible. 
 
 - If you will be using a personal machine, please follow the installation instructions below.
 
 ## Install R
 
-Download `R` version 4.2.1 from [here](https://cran.r-project.org/bin/windows/base/old/4.2.1/). Download the file `R-4.2.1-win.exe` and follow the installation procedure.
+Download `R` version 4.3.1 from [here](https://cran.r-project.org/bin/windows/base/old/4.3.1/). Download the file `R-4.3.1-win.exe` and follow the installation procedure.
 
 ## Install RStudio
 

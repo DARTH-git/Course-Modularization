@@ -11,7 +11,7 @@ menu:
 
 [Download slides - Overview of state-transition models and microsimulation](../../../Course_Modularization/CDC 2022-23/part 2/Day 7 -Overview State-tranisiton models and Microsim - CDC 2022.pdf)
 
-[Download slides - PSA - Make a function](../../../Course_Modularization/CDC 2022-23/part 2/Day 7 - PSA - make a function - CDC 2022.pdf)
+<!-- [Download slides - PSA - Make a function](../../../Course_Modularization/CDC 2022-23/part 2/Day 7 - PSA - make a function - CDC 2022.pdf) -->
 
 ## R code demo & walkthrough - 3-state microsimulation 
 
@@ -21,13 +21,13 @@ menu:
 
 [Download exercise handout](../../../Course_Modularization/CDC 2022-23/part 2/microsim_sick-sicker_time_exercise.html)
 
-[Download 'mortProb_age.csv'](../../../Course_Modularization/CDC 2022-23/part 2/mortProb_age.csv)
+[Download data: 'mortProb_age.csv'](../../../Course_Modularization/CDC 2022-23/part 2/mortProb_age.csv)
 
-[Download 'MyPopulation-AgeDistribution.csv'](../../../Course_Modularization/CDC 2022-23/part 2/MyPopulation-AgeDistribution.csv)
+[Download data: 'MyPopulation-AgeDistribution.csv'](../../../Course_Modularization/CDC 2022-23/part 2/MyPopulation-AgeDistribution.csv)
 
 [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_template.Rmd)
 
-[Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_solutions.Rmd)
+<!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/microsim_Sick-Sicker_time_solutions.Rmd) -->
 
 ## R code demo & walkthrough - Make your model a function 
 

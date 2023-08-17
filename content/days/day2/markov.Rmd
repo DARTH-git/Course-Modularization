@@ -6,7 +6,7 @@ type: docs
 linktitle: "cSTM files"
 menu:
   day2:
-    weight: 5
+    weight: 4
 ---
 
 [Download slides](../../../Course_Modularization/CDC 2022-23/part 2/Day 1 - cSTM rates and probs - CDC 2022.pdf)
@@ -19,4 +19,4 @@ menu:
 
 [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd)
 
-[Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_SOLUTIONS.Rmd)
+<!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_SOLUTIONS.Rmd) -->

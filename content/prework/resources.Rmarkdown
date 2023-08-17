@@ -5,11 +5,10 @@ date: "`r Sys.Date()`"
 slug: Other resources
 categories: []
 tags: []
-linktitle: "Other resources"
 menu:
   prework:
     name: "Other resources"
-    weight: 5
+    weight: 9
 toc: yes
 type: docs
 ---

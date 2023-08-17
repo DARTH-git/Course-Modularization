@@ -18,17 +18,10 @@ Developed by the Decision Analysis in R for Technologies in Health (DARTH) workg
 - Petros Pechlivanoglou, PhD (7,8)
 - Alan Yang, MSc (8)
 
-In collaboration of: 		
-
-1. Stanford University, Stanford, CA, USA
-2. University of Minnesota School of Public Health, Minneapolis, MN, USA
-3. Erasmus MC, Rotterdam, The Netherlands
-4. Harvard T.H. Chan School of Public Health, Boston, USA
-5. University of Ottawa, Ottawa, ON, Canada
-6. Erasmus University, Rotterdam, The Netherlands
-7. University of Toronto, Toronto ON, Canada
-8. The Hospital for Sick Children, Toronto ON, Canada
-
+```{r, eval = FALSE, echo = TRUE}
+load("../DARTH_affiliations.R")
+print(v_DARTH_affiliations)
+```
 
 Please cite our publications when using this code:
  

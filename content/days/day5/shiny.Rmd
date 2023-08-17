@@ -5,7 +5,7 @@ draft: false
 type: docs
 linktitle: Shiny files
 menu:
-  day5:
+  day6:
     weight: 5
 ---
 

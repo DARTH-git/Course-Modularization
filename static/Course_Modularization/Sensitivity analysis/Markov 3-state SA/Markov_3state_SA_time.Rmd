@@ -239,12 +239,12 @@ a_P_trtB["H", "S", ] <- (1 - v_p_HD) *      p_HS_trtB
 ## Check if transition array and probabilities are valid
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P_SoC,  verbose = FALSE)
-check_transition_probability(a_P_trtA, verbose = TRUE)
-check_transition_probability(a_P_trtB, verbose = TRUE)
+check_transition_probability(a_P_trtA, verbose = FALSE)
+check_transition_probability(a_P_trtB, verbose = FALSE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+check_sum_of_transition_array(a_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = FALSE)
+check_sum_of_transition_array(a_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = FALSE)
+check_sum_of_transition_array(a_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = FALSE)
 ```
 
 # 05 Run Markov model
@@ -407,6 +407,7 @@ plot(df_cea, label = "all", txtsize = 14) +
 # 10 Deterministic Sensitivity Analysis (DSA)
 
 ```{r}
+
 ## Load model, CEA and PSA functions 
 source('Functions_markov_3state_time.R')
 ```
@@ -454,7 +455,7 @@ returning a data frame of costs and QALYs.
 
 ```{r}
 # Try the decision_model() function
-l_trace <- decision_model(l_params_all)
+l_trace <- decision_model(l_params_all, verbose = F)
 l_trace$m_M_SoC[1:5,]
 l_trace$a_P_SoC[,,1:3]
 

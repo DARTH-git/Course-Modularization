@@ -18,8 +18,6 @@ Wednesday, August 23, 2023
 
 **Video lectures**
 
-Decision trees:
-
 [Decision trees](https://vimeo.com/588655268/d8132e81b4?share=copy)
 
 {{% vimeo "588655268" %}}

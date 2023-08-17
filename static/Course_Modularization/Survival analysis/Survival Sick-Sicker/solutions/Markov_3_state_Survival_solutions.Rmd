@@ -74,6 +74,7 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survHE"
 
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+library(darthtools)
 p_load_gh("DARTH-git/darthtools")
 ```
 
@@ -126,18 +127,37 @@ Survival analysis component
 
 ```{r}
 # Load the Sicker data 
-data_long <- read.csv("data_long_Sicker.csv", row.names = 1)
-head(data_long)
+data <- readRDS("Data_Survival.RDS")
 
-# Models can be fitted independently for each transition. This is more flexible!
-
-# Create subsets for each transition
-data_S1S2 <- data_long[data_long$from == "S1" & data_long$to == "S2",]
-data_S1D  <- data_long[data_long$from == "S1" & data_long$to == "D" ,]
-
+data_S1S2 <- data$data_S1S2
+data_S1D <- data$data_S1D
 # Fit independent models for each transition and pick one that fits best
+head(data_S1D)
+
+# estimate Kaplan Meier curve
+
+fitkm_S1S2 <- survfit(Surv(time, status)~1, data = data_S1S2 )
+summary(fitkm_S1S2,t= times)
+plot(fitkm_S1S2)
+
+# fit parametric models in R using flexsurv
+library(flexsurv)
+fitflex_S1S2 <- flexsurvreg(Surv(time, status)~1, data = data_S1S2 , dist="weibull")
+fitflex_S1S2
+summary(fitflex_S1S2, t= times)
+plot(fitflex_S1S2)
+
+library(survHE)
+fitsurvHE_S1S2 <- fit.models(Surv(time, status)~1, data = data_S1S2,distr = c("exponential", "gamma", "weibull") )
+
+plot(fitsurvHE_S1S2)
+
 fit_S1S2  <- fit.fun(time = "time", status = "status", data = data_S1S2, times = times)
 fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D,  times = times)
+
+plot(fit_S1S2$model.objects)
+
+
 
 # Find the best-fitting models based on AIC
 fit_S1S2$AIC

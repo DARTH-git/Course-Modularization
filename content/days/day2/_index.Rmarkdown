@@ -22,6 +22,10 @@ Decision trees:
 
 [Decision trees](https://vimeo.com/588655268/d8132e81b4?share=copy)
 
+```{r, echo=F}
+blogdown::shortcode("vimeo", "588655268")
+```
+
 Cohort State-Transition Models:
 
 [STM 1: Introduction](https://vimeo.com/474550894/f090f42dbe?share=copy)

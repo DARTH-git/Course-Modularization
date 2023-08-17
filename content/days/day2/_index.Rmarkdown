@@ -20,7 +20,7 @@ Wednesday, August 23, 2023
 
 Decision tree:
 
-```{r, echo=F}
+```{r, echo=T}
 blogdown::shortcode("vimeo", "588655268")
 ```
 

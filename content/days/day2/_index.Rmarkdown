@@ -20,11 +20,13 @@ Wednesday, August 23, 2023
 
 **Right click below links and select "Open link in new tab". 
 
-[Decision trees](https://vimeo.com/588655268/d8132e81b4?share=copy)
+[Decision trees](https://vimeo.com/504760041/3cfee965fe?share=copy)
 
 ```{r, echo=F}
-blogdown::shortcode("vimeo", "588655268")
+# blogdown::shortcode("vimeo", "588655268")
 ```
+
+[Matrix algebra for decision sciences sciences (optional: recommended for those without matrix algebra background)](https://vimeo.com/506504682/3ff78ac63f?share=copy)
 
 Cohort State-Transition Models:
 
@@ -37,6 +39,8 @@ Cohort State-Transition Models:
 [STM 4: Outcomes](https://vimeo.com/474553106/b3c028d047?share=copy)
 
 [STM 5: Time-Varying State-Transition Models](https://vimeo.com/474560741/e0b3674579?share=copy)
+
+[DARTH framework-dampack](https://vimeo.com/502987155/21385356ef?share=copy)
 
 **Readings:**
 

@@ -1,7 +1,7 @@
 ---
 title: "Day 2"
 author: ''
-date: "2023-08-17"
+date: "2023-08-18"
 slug: day4
 categories: []
 tags: []
@@ -50,7 +50,7 @@ Thursday, August 24, 2023
 -	Understand implementation differences between microsimulation and cohort state transition models
 -	Understand how to summarize the output from a microsimulation model
 -	Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
--	Implement a simple microsimulation in R
+-	Implement a microsimulation in R
 -	Understand how to convert a decision analytic model from an R script to an R function
 
 

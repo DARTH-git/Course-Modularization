@@ -1,7 +1,7 @@
 ---
 title: "Day 2"
 author: ''
-date: "2023-08-01"
+date: "2023-08-18"
 slug: day4
 categories: []
 tags: []
@@ -15,6 +15,18 @@ type: docs
 ## Microsimulation Modeling in R
 
 Thursday, August 24, 2023
+
+**Video lectures**
+
+**Right click below links and select "Open link in new tab". 
+
+[Microsimulation - 1. Theory](https://vimeo.com/473484372/b270d78171?share=copy)
+
+[Microsimulation - 2. Efficiency](https://vimeo.com/473071949/3491a03c0d?share=copy)
+
+[Microsimulation - 3. Implementation](https://vimeo.com/473414536/85887de382?share=copy)
+
+[Microsimulation - 4. State-residence](https://vimeo.com/473464649/31c07bcb78?share=copy)
 
 **Readings:**
 
@@ -38,7 +50,7 @@ Thursday, August 24, 2023
 -	Understand implementation differences between microsimulation and cohort state transition models
 -	Understand how to summarize the output from a microsimulation model
 -	Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
--	Implement a simple microsimulation in R
+-	Implement a microsimulation in R
 -	Understand how to convert a decision analytic model from an R script to an R function
 
 

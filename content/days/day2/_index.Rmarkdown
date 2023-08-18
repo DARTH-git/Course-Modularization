@@ -16,6 +16,32 @@ type: docs
 
 Wednesday, August 23, 2023
 
+**Video lectures**
+
+**Right click below links and select "Open link in new tab". 
+
+[Decision trees](https://vimeo.com/504760041/3cfee965fe?share=copy)
+
+```{r, echo=F}
+# blogdown::shortcode("vimeo", "588655268")
+```
+
+[Matrix algebra for decision sciences sciences (optional: recommended for those without matrix algebra background)](https://vimeo.com/506504682/3ff78ac63f?share=copy)
+
+Cohort State-Transition Models:
+
+[STM 1: Introduction](https://vimeo.com/474550894/f090f42dbe?share=copy)
+
+[STM 2: Overview](https://vimeo.com/474550940/f56df95c06?share=copy)
+
+[STM 3: Simple 3-State Example](https://vimeo.com/474551568/a27c4f3716?share=copy)
+
+[STM 4: Outcomes](https://vimeo.com/474553106/b3c028d047?share=copy)
+
+[STM 5: Time-Varying State-Transition Models](https://vimeo.com/474560741/e0b3674579?share=copy)
+
+[DARTH framework-dampack](https://vimeo.com/502987155/21385356ef?share=copy)
+
 **Readings:**
 
 - Alarid-Escudero F, Krijkamp EM, Pechlivanoglou P, Jalal H, Kao SY, Yang A, Enns EA. A need for change! A coding framework for improving transparency in decision modeling. Pharmacoeconomics. 2019; 37(11):1329-39. [https://doi.org/10.1007/s40273-019-00837-x](https://doi.org/10.1007/s40273-019-00837-x)

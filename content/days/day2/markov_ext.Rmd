@@ -9,21 +9,21 @@ menu:
     weight: 5
 ---
 
-[Download slides - cSTM with time dependence](../../../Course_Modularization/CDC 2022-23/part 2/timedependency_CDC.pptx)
+<!-- [Download slides - cSTM with time dependence](../../../Course_Modularization/CDC 2022-23/part 2/timedependency_CDC.pptx) -->
 
-[Download slides - Naming variables](../../../Course_Modularization/CDC 2022-23/part 2/Naming_variables.pptx)
+<!-- [Download slides - Naming variables](../../../Course_Modularization/CDC 2022-23/part 2/Naming_variables.pptx) -->
 
-## R code demo & walkthrough - 3-state Markov model with state-residence time dependency (history dependence)
+<!-- ## R code demo & walkthrough - 3-state Markov model with state-residence time dependency (history dependence) -->
 
-[Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state_time_tunnels.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_3state_time_tunnels.Rmd) -->
 
-## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence)
+<!-- ## Exercise - Markov Sick-Sicker model with state-residence time dependency (history dependence) -->
 
-[Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html)
+<!-- [Download exercise handout](../../../Course_Modularization/Markov models/Markov Sick-Sicker/exercise worksheets/markov_sick-sicker_tunnels_exercise.html) -->
 
-[Download data](../../../Course_Modularization/CDC 2022-23/part 2/HMD_USA_Mx_2015.csv)
+<!-- [Download data](../../../Course_Modularization/CDC 2022-23/part 2/HMD_USA_Mx_2015.csv) -->
 
-[Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_tunnels_template.Rmd)
+<!-- [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_tunnels_template.Rmd) -->
 
 <!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_tunnels_SOLUTIONS.Rmd) -->
 

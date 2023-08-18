@@ -9,17 +9,17 @@ menu:
     weight: 3
 ---
 
-[Download slides](../../../Course_Modularization/VOI/Slides/Value of Information Analysis.pptx)
+<!-- [Download slides](../../../Course_Modularization/VOI/Slides/Value of Information Analysis.pptx) -->
 
-## R code demo & walkthrough - VOI toy example
+<!-- ## R code demo & walkthrough - VOI toy example -->
 
-[Download demo code](../../../Course_Modularization/VOI/VOI toy/VOI_toy.Rmd)
+<!-- [Download demo code](../../../Course_Modularization/VOI/VOI toy/VOI_toy.Rmd) -->
 
-[Download VOI function code](../../../Course_Modularization/VOI/VOI toy/VOI_Functions.R)
+<!-- [Download VOI function code](../../../Course_Modularization/VOI/VOI toy/VOI_Functions.R) -->
 
-[Download GA function code](../../../Course_Modularization/VOI/VOI toy/GA_functions.R)
+<!-- [Download GA function code](../../../Course_Modularization/VOI/VOI toy/GA_functions.R) -->
 
-[Download PSA data](../../../Course_Modularization/VOI/VOI toy/PSA.csv)
+<!-- [Download PSA data](../../../Course_Modularization/VOI/VOI toy/PSA.csv) -->
 
 <!-- ## Exercise - Sensitivity analyses on the Markov Sick-Sicker model -->
 

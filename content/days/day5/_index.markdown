@@ -1,7 +1,7 @@
 ---
 title: "Day 3"
 author: ''
-date: "2023-08-01"
+date: "2023-08-17"
 slug: day5
 categories: []
 tags: []
@@ -15,6 +15,16 @@ type: docs
 ## Sensitivity Analysis in R
 
 Friday, August 25, 2023
+
+**Video lectures**
+
+**Right click below links and select "Open link in new tab". 
+
+[Sensitivity Analysis - 00 Introduction](https://vimeo.com/506091491/5e07e24203?share=copy)
+
+[Sensitivity Analysis - 01 DSA](https://vimeo.com/473705896/08aaee5604?share=copy)
+
+[Sensitivity Analysis - 02 PSA](https://vimeo.com/473709355/7575dd9894?share=copy)
 
 **Readings:**
 

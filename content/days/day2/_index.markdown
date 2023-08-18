@@ -1,7 +1,7 @@
 ---
 title: "Day 1"
 author: ''
-date: "2023-08-01"
+date: "2023-08-18"
 slug: day2
 categories: []
 tags: []
@@ -15,6 +15,30 @@ type: docs
 ## Decision Trees and Basic Cohort State-Transition Models in R
 
 Wednesday, August 23, 2023
+
+**Video lectures**
+
+**Right click below links and select "Open link in new tab". 
+
+[Decision trees](https://vimeo.com/504760041/3cfee965fe?share=copy)
+
+
+
+[Matrix algebra for decision sciences sciences (optional: recommended for those without matrix algebra background)](https://vimeo.com/506504682/3ff78ac63f?share=copy)
+
+Cohort State-Transition Models:
+
+[STM 1: Introduction](https://vimeo.com/474550894/f090f42dbe?share=copy)
+
+[STM 2: Overview](https://vimeo.com/474550940/f56df95c06?share=copy)
+
+[STM 3: Simple 3-State Example](https://vimeo.com/474551568/a27c4f3716?share=copy)
+
+[STM 4: Outcomes](https://vimeo.com/474553106/b3c028d047?share=copy)
+
+[STM 5: Time-Varying State-Transition Models](https://vimeo.com/474560741/e0b3674579?share=copy)
+
+[DARTH framework-dampack](https://vimeo.com/502987155/21385356ef?share=copy)
 
 **Readings:**
 

@@ -43,6 +43,7 @@ include_graphics("../figures/sick_sicker_diagram_microsim.png")
 ```
 
 Advantages of using a microsimulation implementation is the ability to incorporate variation in the baseline characteristics for every individual and to keep track of state-residence. To illustrate this, we assume that individual mortality rates depend on baseline characteristics as well as time spend in the sick health state. 
+
 After you have successfully implemented the Sick-Sicker model, you can expand the model to include the possibility of treatment and evaluate whether it is cost-effective given a willingness to pay of $50,000. This hypothetical treatment improves the quality of life for those in the Sick (S1) state but not for those in the Sicker (S2) state. However, it is not possible to distinguish between individuals in the Sick state from those in the Sicker state, so under a treatment strategy, individuals in both sick states must be treated (and incur the costs of treatment), while only those in the sick state benefit from it. 
 
 In summary, the model assumes the following:
@@ -338,7 +339,6 @@ We kindly request you to add the following Acknowledgement paragraph to your fur
 For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
 
 The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
-
 
 Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
 

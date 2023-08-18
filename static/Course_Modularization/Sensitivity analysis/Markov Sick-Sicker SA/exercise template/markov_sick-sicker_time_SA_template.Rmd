@@ -1,6 +1,6 @@
 ---
-title: 'Markov Sick-Sicker model in R'
-subtitle: "With simulation-time dependency"
+title: 'Sensitivity analysis of the Markov Sick-Sicker model with simulation-time dependency - Excerise'
+subtitle: "One-way, two-way and probabilistic sensitivity - this works build upon the first Sick-Sicker markov exercise"
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -9,30 +9,84 @@ keep_tex: yes
 self_contained: no
 ---
 
+This work is developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+
+- Fernando Alarid-Escudero, PhD
+- Eva A. Enns, MS, PhD 
+- M.G. Myriam Hunink, MD, PhD 
+- Hawre J. Jalal, MD, PhD 
+- Eline Krijkamp, PhD 
+- Petros Pechlivanoglou, PhD
+- Alan Yang, MSc
+
+Please acknowledge our work. See details to cite below. 
+
+
+# Introduction
 This code forms the basis for the state-transition model of the tutorial: 
 'A Tutorial on Time-Dependent Cohort State-Transition Models in R using a Cost-Effectiveness Analysis Example' 
 
-Authors: 
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
-- Eline Krijkamp
-- Eva A. Enns
-- Alan Yang
-- M.G. Myriam Hunink
-- Petros Pechlivanoglou
-- Hawre Jalal
-Please cite the article when using this code
+This code implements the simulation-time-dependent Sick-Sicker cSTM model to conduct a CEA of two strategies:
+- Standard of Care (SoC): best available care for the patients with the disease. This scenario reflects the natural history of the diseaseprogression.
+- Strategy AB: This strategy combines treatment A and treatment B. The disease progression is reduced, and individuals in the Sick state have an improved quality of life.
+  
+# Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
 
-To program this tutorial we used:
-R version 4.0.5 (2021-03-31)
-Platform: 64-bit operating system, x64-based processor
-Running under: Mac OS 12.2.1
-RStudio: Version 1.4.1717 2009-2021 RStudio, Inc
+This exercise continues based on the cohort state transition "Sick-Sicker" model with simulation-time dependency from the previous exercise. The code from this first exercise forms the basis and is what is shown in the first 9 chapters of the template. 
 
-This code implements a simulation-time-dependent Sick-Sicker cSTM model to  conduct a CEA of two strategies:
-- Standard of Care (SoC): best available care for the patients with the disease. This scenario reflects the natural history of the disease  
-  progression.
-- Strategy AB: This strategy combines treatment A and treatment B. The disease  progression is reduced, and individuals in the Sick state have an  
-  improved quality of life.
+In this sensitivity analysis exercise, you code several sensitivity analysis chuncks and end with a probabilistic sensitivity analysis with 1000 simulations `(n_sim)`. Table II describes the distributions for the variables you used in the previous exercise.
+
+**Table II: Input parameters for probabilistic analysis**
+
+|           **Parameter**            |  **Distribution** |            **Distribution values**            |
+|:-----------------------------------|------------------:|----------------------------------------------:|
+| Annual transition probabilities conditional on surviving   |     |                |
+| - Rate of becoming S1 when H               | Gamma     |  shape = 30, rate = 170 + 300             |
+| - Rate of becoming H when S1               | Gamma   |  shape = 60, rate = 60 + 60           |
+| - Rate of becoming S2 when S1                | `r_S1S2`    |  shape = 84, rate = 716 + 84     |
+| Annual mortality                                   |             |                |
+| - Hazard ratio of death in S1 vs H | Lognormal      |  $\mu = \text{log}(3), \ \sigma = 0.01$             |
+| - Hazard ratio of death in S2 vs H | Lognormal       |  $\mu = \text{log}(10), \ \sigma = 0.02$            |
+| - Hazard ratio of becoming Sicker when Sick under Strategy AB  | Lognormal    |  $\mu = \text{log}(0.6), \ \sigma = 0.02$          |
+| Annual costs                       |             |               |
+| - Healthy individuals              | Gamma      |  shape = 100, scale = 20     |
+| - Sick individuals in S1           | Gamma      |  shape = 177.8, scale = 22.5      |
+| - Sick individuals in S2           | Gamma      |  shape = 225,   scale = 66.7  |
+| - Additional costs of sick individuals treated with Strategy AB in S1 or S2       | Gamma | shape = 156.3, scale = 160 |
+| Utility weights                    |             |               |
+| - Healthy individuals              | Beta      |  $\alpha = 200, \ \beta = 3$        |
+| - Sick individuals in S1           | Beta     | $\alpha = 130, \ \beta = 45$         |
+| - Sick individuals in S2           | Beta      | $\alpha = 230, \ \beta = 230$         |
+| - Utility for individuals treated with Strategy AB in S1 | Beta | $\alpha = 300, \ \beta = 15$        |
+| Transition rewards              |             |               |
+| - Disutility when transitioning from H to S1             | Beta       |  $\alpha = 11, \ \beta = 1088$     |
+| - Increase in cost when transitioning from H to S1           | Gamma     |  shape = 25,  scale = 40         |
+| - increase in cost when dying          | Gamma     |  shape = 100, scale = 20         |
+
+## Tasks
+### Exercise - Task 1
+Open the file `markov_sick-sicker_time_SA_template.R` and move to "10 Deterministic Sensitivity Analysis (DSA)". Run all code before this section. 
+### Exercise - Task 2
+Complete the `calculate_ce_out` function of the Sick-Sicker Markov model in the file `Functions_markov_sick-sicker_time.R`. Load this function file in to `R`.
+### Exercise - Task 3
+Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.155], `c_trtAB` [18000, 36000], `u_S1` [0.65, 0.85], `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA optimal strategy, and 3) a Tornado plot. The [min, max] contains the range of each parameter for the sensitivity analysis.
+### Exercise - Task 4
+Conduct a two-way sensitivity analysis (TWSA) on parameters `c_trtAB` [18000, 36000] and `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot TWSA results.
+### Exercise - Task 5
+Use a function called `generate_psa_params` to sample values for the uncertain parameters using the appropriate distributions. 
+### Exercise - Task 6
+Create a histogram of each of the model input parameters.
+### Exercise - Task 7
+Create a cost-effectiveness plane to present discounted costs and QALYs.
+### Exercise - Task 8
+Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$.
+### Exercise - Task 9
+Create the expected loss curves (ELC) plot
+### Exercise - Task 10
+Create an expected value of perfect information (EVPI) plot. 
+
+
+
 
 \newpage
 
@@ -542,4 +596,16 @@ l_params_all <- list(
 # Your turn
 
 ```
+
+We kindly request you to add the following Acknowledgement paragraph to your further work where DARTH code formed the basis. We also like to remind you that you can add other sources of reference to this paragraph to acknowledge code you got from others. 
+
+# Acknowlegdement
+For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
+
+The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
+
+Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
+
+# Copyright for assignment work
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
 

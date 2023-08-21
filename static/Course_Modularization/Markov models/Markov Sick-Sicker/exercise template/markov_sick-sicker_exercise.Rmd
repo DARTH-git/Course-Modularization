@@ -1,11 +1,10 @@
 ---
 title: "Markov Sick-Sicker model"
-subtitle: 'Markov Model Exercise - with simulation-time dependency and sensitivity analysis'
+subtitle: 'Markov Model Exercise: the basics'
 author: "The DARTH workgroup"
 output:
   html_document: default
   pdf_document: default
-  word_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -72,11 +71,11 @@ if (!require(knitr)) install.packages('knitr')
 include_graphics("sick_sicker_diagram.png")
 ```
 
-# Tasks (COMPLETED)
+## Tasks
 
-Using the template `markov_sick-sicker_time_template.Rmd`, please do the following. 
+Using the template `markov_sick-sicker_template.Rmd`, please do the following. 
 
-1.	Build the Markov model in `R` for Standard of Care (SoC) and Strategy AB including age-dependent mortality. 
+1.	Build the Markov model in `R` for Standard of Care (SoC) and Strategy AB.
 
 2.	Estimate the cost-effectiveness of Strategy AB vs SoC.
 
@@ -97,7 +96,7 @@ Using the template `markov_sick-sicker_time_template.Rmd`, please do the followi
 | - Rate of becoming H when S1               | `r_S1H`     |  0.5           |
 | - Rate of becoming S2 when S1                | `r_S1S2`    |  0.105         |
 | Annual mortality                                   |             |                |
-| - All-cause mortality (H to D)     | `v_r_HD`      | `HMD - info below`   |
+| - Rate of dying when Healthy (all-cause mortality) | `r_HD`      |  0.002         |
 | - Hazard ratio of death in S1 vs H | `hr_S1`       |  3          |
 | - Hazard ratio of death in S2 vs H | `hr_S2`       |  10         |
 | - Hazard ratio of becoming Sicker when Sick under Strategy AB  | `hr_S1S2_trtAB`       |  0.6         |
@@ -113,38 +112,5 @@ Using the template `markov_sick-sicker_time_template.Rmd`, please do the followi
 | - Sick individuals in S2           | `u_S2`      |  0.50         |
 | - Dead individuals                 | `u_D`       |  0.00         |
 | - Utility for individuals treated with Strategy AB in S1 | `u_trtAB` |  0.95        |
-| Transition rewards              |             |               |
-| - Disutility when transitioning from H to S1             | `du_HS1`       |  0.01      |
-| - Increase in cost when transitioning from H to S1           | `ic_HS1`      |  1000         |
-| - increase in cost when dying          | `ic_D`      |  2000         |
 
 *Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first multiply the rate of dying from healthy by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
-
-* 1. *HMD* : This is the Human mortality database. We provide you a files called `HMD_USA_Mx_2015.csv` with the age specific mortality rates. The data has the columns X, Year, Age, Female, Male, Total and OpenInterval. We will use the overall age specific mortality rate from the Total column.
-
-## Age specific all cause mortality
-
-The code below shows you how to get the data into your R environment. We also provide this in the template. You can use function `rate_to_prob` to convert `v_r_HD` into `v_p_HD`.
-
-```{r, echo = FALSE}
-lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
-head(lt_usa_2015)
-```
-
-```{r, eval = FALSE}
-# Transition probabilities (per cycle) and hazard ratios
-# Read age-specific mortality rates from csv file
-# if you have the data in the same folder as you markdown
-#lt_usa_2015 <- read.csv("HMD_USA_Mx_2015.csv")
-
-# if you have a data folder
-lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
-
-# select the age-specific mortality rates from csv file for the age 25 - 54
-v_r_HD <- lt_usa_2015 %>% 
-  filter(Age >= age & Age <= (max_age - 1)) %>%
-  select(Total) %>%
-  as.matrix()
-```
-
-\newpage

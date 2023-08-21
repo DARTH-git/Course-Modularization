@@ -1,6 +1,6 @@
 ---
 title: 'Sensitivity analysis of the Markov Sick-Sicker model with simulation-time dependency - Excerise'
-subtitle: "One-way, two-way and probabilistic sensitivity - this works build upon the first Sick-Sicker markov exercise"
+subtitle: "One-way, two-way and probabilistic sensitivity - this work builds upon the first Sick-Sicker Markov exercise"
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -32,11 +32,11 @@ This code implements the simulation-time-dependent Sick-Sicker cSTM model to con
   
 # Exercise II: Probabilistic sensitivity analysis of the Sick-Sicker Markov model
 
-This exercise continues based on the cohort state transition "Sick-Sicker" model with simulation-time dependency from the previous exercise. The code from this first exercise forms the basis and is what is shown in the first 9 chapters of the template. 
+This exercise continues based on the cohort state transition "Sick-Sicker" model with simulation-time dependency from the previous exercise. The code from this first exercise forms the basis and is what is shown in the first 9 Chapters of the template. 
 
-In this sensitivity analysis exercise, you code several sensitivity analysis chuncks and end with a probabilistic sensitivity analysis with 1000 simulations `(n_sim)`. Table II describes the distributions for the variables you used in the previous exercise.
+In this sensitivity analysis exercise, you will code several sensitivity analysis chuncks and end with a probabilistic sensitivity analysis with 1000 simulations `(n_sim)`. The Table below describes the distributions for the variables you used in the previous exercise.
 
-**Table II: Input parameters for probabilistic analysis**
+**Table: Input parameters for probabilistic analysis**
 
 |           **Parameter**            |  **Distribution** |            **Distribution values**            |
 |:-----------------------------------|------------------:|----------------------------------------------:|
@@ -63,28 +63,8 @@ In this sensitivity analysis exercise, you code several sensitivity analysis chu
 | - Increase in cost when transitioning from H to S1           | Gamma     |  shape = 25,  scale = 40         |
 | - increase in cost when dying          | Gamma     |  shape = 100, scale = 20         |
 
-## Tasks
 ### Exercise - Task 1
-Open the file `markov_sick-sicker_time_SA_template.R` and move to "10 Deterministic Sensitivity Analysis (DSA)". Run all code before this section. 
-### Exercise - Task 2
-Complete the `calculate_ce_out` function of the Sick-Sicker Markov model in the file `Functions_markov_sick-sicker_time.R`. Load this function file in to `R`.
-### Exercise - Task 3
-Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.155], `c_trtAB` [18000, 36000], `u_S1` [0.65, 0.85], `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA optimal strategy, and 3) a Tornado plot. The [min, max] contains the range of each parameter for the sensitivity analysis.
-### Exercise - Task 4
-Conduct a two-way sensitivity analysis (TWSA) on parameters `c_trtAB` [18000, 36000] and `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot TWSA results.
-### Exercise - Task 5
-Use a function called `generate_psa_params` to sample values for the uncertain parameters using the appropriate distributions. 
-### Exercise - Task 6
-Create a histogram of each of the model input parameters.
-### Exercise - Task 7
-Create a cost-effectiveness plane to present discounted costs and QALYs.
-### Exercise - Task 8
-Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$.
-### Exercise - Task 9
-Create the expected loss curves (ELC) plot
-### Exercise - Task 10
-Create an expected value of perfect information (EVPI) plot. 
-
+Check that you opened the project for this assignment and see in your Files section all corresponding folders. You can now navigate to Chapter "10 Deterministic Sensitivity Analysis (DSA)". Run all code before this section. 
 
 
 
@@ -448,12 +428,17 @@ plot(df_cea, label = "all", txtsize = 16) +
   theme(legend.position = c(0.82, 0.3))
 ```
 
+
+
 # 10 Deterministic Sensitivity Analysis (DSA)
+### Exercise - Task 2
+Complete the `calculate_ce_out` function of the Sick-Sicker Markov model in the file `Functions_markov_sick-sicker_time.R`. Load this function file in to `R`.
 
 ```{r}
 ## Load model, CEA and PSA functions 
 source('Functions_markov_sick-sicker_time.R')
 ```
+
 
 ## 10.1 Model input for SA
 
@@ -497,6 +482,10 @@ l_params_all <- list(
 )
 ```
 
+### Exercise - Task 3
+Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.155], `c_trtAB` [18000, 36000], `u_S1` [0.65, 0.85], `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA optimal strategy, and 3) a Tornado plot. The [min, max] contains the range of each parameter for the sensitivity analysis.
+
+
 ## 10.2 One-way sensitivity analysis (OWSA)
 
 ```{r}
@@ -518,6 +507,9 @@ l_params_all <- list(
 
 ```
 
+### Exercise - Task 4
+Conduct a two-way sensitivity analysis (TWSA) on parameters `c_trtAB` [18000, 36000] and `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot TWSA results.
+
 ## 10.3 Two-way sensitivity analysis (TWSA)
 
 ```{r}
@@ -532,14 +524,31 @@ l_params_all <- list(
 
 ```
 
-# 11 Probabilistic Sensitivity Analysis (PSA) 
 
+
+
+
+
+# 11 Probabilistic Sensitivity Analysis (PSA) 
 ## 11.1 Model input
+
+### Exercise - Task 5
+Use a function called `generate_psa_params` to sample values for the uncertain parameters using the appropriate distributions. 
+
 
 ```{r}
 # Your turn
 
 ```
+
+### Exercise - Task 6
+Create a histogram of each of the model input parameters.
+```{r}
+
+```
+
+### Exercise - Task 7
+Run the probabilistic sensitivity analysis  
 
 ## 11.2 Run PSA
 
@@ -549,15 +558,34 @@ l_params_all <- list(
 ```
 
 # 11.3 Visualize PSA results for CEA 
+### Exercise - Task 8
+Create a cost-effectiveness plane to present discounted costs and QALYs.
 
+
+### Create PSA object 
 ```{r}
 # Your turn
+### Create PSA object 
+#l_psa <- make_psa_obj(cost          = df_c, 
+#                      effectiveness = df_e, 
+#                      parameters    = df_psa_input, 
+#                      strategies    = v_names_str)
+#l_psa$strategies <- v_names_str
+#colnames(l_psa$effectiveness) <- v_names_str
+#colnames(l_psa$cost) <- v_names_str
+
+
 
 ```
+
+### Exercise - Task 9
+Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$. You can use steps of 5000.
 
 ## 11.3.1 Cost-Effectiveness Scatter plot 
 
 ```{r}
+# Vector with willingness-to-pay (WTP) thresholds.
+#v_wtp <- seq(0, 200000, by = 5000)
 # Your turn
 
 ```
@@ -576,6 +604,8 @@ l_params_all <- list(
 
 ```
 
+
+
 ## 11.3.4 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
 ```{r}
@@ -583,12 +613,19 @@ l_params_all <- list(
 
 ```
 
+
+### Exercise - Task 10
+Create the expected loss curves (ELC) plot
+
 ## 11.3.5 Expected Loss Curves (ELCs)
 
 ```{r}
 # Your turn
 
 ```
+
+### Exercise - Task 11
+Create an expected value of perfect information (EVPI) plot. 
 
 ## 11.3.6 Expected value of perfect information (EVPI) 
 

@@ -8,7 +8,6 @@ output:
   word_document: default
 ---
 
-
 This code forms the basis for the state-transition model of the tutorial: 
 'A Tutorial on Time-Dependent Cohort State-Transition Models in R using a Cost-Effectiveness Analysis Example' 
 

@@ -1,10 +1,10 @@
 ---
-title: 'SOLUTIONS - Markov Sick-Sicker model in R - Excerise'
+title: 'Markov Sick-Sicker model in R - Excerise'
 subtitle: "With simulation-time dependency"
 author: "The DARTH workgroup"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 keep_tex: yes
 self_contained: no
 ---
@@ -21,19 +21,78 @@ This work is developed by the Decision Analysis in R for Technologies in Health 
 
 Please acknowledge our work. See details to cite below. 
 
-See student template for excersice description. 
+This code implements a simulation-time-dependent Sick-Sicker cSTM model to  conduct a CEA of two strategies:
+- Standard of Care (SoC): best available care for the patients with the disease. This scenario reflects the natural history of the disease progression.
+- Strategy AB: This strategy combines treatment A and treatment B. The disease  progression is reduced, and individuals in the Sick state have an improved quality of life.
 
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
+options(scipen = 999)  # disable scientific notation
+rm(list = ls())        # clear memory (removes all the variables from the workspace)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
 
-```{r}
-rm(list = ls())      # clear memory (removes all the variables from the workspace)
+# Exercise: Construct a Markov Model of the Sick-Sicker Disease
+
+In this exercise, we will model a hypothetical disease that affects individuals with an average age of 25 years and results in increased mortality, increased healthcare costs, and reduced quality of life. The disease has two levels; affected individuals initially become sick but can subsequently progress and become sicker. Two alternative strategies exist for this hypothetical disease: Standard of Care (SoC) and a treatment strategy - Strategy AB. Under the treatment strategy, individuals in the sick and sicker states are treated until they recover (only if sick; individuals in the sicker state cannot recover) or die. The cost of the treatment is additive to the baseline healthcare costs of being sick or sicker. The treatment improves quality of life for those individuals who are sick but has no impact on the quality of life of those who are sicker. Unfortunately, it is not possible to reliably differentiate between people in the sick and sicker states, so treatment cannot be targeted to only those in the sick state. You are asked to evaluate the cost-effectiveness of the treatment.
+
+To model this disease, we will rely on a state-transition cohort model, called the Sick-Sicker model, first described by Enns et al. The Sick-Sicker model consists of four health states: Healthy (H), two disease states, Sick (S1) and Sicker (S2), and Dead (D) (Figure 1). All individuals start in the Healthy state. Over time, healthy individuals may develop the disease and can progress to S1. Individuals in S1 can recover (return to state H), progress further to S2 or die. Individuals in S2 cannot recover (i.e. cannot transition to either S1 or H). Individuals in H have a baseline probability of death; individuals in S1 and S2 experience increased mortality compared to those in the H state, given in terms of hazard ratios. These ratios are used to calculate the probabilities of dying when in S1 and S2. 
+
+```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
+if (!require(knitr)) install.packages('knitr')
+include_graphics("sick_sicker_diagram.png")
 ```
+
+\newpage
+
+**Table I: Input parameters**
+
+|           **Parameter**            |  **R name** |   **Value**   |
+|:-----------------------------------|:------------|:-------------:|
+| Cycle length                       | `cycle_length`          | 1  year           |
+| Age at baseline                    | `n_age_init`            | 25 years old      |
+| Maximum age of follow-up           | `n_age_max`             | 100 years old     |
+| Names of health states             | `v_names_states`        | H, S1, S2, D      |
+| Names of cycles (time horizon)     | `n_cycles`              | (n_age_max - n_age_init) / cycle_length |
+| Annual discount rate (costs/QALYs) | `d_c`/ `d_e`       | 3%                      |
+| Annual transition probabilities conditional on surviving   |     |                |
+| - Rate of becoming S1 when H               | `r_HS1`     |  0.15          |
+| - Rate of becoming H when S1               | `r_S1H`     |  0.5           |
+| - Rate of becoming S2 when S1                | `r_S1S2`    |  0.105         |
+| Annual mortality                                   |             |                |
+| - All-cause mortality (H to D)     | `v_r_HD`      | `HMD - info below`   |
+| - Hazard ratio of death in S1 vs H | `hr_S1`       |  3          |
+| - Hazard ratio of death in S2 vs H | `hr_S2`       |  10         |
+| - Hazard ratio of becoming Sicker when Sick under Strategy AB  | `hr_S1S2_trtAB`       |  0.6         |
+| Annual costs                       |             |               |
+| - Healthy individuals              | `c_H`       |  $2,000       |
+| - Sick individuals in S1           | `c_S1`      |  $4,000       |
+| - Sick individuals in S2           | `c_S2`      |  $15,000      |
+| - Dead individuals                 | `c_D`       |  $0           |
+| - Additional costs of sick individuals treated with Strategy AB in S1 or S2       | `c_trtAB` | $25,000 |
+| Utility weights                    |             |               |
+| - Healthy individuals              | `u_H`       |  1.00         |
+| - Sick individuals in S1           | `u_S1`      |  0.75         |
+| - Sick individuals in S2           | `u_S2`      |  0.50         |
+| - Dead individuals                 | `u_D`       |  0.00         |
+| - Utility for individuals treated with Strategy AB in S1 | `u_trtAB` |  0.95        |
+| Transition rewards              |             |               |
+| - Disutility when transitioning from H to S1             | `du_HS1`       |  0.01      |
+| - Increase in cost when transitioning from H to S1           | `ic_HS1`      |  1000         |
+| - increase in cost when dying          | `ic_D`      |  2000         |
+
+*Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first multiply the rate of dying from healthy by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
+
+* 1. *HMD* : This is the Human mortality database. We provide you a files called `HMD_USA_Mx_2015.csv` with the age specific mortality rates. The data has the columns X, Year, Age, Female, Male, Total and OpenInterval. We will use the overall age specific mortality rate from the Total column.
+
+### Exercise - set-up
+
+There are quite some steps you need to take in order to create a Markov model reflecting this case. Start by making sure that you have all the course material structured in the suggested way. There should be an R projects in the folder, a file ending on `.Rproj`, double click on this file to open the Rstudio environment. Working from a Rproject avoid struggles with working directories. 
+
+While in you Markov Sick-Sicker R project, open this `markov_sick-sicker_time_exercise_template.Rmd`. This is a template that guides you step by step through the exercise. In addition it helps you to load the packages and the necessary data. The next chunk load the packages. 
 
 # 01 Load packages
 
@@ -73,8 +132,14 @@ v_names_states <- c("H",  # Healthy (H)
 n_states <- length(v_names_states)   # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03        # annual discount rate for costs 
-d_e <- 0.03        # annual discount rate for QALYs
+# Comment out/ for the relevant country
+# USA
+#d_c <- d_e <- 0.03  # annual discount rate for costs and QALY
+# Canada
+#d_c <- d_e <- 0.015 # annual discount rate for costs 
+# NL
+d_c <- 0.04         # annual discount rate for costs 
+d_e <- 0.015        # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str <- c("Standard of care", # store the strategy names
@@ -117,8 +182,8 @@ u_D     <- 0     # annual utility of being dead
 u_trtAB <- 0.95  # annual utility when receiving treatment AB
 
 ### Transition rewards 
-du_HS1  <- 0.01  # disutility when transitioning from Healthy to Sick (S1)
-ic_HS1  <- 1000  # increase in cost when transitioning from Healthy to Sick (S1)
+du_HS1  <- 0.01  # disutility when transitioning from Healthy to Sick
+ic_HS1  <- 1000  # increase in cost when transitioning from Healthy to Sick
 ic_D    <- 2000  # increase in cost when dying
 
 ### Discount weight for costs and effects 
@@ -149,6 +214,13 @@ r_S1S2_trtAB <- r_S1S2 * hr_S1S2_trtAB
 # adjusting by cycle length conditional on surviving
 p_S1S2_trtAB <- rate_to_prob(r = r_S1S2_trtAB, t = cycle_length)
 ```
+
+### Exercise - Task 1
+
+Build the Markov model in `R` for Standard of Care (SoC) and Strategy AB including age-dependent mortality and do the following:
+(1) Run the model
+(2) Plot the cohort trace from the model
+(3) Compute state rewards and expected outcomes (total utilities and costs)
 
 # 04 Construct state-transition models
 
@@ -188,25 +260,23 @@ a_P_SoC <- array(0,
                                  0:(n_cycles - 1)))
 ### Fill in array
 ## From H
-a_P_SoC["H", "H", ]   <- (1 - v_p_HDage) * (1 - p_HS1)
-a_P_SoC["H", "S1", ]  <- (1 - v_p_HDage) *      p_HS1
-a_P_SoC["H", "D", ]   <-      v_p_HDage
+# your turn
+
 ## From S1
-a_P_SoC["S1", "H", ]  <- (1 - v_p_S1Dage) *       p_S1H
-a_P_SoC["S1", "S1", ] <- (1 - v_p_S1Dage) * (1 - (p_S1H + p_S1S2))
-a_P_SoC["S1", "S2", ] <- (1 - v_p_S1Dage) *               p_S1S2
-a_P_SoC["S1", "D", ]  <-      v_p_S1Dage
+# your turn
+
 ## From S2
-a_P_SoC["S2", "S2", ] <- 1 - v_p_S2Dage
-a_P_SoC["S2", "D", ]  <-     v_p_S2Dage
+# your turn
+
 ## From D
-a_P_SoC["D", "D", ]   <- 1
+# your turn
+
 
 ### Initialize transition probability array for strategy AB 
-a_P_strAB <- a_P_SoC
+# your turn
+
 # Update only transition probabilities from S1 involving p_S1S2
-a_P_strAB["S1", "S1", ] <- (1 - v_p_S1Dage) * (1 - (p_S1H + p_S1S2_trtAB))
-a_P_strAB["S1", "S2", ] <- (1 - v_p_S1Dage) *               p_S1S2_trtAB
+# your turn
 
 ## Check if transition probability arrays are valid 
 ### Check that transition probabilities are [0, 1] 
@@ -222,43 +292,28 @@ check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycle
 ```{r}
 # These arrays will capture transitions from each state to another over time 
 ### Initialize transition dynamics array for strategy SoC 
-a_A_SoC <- array(0,
-             dim      = c(n_states, n_states, n_cycles + 1),
-             dimnames = list(v_names_states, v_names_states, 0:n_cycles))
+# your turn
+
 # Set first slice of a_A_SoC with the initial state vector in its diagonal
-diag(a_A_SoC[, , 1]) <- v_m_init
+# your turn
+
 ### Initialize transition-dynamics array for strategy AB 
 # Structure and initial states are the same as for SoC
-a_A_strAB <- a_A_SoC
+# your turn
+
 ```
 
 # 05 Run Markov model
 
 ```{r}
 # Iterative solution of age-dependent cSTM
-for(t in 1:n_cycles){
-  ## Fill in cohort trace
-  # For SoC
-  m_M_SoC[t + 1, ]   <- m_M_SoC[t, ]   %*% a_P_SoC[, , t]
-  # For strategy AB 
-  m_M_strAB[t + 1, ] <- m_M_strAB[t, ] %*% a_P_strAB[, , t]
-  
-  ## Fill in transition-dynamics array
-  # For SoC
-  a_A_SoC[, , t + 1]   <- diag(m_M_SoC[t, ])   %*% a_P_SoC[, , t]
-  # For strategy AB
-  a_A_strAB[, , t + 1] <- diag(m_M_strAB[t, ]) %*% a_P_strAB[, , t]
-}
+# your turn
 
 ## Store the cohort traces in a list 
-l_m_M <- list(SoC =  m_M_SoC,
-              AB  =  m_M_strAB)
-names(l_m_M) <- v_names_str
+# your turn
 
 ## Store the transition dynamics array for each strategy in a list 
-l_a_A <- list(SoC =  a_A_SoC,
-              AB  =  a_A_strAB)
-names(l_a_A) <- v_names_str
+# your turn
 ```
 
 # 06 Plot Outputs
@@ -266,8 +321,7 @@ names(l_a_A) <- v_names_str
 ## 06.1 Plot the cohort trace for strategies SoC and AB
 
 ```{r}
-plot_trace(m_M_SoC)
-plot_trace(m_M_strAB)
+# your turn
 ```
 
 # 07 State Rewards 
@@ -275,112 +329,66 @@ plot_trace(m_M_strAB)
 ```{r}
 ## Scale by the cycle length 
 # Vector of state utilities under strategy SoC
-v_u_SoC    <- c(H  = u_H, 
-                S1 = u_S1, 
-                S2 = u_S2, 
-                D  = u_D) * cycle_length
+# your turn
+
 # Vector of state costs under strategy SoC
-v_c_SoC    <- c(H  = c_H, 
-                S1 = c_S1,
-                S2 = c_S2, 
-                D  = c_D) * cycle_length
+# your turn
+
 # Vector of state utilities under strategy AB
-v_u_strAB  <- c(H  = u_H, 
-                S1 = u_trtAB, 
-                S2 = u_S2, 
-                D  = u_D) * cycle_length
+# your turn
+
 # Vector of state costs under strategy AB
-v_c_strAB  <- c(H  = c_H, 
-                S1 = c_S1 + c_trtAB, 
-                S2 = c_S2 + c_trtAB, 
-                D  = c_D) * cycle_length
+# your turn
 
 ## Store state rewards 
 # Store the vectors of state utilities for each strategy in a list 
-l_u <- list(SoC = v_u_SoC,
-            AB  = v_u_strAB)
+# your turn
+
 # Store the vectors of state cost for each strategy in a list 
-l_c <- list(SoC =  v_c_SoC,
-            AB  =  v_c_strAB)
+# your turn
 
 # assign strategy names to matching items in the lists
-names(l_u) <- names(l_c) <- v_names_str
+# your turn
+
 ```
 
 # 08 Compute expected outcomes 
 
 ```{r}
 # Create empty vectors to store total utilities and costs 
-v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
-names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
+# your turn
 
 ## Loop through each strategy and calculate total utilities and costs 
-for (i in 1:n_str) { # i <- 1
-  v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
-  v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
-  a_A_str <- l_a_A[[i]] # select the transition array for the i-th strategy
-  
-  ## Array of state rewards 
-  # Create transition matrices of state utilities and state costs for the i-th strategy 
-  m_u_str   <- matrix(v_u_str, nrow = n_states, ncol = n_states, byrow = T)
-  m_c_str   <- matrix(v_c_str, nrow = n_states, ncol = n_states, byrow = T)
-  # Expand the transition matrix of state utilities across cycles to form a transition array of state utilities
-  a_R_u_str <- array(m_u_str, 
-                     dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
-  # Expand the transition matrix of state costs across cycles to form a transition array of state costs
-  a_R_c_str <- array(m_c_str, 
-                     dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
-  
-  ## Apply transition rewards
-  # Apply disutility due to transition from H to S1
-  a_R_u_str["H", "S1", ]      <- a_R_u_str["H", "S1", ]       - du_HS1
-  # Add transition cost per cycle due to transition from H to S1
-  a_R_c_str["H", "S1", ]      <- a_R_c_str["H", "S1", ]       + ic_HS1
-  # Add transition cost  per cycle of dying from all non-dead states
-  a_R_c_str[-n_states, "D", ] <- a_R_c_str[-n_states, "D", ] + ic_D
-  
-  ### Expected QALYs and costs for all transitions per cycle
-  # QALYs = life years x QoL
-  # Note: all parameters are annual in our example. In case your own case example is different make sure you correctly apply.
-  a_Y_c_str <- a_A_str * a_R_c_str
-  a_Y_u_str <- a_A_str * a_R_u_str 
-  
-  ### Expected QALYs and costs per cycle
-  ## Vector of QALYs and costs
-  v_qaly_str <- apply(a_Y_u_str, 3, sum) # sum the proportion of the cohort across transitions 
-  v_cost_str <- apply(a_Y_c_str, 3, sum) # sum the proportion of the cohort across transitions
-  
-  ## Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
-  # QALYs
-  v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
-  # Costs
-  v_tot_cost[i] <- t(v_cost_str) %*% (v_dwc * v_wcc)
-}
+# your turn
+
 ```
+
+### Exercise - Task 2
+
+Estimate the cost-effectiveness of Strategy AB vs SoC.
 
 # 09 Cost-effectiveness analysis (CEA) 
 
 ```{r}
 ## Incremental cost-effectiveness ratios (ICERs) 
-df_cea <- calculate_icers(cost       = v_tot_cost, 
-                          effect     = v_tot_qaly,
-                          strategies = v_names_str)
-df_cea
+# your turn
+
 ```
+
+### Exercise - Task 3
+
+Create a well-formatted cost-effectiveness table with all results of interest and plot the cost-effectiveness frontier.
 
 ```{r}
 ## CEA table in proper format 
-table_cea <- format_table_cea(df_cea)
-table_cea
+# your turn
+
 ```
 
 ```{r}
 ## CEA frontier 
-plot(df_cea, label = "all", txtsize = 16) +
-  expand_limits(x = max(table_cea$QALYs) + 0.1) +
-  theme(legend.position = c(0.82, 0.3))
+# your turn
+
 ```
 
 We kindly request you to add the following Acknowledgement paragraph to your further work where DARTH code formed the basis. We also like to remind you that you can add other sources of reference to this paragraph to acknowledge code you got from others. 
@@ -396,4 +404,3 @@ Other work from DARTH can be found on the website: <http://darthworkgroup.com/pu
 # Copyright for assignment work
 
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
-

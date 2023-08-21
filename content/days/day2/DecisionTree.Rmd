@@ -14,3 +14,4 @@ type: docs
 
 <!-- [Download demo code](../../../Course_Modularization/CDC 2022-23/part 2/DecisionTreeExample_SprayNoSpray.Rmd) -->
 
+[Download materials](../../../Course_Modularization/Decision trees/DecisionTrees.zip)

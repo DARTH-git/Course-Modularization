@@ -35,7 +35,7 @@ blogdown::shortcode("vimeo", "473042385")
 
 ## Instructor solutions
 
-Solutions will be provided upon request.
+<!-- Solutions will be provided upon request. -->
 
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/03_data_manipulation_solutions.Rmd) -->
+[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/03_data_manipulation_solutions.Rmd)
 

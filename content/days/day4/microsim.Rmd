@@ -35,7 +35,7 @@ menu:
 
 <!-- [Download demo R script](../../../Course_Modularization/CDC 2022-23/part 2/Function_Microsim_3-state_time.R) -->
 
-[Download demo code - Microsim 3-state example](../../../Course_Modularization/Microsimulation/Microsim 3-state/microsim_3-state_time.Rmd)
+[Download slides and demo code - Microsim 3-state example](../../../Course_Modularization/Microsimulation/Microsim 3-state/Microsim 3-state.zip)
 
 [Download Microsim Sick-Sicker exercise](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/Microsim Sick-Sicker.zip)
 

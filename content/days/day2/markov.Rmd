@@ -20,3 +20,8 @@ menu:
 <!-- [Download excercise template](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_template.Rmd) -->
 
 <!-- [Download excercise solutions](../../../Course_Modularization/CDC 2022-23/part 2/cSTM_sick-sicker_SOLUTIONS.Rmd) -->
+
+[Download slides and demo code - Markov 3-state example](../../../Course_Modularization/Markov models/Markov 3-state/cSTM_3state.zip)
+
+[Download Markov Sick-Sicker exercise](../../../Course_Modularization/Markov models/Markov Sick-Sicker/Markov Sick-Sicker.zip)
+

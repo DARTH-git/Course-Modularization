@@ -7,7 +7,6 @@ output:
   pdf_document: default
 ---
 
-
 This work is developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
 - Fernando Alarid-Escudero, PhD

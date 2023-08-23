@@ -3,8 +3,8 @@ title: Model Calibration
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Calibration
-menu:
+linktitle: Calibration files
+menu: 
   day4:
     weight: 5
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Day 3"
 author: ''
-date: "2023-08-17"
+date: "2023-08-22"
 slug: day5
 categories: []
 tags: []
@@ -15,6 +15,8 @@ type: docs
 ## Sensitivity Analysis in R
 
 Friday, August 25, 2023
+
+[Zoom link](https://utoronto.zoom.us/j/82912400050) [Meeting ID: 829 1240 0050; Passcode: 001689]
 
 **Video lectures**
 

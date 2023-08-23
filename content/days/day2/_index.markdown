@@ -1,7 +1,7 @@
 ---
 title: "Day 1"
 author: ''
-date: "2023-08-18"
+date: "2023-08-22"
 slug: day2
 categories: []
 tags: []
@@ -14,7 +14,9 @@ type: docs
 
 ## Decision Trees and Basic Cohort State-Transition Models in R
 
-Wednesday, August 23, 2023
+*Wednesday, August 23, 2023*
+
+[Zoom link](https://utoronto.zoom.us/j/85107198719) [Meeting ID: 851 0719 8719; Passcode: 140426]
 
 **Video lectures**
 

@@ -1,7 +1,7 @@
 ---
 title: "Day 2"
 author: ''
-date: "2023-08-18"
+date: "2023-08-22"
 slug: day4
 categories: []
 tags: []
@@ -15,6 +15,8 @@ type: docs
 ## Microsimulation Modeling in R
 
 Thursday, August 24, 2023
+
+[Zoom link](https://utoronto.zoom.us/j/89369317139) [Meeting ID: 893 6931 7139; Passcode: 114279]
 
 **Video lectures**
 

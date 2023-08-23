@@ -84,9 +84,9 @@ p_S1S2_trtAB  <- 0.05     # probability of becoming sicker when sick under treat
 
 # Annual probabilities of death
 # load age dependent probability
-p_mort   <- read.csv("mortProb_age.csv")
+p_mort   <- read.csv("../data/mortProb_age.csv")
 # load age distribution
-dist_Age <- read.csv("MyPopulation-AgeDistribution.csv") 
+dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
 p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 

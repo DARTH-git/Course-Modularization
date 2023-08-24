@@ -9,7 +9,7 @@ menu:
     weight: 5
 ---
 
-<!-- [Download slides - estimating inputs](../../../Course_Modularization/Calibration/Slides/Estimating_Input_parameters_in_decision_modeling.pptx) -->
+[Download slides - quick overview of calibration](../../../Course_Modularization/Calibration/Slides/CalibrationQuick.pdf)
 
 <!-- [Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx) -->
 

@@ -21,8 +21,8 @@ This work is developed by the Decision Analysis in R for Technologies in Health 
 
 Please acknowledge our work. See details to cite below. 
 
-
 # Introduction
+
 This code forms the basis for the state-transition model of the tutorial: 
 'A Tutorial on Time-Dependent Cohort State-Transition Models in R using a Cost-Effectiveness Analysis Example' 
 
@@ -64,9 +64,8 @@ In this sensitivity analysis exercise, you will code several sensitivity analysi
 | - increase in cost when dying          | Gamma     |  shape = 100, scale = 20         |
 
 ### Exercise - Task 1
+
 Check that you opened the project for this assignment and see in your Files section all corresponding folders. You can now navigate to Chapter "10 Deterministic Sensitivity Analysis (DSA)". Run all code before this section. 
-
-
 
 \newpage
 
@@ -140,7 +139,7 @@ hr_S2  <- 10    # hazard ratio of death in Sicker vs Healthy
 hr_S1S2_trtAB <- 0.6  # hazard ratio of becoming Sicker when Sick under treatment AB
 
 ## Age-dependent mortality rates 
-lt_usa_2015 <- read.csv("HMD_USA_Mx_2015.csv")
+lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
 # Extract age-specific all-cause mortality for ages in model time horizon
 v_r_mort_by_age <- lt_usa_2015 %>% 
   dplyr::filter(Age >= n_age_init & Age < n_age_max) %>%
@@ -428,17 +427,15 @@ plot(df_cea, label = "all", txtsize = 16) +
   theme(legend.position = c(0.82, 0.3))
 ```
 
-
-
 # 10 Deterministic Sensitivity Analysis (DSA)
+
 ### Exercise - Task 2
 Complete the `calculate_ce_out` function of the Sick-Sicker Markov model in the file `Functions_markov_sick-sicker_time.R`. Load this function file in to `R`.
 
 ```{r}
 ## Load model, CEA and PSA functions 
-source('Functions_markov_sick-sicker_time.R')
+source('../functions/Functions_markov_sick-sicker_time_template.R')
 ```
-
 
 ## 10.1 Model input for SA
 
@@ -483,8 +480,8 @@ l_params_all <- list(
 ```
 
 ### Exercise - Task 3
-Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.155], `c_trtAB` [18000, 36000], `u_S1` [0.65, 0.85], `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA optimal strategy, and 3) a Tornado plot. The [min, max] contains the range of each parameter for the sensitivity analysis.
 
+Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.155], `c_trtAB` [18000, 36000], `u_S1` [0.65, 0.85], `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot 1) OWSA results, 2) OWSA optimal strategy, and 3) a Tornado plot. The [min, max] contains the range of each parameter for the sensitivity analysis.
 
 ## 10.2 One-way sensitivity analysis (OWSA)
 
@@ -508,6 +505,7 @@ Conduct a one-way sensitivity analysis (OWSA) on parameters `r`_S1S2` [0.05, 0.1
 ```
 
 ### Exercise - Task 4
+
 Conduct a two-way sensitivity analysis (TWSA) on parameters `c_trtAB` [18000, 36000] and `u_trtAB` [0.80, 0.98]. Use net monetary benefit as the outcome. Plot TWSA results.
 
 ## 10.3 Two-way sensitivity analysis (TWSA)
@@ -524,17 +522,13 @@ Conduct a two-way sensitivity analysis (TWSA) on parameters `c_trtAB` [18000, 36
 
 ```
 
-
-
-
-
-
 # 11 Probabilistic Sensitivity Analysis (PSA) 
+
 ## 11.1 Model input
 
 ### Exercise - Task 5
-Use a function called `generate_psa_params` to sample values for the uncertain parameters using the appropriate distributions. 
 
+Use a function called `generate_psa_params` to sample values for the uncertain parameters using the appropriate distributions. 
 
 ```{r}
 # Your turn
@@ -542,12 +536,15 @@ Use a function called `generate_psa_params` to sample values for the uncertain p
 ```
 
 ### Exercise - Task 6
+
 Create a histogram of each of the model input parameters.
+
 ```{r}
 
 ```
 
 ### Exercise - Task 7
+
 Run the probabilistic sensitivity analysis  
 
 ## 11.2 Run PSA
@@ -558,11 +555,13 @@ Run the probabilistic sensitivity analysis
 ```
 
 # 11.3 Visualize PSA results for CEA 
+
 ### Exercise - Task 8
+
 Create a cost-effectiveness plane to present discounted costs and QALYs.
 
-
 ### Create PSA object 
+
 ```{r}
 # Your turn
 ### Create PSA object 
@@ -579,6 +578,7 @@ Create a cost-effectiveness plane to present discounted costs and QALYs.
 ```
 
 ### Exercise - Task 9
+
 Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) for the treatment comparison assuming WTP thresholds of $\$0$ to $\$200,000$. You can use steps of 5000.
 
 ## 11.3.1 Cost-Effectiveness Scatter plot 
@@ -604,8 +604,6 @@ Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) fo
 
 ```
 
-
-
 ## 11.3.4 Cost-effectiveness acceptability curves (CEACs) and frontier (CEAF)
 
 ```{r}
@@ -613,8 +611,8 @@ Create the cost-effectiveness acceptability curves (CEAC) and frontier (CEAF) fo
 
 ```
 
-
 ### Exercise - Task 10
+
 Create the expected loss curves (ELC) plot
 
 ## 11.3.5 Expected Loss Curves (ELCs)
@@ -625,6 +623,7 @@ Create the expected loss curves (ELC) plot
 ```
 
 ### Exercise - Task 11
+
 Create an expected value of perfect information (EVPI) plot. 
 
 ## 11.3.6 Expected value of perfect information (EVPI) 
@@ -637,6 +636,7 @@ Create an expected value of perfect information (EVPI) plot.
 We kindly request you to add the following Acknowledgement paragraph to your further work where DARTH code formed the basis. We also like to remind you that you can add other sources of reference to this paragraph to acknowledge code you got from others. 
 
 # Acknowlegdement
+
 For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
 
 The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
@@ -644,5 +644,6 @@ The notation of our code is based on the following provided framework and coding
 Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
 
 # Copyright for assignment work
+
 Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
 

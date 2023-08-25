@@ -29,5 +29,5 @@ menu:
 
 [Download slides and demo code - Markov 3-state SA example](../../../Course_Modularization/Sensitivity analysis/Markov 3-state SA/cSTM 3-state SA.zip)
 
-[Download Markov Sick-Si=cker SA exercise with SOLUTIONS](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/cSTM Sick-Sicker SA.zip)
+[Download Markov Sick-Sicker SA exercise with SOLUTIONS](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/cSTM Sick-Sicker SA.zip)
 

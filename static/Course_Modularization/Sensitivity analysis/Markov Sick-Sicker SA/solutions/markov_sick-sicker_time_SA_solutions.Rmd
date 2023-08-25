@@ -462,7 +462,7 @@ owsa_nmb  <- run_owsa_det(params_range    = df_params_owsa,   # data.frame with 
                           FUN             = calculate_ce_out, # function to compute outputs
                           outcomes        = c("NMB"),         # output to do the OWSA on
                           strategies      = v_names_str,      # names of the strategies
-                          n_wtp           = 120000)           # extra argument to pass to FUN
+                          n_wtp           = 80000)            # extra argument to pass to FUN
 ```
 
 ```{r}

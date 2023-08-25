@@ -134,16 +134,27 @@ n_str           <- length(v_names_str)           # number of strategies
 
 ## Within-cycle correction (WCC) using Simpson's 1/3 rule 
 v_wcc <- gen_wcc(n_cycles = n_cycles,  method = "Simpson1/3")
+### Transition intenisty rates
+r_HS_SoC  <- 0.05  # rate of becoming sick when healthy, conditional on surviving, under standard of care
+r_HS_trtA <- 0.04  # rate of becoming sick when healthy, conditional on surviving, under treatment A
+r_HS_trtB <- 0.02  # rate of becoming sick when healthy, conditional on surviving, under treatment B
+r_SD      <- 0.1   # rate of dying when sick
+r_base    <- 0.003 # rate of dying when healthy at t = 0
+rr_annual  <- 1.1  # annual increase of mortality rate
+# rate of dying when healthy (age-dependent) - this is now a sequence of numbers
+v_r_HD    <- r_base * rr_annual ^ (1:n_cycles)   
 
-### Transition probabilities
-p_HS_SoC  <- 0.05  # probability of becoming sick when healthy, conditional on surviving, under standard of care
-p_HS_trtA <- 0.04  # probability of becoming sick when healthy, conditional on surviving, under treatment A
-p_HS_trtB <- 0.02  # probability of becoming sick when healthy, conditional on surviving, under treatment B
-p_SD      <- 0.1   # probability of dying when sick
-p_HD_min  <- 0.003 # probability of dying when healthy at t = 0
-p_HD_max  <- 0.01  # probability of dying when healthy at t = n_cycles
-# probabilities of dying when healthy (age-dependent) - this is now a sequence of numbers
-v_p_HD    <- seq(p_HD_min, p_HD_max, length.out = n_cycles)   
+#Transition Probabilities
+
+### Converting rates to probabilities
+# p = 1 - exp( -r * cycle_length)
+p_HS_SoC  <- rate_to_prob(r = r_HS_SoC, t = cycle_length)  # probability  of becoming sick when healthy, under SoC
+p_HS_trtA <- rate_to_prob(r = r_HS_trtA, t = cycle_length) # probability of becoming sick when healthy, under treatment A
+p_HS_trtB <- rate_to_prob(r = r_HS_trtB, t = cycle_length) # probability of becoming sick when healthy, under treatment B
+p_SD      <- rate_to_prob(r = r_SD,   t = cycle_length)    # probability of dying when sick
+v_p_HD    <- rate_to_prob(r = v_r_HD, t = cycle_length)    # probability of dying when healthy (vector)
+
+
 
 ### State rewards
 #### Costs 
@@ -409,7 +420,7 @@ plot(df_cea, label = "all", txtsize = 14) +
 ```{r}
 
 ## Load model, CEA and PSA functions 
-source('Functions_markov_3state_time.R')
+source('Functions_cSTM_3state_time.R')
 ```
 
 ## 10.1 Model input for SA
@@ -418,13 +429,12 @@ source('Functions_markov_3state_time.R')
 l_params_all <- list(
   # Transition probabilities
   # probability of dying
-  p_SD      = 0.1,   # from sick         
-  p_HD_min  = 0.003, # from healthy at t = 0
-  p_HD_max  = 0.01,  # from healthy at t = n_cycles
-  # probability of becoming sick when healthy, conditional on surviving
-  p_HS_SoC  = 0.05,  # standard of care
-  p_HS_trtA = 0.04,  # treatment A
-  p_HS_trtB = 0.02,  # treatment B
+ r_HS_SoC   = 0.05,  # rate of becoming sick when healthy, under standard of care
+ r_HS_trtA  = 0.04,  # rate of becoming sick when healthy, under treatment A
+ r_HS_trtB  = 0.02,  # rate of becoming sick when healthy, under treatment B
+ r_SD       = 0.1,   # rate of dying when sick
+ r_base     = 0.003, # rate of dying when healthy at t = 0
+ rr_annual  = 1.1,  # annual increase of mortality rate
   # Costs 
   c_H       = 400,   # cost of one cycle in healthy state
   c_S       = 1000,  # cost of one cycle in sick state
@@ -456,8 +466,7 @@ returning a data frame of costs and QALYs.
 ```{r}
 # Try the decision_model() function
 l_trace <- decision_model(l_params_all, verbose = F)
-l_trace$m_M_SoC[1:5,]
-l_trace$a_P_SoC[,,1:3]
+l_trace$l_m_M$`Standard of Care`[1:5,]
 
 # Try the calculate_ce_out() function
 df_ce <- calculate_ce_out(l_params_all)

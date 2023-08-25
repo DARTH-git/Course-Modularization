@@ -94,10 +94,10 @@ decision_model <- function(l_params_all, verbose = FALSE) {
     
     ### Check if transition probability matrices are valid
     ## Check that transition probabilities are [0, 1]
-    check_transition_probability(a_P_SoC,   verbose = verbose)
+    check_transition_probability(a_P_SoC, verbose = verbose)
     check_transition_probability(a_P_strAB, verbose = verbose)
     ### Check that all rows for each slice of the array sum to 1
-    check_sum_of_transition_array(a_P_SoC,   n_states = n_states, n_cycles = n_cycles, verbose = verbose)
+    check_sum_of_transition_array(a_P_SoC, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
     check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
     
     #### Run Markov model ####
@@ -150,30 +150,20 @@ calculate_ce_out <- function(l_params_all, n_wtp = 100000){ # User defined
   with(as.list(l_params_all), {
     
     ### Run decision model to get transition dynamics array
-    model <- decision_model(l_params_all = l_params_all)
-    l_a_A <- model[["l_a_A"]]
+    # Your turn
     
     #### State Rewards ####
     ## Vector of state utilities under strategy SoC
-    v_u_SoC    <- c(H  = u_H, 
-                    S1 = u_S1, 
-                    S2 = u_S2, 
-                    D  = u_D) * cycle_length
+    # Your turn
+    
     ## Vector of state costs under strategy SoC
-    v_c_SoC    <- c(H  = c_H, 
-                    S1 = c_S1,
-                    S2 = c_S2, 
-                    D  = c_D) * cycle_length
+    # Your turn
+    
     ## Vector of state utilities under strategy AB
-    v_u_strAB  <- c(H  = u_H, 
-                    S1 = u_trtAB, 
-                    S2 = u_S2, 
-                    D  = u_D) * cycle_length
+    # Your turn
+    
     ## Vector of state costs under strategy AB
-    v_c_strAB  <- c(H  = c_H, 
-                    S1 = c_S1 + c_trtAB, 
-                    S2 = c_S2 + c_trtAB, 
-                    D  = c_D) * cycle_length
+    # Your turn
     
     ## Store the vectors of state utilities for each strategy in a list 
     l_u   <- list(SoC = v_u_SoC,

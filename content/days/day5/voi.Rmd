@@ -30,3 +30,5 @@ menu:
 <!-- [Download calibration targets data](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/data/HMD_USA_Mx_2015.csv) -->
 
 <!-- [Download model function](../../../Course_Modularization/Sensitivity analysis/Markov Sick-Sicker SA/templates/Functions_markov_sick-sicker_time.R) -->
+
+[Download slides - quick overview of VOI](../../../Course_Modularization/VOI/Slides/VOI_short.pdf)

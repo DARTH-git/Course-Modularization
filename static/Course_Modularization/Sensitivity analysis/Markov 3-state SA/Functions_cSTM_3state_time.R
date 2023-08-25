@@ -223,16 +223,18 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
 generate_psa_params <- function(n_sim = 1000, seed = 071818){
   set.seed(seed) # set a seed to be able to reproduce the same results
   df_psa <- data.frame(
-    # Transition probabilities (per cycle)
-    # probability of dying
-    p_SD      = rbeta(n_sim, shape1 = 22.4, shape2 = 201.6),  # from sick          
-    p_HD_min  = 0.003,                                        # from healthy at t = 0
-    p_HD_max  = 0.01,                                         # from healthy at t = n_cycles
+    # Transition rates
+    # rate of dying
+    r_SD      = rlnorm(n_sim,meanlog =   log(0.1), sdlog =  (0.1)),  # from sick
+    
+    r_base     = 0.003, # rate of dying when healthy at t = 0
+    rr_annual  = 1.1,  # annual increase of mortality rate
+    
     # probability of becoming sick when healthy, conditional on surviving
-    p_HS_SoC  = rbeta(n_sim, shape1 = 24, shape2 = 450),      # standard of care
-    p_HS_trtA = rbeta(n_sim, shape1 = 15, shape2 = 368),      # treatment A
-    p_HS_trtB = rbeta(n_sim, shape1 = 16, shape2 = 767),      # treatment B    
-
+    r_HS_SoC  = rlnorm(n_sim,meanlog =   log(0.05), sdlog = 0.05) ,      # standard of care
+    r_HS_trtA =  rlnorm(n_sim,meanlog =   log(0.04), sdlog = 0.04) ,
+    r_HS_trtB =  rlnorm(n_sim,meanlog =   log(0.02), sdlog = 0.02) ,
+    
     ## State rewards
     # Costs
     c_H       = rgamma(n_sim, shape = 16, scale = 25),        # cost of one cycle in healthy state

@@ -1,5 +1,5 @@
 ---
-title: '3-state Markov model in R'
+title: '3-state cSTM in R'
 subtitle: "With state-residence time dependency"
 author: "The DARTH workgroup"
 output:

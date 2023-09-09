@@ -1,5 +1,5 @@
 ---
-title: 'Markov Sick-Sicker model in R'
+title: 'SOLUTIONS - cSTM Sick-Sicker model in R - Excerise'
 subtitle: 'With state-residence time dependencey'
 author: "The DARTH workgroup"
 output:
@@ -152,20 +152,20 @@ v_dwe  <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
 
 # Process model inputs 
 ## Age-specific transition rates to the Dead state for all cycles 
-v_r_HDage <- rep(v_r_mort_by_age, each = 1/cycle_length)
+v_r_HD_age <- rep(v_r_mort_by_age, each = 1/cycle_length)
 # Name age-specific mortality vector 
-names(v_r_HDage) <- v_age_names
+names(v_r_HD_age) <- v_age_names
 
 # compute mortality rates
-v_r_S1Dage <- v_r_HDage * hr_S1 # Age-specific mortality rate in the Sick state 
-v_r_S2Dage <- v_r_HDage * hr_S2 # Age-specific mortality rate in the Sicker state 
+v_r_S1D_age <- v_r_HD_age * hr_S1 # Age-specific mortality rate in the Sick state 
+v_r_S2D_age <- v_r_HD_age * hr_S2 # Age-specific mortality rate in the Sicker state 
 
 # transform rates to probabilities adjusting by cycle length
 p_HS1      <- rate_to_prob(r = r_HS1,  t = cycle_length) # constant annual probability of becoming Sick when Healthy conditional on surviving 
 p_S1H      <- rate_to_prob(r = r_S1H,  t = cycle_length) # constant annual probability of becoming Healthy when Sick conditional on surviving
-v_p_HDage  <- rate_to_prob(v_r_HDage,  t = cycle_length) # Age-specific mortality risk in the Healthy state 
-v_p_S1Dage <- rate_to_prob(v_r_S1Dage, t = cycle_length) # Age-specific mortality risk in the Sick state
-v_p_S2Dage <- rate_to_prob(v_r_S2Dage, t = cycle_length) # Age-specific mortality risk in the Sicker state
+v_p_HD_age  <- rate_to_prob(v_r_HD_age,  t = cycle_length) # Age-specific mortality risk in the Healthy state 
+v_p_S1D_age <- rate_to_prob(v_r_S1D_age, t = cycle_length) # Age-specific mortality risk in the Sick state
+v_p_S2D_age <- rate_to_prob(v_r_S2D_age, t = cycle_length) # Age-specific mortality risk in the Sicker state
 
 ## State-residence-dependent transition rate of becoming Sicker when Sick 
 # Weibull transition rate
@@ -220,29 +220,29 @@ a_P_tunnels_SoC <- array(0,
                                          0:(n_cycles - 1)))
 ### Fill in array
 ## From H
-a_P_tunnels_SoC["H", "H", ]              <- (1 - v_p_HDage) * (1 - p_HS1)
-a_P_tunnels_SoC["H", v_Sick_tunnel[1], ] <- (1 - v_p_HDage) *      p_HS1
-a_P_tunnels_SoC["H", "D", ]              <- v_p_HDage
+a_P_tunnels_SoC["H", "H", ]              <- (1 - v_p_HD_age) * (1 - p_HS1)
+a_P_tunnels_SoC["H", v_Sick_tunnel[1], ] <- (1 - v_p_HD_age) *      p_HS1
+a_P_tunnels_SoC["H", "D", ]              <- v_p_HD_age
 ## From S1
 for (i in 1:n_tunnel_size) {
-  a_P_tunnels_SoC[v_Sick_tunnel[i], "H", ]  <- (1 - v_p_S1Dage) * p_S1H
-  a_P_tunnels_SoC[v_Sick_tunnel[i], "S2", ] <- (1 - v_p_S1Dage) * v_p_S1S2_tunnels[i]
-  a_P_tunnels_SoC[v_Sick_tunnel[i], "D", ]  <-      v_p_S1Dage
+  a_P_tunnels_SoC[v_Sick_tunnel[i], "H", ]  <- (1 - v_p_S1D_age) * p_S1H
+  a_P_tunnels_SoC[v_Sick_tunnel[i], "S2", ] <- (1 - v_p_S1D_age) * v_p_S1S2_tunnels[i]
+  a_P_tunnels_SoC[v_Sick_tunnel[i], "D", ]  <-      v_p_S1D_age
   if (i == n_tunnel_size) {
     # If reaching last tunnel state, ensure that the cohort that does not
     # transition out of the Sick state, remain in the last Sick tunnel state
     a_P_tunnels_SoC[v_Sick_tunnel[i],
-                    v_Sick_tunnel[i], ] <- (1 - v_p_S1Dage) *
+                    v_Sick_tunnel[i], ] <- (1 - v_p_S1D_age) *
       (1 - (p_S1H + v_p_S1S2_tunnels[i]))
   } else{
     a_P_tunnels_SoC[v_Sick_tunnel[i], 
-                    v_Sick_tunnel[i + 1], ]   <- (1 - v_p_S1Dage) *
+                    v_Sick_tunnel[i + 1], ]   <- (1 - v_p_S1D_age) *
       (1 - (p_S1H + v_p_S1S2_tunnels[i]))
   }
 }
 ## From S2
-a_P_tunnels_SoC["S2", "S2", ] <- 1 - v_p_S2Dage
-a_P_tunnels_SoC["S2", "D", ]  <-     v_p_S2Dage
+a_P_tunnels_SoC["S2", "S2", ] <- 1 - v_p_S2D_age
+a_P_tunnels_SoC["S2", "D", ]  <-     v_p_S2D_age
 ## From D
 a_P_tunnels_SoC["D", "D", ] <- 1
 
@@ -250,18 +250,18 @@ a_P_tunnels_SoC["D", "D", ] <- 1
 a_P_tunnels_strAB <- a_P_tunnels_SoC
 # Update only transition probabilities from S1 involving v_p_S1S2_tunnels
 for (i in 1:n_tunnel_size) {
-  a_P_tunnels_strAB[v_Sick_tunnel[i], "H", ]  <- (1 - v_p_S1Dage) * p_S1H
-  a_P_tunnels_strAB[v_Sick_tunnel[i], "S2", ] <- (1 - v_p_S1Dage) * v_p_S1S2_tunnels_trtAB[i]
-  a_P_tunnels_strAB[v_Sick_tunnel[i], "D", ]  <-      v_p_S1Dage
+  a_P_tunnels_strAB[v_Sick_tunnel[i], "H", ]  <- (1 - v_p_S1D_age) * p_S1H
+  a_P_tunnels_strAB[v_Sick_tunnel[i], "S2", ] <- (1 - v_p_S1D_age) * v_p_S1S2_tunnels_trtAB[i]
+  a_P_tunnels_strAB[v_Sick_tunnel[i], "D", ]  <-      v_p_S1D_age
   if (i == n_tunnel_size) {
     # If reaching last tunnel state, ensure that the cohort that does not
     # transition out of the Sick state, remain in the last Sick tunnel state
     a_P_tunnels_strAB[v_Sick_tunnel[i],
-                      v_Sick_tunnel[i], ] <- (1 - v_p_S1Dage) *
+                      v_Sick_tunnel[i], ] <- (1 - v_p_S1D_age) *
       (1 - (p_S1H + v_p_S1S2_tunnels_trtAB[i]))
   } else{
     a_P_tunnels_strAB[v_Sick_tunnel[i], 
-                      v_Sick_tunnel[i + 1], ] <- (1 - v_p_S1Dage) *
+                      v_Sick_tunnel[i + 1], ] <- (1 - v_p_S1D_age) *
       (1 - (p_S1H + v_p_S1S2_tunnels_trtAB[i]))
   }
 }

@@ -1,5 +1,5 @@
 ---
-title: 'Markov Sick-Sicker model in R'
+title: 'SOLUTIONS - cSTM Sick-Sicker model in R'
 author: "The DARTH workgroup"
 output:
   pdf_document: default

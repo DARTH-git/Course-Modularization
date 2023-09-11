@@ -1,18 +1,18 @@
+
 #------------------------------------------------------------------------------#
-####                         Decision Model                                 ####
+####              Calculate cost-effectiveness outcomes                     ####
 #------------------------------------------------------------------------------#
-#' 3-State Decision Model
+#' Calculate cost-effectiveness outcomes
 #'
-#' \code{decision_model} implements the 3-state health-sick-dead decision model.
-#'
+#' \code{calculate_ce_out} calculates costs and effects for a given vector of parameters using a simulation model.
 #' @param l_params_all List with all parameters of decision model
-#' @param verbose Logical variable to indicate print out of messages
-#' @return The transition probability array and the cohort trace matrix.
+#' @param n_wtp Willingness-to-pay threshold to compute net monetary benefits (
+#' NMB)
+#' @return A dataframe with discounted costs, effectiveness and NMB.
 #' @export
-decision_model <- function(l_params_all, verbose = FALSE) {
+calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
   with(as.list(l_params_all), {
-    ########################### Process model inputs ###########################
-    ## Model states
+    
     v_names_states  <- c("H", "S", "D")       # state names, Healthy (H), Sick (S), Dead(D)
     n_states        <- length(v_names_states) # number of health states 
     
@@ -106,30 +106,6 @@ decision_model <- function(l_params_all, verbose = FALSE) {
                   A   =  m_M_trtA,
                   B   =  m_M_trtB)
     names(l_m_M) <- v_names_str
-    
-    ########################################## RETURN OUTPUT  ##########################################
-    out <- list(l_m_M = l_m_M)
-    
-    return(out)
-  }
-  )
-}
-
-#------------------------------------------------------------------------------#
-####              Calculate cost-effectiveness outcomes                     ####
-#------------------------------------------------------------------------------#
-#' Calculate cost-effectiveness outcomes
-#'
-#' \code{calculate_ce_out} calculates costs and effects for a given vector of parameters using a simulation model.
-#' @param l_params_all List with all parameters of decision model
-#' @param n_wtp Willingness-to-pay threshold to compute net monetary benefits (
-#' NMB)
-#' @return A dataframe with discounted costs, effectiveness and NMB.
-#' @export
-calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
-  with(as.list(l_params_all), {
-    ### Run decision model to get transition dynamics array
-    l_m_M <- decision_model(l_params_all = l_params_all)$l_m_M
     
     ### State rewards
     ## Scale by the cycle length 

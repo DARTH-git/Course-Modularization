@@ -10,7 +10,7 @@
 #' NMB)
 #' @return A dataframe with discounted costs, effectiveness and NMB.
 #' @export
-calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
+calculate_ce_out <- function(l_params_all, n_wtp = 10000 ,verbose= verbose){ # User defined
   with(as.list(l_params_all), {
     ########################### Process model inputs ###########################
     ## Model states
@@ -93,13 +93,13 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000){ # User defined
     
     ## Check if transition array and probabilities are valid
     # Check that transition probabilities are in [0, 1]
-    check_transition_probability(m_P_SoC,  verbose = TRUE)
-    check_transition_probability(m_P_trtA, verbose = TRUE)
-    check_transition_probability(m_P_trtB, verbose = TRUE)
+    check_transition_probability(m_P_SoC,  verbose = verbose)
+    check_transition_probability(m_P_trtA, verbose = verbose)
+    check_transition_probability(m_P_trtB, verbose = verbose)
     # Check that all rows sum to 1
-    check_sum_of_transition_array(m_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-    check_sum_of_transition_array(m_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
-    check_sum_of_transition_array(m_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
+    check_sum_of_transition_array(m_P_SoC,  n_states = n_states, n_cycles = n_cycles, verbose = verbose)
+    check_sum_of_transition_array(m_P_trtA, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
+    check_sum_of_transition_array(m_P_trtB, n_states = n_states, n_cycles = n_cycles, verbose = verbose)
     
     # Iterative solution of age-dependent cSTM
     for(t in 1:n_cycles){

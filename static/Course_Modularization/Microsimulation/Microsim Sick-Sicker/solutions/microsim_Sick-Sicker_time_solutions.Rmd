@@ -238,12 +238,12 @@ Costs <- function (M_t, Trt = "Standard of care") {
 The `Effs` function to update the utilities at every cycle.
 
 ```{r}
-Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
+Effs <- function (M_t, df_X, Trt = "Standard of care", cycle_length = 1) {
   # Arguments:
     # M_t: health state occupied by individual i at cycle t (character variable)
     # df_X: data frame with individual characteristics data 
     # Trt:  Treatment
-    # cl:   cycle length (default is 1)
+    # cycle_length:   cycle length (default is 1)
   # Returns:
     # QALYs accrued this cycle
   
@@ -258,24 +258,24 @@ Effs <- function (M_t, df_X, Trt = "Standard of care", cl = 1) {
     u_t[M_t == "S1"] <- u_trtAB * df_X$x[M_t == "S1"]  
   }
   
-  u_t[M_t == "S2"]   <- u_S2        # update the utility if sicker
-  u_t[M_t == "D"]    <- u_D         # update the utility if dead
-  
-  QALYs <- u_t * cl  # calculate the QALYs during cycle t
-  return(QALYs)      # return the QALYs accrued this cycle
+  u_t[M_t == "S2"]   <- u_S2       # update the utility if sicker
+  u_t[M_t == "D"]    <- u_D        # update the utility if dead
+     
+  QALYs <- u_t * cycle_length      # calculate the QALYs during cycle t
+  return(QALYs)                    # return the QALYs accrued this cycle
 }
 ```
 
 ## 05.4 The Microsimulation function
 
 ```{r}
-MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1, cl = 1) {
+MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1, cycle_length = 1) {
   # Arguments:  
     # n_i : number of individuals
     # df_X: data frame with individual characteristics data 
     # Trt : treatment
     # seed: seed for the random number generator, default is 1
-    # cl  : cycle length
+    # cycle_length  : cycle length
   # Returns:
     # results: data frame with total cost and QALYs
   
@@ -294,7 +294,7 @@ MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1, cl = 1) {
 
     m_M[, 1] <- as.character(df_X$M_init)        # initial health state at cycle 0 for individual i
     m_C[, 1] <- Costs(m_M[, 1], Trt = Trt)       # calculate costs per individual during cycle 0    
-    m_E[, 1] <- Effs (m_M[, 1], df_X, Trt = Trt, cl = cl) # calculate QALYs per individual during cycle 0
+    m_E[, 1] <- Effs (m_M[, 1], df_X, Trt = Trt, cycle_length = cycle_length) # calculate QALYs per individual during cycle 0
     
     # open a loop for time running cycles 1 to n_cycles 
     for (t in 1:n_cycles) {
@@ -310,7 +310,7 @@ MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1, cl = 1) {
       # calculate costs per individual during cycle t + 1
       m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt)         
       # calculate QALYs per individual during cycle t + 1
-      m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt, cl = cl)    
+      m_E[, t + 1]  <- Effs(m_M[, t + 1], df_X, Trt, cycle_length = cycle_length)    
       
       # update time since illness onset for t + 1 
       df_X$n_cycles_s <- if_else(m_M[, t + 1] == "S1", df_X$n_cycles_s + 1, 0) 
@@ -345,8 +345,8 @@ MicroSim <- function(n_i, df_X, Trt = "Standard of care", seed = 1, cl = 1) {
 
 ```{r, eval = TRUE, echo = TRUE, warning = FALSE, message = FALSE, results = FALSE }
 # Run the simulation for both no treatment and treatment options
-outcomes_SoC   <- MicroSim(n_i = n_i, df_X = df_X, Trt = "Standard of care", seed = 1, cl = cycle_length)
-outcomes_trtAB <- MicroSim(n_i = n_i, df_X = df_X, Trt = "Strategy AB",      seed = 1, cl = cycle_length)
+outcomes_SoC   <- MicroSim(n_i = n_i, df_X = df_X, Trt = "Standard of care", seed = 1, cycle_length = cycle_length)
+outcomes_trtAB <- MicroSim(n_i = n_i, df_X = df_X, Trt = "Strategy AB",      seed = 1, cycle_length = cycle_length)
 ```
 
 # 07 Visualize results

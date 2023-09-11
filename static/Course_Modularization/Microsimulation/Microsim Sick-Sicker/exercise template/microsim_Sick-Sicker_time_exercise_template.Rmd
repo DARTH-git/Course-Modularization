@@ -59,7 +59,7 @@ All model parameter values and `R` variable names are presented in Table 1.
 |           **Parameter**            |  **R name** |   **Value**   |
 |:-----------------------------------|:------------|:-------------:|
 | Time horizon                       | `n_cycles`  | 30 years      |
-| Cycle length                       |             | 1 year        |
+| Cycle length                       |`cycle_length`| 1 year        |
 | Names of simulated individuals     | `n_i`       | 100000          |
 | Names of health states             | `v_names_states`       | H, S1, S2, D  |
 | Annual discount rate (costs/QALYs) | `d_e` `d_c` | 3%            |
@@ -101,7 +101,7 @@ While in you Microsim Sick-Sicker R project, open this `microsim_Sick-Sicker_tim
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 # load (install if required) packages from CRAN
-p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack")
+p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "matrixStats", "stringr", "dampack")
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")

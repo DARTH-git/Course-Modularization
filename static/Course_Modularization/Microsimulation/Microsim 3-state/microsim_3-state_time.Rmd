@@ -34,7 +34,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 ```{r}
 if (!require('pacman')) install.packages('pacman'); library(pacman) 
 # load (install if required) packages from CRAN
-p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack")
+p_load("devtools", "dplyr", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "markdown", "stringr", "dampack", "matrixStats")
 # load (install if required) packages from GitHub
 # install_github("DARTH-git/darthtools", force = TRUE) # Uncomment if there is a newer version
 p_load_gh("DARTH-git/darthtools")
@@ -68,7 +68,7 @@ d_c <- 0.03 # annual discount rate for costs
 d_e <- 0.03 # annual discount rate for QALYs
 
 ### Strategies 
-v_names_str     <- c("Standard of Care",         # store the strategy names
+v_names_str     <- c("Standard of care",         # store the strategy names
                      "Treatment A", 
                      "Treatment B")  
 n_str           <- length(v_names_str)           # number of strategies
@@ -223,7 +223,7 @@ Costs <- function (M_t, Trt = "SoC") {
 The `Effs` function to update the utilities at every cycle.
 
 ```{r}
-Effs <- function (M_t, cl = 1) {
+Effs <- function (M_t, cycle_length = 1) {
   # Arguments:
     # M_t: health state occupied at cycle t (character variable)
     # cl:  cycle length (default is 1)
@@ -235,7 +235,7 @@ Effs <- function (M_t, cl = 1) {
   u_t[M_t == "S"] <- u_S  # utility for being sick this cycle
   u_t[M_t == "D"] <- u_D  # utility for dead state
   
-  QALYs <- u_t * cl  # calculate the QALYs during cycle t
+  QALYs <- u_t * cycle_length  # calculate the QALYs during cycle t
   return(QALYs)      # return the QALYs accrued this cycle
 }
 ```
@@ -245,13 +245,13 @@ Effs <- function (M_t, cl = 1) {
 Below we develop the microsimulation function that allows the model to be run.
 
 ```{r}
-MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cl = 1) {
+MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cycle_length = 1) {
   # Arguments:  
     # n_i: number of individuals
     # df_X: data frame with individual data 
     # Trt: treatment
     # seed: seed for the random number generator, default is 1
-    # cl  : cycle lenght
+    # cycle_length: cycle lenght 
   # Returns:
     # results: data frame with total cost and QALYs
   
@@ -270,7 +270,7 @@ MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cl = 1) {
  
   m_M[, 1] <- as.character(df_X$M_init) # initial health state at cycle 0 for individual i
   m_C[, 1] <- Costs(m_M[, 1])           # costs per individual during cycle 0
-  m_E[, 1] <- Effs( m_M[, 1], cl = cl)   # QALYs per individual during cycle 0
+  m_E[, 1] <- Effs( m_M[, 1], cycle_length = cycle_length)   # QALYs per individual during cycle 0
   
   # open a loop for time running cycles 1 to n_cycles 
   for (t in 1:n_cycles) {
@@ -286,7 +286,7 @@ MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cl = 1) {
     # calculate costs per individual during cycle t + 1
     m_C[, t + 1]  <- Costs(m_M[, t + 1], Trt = Trt)  
     # calculate QALYs per individual during cycle t + 1
-    m_E[, t + 1]  <- Effs (m_M[, t + 1], cl = cl)  
+    m_E[, t + 1]  <- Effs (m_M[, t + 1], cycle_length = cycle_length)  
     
     # update time since illness onset for t + 1 
     # NOTE: this code has a "reset of history" for time being sick
@@ -321,9 +321,9 @@ MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cl = 1) {
 # 06 Run Microsimulation
 # By specifying all the arguments in the `MicroSim()` the simulation can be started
 # Run the simulation model
-outcomes_SoC  <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cl = cycle_length, Trt = "SoC")
-outcomes_trtA <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cl = cycle_length, Trt = "A")
-outcomes_trtB <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cl = cycle_length, Trt = "B")
+outcomes_SoC  <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cycle_length = cycle_length, Trt = "SoC")
+outcomes_trtA <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cycle_length = cycle_length, Trt = "A")
+outcomes_trtB <- MicroSim(n_i = n_i, df_X = df_X, seed = 1, cycle_length = cycle_length, Trt = "B")
 ```
 
 # 07 Visualize results

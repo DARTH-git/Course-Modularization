@@ -1,6 +1,6 @@
 ---
-title: 'cSTM Sick-Sicker model in R - Excerise'
-subtitle: "With simulation-time dependency"
+title: 'Markov Sick-Sicker model in R - Excerise'
+subtitle: "With simulation-time dependence"
 author: "The DARTH workgroup"
 output:
   pdf_document: default
@@ -79,10 +79,6 @@ include_graphics("../figures/sick_sicker_diagram.png")
 | - Sick individuals in S2           | `u_S2`      |  0.50         |
 | - Dead individuals                 | `u_D`       |  0.00         |
 | - Utility for individuals treated with Strategy AB in S1 | `u_trtAB` |  0.95        |
-| Transition rewards              |             |               |
-| - Disutility when transitioning from H to S1             | `du_HS1`       |  0.01      |
-| - Increase in cost when transitioning from H to S1           | `ic_HS1`      |  1000         |
-| - increase in cost when dying          | `ic_D`      |  2000         |
 
 *Note: To calculate the probability of dying from S1 and S2, use the hazard ratios provided. To do so, first multiply the rate of dying from healthy by the appropriate hazard ratio; finally, convert this rate back to a probability. Recall that you can convert between rates and probabilities using the following formulas: $r = -log(1-p)$ and $p = 1-e^{(-rt)}$. The package `darthtools` also has the functions `prob_to_rate` and `rate_to_prob` that might be of use to you.
 
@@ -180,11 +176,6 @@ u_S1    <- 0.75  # annual utility of being Sick
 u_S2    <- 0.5   # annual utility of being Sicker
 u_D     <- 0     # annual utility of being dead
 u_trtAB <- 0.95  # annual utility when receiving treatment AB
-
-### Transition rewards 
-du_HS1  <- 0.01  # disutility when transitioning from Healthy to Sick
-ic_HS1  <- 1000  # increase in cost when transitioning from Healthy to Sick
-ic_D    <- 2000  # increase in cost when dying
 
 ### Discount weight for costs and effects 
 v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
@@ -287,22 +278,6 @@ check_sum_of_transition_array(a_P_SoC,   n_states = n_states, n_cycles = n_cycle
 check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
-## 04.4 Create transition dynamics arrays
-
-```{r}
-# These arrays will capture transitions from each state to another over time 
-### Initialize transition dynamics array for strategy SoC 
-# your turn
-
-# Set first slice of a_A_SoC with the initial state vector in its diagonal
-# your turn
-
-### Initialize transition-dynamics array for strategy AB 
-# Structure and initial states are the same as for SoC
-# your turn
-
-```
-
 # 05 Run Markov model
 
 ```{r}
@@ -310,9 +285,6 @@ check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycle
 # your turn
 
 ## Store the cohort traces in a list 
-# your turn
-
-## Store the transition dynamics array for each strategy in a list 
 # your turn
 ```
 

@@ -209,11 +209,11 @@ df_output <- data.frame(Strategy =  v_names_str,
 df_output
 ```
 
-
-
 ## 05 Cost-Effectiveness Analysis
-For the cost-effectiveness we make use uf the `calculate_icers` function from the `dampack` package.
+
+For the cost-effectiveness we make use of the `calculate_icers` function from the `dampack` package.
 You can find more information about this package by typing `??calculate_icers` in your Console.
+
 ```{r}
 # create the transition probability matrix for NO treatment
 decision_tree_HVE_cea  <- calculate_icers(cost       = df_output$Cost,

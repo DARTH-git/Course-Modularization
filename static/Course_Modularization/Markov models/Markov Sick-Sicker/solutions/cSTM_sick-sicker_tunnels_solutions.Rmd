@@ -1,6 +1,6 @@
 ---
 title: 'SOLUTIONS - cSTM Sick-Sicker model in R - Excerise'
-subtitle: 'With state-residence time dependencey'
+subtitle: 'With state-residence time dependence'
 author: "The DARTH workgroup"
 output:
   html_document: default

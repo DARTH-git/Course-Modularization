@@ -1,6 +1,6 @@
 ---
-title: 'SOLUTIONS - cSTM Sick-Sicker model in R - Excerise'
-subtitle: "With simulation-time dependency"
+title: 'SOLUTIONS - Markov Sick-Sicker model in R - Excerise'
+subtitle: "With simulation-time dependence"
 author: "The DARTH workgroup"
 output:
   html_document: default
@@ -26,7 +26,7 @@ See student template for excersice description.
 \newpage
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE)
 ```
 
 Change `eval` to `TRUE` if you want to knit this document.
@@ -115,11 +115,6 @@ u_S1    <- 0.75  # annual utility of being Sick
 u_S2    <- 0.5   # annual utility of being Sicker
 u_D     <- 0     # annual utility of being dead
 u_trtAB <- 0.95  # annual utility when receiving treatment AB
-
-### Transition rewards 
-du_HS1  <- 0.01  # disutility when transitioning from Healthy to Sick (S1)
-ic_HS1  <- 1000  # increase in cost when transitioning from Healthy to Sick (S1)
-ic_D    <- 2000  # increase in cost when dying
 
 ### Discount weight for costs and effects 
 v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
@@ -217,21 +212,6 @@ check_sum_of_transition_array(a_P_SoC,   n_states = n_states, n_cycles = n_cycle
 check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
-## 04.4 Create transition dynamics arrays
-
-```{r}
-# These arrays will capture transitions from each state to another over time 
-### Initialize transition dynamics array for strategy SoC 
-a_A_SoC <- array(0,
-             dim      = c(n_states, n_states, n_cycles + 1),
-             dimnames = list(v_names_states, v_names_states, 0:n_cycles))
-# Set first slice of a_A_SoC with the initial state vector in its diagonal
-diag(a_A_SoC[, , 1]) <- v_m_init
-### Initialize transition-dynamics array for strategy AB 
-# Structure and initial states are the same as for SoC
-a_A_strAB <- a_A_SoC
-```
-
 # 05 Run Markov model
 
 ```{r}
@@ -242,23 +222,12 @@ for(t in 1:n_cycles){
   m_M_SoC[t + 1, ]   <- m_M_SoC[t, ]   %*% a_P_SoC[, , t]
   # For strategy AB 
   m_M_strAB[t + 1, ] <- m_M_strAB[t, ] %*% a_P_strAB[, , t]
-  
-  ## Fill in transition-dynamics array
-  # For SoC
-  a_A_SoC[, , t + 1]   <- diag(m_M_SoC[t, ])   %*% a_P_SoC[, , t]
-  # For strategy AB
-  a_A_strAB[, , t + 1] <- diag(m_M_strAB[t, ]) %*% a_P_strAB[, , t]
 }
 
 ## Store the cohort traces in a list 
 l_m_M <- list(SoC =  m_M_SoC,
               AB  =  m_M_strAB)
 names(l_m_M) <- v_names_str
-
-## Store the transition dynamics array for each strategy in a list 
-l_a_A <- list(SoC =  a_A_SoC,
-              AB  =  a_A_strAB)
-names(l_a_A) <- v_names_str
 ```
 
 # 06 Plot Outputs
@@ -318,41 +287,14 @@ names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
 for (i in 1:n_str) { # i <- 1
   v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
   v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
-  a_A_str <- l_a_A[[i]] # select the transition array for the i-th strategy
   
-  ## Array of state rewards 
-  # Create transition matrices of state utilities and state costs for the i-th strategy 
-  m_u_str   <- matrix(v_u_str, nrow = n_states, ncol = n_states, byrow = T)
-  m_c_str   <- matrix(v_c_str, nrow = n_states, ncol = n_states, byrow = T)
-  # Expand the transition matrix of state utilities across cycles to form a transition array of state utilities
-  a_R_u_str <- array(m_u_str, 
-                     dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
-  # Expand the transition matrix of state costs across cycles to form a transition array of state costs
-  a_R_c_str <- array(m_c_str, 
-                     dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
+  ### Expected QALYs and costs per cycle 
+  ## Vector of QALYs and Costs
+  # Apply state rewards 
+  v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
+  v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
   
-  ## Apply transition rewards
-  # Apply disutility due to transition from H to S1
-  a_R_u_str["H", "S1", ]      <- a_R_u_str["H", "S1", ]       - du_HS1
-  # Add transition cost per cycle due to transition from H to S1
-  a_R_c_str["H", "S1", ]      <- a_R_c_str["H", "S1", ]       + ic_HS1
-  # Add transition cost  per cycle of dying from all non-dead states
-  a_R_c_str[-n_states, "D", ] <- a_R_c_str[-n_states, "D", ] + ic_D
-  
-  ### Expected QALYs and costs for all transitions per cycle
-  # QALYs = life years x QoL
-  # Note: all parameters are annual in our example. In case your own case example is different make sure you correctly apply.
-  a_Y_c_str <- a_A_str * a_R_c_str
-  a_Y_u_str <- a_A_str * a_R_u_str 
-  
-  ### Expected QALYs and costs per cycle
-  ## Vector of QALYs and costs
-  v_qaly_str <- apply(a_Y_u_str, 3, sum) # sum the proportion of the cohort across transitions 
-  v_cost_str <- apply(a_Y_c_str, 3, sum) # sum the proportion of the cohort across transitions
-  
-  ## Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+  ### Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
   # QALYs
   v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
   # Costs

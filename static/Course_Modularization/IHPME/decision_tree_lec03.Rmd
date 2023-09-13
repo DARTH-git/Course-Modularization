@@ -1,0 +1,206 @@
+---
+title: "Introduction to Decision Trees in R"
+subtitle: "Case Study: Invasive meningococcal disease"
+author: "Petros Pechlivanoglou"
+date: "Wednesday, September 13, 2023"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+self_contained: no
+keep_tex: yes
+---
+
+# R software
+
+The R Project for Statistical Computing: https://www.r-project.org/
+
+# Installing R
+
+*Install R*
+
+Download R version 4.3.1 from https://cran.r-project.org/bin/windows/base/old/4.3.1/
+
+Download the file `R-4.3.1-win.exe` and follow the installation procedure.
+
+*Install RStudio*
+
+Download and install the free version of RStudio Desktop from: https://posit.co/download/rstudio-desktop/#download
+
+\newpage
+
+# Background
+
+## Invasive meningococcal disease (IMD):
+
+- Acute and serious communicable disease caused by the bacterium Neisseria meningitidis,
+- Clinical manifestations: meningitis, septicemia (meningococcemia) or both.
+- Case fatality ratio: 5-11%
+- Sequelae in ~1/3 of survivors, including hearing loss, neurologic disabilities, and digit or limb amputations
+- Most frequent serogroups associate with IMD: A, B, C, W-135 and Y
+
+Serogroup B meningococcal (MenB) disease:
+
+- Endemic in Ontario 
+- Most common cause of life-threatening IMD in children 
+
+## Vaccines
+
+- Most frequent serogroups associate with IMD: A, B, C, W-135 and Y
+- Current vaccines:
+  - Men C: 12 months of age
+  - Men ACYW-135 vaccine: 7th grade
+- MenB?
+  - A novel MenB vaccine was submitted for regulatory approval in Europe, Australia and Canada (Spring 2011).
+
+## Decision Problem
+
+You are a member of the National Advisory Committee on Immunization. 
+At a recent meeting the committee was informed about a new MenB vaccine that is currently under development and appears to be safe and effective. 
+
+Anticipating that the vaccine may be approved for use in Canada within the next 2-3 years, the committee is interested in exploring the potential cost-effectiveness of the new vaccine in the Canadian context to support timely decision-making. 
+
+# Building a Tree
+
+This R Markdown document provides a foundation for constructing a decision tree model for CAD:
+
+Target population: children
+
+Time horizon: lifetime
+
+The two strategies being compared are:
+
+1. Vaccination 
+2. No vaccination 
+
+The outcomes being considered are:
+
+- Costs
+- Benefit from vaccination
+- Risk of adverse events
+
+Objective: To assess the cost-utility of meningococcal serogroup B vaccination in infants compared to no vaccination from the healthcare payer perspective in Canada.
+
+imited options, though, for sensitivity analysis.
+
+# Building a Tree with Variables
+
+Much greater flexibility is possible if numeric quantities in the tree are defined as variables or expressions.
+
+Variables can be globally defined and live in the Global Environment in R and applied to the whole tree. 
+
+Steps for using variables:
+
+1. Declare name — Based on its intended function in your model, decide on a clear name for the variable.
+2. Use — Anywhere the corresponding value is used in the tree (e.g., payoffs or probabilities).
+
+Simplest way to create a variable is to type it in a R chunk like below:
+
+```{r}
+# Probabilities
+p_AE       <- 0.002  # Probability of adverse event
+p_IMD      <- 0.2    # Probability of invasive MenB disease
+p_death    <- 0.05   # Probability of acute death
+p_sequelae <- 0.05   # Probability of long-term sequelae given survival of acute disease (major)
+e_Vacc     <- 0.58   # Vaccine effectiveness 
+e_NoVacc   <- 0      # No vaccine effectiveness 
+
+# Utilities
+u_AE       <- 0.9996 # Utility, Adverse event
+u_IMD      <- 0.87   # Utility, Invasive MenB disease
+u_sequelae <- 0.78   # Utility, Long-term sequelae
+u_well     <- 1      # Utility, Well
+u_death    <- 0      # Utility, Death
+
+# Costs
+c_Vacc     <- 300    # Cost, Vaccination
+c_AE       <- 673    # Cost, Adverse event
+c_IMD      <- 16630  # Cost, Invasive MenB disease (acute)
+c_sequelae <- 12256  # Cost, Long-term sequelae (per year)
+```
+
+# Using Subtrees
+
+In R you can create subtrees and assign them to functions with desired names. For example, the subtree describing outcomes for those experiencing IMD or not can be assigned into a function and we can call it `Effectiveness_Subtree`. The arguments of this function include probability of IMD, probability of acute death, probability of long-term sequelae, and costs and utilities.
+
+```{r}
+# p_IMD:      Probability of invasive MenB disease 
+# p_death:    Probability of acute death
+# p_sequelae: Probability of long-term sequelae 
+# e:          Effectiveness of strategy (Vaccine vs. No Vaccine)
+# u_IMD:      Utility, Invasive MenB disease
+# u_sequelae: Utility, Long-term sequelae
+# u_well:     Utility, Well
+# u_death:    Utility, Death
+# c_IMD:      Cost, Invasive MenB disease (acute)
+# c_sequelae: Cost, Long-term sequelae (per year)
+Effectiveness_Subtree <- function(p_IMD, p_death, p_sequelae, e,
+                                  u_IMD, u_sequelae, u_well, u_death,
+                                  c_IMD, c_sequelae) {
+                            # Utility
+                            u <- p_IMD*(1 - e)  *      p_death  * (u_IMD * u_death)    +
+                                 p_IMD*(1 - e)  * (1 - p_death) *      p_sequelae  * 
+                                                                  (u_IMD * u_sequelae) + 
+                                 p_IMD*(1 - e)  * (1 - p_death) * (1 - p_sequelae) * 
+                                                                  (u_IMD * u_well)     + 
+                            (1 - p_IMD*(1 - e)) * u_well
+  
+                            # Cost
+                            c <- p_IMD*(1 - e)  *      p_death  *  c_IMD               +
+                                 p_IMD*(1 - e)  * (1 - p_death) *      p_sequelae  * 
+                                                                  (c_IMD + c_sequelae) + 
+                                 p_IMD*(1 - e)  * (1 - p_death) * (1 - p_sequelae) * 
+                                                                   c_IMD               + 
+                            (1 - p_IMD*(1 - e)) * 0
+    return(list(u = u, 
+                c = c))
+}
+```
+
+To use this subtree function, you just need to pass values to the arguments. Below we calculate QALY outcomes for both medicine and surgery while using subtree `Effectiveness_Subtree` for both strategies. 
+
+```{r}
+# Vaccine
+subtree_Vacc <- Effectiveness_Subtree(p_IMD      = p_IMD, 
+                                      p_death    = p_death, 
+                                      p_sequelae = p_sequelae, 
+                                      e          = e_Vacc,
+                                      u_IMD      = u_IMD, 
+                                      u_sequelae = u_sequelae,
+                                      u_well     = u_well,
+                                      u_death    = u_death,
+                                      c_IMD      = c_IMD,
+                                      c_sequelae = c_sequelae)
+
+## Vaccine, Adverse event
+tu_Vacc_AE  <- p_AE *  u_AE           * subtree_Vacc$u
+tc_Vacc_AE  <- p_AE * (c_AE + c_Vacc  + subtree_Vacc$c)
+
+## Vaccine, No Adverse event
+tu_Vacc_noAE <- (1 - p_AE)            * subtree_Vacc$u
+tc_Vacc_noAE <- (1 - p_AE) * (c_Vacc  + subtree_Vacc$c)
+
+tu_Vacc <- tu_Vacc_AE + tu_Vacc_noAE
+tc_Vacc <- tc_Vacc_AE + tc_Vacc_noAE
+
+# No Vaccine
+subtree_NoVacc <- Effectiveness_Subtree(p_IMD      = p_IMD, 
+                                        p_death    = p_death, 
+                                        p_sequelae = p_sequelae, 
+                                        e          = e_NoVacc,
+                                        u_IMD      = u_IMD, 
+                                        u_sequelae = u_sequelae,
+                                        u_well     = u_well,
+                                        u_death    = u_death,
+                                        c_IMD      = c_IMD,
+                                        c_sequelae = c_sequelae)
+
+tu_NoVacc  <- subtree_NoVacc$u
+tc_NoVacc  <- subtree_NoVacc$c
+
+df_output <- data.frame(Strategy =  c("Vaccine", "No Vaccine"),
+                        Cost     =  c(tc_Vacc, tc_NoVacc),
+                        Effect   =  c(tu_Vacc, tu_NoVacc))
+df_output
+```
+

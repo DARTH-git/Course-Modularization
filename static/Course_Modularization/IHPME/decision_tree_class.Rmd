@@ -161,3 +161,40 @@ Surgery  <-      p_death_ORSurgery  * LE_death_ORSurgery +
 Surgery
 ```
 
+# Using OpenTree
+
+```{r}
+#create_tree(file_name = "Helloworld", dir_name = getwd())
+#devtools::install_github("DARTH-git/"OpenTree")
+library(OpenTree)
+open_tree(file_name = "CAD", dir_name = getwd())
+```
+
+Extract probability weights and outcomes of the decision tree.
+
+```{r, warning = F}
+# extract the probability weights and outcomes  
+df_tree <- evaluate_model("CAD", n_payoffs = 1)
+```
+
+```{r}
+df_tree
+```
+
+```{r}
+v_names_str <- c("Medicine", "Surgery")
+n_str <- length(v_names_str)
+# vector of total QALYs
+v_total_qaly <- vector(mode = "numeric", length = n_str)
+
+# Calculate total costs and QALYs for each strategy 
+ for (i in 1:n_str) {
+  v_total_qaly[i] <- df_tree[[i]]$prob %*% df_tree[[i]]$payoff1
+ }
+
+df_output <- data.frame(Strategy =  v_names_str,
+                        Effect   =  v_total_qaly)
+
+# model output
+df_output
+```

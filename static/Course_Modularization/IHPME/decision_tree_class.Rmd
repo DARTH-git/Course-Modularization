@@ -36,7 +36,7 @@ This R Markdown document provides a foundation for constructing a decision tree 
 Scenario - 70 yr old man with 3 vessel coronary artery disease (CAD).
 
 ```{r, echo=F}
-knitr::include_graphics("decision_tree_class_fig.png")
+#knitr::include_graphics("decision_tree_class_fig.png")
 ```
 
 The two strategies being compared are:
@@ -101,10 +101,10 @@ Medicine <-     p_death_CADMedicine  * LE_death_CAD +
            (1 - p_death_CADMedicine) * LE_death_otherCauses
 Medicine
 
-Surgery  <-     p_death_ORSurgery * LE_death_ORSurgery + 
-           (1 - p_death_ORSurgery) * (      p_death_CADSurgery  * LE_death_CAD + 
-                                       (1 - p_death_CADSurgery) * LE_death_otherCauses
-                                     )
+Surgery  <-     p_death_ORSurgery  *       LE_death_ORSurgery + 
+           (1 - p_death_ORSurgery) *       p_death_CADSurgery  * LE_death_CAD +  
+           (1 - p_death_ORSurgery) *  (1 - p_death_CADSurgery) * LE_death_otherCauses
+                                     
 Surgery
 ```
 
@@ -116,10 +116,10 @@ v_p_death_ORSurgery <- c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
 Medicine_sens <-     p_death_CADMedicine  * LE_death_CAD + 
                 (1 - p_death_CADMedicine) * LE_death_otherCauses
 
-Surgery_sens  <-     v_p_death_ORSurgery  * LE_death_ORSurgery + 
-                (1 - v_p_death_ORSurgery) * (      p_death_CADSurgery  * LE_death_CAD + 
-                                              (1 - p_death_CADSurgery) * LE_death_otherCauses
-                                            )
+Surgery_sens  <-     v_p_death_ORSurgery  *      LE_death_ORSurgery + 
+                (1 - v_p_death_ORSurgery) *      p_death_CADSurgery  * LE_death_CAD + 
+                (1 - v_p_death_ORSurgery) * (1 - p_death_CADSurgery) * LE_death_otherCauses
+                                          
 plot(v_p_death_ORSurgery, Surgery_sens, type="l", main="Sensitivity Analysis", 
      xlab="probability of perioperative death", ylab="Expected value", col="red")
 points(v_p_death_ORSurgery, Surgery_sens, col="red")
@@ -198,3 +198,4 @@ df_output <- data.frame(Strategy =  v_names_str,
 # model output
 df_output
 ```
+

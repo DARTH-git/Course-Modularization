@@ -29,6 +29,12 @@ Download and install the free version of RStudio Desktop from: https://posit.co/
 
 \newpage
 
+
+
+# Before you get started
+
+Before you get started make sure that you set the working directory to the right folder (ie the folder that contains any information for this course) . You can sdo so using the command `setwd` or through the Session -> set working directory  drop down menu
+
 # Building a Tree
 
 This R Markdown document provides a foundation for constructing a decision tree model for CAD:
@@ -139,7 +145,7 @@ In R you can create subtrees and assign them to functions with desired names. Fo
 # u_CAD: utility after CAD
 Effectiveness_Subtree <- function(p_death_Tx, LE_death_Tx, LE_death_noTx, u_CAD) {
   
-                                      p_death_Tx  * LE_death_Tx   * u_CAD + 
+                                      p_death_Tx  * LE_death_Tx   * u_CAD +
                                  (1 - p_death_Tx) * LE_death_noTx * 1
 }
 ```
@@ -163,14 +169,24 @@ Surgery
 
 # Using OpenTree
 
+OpenTree can help you visualize the tree as well as solve it, especially for simple trees.
 ```{r}
-#create_tree(file_name = "Helloworld", dir_name = getwd())
-#devtools::install_github("DARTH-git/"OpenTree")
+## run the line below only the first time you are working with open tree
+
+devtools::install_github("DARTH-git/OpenTree")
 library(OpenTree)
+
+
+# this will allow you to create a tree in OpenTree if you need to create a new one. the name you provide will be the name of the json file that will be created with the tree
+
+#create_tree(file_name = "Helloworld", dir_name = getwd())
+
+# this will load the existing CAD tree
 open_tree(file_name = "CAD", dir_name = getwd())
 ```
 
-Extract probability weights and outcomes of the decision tree.
+Extract probability weights and outcomes for each pathway of the decision tree.
+
 
 ```{r, warning = F}
 # extract the probability weights and outcomes  
@@ -181,17 +197,18 @@ df_tree <- evaluate_model("CAD", n_payoffs = 1)
 df_tree
 ```
 
+Calculate  expected costs and expected effects  for the model using opentree output by multiplying the probabilities for each pathway (prob) with the payoffs of each pathway (payoff1)
 ```{r}
 v_names_str <- names(df_tree)
 n_str <- length(v_names_str)
-# vector of total QALYs
+# vector of total Life Years
 v_total_qaly <- vector(mode = "numeric", length = n_str)
 
 
 Medicine <- sum(df_tree$medicine$prob * df_tree$medicine$payoff1)
 Surgery <-  sum(df_tree$surgery$prob  * df_tree$surgery$payoff1)
 
-v_total_qaly <- c(Medicine, Surgery)
+v_total_qaly <- c(Medicine, Surgery)    
 
 
 df_output <- data.frame(Strategy =  v_names_str,

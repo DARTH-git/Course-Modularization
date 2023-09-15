@@ -42,7 +42,7 @@ This R Markdown document provides a foundation for constructing a decision tree 
 Scenario - 70 yr old man with 3 vessel coronary artery disease (CAD).
 
 ```{r, echo=F}
-#knitr::include_graphics("decision_tree_class_fig.png")
+knitr::include_graphics("decision_tree_class_fig.png")
 ```
 
 The two strategies being compared are:

@@ -1,0 +1,422 @@
+---
+title: "HAD 5304 2023 Midterm Assignment"
+author: "Petros Pechlivanoglou"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+self_contained: no
+keep_tex: yes
+---
+
+# Question 1
+
+Additional assumptions:
+
+- Fatal strokes and bleeds result in 0 life years for that year.
+- Non-fatal strokes, whether mild or severe, don't lead to immediate death in that year, so life years = 1 for that year.
+- If there's no stroke or bleed, life years = 1.
+
+```{r}
+# Probabilities 
+p_fatal_stroke      <- 0.10
+p_severe_stroke     <- 0.20
+p_fatal_bleed       <- 0.01
+
+# CHADS2 score for an 80-year-old with diabetes and hypertension is 3
+p_stroke_noWarfarin <- 5.27 / 100
+p_stroke_warfarin   <- 2.20 / 100
+# Calculating risk reduction by Warfarin:
+risk_reduction_warfarin <- p_stroke_noWarfarin - p_stroke_warfarin
+# Calculating risk reduction by Aspirin:
+risk_reduction_aspirin <- 0.5 * risk_reduction_warfarin
+# Calculating stroke risk when on Aspirin:
+p_stroke_aspirin <- p_stroke_noWarfarin - risk_reduction_aspirin
+
+# HAS-BLED score for an 80-year-old with hypertension and past bleed is 3
+p_bleed_warfarin    <- 3.74 / 100
+
+# Life years
+LE_alive            <- 1    
+LE_death            <- 0   
+
+# No therapy expected life years
+LE_noTherapy <-    (p_stroke_noWarfarin * (p_fatal_stroke                    * LE_death   +  # fatal stroke
+                                                            p_severe_stroke  * LE_alive   +  # severe stroke
+                                      (1 - p_fatal_stroke - p_severe_stroke) * LE_alive)) +  # mild stroke
+               (1 - p_stroke_noWarfarin)                                     * LE_alive      # no stroke
+
+# Aspirin expected life years
+LE_aspirin  <-     (p_stroke_aspirin    * (p_fatal_stroke                    * LE_death   +  # fatal stroke
+                                                            p_severe_stroke  * LE_alive   +  # severe stroke
+                                      (1 - p_fatal_stroke - p_severe_stroke) * LE_alive)) +  # mild stroke
+               (1 - p_stroke_aspirin)                                        * LE_alive      # no stroke
+
+# Warfarin expected life years
+p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                        # stroke and bleed joint probability
+
+## LE for joint event of stroke and fatal bleed
+LE_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * LE_death    # stroke and fatal bleed
+
+## LE for joint event of stroke and non-fatal bleed
+LE_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *             # non-fatal bleed     
+                          (
+                               p_fatal_stroke                    * LE_death +                # fatal stroke
+                                                p_severe_stroke  * LE_alive +                # severe stroke
+                          (1 - p_fatal_stroke - p_severe_stroke) * LE_alive                  # mild stroke
+                          )
+
+LE_warfarin_joint_event <- LE_joint_fatal_bleed + LE_joint_nonfatal_bleed
+
+LE_warfarin <- LE_warfarin_joint_event                            +
+              (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+              (
+                   p_fatal_stroke                    * LE_death   +                          # fatal stroke,  no bleed
+                                    p_severe_stroke  * LE_alive   +                          # severe stroke, no bleed
+              (1 - p_fatal_stroke - p_severe_stroke) * LE_alive                              # mild stroke,   no bleed
+              )                                                   +
+              (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+              (
+                   p_fatal_bleed                     * LE_death   +                          # fatal bleed, no stroke
+              (1 - p_fatal_bleed)                    * LE_alive                              # fatal bleed, no stroke
+              )                                                   + 
+              (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * LE_alive # no bleed, no stroke
+
+# Print results
+cat("Expected life years with no therapy:", LE_noTherapy, "\n")
+cat("Expected life years with aspirin:",    LE_aspirin,   "\n")
+cat("Expected life years with warfarin:",   LE_warfarin,  "\n")
+```
+
+# Question 2
+
+```{r}
+# Utilities
+u_well          <- 1
+u_mild_stroke   <- 0.80
+u_severe_stroke <- 0.60
+u_bleed         <- 0.75
+u_death         <- 0
+u_dis_warfarin  <- 0.02
+
+# No therapy QALYs
+QALY_noTherapy <-     (p_stroke_noWarfarin * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                               p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_noWarfarin)                                     * u_well               # no stroke
+
+# Aspirin QALYs
+QALY_aspirin   <-     (p_stroke_aspirin    * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                               p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_aspirin)                                        * u_well               # no stroke
+
+# Warfarin QALYs
+p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                                  # stroke and bleed joint probability
+
+## QALY for joint event of stroke and fatal bleed
+QALY_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * u_death             # stroke and fatal bleed
+
+## QALY for joint event of stroke and non-fatal bleed
+QALY_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *                     # non-fatal bleed     
+                             (
+                                   p_fatal_stroke                    * min(u_death        , u_bleed) + # fatal stroke
+                                                    p_severe_stroke  * min(u_severe_stroke, u_bleed) + # severe stroke
+                              (1 - p_fatal_stroke - p_severe_stroke) * min(u_mild_stroke  , u_bleed)   # mild stroke
+                             )
+
+QALY_warfarin_joint_event <- QALY_joint_fatal_bleed + QALY_joint_nonfatal_bleed
+
+QALY_warfarin <- QALY_warfarin_joint_event                                  +
+                 (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+                 (
+                       p_fatal_stroke                    * u_death          +                          # fatal stroke,  no bleed
+                                        p_severe_stroke  * u_severe_stroke  +                          # severe stroke, no bleed
+                  (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke                               # mild stroke,   no bleed
+                  )                                                         +
+                 (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+                 (
+                       p_fatal_bleed                     * u_death          +                          # fatal bleed, no stroke
+                  (1 - p_fatal_bleed)                    * u_bleed                                     # fatal bleed, no stroke
+                 )                                                          + 
+                (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * u_well -  # no bleed, no stroke
+                 u_dis_warfarin                                                                        # disutility of being on warfarin
+
+# Print results
+cat("Expected QALYs with no therapy:", QALY_noTherapy, "\n")
+cat("Expected QALYs with aspirin:",    QALY_aspirin,   "\n")
+cat("Expected QALYs with warfarin:",   QALY_warfarin,  "\n")
+```
+
+# Question 3
+
+```{r}
+v_u_dis_warfarin <- seq(0, 0.1, 0.01)
+# No therapy QALYs
+QALY_noTherapy <-     (p_stroke_noWarfarin * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                               p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_noWarfarin)                                     * u_well               # no stroke
+
+# Aspirin QALYs
+QALY_aspirin   <-     (p_stroke_aspirin    * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                               p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_aspirin)                                        * u_well               # no stroke
+
+# Warfarin QALYs
+p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                                  # stroke and bleed joint probability
+
+## QALY for joint event of stroke and fatal bleed
+QALY_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * u_death             # stroke and fatal bleed
+
+## QALY for joint event of stroke and non-fatal bleed
+QALY_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *                     # non-fatal bleed     
+                             (
+                                   p_fatal_stroke                    * min(u_death        , u_bleed) + # fatal stroke
+                                                    p_severe_stroke  * min(u_severe_stroke, u_bleed) + # severe stroke
+                              (1 - p_fatal_stroke - p_severe_stroke) * min(u_mild_stroke  , u_bleed)   # mild stroke
+                             )
+
+QALY_warfarin_joint_event <- QALY_joint_fatal_bleed + QALY_joint_nonfatal_bleed
+
+QALY_warfarin <- QALY_warfarin_joint_event                                  +
+                 (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+                 (
+                       p_fatal_stroke                    * u_death          +                          # fatal stroke,  no bleed
+                                        p_severe_stroke  * u_severe_stroke  +                          # severe stroke, no bleed
+                  (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke                               # mild stroke,   no bleed
+                  )                                                         +
+                 (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+                 (
+                       p_fatal_bleed                     * u_death          +                          # fatal bleed, no stroke
+                  (1 - p_fatal_bleed)                    * u_bleed                                     # fatal bleed, no stroke
+                 )                                                          + 
+                (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * u_well -  # no bleed, no stroke
+                 v_u_dis_warfarin                                                                      # disutility of being on warfarin
+
+plot(  v_u_dis_warfarin, QALY_warfarin, type="l", main="Sensitivity Analysis", 
+      xlab="Disutility for being on warfarin", ylab="QALY", col="red", ylim=c(0.8,1))
+points(v_u_dis_warfarin, QALY_warfarin, col="red")
+lines( v_u_dis_warfarin, rep(QALY_noTherapy, length(v_u_dis_warfarin)), col="blue")
+points(v_u_dis_warfarin, rep(QALY_noTherapy, length(v_u_dis_warfarin)), col="blue")
+lines( v_u_dis_warfarin, rep(QALY_aspirin,   length(v_u_dis_warfarin)), col="green")
+points(v_u_dis_warfarin, rep(QALY_aspirin,   length(v_u_dis_warfarin)), col="green")
+legend("right", c("No Therapy", "Aspirin", "Warfarin"), col=c("blue", "green","red"), lty=c(1,1,1), bty="n")
+```
+
+```{r}
+v_p_fatal_stroke <- seq(0.05, 0.25, 0.05)
+# No therapy QALYs
+QALY_noTherapy <-     (p_stroke_noWarfarin * (v_p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                                 p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - v_p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_noWarfarin)                                       * u_well               # no stroke
+
+# Aspirin QALYs
+QALY_aspirin   <-     (p_stroke_aspirin    * (v_p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                                 p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                         (1 - v_p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                  (1 - p_stroke_aspirin)                                          * u_well               # no stroke
+
+# Warfarin QALYs
+p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                                  # stroke and bleed joint probability
+
+## QALY for joint event of stroke and fatal bleed
+QALY_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * u_death             # stroke and fatal bleed
+
+## QALY for joint event of stroke and non-fatal bleed
+QALY_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *                     # non-fatal bleed     
+                             (
+                                   v_p_fatal_stroke                    * min(u_death        , u_bleed) + # fatal stroke
+                                                      p_severe_stroke  * min(u_severe_stroke, u_bleed) + # severe stroke
+                              (1 - v_p_fatal_stroke - p_severe_stroke) * min(u_mild_stroke  , u_bleed)   # mild stroke
+                             )
+
+QALY_warfarin_joint_event <- QALY_joint_fatal_bleed + QALY_joint_nonfatal_bleed
+
+QALY_warfarin <- QALY_warfarin_joint_event                                  +
+                 (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+                 (
+                       v_p_fatal_stroke                    * u_death        +                          # fatal stroke,  no bleed
+                                          p_severe_stroke  * u_severe_stroke+                          # severe stroke, no bleed
+                  (1 - v_p_fatal_stroke - p_severe_stroke) * u_mild_stroke                             # mild stroke,   no bleed
+                  )                                                         +
+                 (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+                 (
+                       p_fatal_bleed                     * u_death          +                          # fatal bleed, no stroke
+                  (1 - p_fatal_bleed)                    * u_bleed                                     # fatal bleed, no stroke
+                 )                                                          + 
+                (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * u_well -  # no bleed, no stroke
+                 u_dis_warfarin                                                                        # disutility of being on warfarin
+
+plot(  v_p_fatal_stroke, QALY_warfarin, type="l", main="Sensitivity Analysis", 
+      xlab="Probability of fatal stroke", ylab="QALY", col="red", ylim=c(0.9,1))
+points(v_p_fatal_stroke, QALY_warfarin,  col="red")
+lines( v_p_fatal_stroke, QALY_noTherapy, col="blue")
+points(v_p_fatal_stroke, QALY_noTherapy, col="blue")
+lines( v_p_fatal_stroke, QALY_aspirin,   col="green")
+points(v_p_fatal_stroke, QALY_aspirin,   col="green")
+legend("right", c("No Therapy", "Aspirin", "Warfarin"), col=c("blue", "green","red"), lty=c(1,1,1), bty="n")
+```
+
+# Question 4
+
+```{r}
+decision_tree <- function(p_stroke_noWarfarin, p_stroke_warfarin, p_bleed_warfarin){
+  # No therapy QALYs
+  QALY_noTherapy <-     (p_stroke_noWarfarin * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                                 p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                           (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                    (1 - p_stroke_noWarfarin)                                     * u_well               # no stroke
+
+  # Aspirin QALYs
+  # Calculating risk reduction by Warfarin:
+  risk_reduction_warfarin <- p_stroke_noWarfarin - p_stroke_warfarin
+  # Calculating risk reduction by Aspirin:
+  risk_reduction_aspirin <- 0.5 * risk_reduction_warfarin
+  # Calculating stroke risk when on Aspirin:
+  p_stroke_aspirin <- p_stroke_noWarfarin - risk_reduction_aspirin
+  QALY_aspirin   <-     (p_stroke_aspirin    * (p_fatal_stroke                    * u_death           +  # fatal stroke
+                                                                 p_severe_stroke  * u_severe_stroke   +  # severe stroke
+                                           (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke))   +  # mild stroke
+                    (1 - p_stroke_aspirin)                                        * u_well               # no stroke
+
+  # Warfarin QALYs
+  p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                                  # stroke and bleed joint probability
+
+  ## QALY for joint event of stroke and fatal bleed
+  QALY_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * u_death             # stroke and fatal bleed
+
+  ## QALY for joint event of stroke and non-fatal bleed
+  QALY_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *                     # non-fatal bleed     
+                               (
+                                     p_fatal_stroke                    * min(u_death        , u_bleed) + # fatal stroke
+                                                      p_severe_stroke  * min(u_severe_stroke, u_bleed) + # severe stroke
+                                (1 - p_fatal_stroke - p_severe_stroke) * min(u_mild_stroke  , u_bleed)   # mild stroke
+                               )
+
+  QALY_warfarin_joint_event <- QALY_joint_fatal_bleed + QALY_joint_nonfatal_bleed
+
+  QALY_warfarin <- QALY_warfarin_joint_event                                  +
+                   (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+                   (
+                         p_fatal_stroke                    * u_death          +                          # fatal stroke,  no bleed
+                                          p_severe_stroke  * u_severe_stroke  +                          # severe stroke, no bleed
+                    (1 - p_fatal_stroke - p_severe_stroke) * u_mild_stroke                               # mild stroke,   no bleed
+                    )                                                         +
+                   (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+                   (
+                         p_fatal_bleed                     * u_death          +                          # fatal bleed, no stroke
+                    (1 - p_fatal_bleed)                    * u_bleed                                     # fatal bleed, no stroke
+                   )                                                          + 
+                  (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * u_well -  # no bleed, no stroke
+                   u_dis_warfarin                                                                        # disutility of being on warfarin
+  
+  return(list(QALY_noTherapy = QALY_noTherapy,
+              QALY_aspirin   = QALY_aspirin,
+              QALY_warfarin  = QALY_warfarin))
+}
+```
+
+```{r}
+# CHADS2 score for an 80-year-old with diabetes and hypertension is 3
+v_p_stroke_noWarfarin <- c(0.49, 1.52, 2.50, 5.27, 6.02, 6.88) / 100
+v_p_stroke_warfarin   <- c(0.25, 0.72, 1.27, 2.20, 2.35, 4.60) / 100
+
+# HAS-BLED score for an 80-year-old with hypertension and past bleed is 3
+v_p_bleed_warfarin    <- c(1.13, 1.02, 1.88, 3.74, 8.70, 8.70) / 100
+```
+
+```{r}
+results_sens_noTherapy <- results_sens_aspirin <- results_sens_warfarin <- 
+  matrix(0, nrow=length(v_p_stroke_warfarin), ncol=length(v_p_bleed_warfarin)) -> results_sens_optimalStrategy
+for (i in 1:length(v_p_stroke_warfarin)) {
+  for (j in 1:length(v_p_bleed_warfarin)) {
+    results_sens_noTherapy[i,j] <- decision_tree(p_stroke_noWarfarin = v_p_stroke_noWarfarin[i], 
+                                                 p_stroke_warfarin   = v_p_stroke_warfarin[i], 
+                                                 p_bleed_warfarin    = v_p_bleed_warfarin[j])[["QALY_noTherapy"]]
+    results_sens_aspirin[i,j]   <- decision_tree(p_stroke_noWarfarin = v_p_stroke_noWarfarin[i], 
+                                                 p_stroke_warfarin   = v_p_stroke_warfarin[i], 
+                                                 p_bleed_warfarin    = v_p_bleed_warfarin[j])[["QALY_aspirin"]]
+    results_sens_warfarin[i,j]  <- decision_tree(p_stroke_noWarfarin = v_p_stroke_noWarfarin[i], 
+                                                 p_stroke_warfarin   = v_p_stroke_warfarin[i], 
+                                                 p_bleed_warfarin    = v_p_bleed_warfarin[j])[["QALY_warfarin"]]
+    max_val <- max(results_sens_noTherapy[i, j], results_sens_aspirin[i, j], results_sens_warfarin[i, j])
+        
+        if (max_val == results_sens_noTherapy[i, j]) {
+            results_sens_optimalStrategy[i, j] <- "No Therapy"
+        } else if (max_val == results_sens_aspirin[i, j]) {
+            results_sens_optimalStrategy[i, j] <- "Aspirin"
+        } else {
+            results_sens_optimalStrategy[i, j] <- "Warfarin"
+        }
+  }
+}
+
+df <- expand.grid(CHADS2 = c("0","1","2","3","4","5 or 6"), HASBLED = c("0","1","2","3","4","5 to 9"))
+df$Strategy <- as.vector(results_sens_optimalStrategy)
+ggplot(df, aes(x = CHADS2, y = HASBLED, fill = Strategy)) + 
+    geom_tile() + 
+    scale_y_discrete(expand=c(0,0)) + 
+    scale_x_discrete(expand=c(0,0)) + 
+    scale_fill_manual(values = c("No Therapy" = "blue", "Aspirin" = "green", "Warfarin" = "red"), name="optimal strategy") +
+    labs(x = "CHADS2 score", y = "HAS-BLED score", title="Two-Way Sensitivity Analysis") + 
+    theme_bw() 
+```
+
+# Question 5
+
+```{r}
+# Life years
+LE_alive <- 2   
+LE_death <- 0   
+
+# No therapy expected life years
+LE_noTherapy <-    (p_stroke_noWarfarin * (p_fatal_stroke                    * LE_death   +  # fatal stroke
+                                                            p_severe_stroke  * LE_alive   +  # severe stroke
+                                      (1 - p_fatal_stroke - p_severe_stroke) * LE_alive)) +  # mild stroke
+               (1 - p_stroke_noWarfarin)                                     * LE_alive      # no stroke
+
+# Aspirin expected life years
+LE_aspirin  <-     (p_stroke_aspirin    * (p_fatal_stroke                    * LE_death   +  # fatal stroke
+                                                            p_severe_stroke  * LE_alive   +  # severe stroke
+                                      (1 - p_fatal_stroke - p_severe_stroke) * LE_alive)) +  # mild stroke
+               (1 - p_stroke_aspirin)                                        * LE_alive      # no stroke
+
+# Warfarin expected life years
+p_joint_stroke_bleed_warfarin <- p_stroke_warfarin * p_bleed_warfarin                        # stroke and bleed joint probability
+
+## LE for joint event of stroke and fatal bleed
+LE_joint_fatal_bleed    <- p_joint_stroke_bleed_warfarin *      p_fatal_bleed  * LE_death    # stroke and fatal bleed
+
+## LE for joint event of stroke and non-fatal bleed
+LE_joint_nonfatal_bleed <- p_joint_stroke_bleed_warfarin * (1 - p_fatal_bleed) *             # non-fatal bleed     
+                          (
+                               p_fatal_stroke                    * LE_death +                # fatal stroke
+                                                p_severe_stroke  * LE_alive +                # severe stroke
+                          (1 - p_fatal_stroke - p_severe_stroke) * LE_alive                  # mild stroke
+                          )
+
+LE_warfarin_joint_event <- LE_joint_fatal_bleed + LE_joint_nonfatal_bleed
+
+LE_warfarin <- LE_warfarin_joint_event                            +
+              (p_stroke_warfarin - p_joint_stroke_bleed_warfarin) *                      
+              (
+                   p_fatal_stroke                    * LE_death   +                          # fatal stroke,  no bleed
+                                    p_severe_stroke  * LE_alive   +                          # severe stroke, no bleed
+              (1 - p_fatal_stroke - p_severe_stroke) * LE_alive                              # mild stroke,   no bleed
+              )                                                   +
+              (p_bleed_warfarin  - p_joint_stroke_bleed_warfarin) *                                             
+              (
+                   p_fatal_bleed                     * LE_death   +                          # fatal bleed, no stroke
+              (1 - p_fatal_bleed)                    * LE_alive                              # fatal bleed, no stroke
+              )                                                   + 
+              (1 - p_stroke_warfarin - p_bleed_warfarin + p_joint_stroke_bleed_warfarin) * LE_alive # no bleed, no stroke
+
+# Print results
+cat("Expected life years with no therapy:", LE_noTherapy, "\n")
+cat("Expected life years with aspirin:",    LE_aspirin,   "\n")
+cat("Expected life years with warfarin:",   LE_warfarin,  "\n")
+```
+

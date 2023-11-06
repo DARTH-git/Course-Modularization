@@ -73,11 +73,20 @@ v_names_str     <- c("Standard of care",         # store the strategy names
                      "Treatment B")  
 n_str           <- length(v_names_str)           # number of strategies
 
-### Transition probabilities
-# (all non-dead probabilities are conditional on survival)
-p_HS_SoC    <- 0.05    # probability of becoming sick when healthy, conditional on surviving, under standard of care
-p_HS_trtA   <- 0.04    # probability of becoming sick when healthy, conditional on surviving, under treatment A
-p_HS_trtB   <- 0.02    # probability of becoming sick when healthy, conditional on surviving, under treatment B
+
+### Transition intensity rates
+r_HS_SoC  <- 0.05  # rate of becoming sick when healthy, under standard of care
+r_HS_trtA <- 0.04  # rate of becoming sick when healthy, under treatment A
+r_HS_trtB <- 0.02  # rate of becoming sick when healthy, under treatment B
+
+### Converting rates to probabilities
+# p = 1 - exp( -r * cycle_length)
+p_HS_SoC  <- rate_to_prob(r = r_HS_SoC, t = cycle_length)  # probability  of becoming sick when healthy, under SoC
+p_HS_trtA <- rate_to_prob(r = r_HS_trtA, t = cycle_length) # probability of becoming sick when healthy, under treatment A
+p_HS_trtB <- rate_to_prob(r = r_HS_trtB, t = cycle_length) # probability of becoming sick when healthy, under treatment B
+
+
+# Transition probabilities 
 p_HD_female <- 0.0382  # probability healthy -> dead when female
 p_HD_male   <- 0.0463  # probability healthy -> dead when male
 df_p_HD     <- data.frame(Sex = c("Female", "Male"), p_HD = c(p_HD_female, p_HD_male)) # structure the sex specific mortality in a data frame - used later to match each individual with the corresponding sex specific mortality 
@@ -88,8 +97,10 @@ p_SD        <- c(0.1, 0.2, 0.3, 0.4, 0.5, rep(0.7, n_cycles - 5)) # probability 
 c_H        <- 400   # cost of one cycle in healthy state
 c_S        <- 1000  # cost of one cycle in sick state
 c_D        <- 0     # cost of one cycle in dead state
+
 c_trtA     <- 800   # cost of treatment A (per cycle) in healthy state
 c_trtB     <- 1500  # cost of treatment B (per cycle) in healthy state
+
 #### Utilities
 u_H        <- 1     # utility when healthy 
 u_S        <- 0.5   # utility when sick
@@ -103,6 +114,10 @@ u_D        <- 0     # utility when dead
 ### Cycle-specific discount weight for costs and effects 
 v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+
+# Within-cycle correction (WCC) - method  options Simpson's 1/3 rule, "half-cycle" or "none" 
+v_wcc    <- darthtools::gen_wcc(n_cycles = n_cycles, 
+                                method = "Simpson1/3") # vector of wcc
 ```
 
 # 04 Sample individual level characteristics
@@ -245,7 +260,7 @@ Effs <- function (M_t, cycle_length = 1) {
 Below we develop the microsimulation function that allows the model to be run.
 
 ```{r}
-MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cycle_length = 1) {
+MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cycle_length = 1, verbose ) {
   # Arguments:  
     # n_i: number of individuals
     # df_X: data frame with individual data 
@@ -301,11 +316,13 @@ MicroSim <- function(n_i, df_X, Trt = "SoC", seed = 1, cycle_length = 1) {
     
   } # close the loop for the time points 
   
-  # calculate  
-  tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
-  te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
-  tc_hat  <- mean(tc)       # average (discounted) cost 
-  te_hat  <- mean(te)       # average (discounted) QALY  
+  
+  # Discounted total expected QALYs and Costs per strategy and apply cycle correction ####
+  tc      <- m_C %*% (v_dwc * v_wcc)  # total (discounted and cycle corrected) cost per individual
+  te      <- m_E %*% (v_dwe * v_wcc)  # total (discounted and cycle corrected) QALYs per individual 
+  
+  tc_hat  <- mean(tc)       # average (discounted and cycle corrected) cost 
+  te_hat  <- mean(te)       # average (discounted and cycle corrected) QALY  
   # store the results from the simulation in a list
   results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, 
                   tc_hat = tc_hat, te_hat = te_hat)   

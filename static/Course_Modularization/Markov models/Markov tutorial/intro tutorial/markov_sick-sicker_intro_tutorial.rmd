@@ -170,7 +170,7 @@ d_e      <- 0.03                    # discount rate for QA
 v_dwc    <- 1 / (1 + d_c) ^ (0:n_cycles) 
 v_dwe    <- 1 / (1 + d_e) ^ (0:n_cycles) 
 
-# Within-cycle correction (WCC) using Simpson's 1/3 rule
+# Within-cycle correction (WCC) - method  options Simpson's 1/3 rule, "half-cycle" or "none" 
 v_wcc    <- darthtools::gen_wcc(n_cycles = n_cycles, 
                                 method = "Simpson1/3") # vector of wcc
 
@@ -448,7 +448,7 @@ for (i in 1:n_str) {
   v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
   v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
   
-  #### Discounted total expected QALYs and Costs per strategy and apply half-cycle correction ####
+  #### Discounted total expected QALYs and Costs per strategy and apply cycle correction ####
   ## QALYs
   v_tot_qaly[i] <- t(v_qaly_str) %*% (v_dwe * v_wcc)
   ## Costs

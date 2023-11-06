@@ -1,6 +1,6 @@
 ---
-title: 'SOLUTIONS - Microsimulation Sick-Sicker model with time dependency - Excerise'
-subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
+title: 'Microsimulation Sick-Sicker model with time dependency - case example for the updated microsimulation manuscript '
+subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness - ADD WHAT IT INCLUDS'
 author: "The DARTH workgroup"
 output:
   html_document: default
@@ -45,7 +45,7 @@ p_load_gh("DARTH-git/darthtools")
 # 02 Load functions
 
 ```{r}
-# No functions needed
+# No functions needed 
 ```
 
 # 03 Model input
@@ -74,7 +74,14 @@ d_e <- 0.03 # annual discount rate for QALYs
 v_names_str   <- c("Standard of care",   # store the strategy names
                   "Strategy AB") 
 n_str         <- length(v_names_str)     # number of strategies
+```
 
+
+# External data
+# Load the data from the colon cancer set + describe the code 
+
+
+``` {r}
 ### Transition probabilities 
 # (all non-probabilities are conditional on survival)
 p_HS1         <- 0.15     # probability of becoming sick when healthy

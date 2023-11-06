@@ -138,6 +138,7 @@ n_states        <- length(v_names_states) # number of health states
 d_c <- 0.03 # annual discount rate for costs 
 d_e <- 0.03 # annual discount rate for QALYs
 
+
 ### Strategies 
 v_names_str   <- c("Standard of care",   # store the strategy names
                    "Strategy AB") 
@@ -182,6 +183,10 @@ u_trtAB <- 0.95  # annual utility when receiving treatment AB when in Sick
 ### Discount weight for costs and effects 
 v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+
+# Within-cycle correction (WCC) - method  options Simpson's 1/3 rule, "half-cycle" or "none" 
+v_wcc    <- darthtools::gen_wcc(n_cycles = n_cycles, 
+                                method = "Simpson1/3") # vector of wcc
 ```
 
 # 04 Sample individual level characteristics

@@ -1,0 +1,59 @@
+---
+title: "Conceptualizing and building Markov models"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(darthtools)
+```
+
+```{r}
+prob_to_odds <- function(p) {
+  return(p / (1 - p))
+}
+odds_to_prob <- function(odds) {
+  return(odds / (1 + odds))
+}
+prob_factor <- function(pBaseline, OR) {
+  # Convert probability to odds
+  odds_baseline = prob_to_odds(pBaseline)
+  # Apply odds ratio
+  odds_new = odds_baseline * OR
+  # Convert back to probability
+  p_new = odds_to_prob(odds_new)
+  return(p_new)
+}
+# prob_factor(0.025,2.1)
+```
+
+```{r}
+YearsElapsed          <- stage/12
+StartAge              <- 40
+cDialysis             <- 10000
+cInfection            <- 500
+cTx                   <- 1000
+CurrentAge            <- StartAge + YearsElapsed	
+DR_annual             <- 0.015
+DR                    <-	1/((1+DR_annual)^YearsElapsed)
+duInfection           <- 0.1
+lambda_cgl            <- 0.005
+lamda_transplant      <- prob_to_rate(0.11,36)
+pChronicGraftLoss     <- rate_to_prob(lambda_cgl,1)
+pDie                  <- 0.01
+pInfection            <- 0.1
+pPrimaryGraftFailure  <-	ifelse(CurrentAge < 55, 0.025, probfactor(0.025, 2.1))		
+pTransplant           <- rate_to_prob(lamda_transplant,1)	
+RRdie_Dialysis_postTx <- 1.2
+RRdie_Tx              <- 0.9
+uDialysis             <- 0.65
+uDialysis_postTx      <- 0.55
+uTx                   <- 0.9
+```
+
+
+
+
+
+

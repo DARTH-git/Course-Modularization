@@ -10,7 +10,7 @@
 #' NMB)
 #' @return A dataframe with discounted costs, effectiveness and NMB.
 #' @export
-calculate_ce_out <- function(l_params_all, n_wtp = 10000, verbose = verbose){ # User defined
+calculate_ce_out <- function(l_params_all, n_wtp = 10000, verbose = TRUE){ # User defined
   with(as.list(l_params_all), {
     
     v_names_states  <- c("H", "S", "D")       # state names, Healthy (H), Sick (S), Dead(D)

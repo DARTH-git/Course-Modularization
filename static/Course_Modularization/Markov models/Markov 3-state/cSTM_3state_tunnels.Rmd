@@ -199,7 +199,6 @@ for(i in 1:(n_tunnel_size - 1)){
   a_P_tunnels_SoC[v_Sick_tunnel[i], v_Sick_tunnel[i + 1], ] <- 1 - v_p_SD[i]
   a_P_tunnels_SoC[v_Sick_tunnel[i], "D", ] <- v_p_SD[i]
 }
-
 a_P_tunnels_SoC[v_Sick_tunnel[n_tunnel_size], v_Sick_tunnel[n_tunnel_size], ] <- 1 - v_p_SD[n_tunnel_size]
 a_P_tunnels_SoC[v_Sick_tunnel[n_tunnel_size], "D", ] <- v_p_SD[n_tunnel_size]
 # from Dead

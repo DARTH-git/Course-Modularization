@@ -5,9 +5,25 @@ date: "`r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(darthtools)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
+
+```{r}
+rm(list = ls())      # clear memory (removes all the variables from the workspace)
+```
+
+# 01 Load packages
+
+```{r}
+if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
+# load (install if required) packages from CRAN
+p_load("dplyr", "tidyr", "reshape2", "devtools", "scales", "ellipse", "ggplot2", "lazyeval", "igraph", "truncnorm", "ggraph", "reshape2", "knitr", "stringr", "diagram", "dampack")                                               
+# load (install if required) packages from GitHub
+# install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
+p_load_gh("DARTH-git/darthtools")
+```
+
+# 02 Load functions
 
 ```{r}
 prob_to_odds <- function(p) {
@@ -25,33 +41,279 @@ prob_factor <- function(pBaseline, OR) {
   p_new = odds_to_prob(odds_new)
   return(p_new)
 }
-# prob_factor(0.025,2.1)
 ```
+
+# 03 Model input
 
 ```{r}
-YearsElapsed          <- stage/12
-StartAge              <- 40
-cDialysis             <- 10000
-cInfection            <- 500
-cTx                   <- 1000
-CurrentAge            <- StartAge + YearsElapsed	
-DR_annual             <- 0.015
-DR                    <-	1/((1+DR_annual)^YearsElapsed)
-duInfection           <- 0.1
-lambda_cgl            <- 0.005
-lamda_transplant      <- prob_to_rate(0.11,36)
-pChronicGraftLoss     <- rate_to_prob(lambda_cgl,1)
-pDie                  <- 0.01
-pInfection            <- 0.1
-pPrimaryGraftFailure  <-	ifelse(CurrentAge < 55, 0.025, probfactor(0.025, 2.1))		
-pTransplant           <- rate_to_prob(lamda_transplant,1)	
+## General setup
+cycle_length    <- 1/12                          # cycle length equal to one year (use 1/12 for monthly)
+n_cycles        <- 50/cycle_length               # number of cycles
+v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
+v_names_states  <- c("Dialysis", 
+                     "Transplant<=120mos", 
+                     "Transplant>120mos", 
+                     "Post Tx dialysis", 
+                     "Death")  
+StartAge        <- 40                            # starting age
+n_states        <- length(v_names_states)        # number of health states 
+
+### Strategies 
+v_names_str     <- c("Standard of Care")         # store the strategy names  
+n_str           <- length(v_names_str)           # number of strategies
+
+### Rates and transition probabilities
+lambda_cgl            <- 0.005                              # rate of chronic graft loss from transplant failure
+pChronicGraftLoss     <- rate_to_prob(lambda_cgl,1)         # probability of chronic graft loss
+pDie                  <- 0.01                               # probability of death
+pInfection            <- 0.1                                # probability of transplant
+lambda_transplant     <- prob_to_rate(0.11, 36)             # rate of transplant
+pTransplant           <- rate_to_prob(lambda_transplant, 1)	# probability of transplant
 RRdie_Dialysis_postTx <- 1.2
 RRdie_Tx              <- 0.9
-uDialysis             <- 0.65
-uDialysis_postTx      <- 0.55
-uTx                   <- 0.9
+stage                 <- 0:n_cycles
+YearsElapsed          <- stage/12
+CurrentAge            <- StartAge + YearsElapsed	
+pPrimaryGraftFailure  <- ifelse(CurrentAge < 55, 0.025, prob_factor(0.025, 2.1)) # probability of immediate transplant fail
+pPrimaryGraftFailure  <- pPrimaryGraftFailure[-length(pPrimaryGraftFailure)]
+
+### Tunnels
+n_tunnel_size         <- 10/cycle_length
+# Sick state
+v_transplant_tunnel   <- paste("Transplant_", seq(1, n_tunnel_size), "Mos", sep = "")
+# Create variables for time-dependent model
+v_names_states_tunnels<- c("Dialysis", v_transplant_tunnel, 
+                           "Transplant>120mos", "Post Tx dialysis", "Death")   # state names
+n_states_tunnels      <- length(v_names_states_tunnels)                        # number of states
+
+### State rewards
+#### Costs   
+cDialysis             <- 10000   # cost of dialysis
+cTx                   <- 1000    # cost of treatment (transplant)
+#### Utilities
+uDialysis             <- 0.65    # utilty in dialysis state
+uDialysis_postTx      <- 0.55    # utility in post Tx dialysis state
+uTx                   <- 0.9     # utility in transplant state
+
+### Transition rewards
+cInfection            <- 500     # cost of infection 
+duInfection           <- 0.1     # disutility from infection 
+
+### Discount weight for costs and effects 
+DR_annual             <- 0.015   # Annual discount rate
+DR                    <-	1/((1+DR_annual)^YearsElapsed) -> v_dwc -> v_dwe
+#v_dwc1   <- 1 / ((1 + (DR_annual * cycle_length)) ^ (0:n_cycles))
+#v_dwe1   <- 1 / ((1 + (DR_annual * cycle_length)) ^ (0:n_cycles))
 ```
 
+# 04 Construct state-transition models
+
+## 04.1 Initial state vector
+
+```{r}
+# All starting healthy
+v_m_init_tunnels <- c(1, rep(0, n_tunnel_size), 0, 0, 0) 
+```
+
+## 04.2 Initialize cohort traces with tunnels
+
+```{r}
+### Initialize cohort trace for state-residence dependent cSTM under SoC 
+m_M_tunnels_SoC <- matrix(0, 
+                          nrow     = (n_cycles + 1), ncol = n_states_tunnels, 
+                          dimnames = list(0:n_cycles, v_names_states_tunnels))
+# Store the initial state vector in the first row of the cohort trace
+m_M_tunnels_SoC[1, ] <- v_m_init_tunnels
+```
+
+## 04.3 Create transition probability arrays
+
+```{r}
+## Create transition probability arrays for strategy SoC 
+### Initialize transition probability array for strategy SoC 
+# All transitions to a non-death state are assumed to be conditional on survival
+a_P_tunnels_SoC <- array(0,  # Create 3-D array
+                       dim = c(n_states_tunnels, n_states_tunnels, n_cycles),               
+                       dimnames = list(v_names_states_tunnels, v_names_states_tunnels,
+                                       v_names_cycles[-length(v_names_cycles)])) # name the dimensions of the array   
+### Fill in array
+a_P_tunnels_SoC["Dialysis", "Dialysis", ]        <-      pTransplant  *      pPrimaryGraftFailure  * (1 - pDie)         + 
+                                                    (1 - pTransplant) *                              (1 - pDie)
+
+a_P_tunnels_SoC["Dialysis", "Transplant_1Mos", ] <-      pTransplant  * (1 - pPrimaryGraftFailure) * (1 - pDie*RRdie_Tx) 
+
+a_P_tunnels_SoC["Dialysis", "Death", ]           <-      pTransplant  *      pPrimaryGraftFailure  *      pDie          + 
+                                                         pTransplant  * (1 - pPrimaryGraftFailure) *      pDie*RRdie_Tx + 
+                                                    (1 - pTransplant) *                                   pDie
+  
+for(i in 1:(n_tunnel_size - 1)){ 
+  a_P_tunnels_SoC[v_transplant_tunnel[i], v_transplant_tunnel[i + 1], ] <- (1 - pChronicGraftLoss) * (1 - pDie*RRdie_Tx)
+  a_P_tunnels_SoC[v_transplant_tunnel[i], "Post Tx dialysis", ]         <-      pChronicGraftLoss  * (1 - pDie*RRdie_Tx)
+  a_P_tunnels_SoC[v_transplant_tunnel[i], "Death", ]                    <-                                pDie*RRdie_Tx
+}
+
+a_P_tunnels_SoC[v_transplant_tunnel[n_tunnel_size], "Transplant>120mos", ] <- 1 - pDie*RRdie_Tx
+a_P_tunnels_SoC[v_transplant_tunnel[n_tunnel_size], "Death", ]             <-     pDie*RRdie_Tx
+
+a_P_tunnels_SoC["Post Tx dialysis", "Post Tx dialysis", ]   <- 1 - pDie*RRdie_Dialysis_postTx
+a_P_tunnels_SoC["Post Tx dialysis", "Death", ]              <-     pDie*RRdie_Dialysis_postTx
+  
+a_P_tunnels_SoC["Transplant>120mos", "Transplant>120mos", ] <- 1 - pDie*RRdie_Tx
+a_P_tunnels_SoC["Transplant>120mos", "Death", ]             <-     pDie*RRdie_Tx
+
+a_P_tunnels_SoC["Death", "Death", ] <- 1
+
+# Check if transition array and probabilities are valid
+# Check that transition probabilities are in [0, 1]
+check_transition_probability(a_P_tunnels_SoC,  verbose = TRUE)
+# Check that all rows sum to 1
+check_sum_of_transition_array(a_P_tunnels_SoC,  n_states = n_states_tunnels, n_cycles = n_cycles, verbose = TRUE)
+```
+
+## 04.4 Create transition dynamics arrays
+
+```{r}
+# These arrays will capture transitions from each state to another over time 
+### Initialize transition dynamics array for strategy SoC 
+a_A_tunnels_SoC <- array(0,
+                         dim      = c(n_states_tunnels, n_states_tunnels, n_cycles + 1),
+                         dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:n_cycles))
+# Set first slice of A with the initial state vector in its diagonal
+diag(a_A_tunnels_SoC[, , 1]) <- v_m_init_tunnels
+```
+
+# 05 Run Markov model
+
+```{r}
+# Iterative solution of state-residence dependent cSTM
+for (t in 1:n_cycles){  
+  ## Fill in cohort trace
+  # For SoC
+  m_M_tunnels_SoC [t + 1, ]   <-     m_M_tunnels_SoC [t, ]  %*% a_P_tunnels_SoC[, , t] 
+  ## Fill in transition-dynamics array
+  # For SoC
+  a_A_tunnels_SoC[, , t + 1]  <- diag(m_M_tunnels_SoC[t, ]) %*% a_P_tunnels_SoC[, , t]
+}
+
+# Create aggregated trace
+m_M_tunnels_SoC_sum  <- cbind(Dialysis             = m_M_tunnels_SoC[, "Dialysis"], 
+                              `Transplant<=120mos` = rowSums(m_M_tunnels_SoC[, 2:(n_tunnel_size + 1)]), 
+                              PostTxDialysis       = m_M_tunnels_SoC[, "Post Tx dialysis"],
+                              `Transplant>120mos`  = m_M_tunnels_SoC[, "Transplant>120mos"],
+                              Death                = m_M_tunnels_SoC[, "Death"])
+
+## Store the cohort traces in a list 
+l_m_M <- list(m_M_tunnels_SoC_sum)
+names(l_m_M) <- v_names_str
+
+## Store the transition dynamics array for each strategy in a list 
+l_a_A <- list(a_A_tunnels_SoC)
+names(l_a_A) <- v_names_str
+```
+
+# 06 Plot Outputs
+
+## 06.1 Plot the cohort trace for strategy SoC 
+
+```{r}
+## Plot the cohort trace for strategy SoC 
+plot_trace(m_M_tunnels_SoC_sum)
+```
+
+# 07 State Rewards 
+
+```{r}
+## Scale by the cycle length 
+# Vector of utilities per cycle for Transplant<120mos under strategy SoC
+v_u_Txless_SoC        <- rep(uTx, n_tunnel_size)
+names(v_u_Txless_SoC) <- v_transplant_tunnel
+# Vector of utilities under strategy SoC
+v_u_SoC <- c(Dialysis               = uDialysis,
+             `Transplant<=120mos`   = v_u_Txless_SoC, 
+             `Post Tx Dialysis`     = uDialysis_postTx,
+             `Transplant>120mos`    = uTx,
+              Death                 = 0) * cycle_length
+
+# Vector of costs per cycle for Sick under strategy SoC
+v_c_Txless_SoC        <- rep(cTx, n_tunnel_size)
+names(v_c_Txless_SoC) <- v_transplant_tunnel
+# Vector of costs per cycle under strategy SoC
+v_c_SoC <- c(Dialysis               = cDialysis,
+             `Transplant<=120mos`   = v_c_Txless_SoC, 
+             `Post Tx Dialysis`     = cDialysis,
+             `Transplant>120mos`    = cTx,
+              Death                 = 0) * cycle_length
+## Store state rewards 
+# Store the vectors of state utilities for each strategy in a list 
+l_u   <- list(SoC = v_u_SoC)
+# Store the vectors of state cost for each strategy in a list 
+l_c   <- list(SoC = v_c_SoC)
+
+# assign strategy names to matching items in the lists
+names(l_u) <- names(l_c) <- v_names_str
+```
+
+# 08 Compute expected outcomes 
+
+```{r}
+# Create empty vectors to store total utilities and costs 
+v_tot_qaly <- v_tot_cost <- vector(mode = "numeric", length = n_str)
+names(v_tot_qaly) <- names(v_tot_cost) <- v_names_str
+
+## Loop through each strategy and calculate total utilities and costs 
+for (i in 1:n_str) { # i <- 1
+  v_u_str         <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
+  v_c_str         <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+  a_A_tunnels_str <- l_a_A[[i]] # select the transition array for the i-th strategy
+  
+  ## Array of state rewards 
+  # Create transition matrices of state utilities and state costs for the i-th strategy
+  m_u_str   <- matrix(v_u_str, nrow = n_states_tunnels, ncol = n_states_tunnels, byrow = T)
+  m_c_str   <- matrix(v_c_str, nrow = n_states_tunnels, ncol = n_states_tunnels, byrow = T)
+  # Expand the transition matrix of state utilities across cycles to form a transition array of state utilities
+  a_R_u_str <- array(m_u_str, 
+                     dim      = c(n_states_tunnels, n_states_tunnels, n_cycles + 1),
+                     dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:n_cycles))
+  # Expand the transition matrix of state costs across cycles to form a transition array of state costs
+  a_R_c_str <- array(m_c_str, 
+                     dim      = c(n_states_tunnels, n_states_tunnels, n_cycles + 1),
+                     dimnames = list(v_names_states_tunnels, v_names_states_tunnels, 0:n_cycles))
+  
+  ## Apply transition rewards
+  # Apply disutility due to infection when transitioning from Dialysis to Transplant
+  a_R_u_str["Dialysis", "Transplant_1Mos", ] <- a_R_u_str["Dialysis", "Transplant_1Mos", ]  - pInfection*duInfection
+  # Apply cost due to infection when transitioning from Dialysis to Transplant
+  a_R_c_str["Dialysis", "Transplant_1Mos", ] <- a_R_c_str["Dialysis", "Transplant_1Mos", ]  + pInfection*cInfection
+  
+  ### Expected QALYs and costs for all transitions per cycle
+  # QALYs = life years x QoL
+  # Note: all parameters are annual in our example. In case your own case example is different make sure you correctly apply.
+  a_Y_c_str <- a_A_tunnels_str * a_R_c_str
+  a_Y_u_str <- a_A_tunnels_str * a_R_u_str 
+  
+  ### Expected QALYs and costs per cycle
+  ## Vector of QALYs and costs
+  v_qaly_str <- apply(a_Y_u_str, 3, sum) # sum the proportion of the cohort across transitions 
+  v_cost_str <- apply(a_Y_c_str, 3, sum) # sum the proportion of the cohort across transitions
+  
+  ## Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+  # QALYs
+  v_tot_qaly[i] <- t(v_qaly_str) %*% v_dwe
+  # Costs
+  v_tot_cost[i] <- t(v_cost_str) %*% v_dwc
+}
+```
+
+# 09 Cost-effectiveness analysis (CEA) 
+
+```{r}
+## Incremental cost-effectiveness ratios (ICERs) 
+df_cea <- calculate_icers(cost       = v_tot_cost, 
+                          effect     = v_tot_qaly,
+                          strategies = v_names_str)
+df_cea <- df_cea[,c(1,2,3)]
+df_cea
+```
 
 
 

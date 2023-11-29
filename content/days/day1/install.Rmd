@@ -18,7 +18,7 @@ In this workshop/course, we will use `R` and RStudio. Please install `R` and RSt
 
 ## Install R
 
-Download `R` version 4.3.1 from [here](https://cran.r-project.org/bin/windows/base/old/4.3.1/). Download the file `R-4.3.1-win.exe` and follow the installation procedure.
+Download the latest version of `R` from [here](https://mirror.csclub.uwaterloo.ca/CRAN/). Follow the installation procedure.
 
 ## Install RStudio
 

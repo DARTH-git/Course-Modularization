@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="The DARTH workgroup" />
+<meta name="author" content="The DARTH workgroup for EL005" />
 
 
-<title>Three-strategy decision tree in R - HVE</title>
+<title>Demo function for decision modelling</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,9 +349,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Three-strategy decision tree in R -
-HVE</h1>
-<h4 class="author">The DARTH workgroup</h4>
+<h1 class="title toc-ignore">Demo function for decision modelling</h1>
+<h4 class="author">The DARTH workgroup for EL005</h4>
 
 </div>
 
@@ -362,264 +361,53 @@ Eva A. Enns, MS, PhD M.G. Myriam Hunink, MD, PhD Hawre J. Jalal, MD, PhD
 Eline Krijkamp, PhD Petros Pechlivanoglou, PhD Alan Yang, MSc</p>
 <p>Please cite relevant publications when using this code, see
 suggestions below.</p>
-<div style="page-break-after: always;"></div>
-<p>Change <code>eval</code> to <code>TRUE</code> if you want to knit
-this document.</p>
-<pre class="r"><code>rm(list = ls())      # clear memory (removes all the variables from the workspace)</code></pre>
-<div id="case-example" class="section level1">
-<h1>00 Case example</h1>
-<p>Viral encephalitis can be caused by herpes viruses (HVE) or other
-viruses (OVE). Herpes viruses cause approximately 52% of cases of viral
-encephalitis. Without treatment, the risk of complications (death or
-severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug,
-vidarabine, decreases the likelihood of complications due to HVE from
-71% down to 36%. However, among OVE patients, treatment with vidarabine
-is associated with severe side effects, increasing the risk of
-complications from the 1% baseline to 20%. It is possible to obtain a
-definitive diagnosis of HVE by means of a brain biopsy, but the
-procedure itself also has a 5% probability of inducing
-complications.</p>
-<p>You are tasked with evaluating the healthcare costs and benefits
-associated with three possible management strategies (no treatment,
-vidarabine treatment, or brain biopsy followed by vidarabine treatment
-for those who are diagnosed with HVE). Benefits will be measured in
-terms of quality-adjusted life-years (QALYs).</p>
-<p>The healthcare cost of a case of viral encephalitis without
-complications is $1,200; however, if complications occur, the cost rises
-to $9,000. The cost of vidarabine treatment is $9,500, while a brain
-biopsy is a $25,000 procedure.</p>
-<p>A patient who recovers from viral encephalitis without complications
-has an average of 20 remaining QALYs; however, a patient who experiences
-complications has an average of 19 remaining QALYs. Since a brain biopsy
-is an unpleasant procedure, patients who undergo it also experience a
-one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.</p>
-<p>Parameters are summarized in Table 1 and the tree structure is shown
-in the figure below.</p>
-</div>
-<div id="load-packages" class="section level1">
-<h1>01 Load packages</h1>
-<pre class="r"><code>if (!require(&#39;pacman&#39;)) install.packages(&#39;pacman&#39;); library(pacman) # use this package to conveniently install other packages
-# load (install if required) packages from CRAN
-p_load(&quot;dplyr&quot;, &quot;devtools&quot;, &quot;scales&quot;, &quot;ellipse&quot;, &quot;ggplot2&quot;, &quot;lazyeval&quot;, &quot;igraph&quot;,  &quot;ggraph&quot;, &quot;reshape2&quot;, &quot;knitr&quot;, &quot;stringr&quot;, &quot;dampack&quot;)
-# load (install if required) packages from GitHub
-p_load_gh(&quot;DARTH-git/darthtools&quot;)</code></pre>
-</div>
-<div id="load-functions" class="section level1">
-<h1>02 Load functions</h1>
-<pre class="r"><code># all functions are in the darthtools package so no need for additional functions</code></pre>
-</div>
-<div id="define-parameter-input-values" class="section level1">
-<h1>03 Define parameter input values</h1>
-<pre class="r"><code>v_names_str    &lt;- c(&quot;No Tx&quot;, &quot;Tx All&quot;, &quot;Biopsy&quot;)  # names of strategies, no treatment, treatment and biopspy
-n_str          &lt;- length(v_names_str)             # number of strategies
-wtp            &lt;- 100000                          # willingness to pay threshold
+<div id="intro-to-r" class="section level1">
+<h1>Intro to R</h1>
+<p>During the intro to R module you have been introduced to the concept
+of loops and functions. You now know the general syntax for
+<em>functions</em>: <code>function_name(arguments)</code>.</p>
+<pre><code>function_name &lt;- function(arguments) {
+   ...
+   return(output)
+}</code></pre>
+<pre><code>function_name &lt;- function(argument1, argument2, argument3) {
+   ...
+   return(list(output1, output2, output3)
+}</code></pre>
+<p>You have seen some pre-specified (built-in) function in
+<code>R</code>, like <code>mean()</code>, <code>max()</code>,
+<code>quantile()</code>). In addition, you have some experience writing
+your own,</p>
+<p>In some settings, pre-specified functions in <code>R</code> are not
+sufficient for the analysis we would like to perform. In such cases, it
+is good practice to define your own functions to perform analyses. This
+can help you reproduce your analysis at a later date and repeat the same
+analysis on another dataset.</p>
+<p>The generally syntax for writing your own function is as follows:</p>
+<p>The function can have a large number of <code>arguments</code>, or
+function inputs, separated by commas. The <code>output</code> from a
+function can have multiple elements that should be returned as a
+list.</p>
+<p>Once a function has been defined using the code above, it can be used
+as a standard function in <code>R</code>.</p>
+<p>For example, the following function calculates the mean of a
+vector:</p>
+<pre class="r"><code># Write our own function to calculate the mean
+mean_own &lt;- function(data){
+   mean_calc &lt;- sum(data) / length(data)
+   return(mean_calc)
+}
 
-# Probabilities
-p_HVE          &lt;- 0.52   # prevalence of HVE
-p_HVE_comp     &lt;- 0.71   # complications with untreated HVE
-p_OVE_comp     &lt;- 0.01   # complications with untreated OVE
-p_HVE_comp_tx  &lt;- 0.36   # complications with treated HVE
-p_OVE_comp_tx  &lt;- 0.20   # complications with treated OVE
-p_biopsy_death &lt;- 0.005  # probability of death due to biopsy
-
-# Costs
-c_VE           &lt;- 1200   # cost of viral encephalitis care without complications
-c_VE_comp      &lt;- 9000   # cost of viral encephalitis care with complications
-c_tx           &lt;- 9500   # cost of treatment
-c_biopsy       &lt;- 25000  # cost of brain biopsy
-c_death_biopsy &lt;- 0      # cost of dying from brain biopsy
-
-# QALYs
-q_VE           &lt;- 20     # remaining QALYs for those without VE-related complications
-q_VE_comp      &lt;- 19     # remaining QALYs for those with    VE-related complications
-q_loss_biopsy  &lt;- 0.01   # one-time  QALY loss due to brain biopsy
-q_death_biopsy &lt;- 0      # remaining QALYs for those who died during biopsy</code></pre>
-</div>
-<div id="create-and-run-decision-tree-model" class="section level1">
-<h1>04 Create and run decision tree model</h1>
-<div id="create-vectors-of-weights-for-each-strategy" class="section level2">
-<h2>04.1 Create vectors of weights for each strategy</h2>
-<pre class="r"><code># Create vector of weights for each strategy 
-v_w_no_tx  &lt;- c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
-                    p_HVE  * (1 - p_HVE_comp)    ,  # HVE, no complications
-               (1 - p_HVE) *      p_OVE_comp     ,  # OVE, complications
-               (1 - p_HVE) * (1 - p_OVE_comp))      # OVE, no complications
-  
-v_w_tx     &lt;- c(    p_HVE  *      p_HVE_comp_tx  ,  # HVE w/tx, complications
-                    p_HVE  * (1 - p_HVE_comp_tx) ,  # HVE w/tx, no complications
-               (1 - p_HVE) *      p_OVE_comp_tx  ,  # OVE w/tx, complications
-               (1 - p_HVE) * (1 - p_OVE_comp_tx))   # OVE w/tx, no complications
-  
-v_w_biopsy &lt;- c(    p_biopsy_death                   ,  # biopsy death
-               # no biopsy death.,   HVE w/tx,        complications
-               (1 - p_biopsy_death)   *      p_HVE  *    p_HVE_comp_tx  ,  
-               # no biopsy death.,   HVE w/tx,     no complications
-               (1 - p_biopsy_death)   *      p_HVE  * (1 - p_HVE_comp_tx) ,  
-               # no biopsy death.,        OVE,        complications
-               (1 - p_biopsy_death)   * (1 - p_HVE) *      p_OVE_comp   ,  
-               # no biopsy death.,        OVE,     no complications
-               (1 - p_biopsy_death)   * (1 - p_HVE) * (1 - p_OVE_comp))      </code></pre>
-<p>##04.1.1 Extra code to demonstrate the use of “clones” The structure
-of a decision tree consist of replication parts. To avoid coding the
-same equation multiple times, we can make use of a function that
-calculated that section. This is comparable, with what is in specialized
-software called a clone. In de code chunk below, we show how we first
-develop the clone function. And next how to use the function. Finally,
-we demonstrate that we get identical results compared to what we had
-before.</p>
-<pre class="r"><code># Develop a function to calculate the vector of weights for the decision tree
-calculate_hve_complication &lt;- function(p_HVE, p_HVE_comp, p_OVE_comp){
-    # p_HVE: the probability of having p_HVE
-    # p_HVE_comp: the probability of getting a complication when you have an HVE infection
-    # p_OVE_comp: the probability of getting a complication when you have an OVE infection
-       v_weights &lt;-  c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
-                            p_HVE  * (1 - p_HVE_comp)    ,  # HVE, no complications
-                       (1 - p_HVE) *      p_OVE_comp     ,  # OVE, complications
-                       (1 - p_HVE) * (1 - p_OVE_comp))
-        return (v_weights) # return the vector of weights
-         }
-
-# Create vector of weights for each strategy using the function 
-v_w_no_tx_clone  &lt;- calculate_hve_complication(p_HVE = p_HVE, p_HVE_comp = p_HVE_comp, p_OVE_comp = p_OVE_comp)
-  
-v_w_tx_clone     &lt;- calculate_hve_complication(p_HVE = p_HVE, p_HVE_comp = p_HVE_comp_tx, p_OVE_comp = p_OVE_comp_tx)
-
-v_w_biopsy_clone &lt;- c(p_biopsy_death,  
-                    (1 - p_biopsy_death) *  calculate_hve_complication(p_HVE = p_HVE, p_HVE_comp = p_HVE_comp_tx, p_OVE_comp = p_OVE_comp))
-                      
-# Check if the clone gives identical results   
-all.equal(v_w_no_tx_clone, v_w_no_tx)
-all.equal(v_w_tx_clone, v_w_tx)
-all.equal(v_w_biopsy_clone, v_w_biopsy)</code></pre>
-</div>
-<div id="create-vectors-of-effects" class="section level2">
-<h2>0.4.2 Create vectors of effects</h2>
-<pre class="r"><code># Create vector of outcomes being complications for each strategy 
-v_comp_no_tx  &lt;- c(1,          # HVE, complications
-                   0,          # HVE, no complications
-                   1,          # OVE, complications
-                   0)          # OVE, no complications
-  
-v_comp_tx     &lt;- c(1,          # HVE, complications
-                   0,          # HVE, no complications
-                   1 ,         # OVE, complications
-                   0)          # OVE, no complications
-  
-v_comp_biopsy &lt;- c(1,          # biopsy complications
-                   1,          # no biopsy comp., HVE w/tx, complications 
-                   0,          # no biopsy comp., HVE w/tx, no complications
-                   1,          # no biopsy comp., OVE, complications
-                   0)          # no biopsy comp., OVE, no complications
-  
-
-# Create vector of outcomes (QALYs) for each strategy 
-v_qaly_no_tx  &lt;- c(q_VE_comp ,          # HVE, complications
-                   q_VE      ,          # HVE, no complications
-                   q_VE_comp ,          # OVE, complications
-                   q_VE)                # OVE, no complications
-  
-v_qaly_tx     &lt;- c(q_VE_comp ,          # HVE, complications
-                   q_VE      ,          # HVE, no complications
-                   q_VE_comp ,          # OVE, complications
-                   q_VE)                # OVE, no complications
-
-# loss due to biopsy
-v_qaly_biopsy &lt;-  c(q_death_biopsy - q_loss_biopsy,   # biopsy complications
-                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., HVE w/tx, complications 
-                    q_VE           - q_loss_biopsy,   # no biopsy comp., HVE w/tx, no complications
-                    q_VE_comp      - q_loss_biopsy,   # no biopsy comp., OVE, complications
-                    q_VE           - q_loss_biopsy )  # no biopsy comp., OVE, no complications</code></pre>
-</div>
-<div id="create-vectors-of-costs" class="section level2">
-<h2>0.4.3 Create vectors of costs</h2>
-<pre class="r"><code># Create vector of costs for each strategy 
-# cost of no treatment 
-v_cost_no_tx  &lt;- c(c_VE_comp ,          # HVE, complications
-                   c_VE      ,          # HVE, no complications
-                   c_VE_comp ,          # OVE, complications
-                   c_VE)                # OVE, no complications
-
-# cost of treatment
-v_cost_tx     &lt;- c(c_VE_comp + c_tx,    # HVE, complications
-                   c_VE      + c_tx,    # HVE, no complications
-                   c_VE_comp + c_tx,    # OVE, complications
-                   c_VE      + c_tx)  # OVE, no complications
-
-# cost of biopsy procedure
-v_cost_biopsy &lt;- c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
-                   c_VE_comp + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, complications 
-                   c_VE      + c_tx + c_biopsy,   # no biopsy comp., HVE w/tx, no complications
-                   c_VE_comp        + c_biopsy,   # no biopsy comp., OVE, complications
-                   c_VE             + c_biopsy )  # no biopsy comp., OVE, no complications
- 
-## STAR MATERIAL ##  
-# Extra funfact about coding
-# When you like to add a specific cost to all elements of a vector you can also add the costs before the vector. The vector for the cost of the biopsy for example could also be coded as follows:
-
-# cost of biopsy procedure
-#v_cost_biopsy &lt;- c_biopsy + 
-#                    c(c_death_biopsy,     # cost of death (zero)
-#                      c_VE_comp + c_tx,   # no biopsy comp., HVE w/tx, complications 
-#                      c_VE      + c_tx,   # no biopsy comp., HVE w/tx, no complications
-#                      c_VE_comp       ,   # no biopsy comp., OVE, complications
-#                      c_VE)               # no biopsy comp., OVE, no complications
-####################</code></pre>
-</div>
-<div id="calculate-the-expected-effects-complications-utilities-and-costs" class="section level2">
-<h2>0.4.4 Calculate the expected effects (complications, utilities) and
-costs</h2>
-<pre class="r"><code># Calculate expected complications for each strategy 
-total_comp_no_tx  &lt;- v_w_no_tx  %*%  v_comp_no_tx      
-total_comp_tx     &lt;- v_w_tx     %*%  v_comp_tx
-total_comp_biopsy &lt;- v_w_biopsy %*%  v_comp_biopsy
-  
-# Calculate total utilities for each strategy 
-total_qaly_no_tx  &lt;- v_w_no_tx  %*%  v_qaly_no_tx      
-total_qaly_tx     &lt;- v_w_tx     %*%  v_qaly_tx
-total_qaly_biopsy &lt;- v_w_biopsy %*%  v_qaly_biopsy
-  
-# Calculate total costs for each strategy 
-total_cost_no_tx  &lt;- v_w_no_tx  %*%  v_cost_no_tx    
-total_cost_tx     &lt;- v_w_tx     %*%  v_cost_tx
-total_cost_biopsy &lt;- v_w_biopsy %*%  v_cost_biopsy
-  
-
-# vector of expected complications 
-v_total_comp &lt;- c(total_comp_no_tx, total_comp_tx, total_comp_biopsy) 
-# vector of total QALYs
-v_total_qaly &lt;- c(total_qaly_no_tx, total_qaly_tx, total_qaly_biopsy) 
-# vector of total costs
-v_total_cost &lt;- c(total_cost_no_tx, total_cost_tx, total_cost_biopsy) 
-# calculate vector of nmb
-v_nmb        &lt;- v_total_qaly * wtp - v_total_cost                      
-  
-# Name outcomes
-names(v_total_comp) &lt;- v_names_str  # names for the elements of the total comp vector
-names(v_total_qaly) &lt;- v_names_str  # names for the elements of the total QALYs vector
-names(v_total_cost) &lt;- v_names_str  # names for the elements of the total cost vector
-names(v_nmb)        &lt;- v_names_str  # names for the elements of the nmb vector
-  
-df_output &lt;- data.frame(Strategy =  v_names_str,
-                        Cost     =  v_total_cost,
-                        Effect   =  v_total_qaly,
-                        Complications = v_total_comp,
-                        NMB      =  v_nmb)
-
-# model output
-df_output</code></pre>
-</div>
-</div>
-<div id="cost-effectiveness-analysis" class="section level1">
-<h1>05 Cost-Effectiveness Analysis</h1>
-<pre class="r"><code># create the transition probability matrix for NO treatment
-decision_tree_HVE_cea  &lt;- calculate_icers(cost       = df_output$Cost,
-                                          effect     = df_output$Effect,
-                                          strategies = df_output$Strategy)
-decision_tree_HVE_cea</code></pre>
-<div id="plot-frontier-of-decision-tree" class="section level2">
-<h2>05.1 Plot frontier of Decision Tree</h2>
-<pre class="r"><code>plot(decision_tree_HVE_cea, effect_units = &quot;QALYs&quot;, label = &quot;all&quot;)</code></pre>
-</div>
+mean_own(1:10)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<pre class="r"><code># test
+mean(1:10)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<p><strong>EXERCISE 6</strong> Write a function that converts Fahrenheit
+to Celsius. The formula is (F-32) * 5 / 9. Test your function on 100
+degrees Fahrenheit.</p>
+<pre><code>
+</code></pre>
 </div>
 <div id="acknowlegdement" class="section level1">
 <h1>Acknowlegdement</h1>

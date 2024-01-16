@@ -1,0 +1,115 @@
+---
+title: 'Demo function for decision modelling'
+author: "The DARTH workgroup for EL005"
+output:
+  html_document: default
+  pdf_document: default
+keep_tex: yes
+self_contained: no
+---
+
+Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
+Fernando Alarid-Escudero, PhD  
+Eva A. Enns, MS, PhD 
+M.G. Myriam Hunink, MD, PhD 
+Hawre J. Jalal, MD, PhD 
+Eline Krijkamp, PhD 
+Petros Pechlivanoglou, PhD
+Alan Yang, MSc
+
+Please cite relevant publications when using this code, see suggestions below. 
+
+
+# Intro to R 
+During the intro to R module you have been introduced to the concept of loops and functions. You now know the general syntax for *functions*:   `function_name(arguments)`.
+
+
+```
+function_name <- function(arguments) {
+   ...
+   return(output)
+}
+```
+
+
+
+
+
+You have seen some pre-specified (built-in) function in `R`, like  `mean()`, `max()`, `quantile()`). In addition, you have some experience writing your own, 
+
+In some settings, pre-specified functions in `R` are not sufficient for the analysis we would like to perform. In such cases, it is good practice to define your own functions to perform analyses. This can help you reproduce your analysis at a later date and repeat the same analysis on another dataset.
+
+The generally syntax for writing your own function is as follows:  
+
+
+
+Once a function has been defined using the code above, it can be used as a standard function in `R`.
+
+For example, the following function calculates the mean of a vector:
+
+```{r}
+# Write our own function to calculate the mean
+mean_own <- function(data){
+   mean_calc <- sum(data) / length(data)
+   return(mean_calc)
+}
+
+mean_own(1:10)
+
+# test
+mean(1:10)
+```
+
+**EXERCISE 6** Write a function that converts Fahrenheit to Celsius. The formula is (F-32) * 5 / 9. Test your function on 100 degrees Fahrenheit. 
+
+
+You have also been introduce to the concept, that function can have a large number of `arguments`, or function inputs, separated by commas. The `output` from a function can have multiple elements that should be returned as a list. 
+
+```
+function_name <- function(argument1, argument2, argument3) {
+   ...
+   return(list(output1, output2, output3)
+}
+```
+
+The return of a function is not only limited to a list. In case your data has the same variable types, you can also work with dataframes. 
+
+```{}
+
+
+```
+
+
+You can even have an argument in the function that specified what outcome the `function` should give. 
+
+```
+
+```
+
+
+
+# Acknowlegdement
+
+For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
+
+The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
+Cost-Effectiveness Analysis Example. Medical Decision Making, 2023; 43(1).
+(Epub). <https://doi.org/10.1177/0272989X221103163>
+
+- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
+Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
+a Cost-Effectiveness Analysis Example. Medical Decision Making, 2023; 43(1). 
+<https://doi.org/10.1177/0272989X221121747>
+
+
+Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
+
+# Copyright for assignment work
+
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
+
+
+

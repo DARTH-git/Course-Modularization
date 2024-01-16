@@ -2,8 +2,8 @@
 title: 'Three-strategy decision tree in R - HVE'
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 keep_tex: yes
 self_contained: no
 ---

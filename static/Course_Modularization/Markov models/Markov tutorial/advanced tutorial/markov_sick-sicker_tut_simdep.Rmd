@@ -377,7 +377,6 @@ prop_sicker_plot
 # 07 Compute Cost-Effectiveness Outcomes
 
 ## 07.1 State and transition rewards for each strategy
-
 ```{r}
 ## Vector of state utilities under strategy SoC
 v_u_SoC    <- c(H  = u_H, 

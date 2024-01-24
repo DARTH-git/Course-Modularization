@@ -39,7 +39,6 @@ p_load("ggrepel")
 install_github("DARTH-git/darthtools", force = TRUE) # (Un)comment if there is a newer version#
 # #click "Enter" when they ask about what  to update
 
-
 p_load_gh("DARTH-git/darthtools")
 
 install_github("DARTH-git/OpenTree", force = TRUE) # (Un)comment if there is a newer version

@@ -1,5 +1,5 @@
 ---
-title: 'Demo function for decision modelling'
+title: 'Function for decision modelling - Demo'
 author: "The DARTH workgroup for EL005"
 output:
   html_document: default
@@ -19,10 +19,8 @@ Alan Yang, MSc
 
 Please cite relevant publications when using this code, see suggestions below. 
 
-
 # Intro to R 
-During the intro to R module you have been introduced to the concept of loops and functions. You now know the general syntax for *functions*:   `function_name(arguments)`.
-
+During the intro to R module you have been introduced to the concept of loops and functions. You now know the general syntax for *functions*: `function_name(arguments)`.
 
 ```
 function_name <- function(arguments) {
@@ -31,36 +29,19 @@ function_name <- function(arguments) {
 }
 ```
 
-
-
-
-
-You have seen some pre-specified (built-in) function in `R`, like  `mean()`, `max()`, `quantile()`). In addition, you have some experience writing your own, 
-
-In some settings, pre-specified functions in `R` are not sufficient for the analysis we would like to perform. In such cases, it is good practice to define your own functions to perform analyses. This can help you reproduce your analysis at a later date and repeat the same analysis on another dataset.
-
-The generally syntax for writing your own function is as follows:  
-
-
-
-Once a function has been defined using the code above, it can be used as a standard function in `R`.
-
-For example, the following function calculates the mean of a vector:
+You have seen some pre-specified (built-in) function in `R`, like  `mean()`, `max()`, `quantile()`). In addition, you have some experience writing your own function. Remember, you wrote a function to converts Fahrenheit to Celsius using the following formula: (F-32) * 5 / 9. 
 
 ```{r}
-# Write our own function to calculate the mean
-mean_own <- function(data){
-   mean_calc <- sum(data) / length(data)
-   return(mean_calc)
+convert_fahrenheit_to_celsius <- function (n_temp_fahrenheit){
+  n_temp_celsius <- (n_temp_fahrenheit - 32) * 5 / 9
+  n_temp_celsius <- round(n_temp_celsius, 1) # option to round the temperature
+  return(n_temp_celsius) 
 }
 
-mean_own(1:10)
+# test the function
+convert_fahrenheit_to_celsius (n_temp_fahrenheit = 100)
 
-# test
-mean(1:10)
 ```
-
-**EXERCISE 6** Write a function that converts Fahrenheit to Celsius. The formula is (F-32) * 5 / 9. Test your function on 100 degrees Fahrenheit. 
 
 
 You have also been introduce to the concept, that function can have a large number of `arguments`, or function inputs, separated by commas. The `output` from a function can have multiple elements that should be returned as a list. 
@@ -72,10 +53,95 @@ function_name <- function(argument1, argument2, argument3) {
 }
 ```
 
-The return of a function is not only limited to a list. In case your data has the same variable types, you can also work with dataframes. 
+When we apply this to decision modeling, one could thing about
 
-```{}
+```{r}
+calculate_treatment_costs <- function(trt, disease_history, kg, c_blood_tinners = 5, c_drug_per_mg = 10, currency = "euro"){
+# Arguments
+   # trt: does the patient get a treatment: yes/ no
+   # disease_history: previous history of disease; if there is a previous history of disease, the patients are on permanent treatment of blood_tinner
+   # kg: the drug is doses in 2 mg per kilogram
+   # c_blood_tinners: cost price of the blood tinners, default is 5 euro
+   # c_drug_per_mg: cost price per mg of the drug, default is 10 euro
+   # currency: the currency use, default is EURo
+  
+   # When there is no treatment, the patients that have a history of disease have the cost os blood tinners
+   # No treatment, and without history of disease, have no costs 
+   c_trt <- 0 + c_blood_tinners * disease_history 
+   
+   # For those that get the treatment, the cost depents on the dose + disease history
+   # captured in the equation below
+   if (trt == TRUE){
+   dose <- kg / 2
+   c_trt <- dose * c_drug_per_mg + c_blood_tinners * disease_history
+   }
+   
+   # we assume a currency convertion of 1.02
+   if (currency  == "dollar"){
+   c_trt <- c_trt * 1.02
+   }
+   return(c_trt) # Return the treatment costs 
+}
 
+calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63)
+calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63, currency = "dollar")
+
+
+```
+
+The return of a function is not only limited to a single value. This can also be a list
+
+```{r}
+
+calculate_treatment_costs <- function(trt, disease_history, kg, c_blood_tinners = 5, c_drug_per_mg = 10, currency = "euro"){
+# Arguments
+   # trt: does the patient get a treatment: yes/ no
+   # disease_history: previous history of disease; if there is a previous history of disease, the patients are on permanent treatment of blood_tinner
+   # kg: the drug is doses in 2 mg per kilogram
+   # c_blood_tinners: cost price of the blood tinners, default is 5 euro
+   # c_drug_per_mg: cost price per mg of the drug, default is 10 euro
+   # currency: the currency use, default is EURo
+  
+   # When there is no treatment, the patients that have a history of disease have the cost os blood tinners
+   # No treatment, and without history of disease, have no costs 
+   c_trt <- 0 + c_blood_tinners * disease_history 
+   
+   # For those that get the treatment, the cost depents on the dose + disease history
+   # captured in the equation below
+   if (trt == TRUE){
+   dose <- kg / 2
+   c_trt <- dose * c_drug_per_mg + c_blood_tinners * disease_history
+   }
+   
+   
+  # ****** NEW***********
+   # we assume a currency convertion of 1.02
+   if (currency  == "dollar"){
+   c_trt <- c_trt * 1.02
+   }
+   
+   l_costs <- list(currency = currency,
+                costs = c_trt)
+   
+   return(l_costs) # Return the treatment costs 
+}
+
+calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63)
+calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63, currency = "dollar")
+```
+
+In case your data has the same variable types, you can also work with dataframes. This is a common output for for example the cost-effectiveness results of a incremental cost-effectiveness analysis. 
+
+```{r}
+# PLEASE NOTE: THIS IS NOT FROMAL FUNCTION, 
+
+v_cost    <- 
+v_effects <- 
+n_wtp     <- 
+
+calculate_iNMB_two_treatments <- function(v_costs, v_effects, n_wtp){
+  
+}
 
 ```
 

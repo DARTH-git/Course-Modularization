@@ -41,7 +41,9 @@ include_graphics("../figures/sick_sicker_diagram_microsim.png")
 
 Advantages of using a microsimulation implementation is the ability to incorporate variation in the baseline characteristics for every individual and to keep track of state-residence. To illustrate this, we assume that individual mortality rates depend on baseline characteristics as well as time spend in the sick health state. 
 
-After you have successfully implemented the Sick-Sicker model, you can expand the model to include the possibility of treatment and evaluate whether it is cost-effective given a willingness to pay of $50,000. This hypothetical treatment improves the quality of life for those in the Sick (S1) state but not for those in the Sicker (S2) state. However, it is not possible to distinguish between individuals in the Sick state from those in the Sicker state, so under a treatment strategy, individuals in both sick states must be treated (and incur the costs of treatment), while only those in the sick state benefit from it. 
+After you have successfully implemented the Sick-Sicker model for the Standard of Care (SoC) strategy, you can expand the model to include the possibility of treatment - Strategy AB, and evaluate whether it is cost-effective given a willingness to pay of $50,000. 
+
+This hypothetical treatment improves the quality of life for those in the Sick (S1) state but not for those in the Sicker (S2) state. However, it is not possible to distinguish between individuals in the Sick state from those in the Sicker state, so under a treatment strategy, individuals in both sick states must be treated (and incur the costs of treatment), while only those in the sick state benefit from it. 
 
 In summary, the model assumes the following:
 

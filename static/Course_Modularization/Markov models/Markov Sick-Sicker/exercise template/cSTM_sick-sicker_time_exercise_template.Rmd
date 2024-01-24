@@ -23,7 +23,7 @@ Please acknowledge our work. See details to cite below.
 
 This code implements a simulation-time-dependent Sick-Sicker cSTM model to  conduct a CEA of two strategies:
 - Standard of Care (SoC): best available care for the patients with the disease. This scenario reflects the natural history of the disease progression.
-- Strategy AB: This strategy combines treatment A and treatment B. The disease  progression is reduced, and individuals in the Sick state have an improved quality of life.
+- Strategy AB: This strategy combines treatment A and treatment B. The strategy treats both those Sick and Sicker. However, only for those Sick the treatment has an effect. For Sick individuals the disease progression is reduced, and individuals in the Sick state have an improved quality of life.
 
 \newpage
 
@@ -134,7 +134,7 @@ n_states <- length(v_names_states)   # number of health states
 # Canada
 #d_c <- d_e <- 0.015 # annual discount rate for costs 
 # NL
-d_c <- 0.04         # annual discount rate for costs 
+d_c <- 0.03         # annual discount rate for costs 
 d_e <- 0.015        # annual discount rate for QALYs
 
 ### Strategies 

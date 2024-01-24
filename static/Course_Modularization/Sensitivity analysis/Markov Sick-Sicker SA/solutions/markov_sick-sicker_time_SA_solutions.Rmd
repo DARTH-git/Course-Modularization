@@ -13,7 +13,7 @@ This code forms the basis for the state-transition model of the tutorial:
 'A Tutorial on Time-Dependent Cohort State-Transition Models in R using a Cost-Effectiveness Analysis Example' 
 
 Authors: 
-- Fernando Alarid-Escudero <fernando.alarid@cide.edu>
+- Fernando Alarid-Escudero <falarid@stanford.edu>
 - Eline Krijkamp
 - Eva A. Enns
 - Alan Yang
@@ -247,7 +247,7 @@ a_A_strAB <- a_A_SoC
 
 ```{r}
 # Iterative solution of age-dependent cSTM
-for(t in 1:n_cycles){
+for (t in 1:n_cycles) {
   ## Fill in cohort trace
   # For SoC
   m_M_SoC[t + 1, ]   <- m_M_SoC[t, ]   %*% a_P_SoC[, , t]
@@ -338,11 +338,13 @@ for (i in 1:n_str) { # i <- 1
   # Expand the transition matrix of state utilities across cycles to form a transition array of state utilities
   a_R_u_str <- array(m_u_str, 
                      dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
+                     dimnames = list(v_names_states, 
+                                     v_names_states, 0:n_cycles))
   # Expand the transition matrix of state costs across cycles to form a transition array of state costs
   a_R_c_str <- array(m_c_str, 
                      dim      = c(n_states, n_states, n_cycles + 1),
-                     dimnames = list(v_names_states, v_names_states, 0:n_cycles))
+                     dimnames = list(v_names_states, 
+                                     v_names_states, 0:n_cycles))
   
   ## Apply transition rewards
   # Apply disutility due to transition from H to S1
@@ -442,7 +444,7 @@ l_params_all <- list(
   cycle_length = 1
 )
 
-calculate_ce_out(l_params_all =l_params_all )
+calculate_ce_out(l_params_all = l_params_all)
 ```
 
 ## 10.2 One-way sensitivity analysis (OWSA)
@@ -576,7 +578,8 @@ for (i in 1:n_sim) { # i <- 1
 }
 n_time_end_psa_series <- Sys.time()
 n_time_total_psa_series <- n_time_end_psa_series - n_time_init_psa_series
-print(paste0("PSA with ", scales::comma(n_sim), " simulations run in series in ", 
+print(paste0("PSA with ", scales::comma(n_sim), 
+             " simulations run in series in ", 
              round(n_time_total_psa_series, 2), " ", 
              units(n_time_total_psa_series)))
 ```

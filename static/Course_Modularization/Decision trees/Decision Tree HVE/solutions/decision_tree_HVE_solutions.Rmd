@@ -37,9 +37,9 @@ Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE).
 
 You are tasked with evaluating the healthcare costs and benefits associated with three possible management strategies (no treatment, vidarabine treatment, or brain biopsy followed by vidarabine treatment for those who are diagnosed with HVE). Benefits will be measured in terms of quality-adjusted life-years (QALYs). 
 
-The healthcare cost of a case of viral encephalitis without complications is \$1,200; however, if complications occur, the cost rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a brain biopsy is a \$25,000 procedure. 
+The healthcare cost of a case of viral encephalitis without complications is \$1,200; however, if complications occur, the cost rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a brain biopsy costs \$25,000 per procedure. 
 
-A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy.
+A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy. For this exercise we assumed a hypothetical CE threshold of 10000/QALY
 
 Parameters are summarized in Table 1 and the tree structure is shown in the figure below. 
 
@@ -120,17 +120,16 @@ v_w_biopsy <- c(    p_biopsy_death                   ,  # biopsy death
 ```
 
 ##04.1.1 Extra code to demonstrate the use of "clones"
-The structure of a decision tree consist of replication parts. 
-To avoid coding the same equation multiple times, we can make use of a function that calculated that section.
-This is comparable, with what is in specialized software called a clone. 
-In de code chunk below, we show how we first develop the clone function. And next how to use the function. Finally, we demonstrate that we get identical results compared to what we had before. 
+Often in decision trees certain branches either repeat themselves or are shared across multiple strategies, perhaps with some differences in their input parameters. For example, in viral encephalitis, the complications of HVE are shared among all three strategies. To avoid coding the same section of the tree multiple times, we can construct  a function that describes the structure of this section of the tree (called a subtree), and has as input the parameters that are related to that section of the tree. 
+This is comparable, with what is in specialized software like TreeAge or Amua is called a clone. 
+In the code chunk below, we first show how we can develop the clone function. And next how to use the function as part of a tree. Finally, we demonstrate that we get identical results compared to a tree with no clones. 
 ```{r}
-# Develop a function to calculate the vector of weights for the decision tree
+# Develop a function to calculate the vector of weights for the _hve_complication section of the decision tree
 calculate_hve_complication <- function(p_HVE, p_HVE_comp, p_OVE_comp){
     # p_HVE: the probability of having p_HVE
     # p_HVE_comp: the probability of getting a complication when you have an HVE infection
     # p_OVE_comp: the probability of getting a complication when you have an OVE infection
-       v_weights <-  c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
+       v_weights <-  c(     p_HVE  *      p_HVE_comp     ,  # HVE, complications
                             p_HVE  * (1 - p_HVE_comp)    ,  # HVE, no complications
                        (1 - p_HVE) *      p_OVE_comp     ,  # OVE, complications
                        (1 - p_HVE) * (1 - p_OVE_comp))
@@ -226,6 +225,8 @@ v_cost_biopsy <- c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
 #                      c_VE      + c_tx,   # no biopsy comp., HVE w/tx, no complications
 #                      c_VE_comp       ,   # no biopsy comp., OVE, complications
 #                      c_VE)               # no biopsy comp., OVE, no complications
+
+# that is because on the background R will create replicates of the scalar (c_biopsy) to match the size of the vector you are adding it to
 ####################
 
 ```

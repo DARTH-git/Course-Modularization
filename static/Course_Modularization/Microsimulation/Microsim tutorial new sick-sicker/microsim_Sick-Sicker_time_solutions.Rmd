@@ -96,7 +96,7 @@ p_mort   <- read.csv("../data/mortProb_age.csv")
 dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
-p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
+v_p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
 p_S2D    <- 0.048   # probability to die in S2
 
 ### State rewards 
@@ -195,10 +195,10 @@ Probs <- function(M_t, df_X, Trt = "Standard of care") {
   m_p_t["D",  M_t == "H"]  <-      p_HD              
   
   # transition probabilities when Sick 
-  m_p_t["H",  M_t == "S1"] <- (1 - p_S1D[df_X$n_cycles_s]) *      p_S1H 
-  m_p_t["S1", M_t == "S1"] <- (1 - p_S1D[df_X$n_cycles_s]) * (1 - p_S1H - p_S1S2)
-  m_p_t["S2", M_t == "S1"] <- (1 - p_S1D[df_X$n_cycles_s]) *              p_S1S2
-  m_p_t["D",  M_t == "S1"] <-      p_S1D[df_X$n_cycles_s]    
+  m_p_t["H",  M_t == "S1"] <- (1 - v_p_S1D[df_X$n_cycles_s]) *      p_S1H 
+  m_p_t["S1", M_t == "S1"] <- (1 - v_p_S1D[df_X$n_cycles_s]) * (1 - p_S1H - p_S1S2)
+  m_p_t["S2", M_t == "S1"] <- (1 - v_p_S1D[df_X$n_cycles_s]) *              p_S1S2
+  m_p_t["D",  M_t == "S1"] <-      v_p_S1D[df_X$n_cycles_s]    
   
   # transition probabilities when Sicker
   m_p_t["H",  M_t == "S2"] <-  0

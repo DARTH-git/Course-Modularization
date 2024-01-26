@@ -19,6 +19,16 @@
 calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
   with(as.list(l_params_all), {
     
+    ## 03.2 Calculate internal model parameters
+    
+    ### Discount weight for costs and effects 
+    v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+    v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+    
+    # Within-cycle correction (WCC) - method  options Simpson's 1/3 rule, "half-cycle" or "none" 
+    v_wcc    <- darthtools::gen_wcc(n_cycles = n_cycles, 
+                                    method = "Simpson1/3") # vector of wcc
+    
     ## 04.1 Static characteristics
     # randomly sample the sex of an individual (50% female)
     v_sex <- sample(x = c("Female", "Male"), prob = c(0.5, 0.5), size = n_i, replace = TRUE) 
@@ -188,8 +198,8 @@ calculate_ce_out <- function (l_params_all, n_wtp = 100000) {
       } # close the loop for the time points 
       
       # calculate  
-      tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
-      te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
+      tc      <- m_C %*% (v_dwc * v_wcc)   # total (discounted and cycle corrected) cost per individual
+      te      <- m_E %*% (v_dwe * v_wcc)   # total (discounted and cycle corrected) QALYs per individual 
       tc_hat  <- mean(tc)       # average (discounted) cost 
       te_hat  <- mean(te)       # average (discounted) QALY  
       # store the results from the simulation in a list

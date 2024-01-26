@@ -3,8 +3,8 @@ title: 'Markov Sick-Sicker model in R - Excerise'
 subtitle: "With simulation-time dependence"
 author: "The DARTH workgroup"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 keep_tex: yes
 self_contained: no
 ---
@@ -59,10 +59,10 @@ include_graphics("../figures/sick_sicker_diagram.png")
 | Names of cycles (time horizon)     | `n_cycles`              | (n_age_max - n_age_init) / cycle_length |
 | Annual discount rate (costs/QALYs) | `d_c`/ `d_e`       | 3%                      |
 | Annual transition probabilities conditional on surviving   |     |                |
-| - Rate of becoming S1 when H               | `r_HS1`     |  0.15          |
-| - Rate of becoming H when S1               | `r_S1H`     |  0.5           |
-| - Rate of becoming S2 when S1                | `r_S1S2`    |  0.105         |
-| Annual mortality                                   |             |                |
+| - Rate of becoming S1 when H       | `r_HS1`     |  0.15          |
+| - Rate of becoming H when S1       | `r_S1H`     |  0.5           |
+| - Rate of becoming S2 when S1      | `r_S1S2`    |  0.105         |
+| Annual mortality                   |             |                |
 | - All-cause mortality (H to D)     | `v_r_HD`      | `HMD - info below`   |
 | - Hazard ratio of death in S1 vs H | `hr_S1`       |  3          |
 | - Hazard ratio of death in S2 vs H | `hr_S2`       |  10         |
@@ -133,6 +133,7 @@ n_states <- length(v_names_states)   # number of health states
 #d_c <- d_e <- 0.03  # annual discount rate for costs and QALY
 # Canada
 #d_c <- d_e <- 0.015 # annual discount rate for costs 
+
 # NL
 d_c <- 0.03         # annual discount rate for costs 
 d_e <- 0.015        # annual discount rate for QALYs
@@ -188,15 +189,15 @@ v_r_HD_age  <- rep(v_r_mort_by_age, each = 1/cycle_length)
 names(v_r_HD_age) <- v_age_names
 
 # compute mortality rates
-v_r_S1D_age  <- v_r_HD_age * hr_S1 # Age-specific mortality rate in the Sick state 
-v_r_S2D_age  <- v_r_HD_age * hr_S2 # Age-specific mortality rate in the Sicker state 
+v_r_S1D_age <- v_r_HD_age * hr_S1 # Age-specific mortality rate in the Sick state 
+v_r_S2D_age <- v_r_HD_age * hr_S2 # Age-specific mortality rate in the Sicker state 
 # transform rates to probabilities adjusting by cycle length
-p_HS1       <- rate_to_prob(r = r_HS1,  t = cycle_length) # constant annual probability of becoming Sick when Healthy conditional on surviving 
-p_S1H       <- rate_to_prob(r = r_S1H,  t = cycle_length) # constant annual probability of becoming Healthy when Sick conditional on surviving
-p_S1S2      <- rate_to_prob(r = r_S1S2, t = cycle_length) # constant annual probability of becoming Sicker when Sick conditional on surviving
-v_p_HD_age   <- rate_to_prob(v_r_HD_age,  t = cycle_length) # Age-specific mortality risk in the Healthy state 
-v_p_S1D_age  <- rate_to_prob(v_r_S1D_age, t = cycle_length) # Age-specific mortality risk in the Sick state
-v_p_S2D_age  <- rate_to_prob(v_r_S2D_age, t = cycle_length) # Age-specific mortality risk in the Sicker state
+p_HS1       <- rate_to_prob(r = r_HS1,   t = cycle_length) # constant annual probability of becoming Sick when Healthy conditional on surviving 
+p_S1H       <- rate_to_prob(r = r_S1H,   t = cycle_length) # constant annual probability of becoming Healthy when Sick conditional on surviving
+p_S1S2      <- rate_to_prob(r = r_S1S2,  t = cycle_length) # constant annual probability of becoming Sicker when Sick conditional on surviving
+v_p_HD_age  <- rate_to_prob(v_r_HD_age,  t = cycle_length) # Age-specific mortality risk in the Healthy state 
+v_p_S1D_age <- rate_to_prob(v_r_S1D_age, t = cycle_length) # Age-specific mortality risk in the Sick state
+v_p_S2D_age <- rate_to_prob(v_r_S2D_age, t = cycle_length) # Age-specific mortality risk in the Sicker state
 
 ## Annual transition probability of becoming Sicker when Sick for treatment AB 
 # Apply hazard ratio to rate to obtain transition rate of becoming Sicker when Sick for treatment AB
@@ -238,7 +239,7 @@ m_M_SoC[1, ] <- v_m_init
 m_M_strAB <- m_M_SoC # Strategy AB
 ```
 
-## 04.3 Create transition probability matrices
+## 04.3 Create transition probability array
 
 ```{r}
 ## Create transition probability arrays for strategy SoC 
@@ -273,6 +274,8 @@ a_P_SoC <- array(0,
 ### Check that transition probabilities are [0, 1] 
 check_transition_probability(a_P_SoC,   verbose = TRUE)
 check_transition_probability(a_P_strAB, verbose = TRUE)
+
+
 ### Check that all rows for each slice of the array sum to 1 
 check_sum_of_transition_array(a_P_SoC,   n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
 check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycles, verbose = TRUE)
@@ -295,6 +298,7 @@ check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycle
 ```{r}
 # your turn
 ```
+ADD AN DESCRIPTION OF WHAT YOU SEE AND IF THAT MAKES SENSE TO YOU 
 
 # 07 State Rewards 
 
@@ -334,6 +338,7 @@ check_sum_of_transition_array(a_P_strAB, n_states = n_states, n_cycles = n_cycle
 # your turn
 
 ```
+ADD AN INTERPRETATION OF YOUR RESULTS
 
 ### Exercise - Task 2
 
@@ -346,6 +351,7 @@ Estimate the cost-effectiveness of Strategy AB vs SoC.
 # your turn
 
 ```
+ADD AN INTERPRETATION OF YOUR RESULTS
 
 ### Exercise - Task 3
 
@@ -357,11 +363,13 @@ Create a well-formatted cost-effectiveness table with all results of interest an
 
 ```
 
+ADD AN INTERPRETATION OF YOUR RESULTS
+
 ```{r}
 ## CEA frontier 
 # your turn
-
 ```
+ADD AN INTERPRETATION OF YOUR RESULTS
 
 We kindly request you to add the following Acknowledgement paragraph to your further work where DARTH code formed the basis. We also like to remind you that you can add other sources of reference to this paragraph to acknowledge code you got from others. 
 

@@ -59,12 +59,12 @@ p_load_gh("DARTH-git/darthtools")
 cycle_length    <- 1     # cycle length equal to one year (use 1/12 for monthly)
 n_cycles        <- 60                          # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)  # cycle names
-v_names_states  <- c("H", "S", "D")            # state names
+v_names_states  <- c("H", "S", "D")            # state names, healthy, sick and dead
 n_states        <- length(v_names_states)      # number of health states 
 
 ### Discounting factors 
 d_c <- 0.03        # annual discount rate for costs 
-d_e <- 0.03        # annual discount rate for QALYs
+d_e <- 0.03        # annual discount rate for QALYs, for Dutch setting 1.5% is recommended
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
@@ -141,7 +141,8 @@ v_m_init
 ## 04.2 Initialize cohort traces
 
 ```{r}
-### Initialize cohort trace for SoC 
+### Initialize cohort trace for SoC. Set all values to zero
+# dimensions are number of cycles + 1 (for initial state) and number of states
 m_M_SoC <- matrix(0, 
                   nrow = (n_cycles + 1), ncol = n_states, 
                   dimnames = list(v_names_cycles, v_names_states))
@@ -233,8 +234,8 @@ plot_trace(m_M_SoC)
 Print the overall survival for the Standard of Care
 
 ```{r}
-v_os_SoC <- 1 - m_M_SoC[, "D"]    # calculate the overall survival (OS) probability
-v_os_SoC <- rowSums(m_M_SoC[, 1:2])  # alternative way of calculating the OS probability   
+v_os_SoC <- 1 - m_M_SoC[, "D"]      # calculate the overall survival (OS) probability
+v_os_SoC <- rowSums(m_M_SoC[, 1:2]) # alternative way of calculating the OS probability   
 
 plot(v_os_SoC, type = 'l', 
      ylim = c(0, 1),
@@ -251,6 +252,7 @@ grid(nx = n_cycles, ny = 10, col = "lightgray", lty = "dotted", lwd = par("lwd")
 
 ```{r}
 le_SoC <- sum(v_os_SoC)  # summing probability of OS over time  (i.e. life expectancy)
+le_SoC
 ```
 
 ## 06.2.2 Disease prevalence
@@ -349,7 +351,7 @@ df_cea <- calculate_icers(cost       = v_tot_cost,
 df_cea
 ```
 
-```{R}
+```{r}
 ## CEA table in proper format 
 table_cea <- format_table_cea(df_cea) 
 table_cea

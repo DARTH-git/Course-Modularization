@@ -73,8 +73,16 @@ v_names_states <- c("H",  # Healthy (H)
 n_states <- length(v_names_states)   # number of health states 
 
 ### Discounting factors 
-d_c <- 0.03        # annual discount rate for costs 
-d_e <- 0.03        # annual discount rate for QALYs
+# Comment out/ for the relevant country
+# USA
+#d_c <- d_e <- 0.03  # annual discount rate for costs and QALY
+# Canada
+#d_c <- d_e <- 0.015 # annual discount rate for costs 
+
+# NL
+d_c <- 0.03         # annual discount rate for costs 
+d_e <- 0.015        # annual discount rate for QALYs
+
 
 ### Strategies 
 v_names_str <- c("Standard of care", # store the strategy names
@@ -95,7 +103,7 @@ hr_S2  <- 10    # hazard ratio of death in Sicker vs Healthy
 hr_S1S2_trtAB <- 0.6  # hazard ratio of becoming Sicker when Sick under treatment AB
 
 ## Age-dependent mortality rates 
-lt_usa_2015 <- read.csv("HMD_USA_Mx_2015.csv")
+lt_usa_2015 <- read.csv("../data/HMD_USA_Mx_2015.csv")
 # Extract age-specific all-cause mortality for ages in model time horizon
 v_r_mort_by_age <- lt_usa_2015 %>% 
   dplyr::filter(Age >= n_age_init & Age < n_age_max) %>%

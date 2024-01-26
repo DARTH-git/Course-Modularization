@@ -122,6 +122,10 @@ u_D        <- 0     # utility when dead
 ### Cycle-specific discount weight for costs and effects 
 v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+
+# Within-cycle correction (WCC) - method  options Simpson's 1/3 rule, "half-cycle" or "none" 
+v_wcc    <- darthtools::gen_wcc(n_cycles = n_cycles, 
+                                method = "Simpson1/3") # vector of wcc
 ```
 
 # 04 Sample individual level characteristics
@@ -319,10 +323,10 @@ MicroSim <- function(n_i, df_X, seed = 1, Trt = "SoC") {
   } # close the loop for the time points 
   
   # calculate  
-  tc      <- m_C %*% v_dwc  # total (discounted) cost per individual
-  te      <- m_E %*% v_dwe  # total (discounted) QALYs per individual 
-  tc_hat  <- mean(tc)       # average (discounted) cost 
-  te_hat  <- mean(te)       # average (discounted) QALY  
+  tc      <- m_C %*% (v_dwc * v_wcc) # total (discounted and cycle corrected) cost per individual
+  te      <- m_E %*% (v_dwe * v_wcc) # total (discounted and cycle corrected) QALYs per individual 
+  tc_hat  <- mean(tc)       # average (discounted and cycle corrected) cost 
+  te_hat  <- mean(te)       # average (discounted and cycle corrected) QALY  
   # store the results from the simulation in a list
   results <- list(m_M = m_M, m_C = m_C, m_E = m_E, tc = tc , te = te, 
                   tc_hat = tc_hat, te_hat = te_hat)   
@@ -430,7 +434,8 @@ l_params_all <- list(
   d_c        = 0.03,     # annual discount rate for costs 
   d_e        = 0.03,     # annual discount rate for QALYs
   # Cycle length
-  cycle_length = 1
+  cycle_length = 1,
+  n_cycles     = 60      
 
 )
 ```

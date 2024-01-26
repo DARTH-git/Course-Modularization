@@ -160,8 +160,8 @@ p_mort   <- read.csv("../data/mortProb_age.csv")
 dist_Age <- read.csv("../data/MyPopulation-AgeDistribution.csv") 
 
 # probability to die in S1 by cycle (is increasing)
-p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
-p_S2D    <- 0.048   # probability to die in S2
+v_p_S1D    <- c(0.0149, 0.018, 0.021, 0.026, 0.031, rep(0.037, n_cycles - 5)) 
+  p_S2D    <- 0.048   # probability to die in S2
 
 ### State rewards 
 #### Costs 

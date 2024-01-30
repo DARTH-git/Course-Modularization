@@ -16,10 +16,6 @@ Eline M. Krijkamp, PhD
 Petros Pechlivanoglou, PhD 
 Alan Yang, MSc 
 
-
-# To Do: Rename to healthy - sick - dead to make it in line with the 3-state model we normally have
-
-
 \newpage
 
 ```{r setup, include=FALSE}
@@ -54,71 +50,76 @@ p_load_gh("DARTH-git/darthtools")
 
 ```{r}
 set.seed(1)            # set the seed  
-v_names_states    <- c("S1", "S2", "D")   # the model states names, Sick (S1), Sicker (S2) and Dead
+v_names_states <- c("H", "S", "D")   # the model states names, Healthy (H), Sick (S) and Dead
 
 # Model structure 
 n_cycles <- 30           # time horizon, 30 cycles
-c_l      <- 1            # cycle length, 1 year
-d_r      <- 0.015        # discount rate of 1.5% per cycle #@Petros: why do we have only 1.5% per year? And not the d_e and d_c as we normally have?
-#d_e 
-#d_c 
-p_S2D    <- 0.2          # probability of dying in sicker state #@Petros: annual prob?
+cycle_length  <- 1       # cycle length, 1 year
 
-# initial cohort distribution (everyone allocated to the "S1" state)
-v_init <- c("S1" = 1,
-            "S2" = 0,
+d_c      <- 0.030        # discount rate of 3.0% per cycle for costs
+d_e      <- 0.015        # discount rate of 1.5% per cycle for effects
+
+r_SD      <- 0.1         # annual rate of dying when sick
+p_SD      <- rate_to_prob(r = r_SD, t = cycle_length) # probability of dying when sick
+
+
+# initial cohort distribution (everyone allocated to the "H" state)
+v_init <- c("H" = 1,
+            "S" = 0,
             "D"  = 0)  
 
 # Cost inputs
 # To do: update according to 3-state model (same utilities)
-c_H   <- 2000          # cost of one cycle in the healthy state
-c_S1  <- 4000          # cost of one cycle in the sick state
-c_S2  <- 15000         # cost of one cycle in the sicker state
-c_D   <- 0             # cost of one cycle in the dead state
-c_Trt <- 12000         # cost of treatment (per cycle)
+c_H    <- 400   # cost of one cycle in the healthy state
+c_S    <- 1000  # cost of one cycle in the sick state
+c_D    <- 0     # cost of one cycle in the dead state
+c_trtA <- 800   # cost of treatment A (per year) in healthy state
+c_trtB <- 1500  # cost of treatment B (per year) in healthy state
+
+
 
 # Utility inputs
-u_H   <- 1             # utility when healthy 
-u_S1  <- 0.75          # utility when sick 
-u_S2  <- 0.5           # utility when sicker
-u_D   <- 0             # utility when dead
-u_Trt <- 0.95          # utility when sick(er) and being treated
+u_H   <- 1        # utility when healthy 
+u_S   <- 0.5      # utility when sick 
+u_D   <- 0        # utility when dead
 
-v_dw        <- 1 / ((1 + d_r) ^ (0:n_cycles))  # discount weight 
+
+v_dwe        <- 1 / ((1 + d_e) ^ (0:n_cycles))  # discount weight 
+v_dwc        <- 1 / ((1 + d_c) ^ (0:n_cycles))  # discount weight 
+
 n_states    <- length(v_names_states)          # the number of health states
-v_names_str <- c("no treatment", "treatment")  # strategy names
+v_names_str     <- c("Standard of Care",         # store the strategy names
+                     "Treatment A", 
+                     "Treatment B")  
 
-v_times         <- seq(0, n_cycles, c_l)         # the cycles in years
-v_names_cycles  <- paste("cycle", 0:n_cycles)    # cycle names
+v_times         <- seq(0, n_cycles, cycle_length) # the cycles in years
+v_names_cycles  <- paste("cycle", 0:n_cycles)     # cycle names
 ```
 
 Survival analysis component
 
 ```{r}
-# Load the Sicker data, structure is a list
-# to do: adjust the file names (S1D etc) and resave a an .RDS file
-l_data_survival <- readRDS("Data_Survival.RDS")
+# Load the 3 state data, structure is a list
+l_data_survival <- readRDS("Data_Survival_3state.RDS")
 
+data_HS <- l_data_survival$data_HS # Substract the data for the transition from H to S
+head(data_HS) # patient ID, transition, time and status (1 = event, 0 = censored)
 
-data_S1S2 <- l_data_survival$data_S1S2 # Substract the data for the transition from S1 to S2
-head(data_S1S2) # patient ID, transition, time and status (1 = event, 0 = censored)
-
-data_S1D  <- l_data_survival$data_S1D  # Substract the data for the transition from S1 to S2
-head(data_S1D) # patient ID, transition, time and status (1 = event, 0 = censored)
+data_HD  <- l_data_survival$data_HD  # Substract the data for the transition from H to D
+head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored)
 
 # Fit independent models for each transition and pick one that fits best
 # We use the survfit function from the survival package
-fitkm_S1S2 <- survfit(Surv(time, status)~1, data = data_S1S2) # estimate Kaplan Meier curve
+fitkm_HS <- survfit(Surv(time, status)~1, data = data_HS) # estimate Kaplan Meier curve
 # 1, indicate we are not having covariates, we only use the time and status
-summary(fitkm_S1S2, t = v_times) # Summarize the fitted curve 
-plot(fitkm_S1S2) # plot the curve 
+summary(fitkm_HS, t = v_times) # Summarize the fitted curve 
+plot(fitkm_HS) # plot the curve 
 
 # fit parametric models using flexsurv
-fitflex_S1S2 <- flexsurvreg(Surv(time, status)~1, data = data_S1S2 , dist = "weibull")
-fitflex_S1S2 # print the model parameters 
-summary(fitflex_S1S2, t = v_times) # summarize the survival 
-plot(fitflex_S1S2) # plot the survival curve, #default is that the estimated is plotted against the observed. 
-#@Petros: why is this plot added the the previous KM-curve we had? 
+fitflex_HS <- flexsurvreg(Surv(time, status)~1, data = data_HS , dist = "weibull")
+fitflex_HS # print the model parameters 
+summary(fitflex_HS, t = v_times) # summarize the survival 
+plot(fitflex_HS) # plot the survival curve, #default is that the estimated is plotted against the observed. 
 
 # flexsurvreg: estimates the curves 
 # fit.model: is a wrapper to run the function many times. 
@@ -126,39 +127,39 @@ plot(fitflex_S1S2) # plot the survival curve, #default is that the estimated is 
 
 # using the survHE package 
 # @Petros: why are we moving to survHE, and do not to exponential, gamma and Weibull with the flexsurvreg function?
-fitsurvHE_S1S2 <- fit.models(Surv(time, status)~1, data = data_S1S2, distr = c("exponential", "gamma", "weibull") ) # all values 
+fitsurvHE_HS <- fit.models(Surv(time, status)~1, data = data_HS, distr = c("exponential", "gamma", "weibull") ) # all values 
 
-plot(fitsurvHE_S1S2)
+plot(fitsurvHE_HS)
 
 # add code to extra the AIC from the just fitted function
 # provide some code that 
 
 # to do Survival:add a describtion that this does the same, just in a way we as modellers find it usefull
 # defaul is all the distribution 
-fit_S1S2  <- fit.fun(time = "time", status = "status", data = data_S1S2, times = v_times)
-fit_S1D   <- fit.fun(time = "time", status = "status", data = data_S1D,  times = v_times)
+fit_HS  <- fit.fun(time = "time", status = "status", data = data_HS, times = v_times)
+fit_HD  <- fit.fun(time = "time", status = "status", data = data_HD,  times = v_times)
 
-plot(fit_S1S2$model.objects)
+plot(fit_HS$model.objects)
 
 
 # Find the best-fitting models based on AIC
-fit_S1S2$AIC
-fit_S1D$AIC
-best_S1S2  <- fit_S1S2$model.objects$models$`log-Logistic`
-best_S1D  <-  fit_S1D$model.objects$models$Exponential
+fit_HS$AIC
+fit_HD$AIC
+best_HS  <- fit_HS$model.objects$models$`log-Logistic`
+best_HD  <- fit_HD$model.objects$models$Exponential
 
 # Calculate the transition probabilities from the best-fitting survival models
 # trans_prob is a function from darthtools and calculated the transition probabilities using survival probabilities
 
 # first have the 
-surv_prob(best_S1S2, times = v_times) # survival probabilities for the best fitting model
-surv_prob(best_S1D, times = v_times) # survival probabilities for the best fitting model
+surv_prob(best_HS, times = v_times) # survival probabilities for the best fitting model
+surv_prob(best_HD, times = v_times) # survival probabilities for the best fitting model
 # if you would like to adjust for the time , create a new vector or times based on the new cycle length 
 
 
 # Next, use this survival probability to estimate the transition probability (assuming still all annual)
-p_S1S2    <- trans_prob(surv_prob(best_S1S2, times = v_times)) 
-p_S1D     <- trans_prob(surv_prob(best_S1D,  times = v_times))
+p_HS    <- trans_prob(surv_prob(best_HS, times = v_times)) 
+p_HD    <- trans_prob(surv_prob(best_HD,  times = v_times))
 
 ```
 
@@ -169,10 +170,10 @@ p_S1D     <- trans_prob(surv_prob(best_S1D,  times = v_times))
 ```{r}
 # create the cohort trace
 m_M <- matrix(NA, 
-              nrow = n_t + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
+              nrow = n_cycles + 1 ,  # create Markov trace (n_t + 1 because R doesn't 
                                 # understand cycle 0)
               ncol = n_states, 
-              dimnames = list(0:n_t, v_names_states))
+              dimnames = list(0:n_cycles, v_names_states))
 
 m_M[1, ] <- v_init  # initialize first cycle of Markov trace
 ```
@@ -182,21 +183,21 @@ m_M[1, ] <- v_init  # initialize first cycle of Markov trace
 ```{r}
 # create the transition probability array
 a_P <- array(0,                                      # Create 3-D array
-             dim = c(n_states, n_states, n_t),
-             dimnames = list(v_names_states, v_names_states, 0:(n_t - 1))) # name the dimensions of the array 
+             dim = c(n_states, n_states, n_cycles),
+             dimnames = list(v_names_states, v_names_states, 0:(n_cycles - 1))) # name the dimensions of the array 
 ```
 
 Fill in the transition probability array:
 
 ```{r}
-# from Sick
-a_P["S1", "S1", ] <- (1 - p_S1D) * (1 - p_S1S2)
-a_P["S1", "S2", ] <- (1 - p_S1D) * p_S1S2
-a_P["S1", "D", ]  <-  p_S1D
+# from Healthy
+a_P["H", "H", ] <- (1 - p_HD) * (1 - p_HS)
+a_P["H", "S", ] <- (1 - p_HD) * p_HS
+a_P["H", "D", ] <-  p_HD
 
-# from Sicker
-a_P["S2", "S2", ] <- 1 - p_S2D
-a_P["S2", "D", ]  <- p_S2D
+# from Sick
+a_P["S", "S", ] <- 1 - p_SD
+a_P["S", "D", ] <- p_SD
 
 # from Dead
 a_P["D", "D", ]   <- 1
@@ -208,13 +209,13 @@ a_P["D", "D", ]   <- 1
 # Check that transition probabilities are in [0, 1]
 check_transition_probability(a_P, verbose = TRUE)
 # Check that all rows sum to 1
-check_sum_of_transition_array(a_P, n_rows = n_states, n_cycles = n_t, verbose = TRUE)
+check_sum_of_transition_array(a_P, n_rows = n_states, n_cycles = n_cycles, verbose = TRUE)
 ```
 
 # 05 Run Markov model
 
 ```{r}
-for (t in 1:n_t){ # t<-1                   # loop through the number of cycles
+for (t in 1:n_cycles){ # t<-1                   # loop through the number of cycles
   m_M[t + 1, ] <- m_M[t, ] %*% a_P[, , t]  # estimate the Markov trace for cycle t + 1 
                                            # using the t-th matrix from the 
                                            # probability array 
@@ -227,35 +228,51 @@ matplot(m_M, type ='l')
 
 ```{r}
 # Vectors with costs and utilities by treatment
-v_u_notrt   <- c(u_S1,  u_S2, u_D)
-v_u_trt     <- c(u_Trt, u_S2, u_D)
+v_u_SoC <- v_u_trtA <- v_u_trtB <- c(H = c_H, 
+                                     S = c_S,         
+                                     D = c_D)
+v_c_Soc   <- c(H  = c_H, 
+               S  = c_S, 
+               D  = c_D) 
 
-v_c_notrt   <- c(c_S1,         c_S2,         c_D)
-v_c_trt     <- c(c_S1 + c_Trt, c_S2 + c_Trt, c_D)
+
+v_c_trtA   <- c(H  = c_H + c_trtA, 
+                S  = c_S, 
+                D  = c_D) 
+
+v_c_trtB   <- c(H  = c_H + c_trtB, 
+                S  = c_S, 
+                D  = c_D) 
+
 ```
 
 ## 07.1 Mean Costs and QALYs for Treatment and No Treatment
 
 ```{r}
-v_tu_notrt  <- m_M   %*%  v_u_notrt
-v_tu_trt    <- m_M   %*%  v_u_trt
+v_tu_SoC  <- m_M   %*%  v_u_SoC
+v_tu_trtA <- m_M   %*%  v_u_trtA
+v_tu_trtB <- m_M   %*%  v_u_trtB
 
-v_tc_notrt  <- m_M   %*%  v_c_notrt
-v_tc_trt    <- m_M   %*%  v_c_trt 
+v_tc_SoC  <- m_M   %*%  v_c_Soc 
+v_tc_trtA <- m_M   %*%  v_c_trtA
+v_tc_trtB <- m_M   %*%  v_c_trtB
+
 ```
 
 ## 07.2 Discounted Mean Costs and QALYs
 
 ```{r}
-tu_d_notrt  <- t(v_tu_notrt)  %*%  v_dw   
-tu_d_trt    <- t(v_tu_trt)    %*%  v_dw
+tu_d_SoC  <- t(v_tu_SoC)  %*%  v_dwe 
+tu_d_trtA <- t(v_tu_trtA) %*%  v_dwe
+tu_d_trtB <- t(v_tu_trtB) %*%  v_dwe
 
-tc_d_notrt  <- t(v_tc_notrt)  %*%  v_dw
-tc_d_trt    <- t(v_tc_trt)    %*%  v_dw
+tc_d_SoC  <- t(v_tc_SoC)  %*%  v_dwc
+tc_d_trtA <- t(v_tc_trtA) %*%  v_dwc
+tc_d_trtB <- t(v_tc_trtB) %*%  v_dwc
 
 # store them into a vector
-v_tc_d      <- c(tc_d_notrt, tc_d_trt)
-v_tu_d      <- c(tu_d_notrt, tu_d_trt)
+v_tc_d      <- c(tc_d_SoC, tc_d_trtA, tc_d_trtB)
+v_tu_d      <- c(tu_d_SoC, tu_d_trtA, tc_d_trtB)
 
 # Dataframe with discounted costs and effectiveness
 df_ce       <- data.frame(Strategy = v_names_str,

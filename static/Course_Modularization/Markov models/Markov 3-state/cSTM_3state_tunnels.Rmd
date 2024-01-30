@@ -9,13 +9,13 @@ output:
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
 
-- Fernando Alarid-Escudero, PhD (1)
-- Eva A. Enns, MS, PhD (2)
-- M.G. Myriam Hunink, MD, PhD (3,4)
-- Hawre J. Jalal, MD, PhD (5)
-- Eline Krijkamp, PhD (6)
-- Petros Pechlivanoglou, PhD (7,8)
-- Alan Yang, MSc (8)
+- Fernando Alarid-Escudero, PhD 
+- Eva A. Enns, MS, PhD 
+- M.G. Myriam Hunink, MD, PhD 
+- Hawre J. Jalal, MD, PhD 
+- Eline Krijkamp, PhD 
+- Petros Pechlivanoglou, PhD 
+- Alan Yang, MSc 
 
 
 \newpage

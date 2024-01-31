@@ -69,26 +69,22 @@ v_init <- c("H" = 1,
             "D"  = 0)  
 
 # Cost inputs
-# To do: update according to 3-state model (same utilities)
 c_H    <- 400   # cost of one cycle in the healthy state
 c_S    <- 1000  # cost of one cycle in the sick state
 c_D    <- 0     # cost of one cycle in the dead state
 c_trtA <- 800   # cost of treatment A (per year) in healthy state
 c_trtB <- 1500  # cost of treatment B (per year) in healthy state
 
-
-
 # Utility inputs
 u_H   <- 1        # utility when healthy 
 u_S   <- 0.5      # utility when sick 
 u_D   <- 0        # utility when dead
 
-
 v_dwe        <- 1 / ((1 + d_e) ^ (0:n_cycles))  # discount weight 
 v_dwc        <- 1 / ((1 + d_c) ^ (0:n_cycles))  # discount weight 
 
-n_states    <- length(v_names_states)          # the number of health states
-v_names_str     <- c("Standard of Care",         # store the strategy names
+n_states    <- length(v_names_states)        # the number of health states
+v_names_str <- c("Standard of Care",         # store the strategy names
                      "Treatment A", 
                      "Treatment B")  
 
@@ -110,56 +106,89 @@ head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored
 
 # Fit independent models for each transition and pick one that fits best
 # We use the survfit function from the survival package
+# This function alsways requires the Surv function to created survival objects
+# The time and status indicate the data, ~1 means that we don't have any covariates.
 fitkm_HS <- survfit(Surv(time, status)~1, data = data_HS) # estimate Kaplan Meier curve
-# 1, indicate we are not having covariates, we only use the time and status
+
 summary(fitkm_HS, t = v_times) # Summarize the fitted curve 
 plot(fitkm_HS) # plot the curve 
 
-# fit parametric models using flexsurv
+# fit parametric models using flexsurv, we choose a weibull function
 fitflex_HS <- flexsurvreg(Surv(time, status)~1, data = data_HS , dist = "weibull")
 fitflex_HS # print the model parameters 
 summary(fitflex_HS, t = v_times) # summarize the survival 
-plot(fitflex_HS) # plot the survival curve, #default is that the estimated is plotted against the observed. 
+plot(fitflex_HS) # plot the survival curve, # default is that the parametric estimated curve is plotted as well as the observed KM curve
 
 # flexsurvreg: estimates the curves 
+# we did the demonstration using weibull only, but like to fit many different distributions
+# however, we do not want to write the same code over and over again
 # fit.model: is a wrapper to run the function many times. 
-# we have a function that does the same survival analysis curve fitting for the different specified distributions 
 
-# using the survHE package 
-# @Petros: why are we moving to survHE, and do not to exponential, gamma and Weibull with the flexsurvreg function?
-fitsurvHE_HS <- fit.models(Surv(time, status)~1, data = data_HS, distr = c("exponential", "gamma", "weibull") ) # all values 
+# create a vector of the distributions we want to fit
+# sort alphabetically 
+v_survival_distribution <- sort(c("exponential", "gamma", "weibull", "log-Normal", "log-Logistic", "Gompertz")) # 
 
-plot(fitsurvHE_HS)
+fitsurvHE_HS <- fit.models(Surv(time, status)~1, data = data_HS, distr = v_distribution ) # all values 
+plot(fitsurvHE_HS) # plot the models
 
-# add code to extra the AIC from the just fitted function
-# provide some code that 
+# Get the AIC and BIC values 
+# Create an overview 
+v_AIC_HS <- fitsurvHE_HS$model.fitting$aic
+v_BIC_HS <- fitsurvHE_HS$model.fitting$bic
+names(v_AIC_HS) <- names(v_BIC_HS) <- v_distribution
+l_fit_HS <- list (AIC = v_AIC_HS, 
+                    BIC = v_BIC_HS)
 
-# to do Survival:add a describtion that this does the same, just in a way we as modellers find it usefull
-# defaul is all the distribution 
+# Select the best fitted model based on the lowest AIC
+best_HS <- fitsurvHE_HS$models$`log-Logistic` # select the best model
+  
+# Do the same now for the HD data
+fitsurvHE_HD <- fit.models(Surv(time, status)~1, data = data_HD, distr = v_distribution ) # all values 
+plot(fitsurvHE_HD) # plot the models
+
+# Get the AIC and BIC values 
+# Create an overview 
+v_AIC_HD <- fitsurvHE_HD$model.fitting$aic
+v_BIC_HD <- fitsurvHE_HD$model.fitting$bic
+names(v_AIC_HD) <- names(v_BIC_HD) <- v_distribution
+l_fit_HD <- list (AIC = v_AIC_HD, 
+                  BIC = v_BIC_HD)
+
+  
+best_HD <- fitsurvHE_HD$models$Exponential # select the best model
+    
+```
+
+
+### Extra material
+The following code chunk does the same as what we did before, but using the fit.fun from the `dampack`darthtools` package. Depending on your personal preferences you can use either one. 
+
+```{r}
+# Fit the model for both of the transitions 
 fit_HS  <- fit.fun(time = "time", status = "status", data = data_HS, times = v_times)
-fit_HD  <- fit.fun(time = "time", status = "status", data = data_HD,  times = v_times)
+fit_HD  <- fit.fun(time = "time", status = "status", data = data_HD,times = v_times)
 
 plot(fit_HS$model.objects)
-
 
 # Find the best-fitting models based on AIC
 fit_HS$AIC
 fit_HD$AIC
 best_HS  <- fit_HS$model.objects$models$`log-Logistic`
 best_HD  <- fit_HD$model.objects$models$Exponential
+```
 
-# Calculate the transition probabilities from the best-fitting survival models
-# trans_prob is a function from darthtools and calculated the transition probabilities using survival probabilities
+# 03.2 Calculate transition probabilities
+For the best fitting survival models we fit the transition probabilities. We do this using the `trans_prob` function from the `darthtools` package.
 
-# first have the 
+```{r}
+# First display the survival probabilities for the best fitting model
 surv_prob(best_HS, times = v_times) # survival probabilities for the best fitting model
 surv_prob(best_HD, times = v_times) # survival probabilities for the best fitting model
 # if you would like to adjust for the time , create a new vector or times based on the new cycle length 
 
-
-# Next, use this survival probability to estimate the transition probability (assuming still all annual)
-p_HS    <- trans_prob(surv_prob(best_HS, times = v_times)) 
-p_HD    <- trans_prob(surv_prob(best_HD,  times = v_times))
+# Next, use this survival probabilities to estimate the transition probability (assuming still all annual) using the trans_prob function from darthtools
+v_p_HS    <- trans_prob(surv_prob(best_HS, times = v_times)) 
+v_p_HD    <- trans_prob(surv_prob(best_HD,  times = v_times))
 
 ```
 
@@ -191,9 +220,9 @@ Fill in the transition probability array:
 
 ```{r}
 # from Healthy
-a_P["H", "H", ] <- (1 - p_HD) * (1 - p_HS)
-a_P["H", "S", ] <- (1 - p_HD) * p_HS
-a_P["H", "D", ] <-  p_HD
+a_P["H", "H", ] <- (1 - v_p_HD) * (1 - v_p_HS)
+a_P["H", "S", ] <- (1 - v_p_HD) * v_p_HS
+a_P["H", "D", ] <-  v_p_HD
 
 # from Sick
 a_P["S", "S", ] <- 1 - p_SD

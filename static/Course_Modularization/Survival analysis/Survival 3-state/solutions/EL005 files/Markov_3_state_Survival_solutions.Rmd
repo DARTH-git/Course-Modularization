@@ -35,7 +35,7 @@ p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survHE"
 
 
 # load (install if required) packages from GitHub
-# install_github("DARTH-git/darthtools", force = TRUE) Uncomment if there is a newer version
+install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 library(darthtools)
 p_load_gh("DARTH-git/darthtools")
 ```
@@ -50,10 +50,11 @@ p_load_gh("DARTH-git/darthtools")
 
 ```{r}
 set.seed(1)            # set the seed  
+#PP in the markov model is is H or Healthy?
 v_names_states <- c("H", "S", "D")   # the model states names, Healthy (H), Sick (S) and Dead
 
 # Model structure 
-n_cycles <- 30           # time horizon, 30 cycles
+n_cycles      <- 30      # time horizon, 30 cycles
 cycle_length  <- 1       # cycle length, 1 year
 
 d_c      <- 0.030        # discount rate of 3.0% per cycle for costs
@@ -106,9 +107,9 @@ head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored
 
 # Fit independent models for each transition and pick one that fits best
 # We use the survfit function from the survival package
-# This function alsways requires the Surv function to created survival objects
+# This function always requires the Surv function to created survival objects
 # The time and status indicate the data, ~1 means that we don't have any covariates.
-fitkm_HS <- survfit(Surv(time, status)~1, data = data_HS) # estimate Kaplan Meier curve
+fitkm_HS <- survfit(Surv(time, status) ~ 1, data = data_HS) # estimate Kaplan Meier curve
 
 summary(fitkm_HS, t = v_times) # Summarize the fitted curve 
 plot(fitkm_HS) # plot the curve 
@@ -122,13 +123,13 @@ plot(fitflex_HS) # plot the survival curve, # default is that the parametric est
 # flexsurvreg: estimates the curves 
 # we did the demonstration using weibull only, but like to fit many different distributions
 # however, we do not want to write the same code over and over again
-# fit.model: is a wrapper to run the function many times. 
+# fit.models: is a wrapper to run the function many times. 
 
 # create a vector of the distributions we want to fit
 # sort alphabetically 
 v_survival_distribution <- sort(c("exponential", "gamma", "weibull", "log-Normal", "log-Logistic", "Gompertz")) # 
 
-fitsurvHE_HS <- fit.models(Surv(time, status)~1, data = data_HS, distr = v_distribution ) # all values 
+fitsurvHE_HS <- fit.models(Surv(time, status) ~ 1, data = data_HS, distr = v_distribution ) # all values 
 plot(fitsurvHE_HS) # plot the models
 
 # Get the AIC and BIC values 
@@ -137,13 +138,13 @@ v_AIC_HS <- fitsurvHE_HS$model.fitting$aic
 v_BIC_HS <- fitsurvHE_HS$model.fitting$bic
 names(v_AIC_HS) <- names(v_BIC_HS) <- v_distribution
 l_fit_HS <- list (AIC = v_AIC_HS, 
-                    BIC = v_BIC_HS)
+                  BIC = v_BIC_HS)
 
 # Select the best fitted model based on the lowest AIC
 best_HS <- fitsurvHE_HS$models$`log-Logistic` # select the best model
   
 # Do the same now for the HD data
-fitsurvHE_HD <- fit.models(Surv(time, status)~1, data = data_HD, distr = v_distribution ) # all values 
+fitsurvHE_HD <- fit.models(Surv(time, status) ~ 1, data = data_HD, distr = v_distribution ) # all values 
 plot(fitsurvHE_HD) # plot the models
 
 # Get the AIC and BIC values 
@@ -161,7 +162,7 @@ best_HD <- fitsurvHE_HD$models$Exponential # select the best model
 
 
 ### Extra material
-The following code chunk does the same as what we did before, but using the fit.fun from the `dampack`darthtools` package. Depending on your personal preferences you can use either one. 
+The following code chunk does the same as what we did before, but using the fit.fun from the `dampack`darthtools` package. Depending on your personal preferences and what you want to achieve with your model you can use either one. 
 
 ```{r}
 # Fit the model for both of the transitions 
@@ -178,7 +179,7 @@ best_HD  <- fit_HD$model.objects$models$Exponential
 ```
 
 # 03.2 Calculate transition probabilities
-For the best fitting survival models we fit the transition probabilities. We do this using the `trans_prob` function from the `darthtools` package.
+For the best fitting survival models we calculate  the transition probabilities. We do this using the `trans_prob` function from the `darthtools` package.
 
 ```{r}
 # First display the survival probabilities for the best fitting model

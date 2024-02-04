@@ -31,8 +31,7 @@ Change `eval` to `TRUE` if you want to knit this document.
 ```{r, warning = F, message = F}
 if (!require('pacman')) install.packages('pacman'); library(pacman) # use this package to conveniently install other packages
 # load (install if required) packages from CRAN
-p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survHE", "survminer", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "dampack", "data.table", "tm")  
-
+p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survHE", "survminer", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "dampack", "data.table", "tm", "ggsurvfit")  
 
 # load (install if required) packages from GitHub
 install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
@@ -99,10 +98,10 @@ Survival analysis component
 # Load the 3 state data, structure is a list
 l_data_survival <- readRDS("Data_Survival_3state.RDS")
 
-data_HS <- l_data_survival$data_HS # Substract the data for the transition from H to S
+data_HS <- l_data_survival$data_HS # Subtract the data for the transition from H to S
 head(data_HS) # patient ID, transition, time and status (1 = event, 0 = censored)
 
-data_HD  <- l_data_survival$data_HD  # Substract the data for the transition from H to D
+data_HD  <- l_data_survival$data_HD  # Subtract the data for the transition from H to D
 head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored)
 
 # Fit independent models for each transition and pick one that fits best
@@ -110,15 +109,43 @@ head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored
 # This function always requires the Surv function to created survival objects
 # The time and status indicate the data, ~1 means that we don't have any covariates.
 fitkm_HS <- survfit(Surv(time, status) ~ 1, data = data_HS) # estimate Kaplan Meier curve
-
 summary(fitkm_HS, t = v_times) # Summarize the fitted curve 
 plot(fitkm_HS) # plot the curve 
+```
 
+
+### Extra material - Nice plotting KM curves
+```{r}
+# Healthy to Sick 
+survfit2(Surv(time, status) ~ 1, data = data_HS) %>%
+    ggsurvfit() +
+     add_censor_mark() +
+     add_confidence_interval() +
+     add_quantile() +
+     add_risktable() +
+     scale_ggsurvfit()
+
+# Healthy do dead 
+survfit2(Surv(time, status) ~ 1, data = data_HD) %>%
+    ggsurvfit() +
+     add_censor_mark() +
+     add_confidence_interval() +
+     add_quantile() +
+     add_risktable() +
+     scale_ggsurvfit()
+
+```
+
+## Paramatric modeling 
+```{r}
 # fit parametric models using flexsurv, we choose a weibull function
 fitflex_HS <- flexsurvreg(Surv(time, status)~1, data = data_HS , dist = "weibull")
 fitflex_HS # print the model parameters 
 summary(fitflex_HS, t = v_times) # summarize the survival 
 plot(fitflex_HS) # plot the survival curve, # default is that the parametric estimated curve is plotted as well as the observed KM curve
+
+# If we now like to extrapolate the data, we can use the parametric survival function to do so
+plot(fitflex_HS, t = 0:30, xlim = c(0,30))
 
 # flexsurvreg: estimates the curves 
 # we did the demonstration using weibull only, but like to fit many different distributions
@@ -159,6 +186,8 @@ l_fit_HD <- list (AIC = v_AIC_HD,
 best_HD <- fitsurvHE_HD$models$Exponential # select the best model
     
 ```
+
+
 
 
 ### Extra material

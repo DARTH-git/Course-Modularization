@@ -63,7 +63,7 @@ calculate_treatment_costs <- function(trt, disease_history, kg, c_blood_tinners 
    # kg: the drug is doses in 2 mg per kilogram
    # c_blood_tinners: cost price of the blood tinners, default is 5 euro
    # c_drug_per_mg: cost price per mg of the drug, default is 10 euro
-   # currency: the currency use, default is EURo
+   # currency: the currency use, default is EURO
   
    # When there is no treatment, the patients that have a history of disease have the cost os blood tinners
    # No treatment, and without history of disease, have no costs 
@@ -130,28 +130,52 @@ calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63)
 calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63, currency = "dollar")
 ```
 
-In case your data has the same variable types, you can also work with dataframes. This is a common output for for example the cost-effectiveness results of a incremental cost-effectiveness analysis. 
+Rather than having multiple arguments in your function, you can also group them in a list. Within the function, you can use the `with` function to access the elements of the list. 
+Normally, in a list you would access an element using the `$` sign. However, in a function, you can use the `with` function to access the elements of the list by just using the variable name. 
 
 ```{r}
-# PLEASE NOTE: THIS IS NOT FROMAL FUNCTION, 
 
-v_cost    <- 
-v_effects <- 
-n_wtp     <- 
+l_params_input <- list(trt = TRUE, 
+                       disease_history = TRUE, 
+                       kg = 63,
+                       c_blood_tinners = 5, 
+                       c_drug_per_mg = 10,
+                       currency = "dollar")
 
-calculate_iNMB_two_treatments <- function(v_costs, v_effects, n_wtp){
+
+calculate_treatment_costs <- function(l_params_input){
+  with(l_params_input, { 
+# Arguments
+   # trt: does the patient get a treatment: yes/ no
+   # disease_history: previous history of disease; if there is a previous history of disease, the patients are on permanent treatment of blood_tinner
+   # kg: the drug is doses in 2 mg per kilogram
+   # c_blood_tinners: cost price of the blood tinners, default is 5 euro
+   # c_drug_per_mg: cost price per mg of the drug, default is 10 euro
+   # currency: the currency use, default is EURO
   
-}
+   # When there is no treatment, the patients that have a history of disease have the cost os blood tinners
+   # No treatment, and without history of disease, have no costs 
+   c_trt <- 0 + c_blood_tinners * disease_history 
+   
+   # For those that get the treatment, the cost depents on the dose + disease history
+   # captured in the equation below
+   if (trt == TRUE){
+   dose <- kg / 2
+   c_trt <- dose * c_drug_per_mg + c_blood_tinners * disease_history
+   }
+   
+   # we assume a currency convertion of 1.02
+   if (currency  == "dollar"){
+   c_trt <- c_trt * 1.02
+   }
+   return(c_trt) # Return the treatment costs 
+  } ) #close with
+  } #close function
+
+calculate_treatment_costs(l_params_input)
+
 
 ```
-
-
-You can even have an argument in the function that specified what outcome the `function` should give. 
-
-```
-
-```
-
 
 
 # Acknowlegdement

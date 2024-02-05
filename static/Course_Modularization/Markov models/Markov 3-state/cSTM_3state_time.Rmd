@@ -1,10 +1,11 @@
 ---
-title: '3-state cSTM in R'
-subtitle: "With simulation-time dependency"
+title: "3-state cSTM in R"
 author: "The DARTH workgroup"
+subtitle: "With simulation-time dependency"
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
@@ -110,8 +111,8 @@ u_S       <- 0.5   # utility when sick
 u_D       <- 0     # utility when dead
 
 ### Discount weight for costs and effects 
-v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
-v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwc     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwe     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 ```
 
 # 04 Construct state-transition models
@@ -226,7 +227,7 @@ names(l_m_M) <- v_names_str
 ## 06.1 Plot the cohort trace for strategies SoC
 
 ```{r, message = FALSE}
-plot_trace(m_M_SoC) 
+plot_trace(m_M_SoC)
 ```
 
 ## 06.2 Overall Survival (OS)

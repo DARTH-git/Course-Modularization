@@ -3,8 +3,6 @@ library("darthtools")
 library("dampack")
 
 
-
-
 l_params_all <- list(
   # Transition probabilities
   # probability of dying

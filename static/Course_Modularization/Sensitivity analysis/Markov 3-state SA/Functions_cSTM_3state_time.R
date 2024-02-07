@@ -16,6 +16,11 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000, verbose = FALSE){ # Us
     v_names_states  <- c("H", "S", "D")       # state names, Healthy (H), Sick (S), Dead(D)
     n_states        <- length(v_names_states) # number of health states 
     
+    
+    ### Discount weight for costs and effects 
+    v_dwc     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+    v_dwe     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
+    
     ## Cycle names
     v_names_cycles  <- paste("cycle", 0:n_cycles)
     

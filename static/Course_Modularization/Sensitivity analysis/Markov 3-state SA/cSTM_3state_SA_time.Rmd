@@ -124,7 +124,7 @@ n_states        <- length(v_names_states)        # number of health states
 
 ### Discounting factors 
 d_c <- 0.03        # annual discount rate for costs 
-d_e <- 0.03        # annual discount rate for QALYs
+d_e <- 0.015       # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
@@ -169,8 +169,8 @@ u_S       <- 0.5   # utility when sick
 u_D       <- 0     # utility when dead
 
 ### Discount weight for costs and effects 
-v_dwc     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
-v_dwe     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwc     <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwe     <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 ```
 
 # 04 Construct state-transition models
@@ -446,7 +446,7 @@ l_params_all <- list(
   u_S       = 0.5,   # utility when sick
   u_D       = 0,     # utility when dead
   # Discount rates
-  d_e       = 0.03,  # discount rate per cycle equal discount of costs and QALYs by 3%
+  d_e       = 0.015,  # discount rate per cycle equal discount of costs and QALYs by 3%
   d_c       = 0.03,  # discount rate per cycle equal discount of costs and QALYs by 3%
   # Time horizon
   n_cycles  = 60     # simulation time horizon (number of cycles)

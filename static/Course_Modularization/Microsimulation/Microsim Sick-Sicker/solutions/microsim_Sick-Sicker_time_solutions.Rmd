@@ -1,10 +1,13 @@
 ---
-title: 'SOLUTIONS - Microsimulation Sick-Sicker model with time dependency - Excerise'
-subtitle: 'Includes individual characteristics: age, age dependent mortality, individual treatment effect modifer, state-residency for the sick (S1) state, increasing change of death in the first 6 year of sickness'
+title: "SOLUTIONS - Microsimulation Sick-Sicker model with time dependency - Excerise"
 author: "The DARTH workgroup"
+subtitle: "Includes individual characteristics: age, age dependent mortality, individual
+  treatment effect modifer, state-residency for the sick (S1) state, increasing change
+  of death in the first 6 year of sickness"
 output:
   html_document: default
   pdf_document: default
+  word_document: default
 ---
 
 This work is developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:

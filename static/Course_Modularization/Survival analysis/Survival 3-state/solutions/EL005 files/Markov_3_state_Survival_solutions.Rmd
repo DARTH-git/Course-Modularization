@@ -34,7 +34,7 @@ if (!require('pacman')) install.packages('pacman'); library(pacman) # use this p
 p_load("here", "dplyr", "devtools", "gems", "flexsurv", "flexsurvcure", "survHE", "survminer", "ggplot2", "msm", "igraph", "mstate", "reshape2", "knitr", "dampack", "data.table", "tm", "ggsurvfit")  
 
 # load (install if required) packages from GitHub
-install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
+#install_github("DARTH-git/darthtools", force = TRUE) #Uncomment if there is a newer version
 library(darthtools)
 p_load_gh("DARTH-git/darthtools")
 ```
@@ -59,14 +59,16 @@ cycle_length  <- 1       # cycle length, 1 year
 d_c      <- 0.030        # discount rate of 3.0% per cycle for costs
 d_e      <- 0.015        # discount rate of 1.5% per cycle for effects
 
+# Transition probabilities 
 r_SD      <- 0.1         # annual rate of dying when sick
 p_SD      <- rate_to_prob(r = r_SD, t = cycle_length) # probability of dying when sick
+# Note: no information here about the transition from HS and from HD
 
 
 # initial cohort distribution (everyone allocated to the "H" state)
 v_init <- c("H" = 1,
             "S" = 0,
-            "D"  = 0)  
+            "D" = 0)  
 
 # Cost inputs
 c_H    <- 400   # cost of one cycle in the healthy state
@@ -92,10 +94,10 @@ v_times         <- seq(0, n_cycles, cycle_length) # the cycles in years
 v_names_cycles  <- paste("cycle", 0:n_cycles)     # cycle names
 ```
 
-Survival analysis component
-
+# 03.1 Input Survival analysis component
+Survival analysis is a branch of statistics that deals with the analysis of time-to-event data. The goal is to model and predict the time until an event of interest occurs, such as death or disease progression.  
 ```{r}
-# Load the 3 state data, structure is a list
+# Load the 3-state data, structure is a list
 l_data_survival <- readRDS("Data_Survival_3state.RDS")
 
 data_HS <- l_data_survival$data_HS # Subtract the data for the transition from H to S
@@ -103,14 +105,24 @@ head(data_HS) # patient ID, transition, time and status (1 = event, 0 = censored
 
 data_HD  <- l_data_survival$data_HD  # Subtract the data for the transition from H to D
 head(data_HD) # patient ID, transition, time and status (1 = event, 0 = censored)
+```
 
-# Fit independent models for each transition and pick one that fits best
+# Fit independent models for each transition 
+```{r}
+# From Healthy to Sick
 # We use the survfit function from the survival package
 # This function always requires the Surv function to created survival objects
 # The time and status indicate the data, ~1 means that we don't have any covariates.
 fitkm_HS <- survfit(Surv(time, status) ~ 1, data = data_HS) # estimate Kaplan Meier curve
 summary(fitkm_HS, t = v_times) # Summarize the fitted curve 
 plot(fitkm_HS) # plot the curve 
+
+# From Healthy to Dead
+
+fitkm_HD <- survfit(Surv(time, status) ~ 1, data = data_HD) # estimate Kaplan Meier curve
+summary(fitkm_HD, t = v_times) # Summarize the fitted curve 
+plot(fitkm_HD)  # plot the curve 
+
 ```
 
 
@@ -123,7 +135,8 @@ survfit2(Surv(time, status) ~ 1, data = data_HS) %>%
      add_confidence_interval() +
      add_quantile() +
      add_risktable() +
-     scale_ggsurvfit()
+     scale_ggsurvfit() +
+     ggtitle("KM-curve Healthy to Sick")
 
 # Healthy do dead 
 survfit2(Surv(time, status) ~ 1, data = data_HD) %>%
@@ -132,11 +145,13 @@ survfit2(Surv(time, status) ~ 1, data = data_HD) %>%
      add_confidence_interval() +
      add_quantile() +
      add_risktable() +
-     scale_ggsurvfit()
+     scale_ggsurvfit() +
+  ggtitle("KM-curve Healthy to Dead")
 
 ```
 
 ## Paramatric modeling 
+
 ```{r}
 # fit parametric models using flexsurv, we choose a weibull function
 fitflex_HS <- flexsurvreg(Surv(time, status)~1, data = data_HS , dist = "weibull")
@@ -145,7 +160,7 @@ summary(fitflex_HS, t = v_times) # summarize the survival
 plot(fitflex_HS) # plot the survival curve, # default is that the parametric estimated curve is plotted as well as the observed KM curve
 
 # If we now like to extrapolate the data, we can use the parametric survival function to do so
-plot(fitflex_HS, t = 0:30, xlim = c(0,30))
+plot(fitflex_HS, t = 0:30, xlim = c(0, 30))
 
 # flexsurvreg: estimates the curves 
 # we did the demonstration using weibull only, but like to fit many different distributions
@@ -156,7 +171,7 @@ plot(fitflex_HS, t = 0:30, xlim = c(0,30))
 # sort alphabetically 
 v_survival_distribution <- sort(c("exponential", "gamma", "weibull", "log-Normal", "log-Logistic", "Gompertz")) # 
 
-fitsurvHE_HS <- fit.models(Surv(time, status) ~ 1, data = data_HS, distr = v_distribution ) # all values 
+fitsurvHE_HS <- fit.models(Surv(time, status) ~ 1, data = data_HS, distr = v_survival_distribution ) # all values 
 plot(fitsurvHE_HS) # plot the models
 
 # Get the AIC and BIC values 

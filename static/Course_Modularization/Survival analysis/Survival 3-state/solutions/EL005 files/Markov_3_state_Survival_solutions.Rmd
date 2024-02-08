@@ -178,7 +178,7 @@ plot(fitsurvHE_HS) # plot the models
 # Create an overview 
 v_AIC_HS <- fitsurvHE_HS$model.fitting$aic
 v_BIC_HS <- fitsurvHE_HS$model.fitting$bic
-names(v_AIC_HS) <- names(v_BIC_HS) <- v_distribution
+names(v_AIC_HS) <- names(v_BIC_HS) <- v_survival_distribution
 l_fit_HS <- list (AIC = v_AIC_HS, 
                   BIC = v_BIC_HS)
 
@@ -186,14 +186,14 @@ l_fit_HS <- list (AIC = v_AIC_HS,
 best_HS <- fitsurvHE_HS$models$`log-Logistic` # select the best model
   
 # Do the same now for the HD data
-fitsurvHE_HD <- fit.models(Surv(time, status) ~ 1, data = data_HD, distr = v_distribution ) # all values 
+fitsurvHE_HD <- fit.models(Surv(time, status) ~ 1, data = data_HD, distr = v_survival_distribution ) # all values 
 plot(fitsurvHE_HD) # plot the models
 
 # Get the AIC and BIC values 
 # Create an overview 
 v_AIC_HD <- fitsurvHE_HD$model.fitting$aic
 v_BIC_HD <- fitsurvHE_HD$model.fitting$bic
-names(v_AIC_HD) <- names(v_BIC_HD) <- v_distribution
+names(v_AIC_HD) <- names(v_BIC_HD) <- v_survival_distribution
 l_fit_HD <- list (AIC = v_AIC_HD, 
                   BIC = v_BIC_HD)
 

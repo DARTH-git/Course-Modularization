@@ -43,6 +43,7 @@ install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.
 # Install additional packages
 p_load("ggrepel")
 ```
+
 ```{r}
 # load (install if required) packages from GitHub
 

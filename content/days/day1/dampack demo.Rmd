@@ -1,0 +1,14 @@
+---
+title: dampack
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: dampack 
+menu:
+  day1:
+    weight: 3
+---
+
+[Download slides](../../../Course_Modularization/Intro, general, packages/dampack_Janssen.pptx)
+
+

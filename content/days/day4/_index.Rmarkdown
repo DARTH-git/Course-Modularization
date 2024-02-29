@@ -1,5 +1,5 @@
 ---
-title: "Day 2"
+title: "Day 4 (Fri, April 5)"
 author: ''
 date: "`r Sys.Date()`"
 slug: day4
@@ -12,51 +12,17 @@ toc: yes
 type: docs
 ---
 
-## Microsimulation Modeling in R
-
-Thursday, August 24, 2023
-
-[Zoom link](https://utoronto.zoom.us/j/89369317139) [Meeting ID: 893 6931 7139; Passcode: 114279]
-
-**Video lectures**
-
-**Right click below links and select "Open link in new tab". 
-
-[Microsimulation - 1. Theory](https://vimeo.com/473484372/b270d78171?share=copy)
-
-[Microsimulation - 2. Efficiency](https://vimeo.com/473071949/3491a03c0d?share=copy)
-
-[Microsimulation - 3. Implementation](https://vimeo.com/473414536/85887de382?share=copy)
-
-[Microsimulation - 4. State-residence](https://vimeo.com/473464649/31c07bcb78?share=copy)
-
-**Readings:**
-
--	Krijkamp EM, Alarid-Escudero F, Enns EA, Jalal HJ, Hunink MM, Pechlivanoglou P. Microsimulation modeling for health decision sciences using R: A tutorial. Medical Decision Making. 2018;38(3):400-22. [https://doi.org/10.1177/0272989X18754513](https://doi.org/10.1177/0272989X18754513)
-
-
-**Schedule (EST):**
+**Schedule (EST):** throughout the day participants work alone while instructors stand by
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 11:00am – 11:15am  | cSTM to microsimulation - review of day 1  |
-| 11:15am – 11:45am | Making your model a function: How and why | 
-| 11:45am – 12:45pm | Code walk through: Microsimulation  |
-| 12:45pm – 1:15pm  | Lunch break | 
-| 1:15pm – 2:15pm | Hands-on exercise: Code your own microsimulation model |
-| 2:15pm – 3:00pm | Advanced topics: calibration |
-
-
-**Learning objectives:**
-
--	Understand implementation differences between microsimulation and cohort state transition models
--	Understand how to summarize the output from a microsimulation model
--	Understand how to incorporate more complex dependencies and dynamics in a microsimulation model
--	Implement a microsimulation in R
--	Understand how to convert a decision analytic model from an R script to an R function
-
-
-
+| 9:00 – 9:30  | Presenting your results through Shiny - a presentation  |
+| 9:30 – 10:00 | Calibration + PSA Q & A | 
+| 10:00 – 12:00 | 1:1 with instructors / work alone, instructors float |
+| 12:00 – 13:00  | Lunch break | 
+| 13:00 – 15:00 | 1:1 with instructors / work alone, instructors float |
+| 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |
+s
 <!-- ## Live session recording: -->
 
 <!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/pUR-16z0rkBocoSObaW2SlV_ZqBc0dcPUTpnLnlM4SjFlKZjrZZOOSjepsZNEJgc.f1ZFoplFMT-Ufkqd__;!!D0zGoin7BXfl!65pB8GkTsosLU0HUnWQCKQU1J2-Rlv7uKmTTInFtNnF71JiTMz_VXl8XPKxFATjfcU7vj-Tvjy3gAQBVjw$) -->

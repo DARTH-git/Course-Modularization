@@ -7,23 +7,15 @@ weight: 16
 widget: custom
 ---
 
+This workshop will offer personalized teaching and guidance to participants. During the workshop, the instructors will help participants on a case by case basis to:
 
+1. Construct a decision model based on their existing research problem
 
-- Identify research questions that can be answered with decision analysis models
+2. Move to the next stage(s) of their model developing process
 
-- Understand the conceptual, mathematical, and computational differences different model types 
+3. Transform their models in a different software into R
 
-- Understand when to use different types of decision analytic models
+4. Understand feedback of their models given by the instructors
 
-- Specify a decision analytic model structure and data needs to answer a research question
-
-- Implement and analyze decision trees, cohort state-transition models, and microsimulations
-
-- Implement and interpret probabilistic sensitivity analysis
-
-- Develop competence in R for performing decision analytic tasks
-
-- Understand good coding practices
-
-- Understand the benefits of R and other programming languages for decision analysis
+5. Conduct specific analyses in R
 

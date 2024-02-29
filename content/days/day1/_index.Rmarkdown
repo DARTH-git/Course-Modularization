@@ -1,5 +1,5 @@
 ---
-title: "Part II Preparation"
+title: "Day 1 (Wed, April 2)"
 author: ''
 date: "`r Sys.Date()`"
 slug: day1
@@ -7,22 +7,21 @@ categories: []
 tags: []
 menu:
   day1:
-    name: "Part II Prep"
     weight: 1
 toc: yes
 type: docs
 ---
 
-Part II Preparation (complete prior to the first session)
+**Schedule (EST):** throughout the day participants work alone while instructors stand by
 
-* Follow [installation instructions](https://decision-modeling-cdc-2022-23.netlify.app/prework/getting-started/) to install R, RStudio, and R packages required for the workshop
-* Ensure an appropriate background in R:
-  + For those with little or no experience in R, complete the [Introduction to 
-  R](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/welcome/) self-paced modules (6-8hrs to complete)
-  + For with significant experience in R or if you are unsure, complete the [R Self-Assessment Quiz](https://decision-modeling-cdc-2022-23.netlify.app/days/day1/rquiz/) to determine if you need to review some or all 
-  of the "Introduction to R" modules.
-
-
+|                            |            |
+|---------------|:-----------------------------------------|
+| 9:00 – 9:15 | Welcome & Intro from DARTH |
+| 9:15 – 11:00 | Icebreaker - participant introduce themselves and their models | 
+| 11:00 – 11:30 | Set up - make sure everything in prep pkg works (GitHub, Slack, etc) |
+| 11:30 – 12:00  | Framework + Dampack presentation | 
+| 12:00 – 13:00 | Lunch |
+| 13:00 – 16:00 | 1:1 with instructors or work alone, instructors float |
 
 
 

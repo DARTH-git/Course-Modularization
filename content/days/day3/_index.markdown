@@ -1,7 +1,7 @@
 ---
-title: "Part II: Session 2"
+title: "Day 3 (Fri, April 4)"
 author: ''
-date: "2022-12-07"
+date: "2024-02-29"
 slug: day3
 categories: []
 tags: []
@@ -12,36 +12,14 @@ toc: yes
 type: docs
 ---
 
-## Time-Dependent Cohort State Transition Models (cSTM)
-
-Tuesday, December 6, 2022
-
-**Readings:**
-
--	Alarid-Escudero F, et al. A Tutorial on Time-Dependent Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. Medical Decision Making, 2022. [https://doi.org/10.1177/0272989X221121747](https://doi.org/10.1177/0272989X221121747)
-
-
-**Schedule:**
+**Schedule (EST):** throughout the day participants work alone while instructors stand by
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 10:00am – 10:15am   | Naming variables in R |
-| 10:15am – 10:30am  | Review of types of time-dependency in cSTMs | 
-| 10:30am – 11:15am | Code walk-through: Time-dependent cSTMs |
-| 11:15am – 12:00pm | Hands-on exercise: Add time-dependency to your cSTM | 
-| 12:00pm – 12:30pm  | Lunch break | 
-| 12:30pm – 1:00pm | Hands-on exercise: continued |
-| 1:00pm –  2:00pm | What kind of data do you need? A fellow-driven discussion |
-
-
-**Learning objectives:**
-
--	Appreciate the importance of consistent variable naming in code
--	Understand the difference between simulation time and state residence time dependencies and their implementation
--	Implement your own cohort state-transition model with time-dependency in R
--	Identify the data needs of your own modeling project
-
-## Live session recording
-
-[Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/eMEwH3jiSYrjEulduTOu99uIV1peEPStj9w7TNgZXR3e60Mx2ygzYqvZtIHZU3Yu.EfV3LnuK4zOGXKsO__;!!D0zGoin7BXfl!9jT4d6b4ykOjuSkn6syCZWYV2YLuaWm82Lj46pve9L8UX_N2wcxaWqsc8ge_XChWXoM7HnUra3aahXYrxw$)
+| 9:00 – 9:30   | Presenting your results through Shiny - a presentation |
+| 9:30 – 10:00  | | 
+| 10:00 – 12:00 | 1:1 with instructors / work alone, instructors float |
+| 12:00 – 13:00 | Lunch | 
+| 13:00 – 15:00  | 1:1 with instructors / work alone, instructors float| 
+| 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |
 

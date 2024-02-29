@@ -3,10 +3,10 @@ title: Model Calibration
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: Calibration files
+linktitle: Calibration
 menu: 
-  day4:
-    weight: 3
+  day2:
+    weight: 2
 ---
 
 [Download slides - quick overview of calibration](../../../Course_Modularization/Calibration/Slides/CalibrationQuick.pdf)

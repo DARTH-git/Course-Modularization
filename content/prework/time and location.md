@@ -13,12 +13,12 @@ type: docs
 
 ## Dates
 
-Dates: Wednesday, August 23, 2023 - Friday, August 25th, 2023
+Dates: Tues, April 2 - Fri, April 5th, 2024
 
-Time: 11:00AM - 03:00PM Eastern Time
+Time: 9:00 - 16:00 Eastern Time
 
 ## Location
 
-Location: PGCRL, 686 Bay Street, Toronto, Ontario - M5G 0A4, Canada & Zoom (Hybrid)
+Location: PGCRL, 686 Bay Street, Toronto, Ontario - M5G 0A4, Canada 
 
 

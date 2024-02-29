@@ -7,8 +7,7 @@ categories: []
 tags: []
 linktitle: "Install software"
 menu:
-  prework:
-    parent: "Getting Started"
+  day5:
     weight: 7
 toc: yes
 type: docs

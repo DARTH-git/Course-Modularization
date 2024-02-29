@@ -1,5 +1,5 @@
 ---
-title: "Day 2 (Thurs, April 3)"
+title: "Day 2 (Wed, April 3)"
 author: ''
 date: "2024-02-29"
 slug: day2

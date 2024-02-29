@@ -4,8 +4,7 @@ draft: false
 linktitle: How to attend virtually
 slug: accommodations
 menu:
-  prework:
-    parent: "Welcome"
+  day5:
     weight: 3
 title: "How to attend virtually"
 type: docs

@@ -1,5 +1,5 @@
 ---
-title: "Day 1 (Wed, April 2)"
+title: "Day 1 (Tues, April 2)"
 author: ''
 date: "2024-02-29"
 slug: day1
@@ -7,7 +7,6 @@ categories: []
 tags: []
 menu:
   day1:
-    name: "Day 1"
     weight: 1
 toc: yes
 type: docs

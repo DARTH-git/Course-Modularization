@@ -69,9 +69,9 @@ enableGitInfo = false
   organizations = [ { name = "RStudio", url = "https://www.rstudio.com/" } ]
   # gravatar = false  # Get your avatar from Gravatar.com? (true/false)
   # avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
-  email = "alan.yang@sickkids.ca"
+  email = "alexandra.moskalewicz@sickkids.ca"
   # address = "Building 1 Room 1, Stanford University, California, 90210, USA"
-  # office_hours = "Monday 10:00 to 13:00 or email for appointment"
+  # office_hours = "Monday 10:00 to 13:00 or email https://journals.sagepub.com/doi/abs/10.1177/0272989X221121747?journalCode=mdmafor appointment"
   # phone = "888 888 88 88"
  # twitter = "apreshill"
   # skype = "echo123"
@@ -247,7 +247,7 @@ enableGitInfo = false
 
 [[menu.main]]
   pre = "<i class=\"fab fa-r-project\"></i>"
- name = "Welcome"
+ name = "Pre-Workshop"
  url = "prework/" 
  weight = 1
   
@@ -353,7 +353,7 @@ enableGitInfo = false
 [[menu.main]]
   pre = "<i class=\"fas fa-comments fa-lg\"></i>"
   name = "Slack"
-  url = "https://join.slack.com/t/sickkids-jl65143/shared_invite/zt-2070uwyzo-IePxMwx97QwLcTE5UBkx4A"
+  url = "https://join.slack.com/t/advancedcourse2024/shared_invite/zt-2dle8cj5j-HhPOyDDi4iPt8xSI~CKxVg"
   weight = 12
   
 # [[menu.main]]

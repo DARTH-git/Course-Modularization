@@ -1,13 +1,16 @@
 ---
-date: "2018-12-10T00:00:00-08:00"
-draft: false
-linktitle: Read tutorials
+title: Read tutorials
+author: ''
+date: "`r Sys.Date()`"
+slug: tutorials
+categories: []
+tags: []
+linktitle: "Tutorials"
 menu:
   prework:
-    parent: Getting Started
+    parent: "Getting Started"
     weight: 4
-title: Read tutorials
-toc: true
+toc: yes
 type: docs
 ---
 

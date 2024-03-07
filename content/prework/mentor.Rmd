@@ -1,13 +1,16 @@
 ---
-date: "2018-12-10T00:00:00-08:00"
-draft: false
-linktitle: Mentorship
+title: Mentorship
+author: ''
+date: "`r Sys.Date()`"
+slug: mentor
+categories: []
+tags: []
+linktitle: "Mentorship"
 menu:
   prework:
-    parent: Getting Started
-    weight: 6
-title: Mentorship
-toc: true
+    parent: "Getting Started"
+    weight: 5
+toc: yes
 type: docs
 ---
 

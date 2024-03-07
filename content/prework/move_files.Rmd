@@ -1,13 +1,16 @@
 ---
-date: "2018-12-10T00:00:00-08:00"
-draft: false
-linktitle: Upload files to GitHub
+title: Upload files to GitHub
+author: ''
+date: "`r Sys.Date()`"
+slug: upload
+categories: []
+tags: []
+linktitle: "Upload"
 menu:
   prework:
-    parent: Getting Started
+    parent: "Getting Started"
     weight: 5
-title: Upload files to GitHub
-toc: true
+toc: yes
 type: docs
 ---
 
@@ -16,3 +19,4 @@ type: docs
 If you have successfully completed all previous steps, now is the time to upload all files (`R` scripts, datasets, data dictionary, supporting documents etc.) that you will use at the workshop to your workshop GitHub repository. 
 
 To do so, simply copy and paste your workshop files to your local repo folder and push to your remote repo using GitKraken. Details on how to do this are included in [this section](/prework/github).
+

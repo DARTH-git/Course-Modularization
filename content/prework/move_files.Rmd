@@ -14,7 +14,7 @@ toc: yes
 type: docs
 ---
 
-**Please ensure that you have completed all previous stages** and do not hesitate to contact alan.yang@sickkids.ca or message us on Slack if you run into any problems at any stage. 
+**Please ensure that you have completed all previous stages** and do not hesitate to contact `alexandra.moskalewicz@sickkids.ca` or message us on Slack if you run into any problems at any stage. 
 
 If you have successfully completed all previous steps, now is the time to upload all files (`R` scripts, datasets, data dictionary, supporting documents etc.) that you will use at the workshop to your workshop GitHub repository. 
 

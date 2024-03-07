@@ -9,7 +9,7 @@ linktitle: "Mentorship"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 5
+    weight: 6
 toc: yes
 type: docs
 ---

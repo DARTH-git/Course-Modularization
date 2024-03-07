@@ -18,7 +18,7 @@ Prior to the workshop, please read the following tutorials created by [the DARTH
 
 They can be downloaded from [here](https://github.com/DARTH-git/2024-DARTH-Advanced-Workshop). They are in the the folder "Publications".
 
-# Decision modeling tutorials
+### Decision modeling tutorials
 
 (Publications -> DARTH publications)
 
@@ -48,7 +48,7 @@ This paper goes over some theory about microsimulation modeling and goes into de
 
 *For those interested in discrete event simulations, we provided additional resources below.*
 
-# Discrete Event Simulations (DES)
+### Discrete Event Simulations (DES)
 
 (Publications -> Additional resources)
 

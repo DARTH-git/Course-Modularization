@@ -4,7 +4,7 @@ draft: false
 linktitle: Set up GitHub
 menu:
   prework:
-    parent: "Getting Started"
+    parent: Getting Started
     weight: 3
 title: Set up GitHub
 toc: true

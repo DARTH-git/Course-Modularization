@@ -11,7 +11,7 @@ toc: true
 type: docs
 ---
 
-After you go through the tutorials, you can now play with our toy models. They can be found [here](https://github.com/DARTH-git/2020-DARTH-Advanced-Workshop) in the folder "Sample models". 
+After you go through the tutorials, you can now play with our toy models. They can be found [here](https://github.com/DARTH-git/2024-DARTH-Advanced-Workshop) in the folder "Sample models". 
 
 In addition, for those who are more advanced, you can check out a complete exmaple model that we developed in the folder "Model framework." This is a full decision analysis that adheres to the decision model framework that we developed. The details of this framework is in the paper "A need for change! A coding framework for improving transparency in decision modeling". 
 

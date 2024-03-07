@@ -4,7 +4,7 @@ draft: false
 linktitle: Upload files to GitHub
 menu:
   prework:
-    parent: "Getting Started"
+    parent: Getting Started
     weight: 5
 title: Upload files to GitHub
 toc: true

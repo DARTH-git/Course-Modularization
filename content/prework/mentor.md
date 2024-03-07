@@ -4,7 +4,7 @@ draft: false
 linktitle: Mentorship
 menu:
   prework:
-    parent: "Getting Started"
+    parent: Getting Started
     weight: 6
 title: Mentorship
 toc: true

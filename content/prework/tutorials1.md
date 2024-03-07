@@ -4,7 +4,7 @@ draft: false
 linktitle: Read tutorials
 menu:
   prework:
-    parent: "Getting Started"
+    parent: Getting Started
     weight: 4
 title: Read tutorials
 toc: true
@@ -30,6 +30,10 @@ This paper outlines a framework that we have developed for building a decision m
 **An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example**
 
 This introductory paper goes over some theory about cohort state-transition models (Markov models) and goes into detail on the implementation of such models in `R`. For those who wish to build or work on a Markov model at the workshop, this is a must-read. 
+
+**A Tutorial on Time-Dependent Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example**
+
+This paper covers time-dependent cohort state-transition models (Markov models) and goes into detail on the implementation of such models in `R`. For those who wish to build or work on a time-dependent Markov model at the workshop, this is a must-read. 
 
 **A Multidimensional Array Representation of State-Transition Model Dynamics**
 

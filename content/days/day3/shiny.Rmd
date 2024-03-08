@@ -9,21 +9,21 @@ menu:
     weight: 2
 ---
 
-[Download slides - R Shiny](../../../Course_Modularization/CDC 2022-23/part 2/Shiny_slides_CDC2022.pptx)
+<!-- [Download slides - R Shiny](../../../Course_Modularization/CDC 2022-23/part 2/Shiny_slides_CDC2022.pptx) -->
 
-## Exercise worksheet
+<!-- ## Exercise worksheet -->
 
-[Download exercise worksheet](../../../Course_Modularization/CDC 2022-23/part 2/shiny_exercise.html)
+<!-- [Download exercise worksheet](../../../Course_Modularization/CDC 2022-23/part 2/shiny_exercise.html) -->
 
-## Student template and relevant files
+<!-- ## Student template and relevant files -->
 
-[Download exercise template - ShinyApp.R](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp.R)
+<!-- [Download exercise template - ShinyApp.R](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp.R) -->
 
-[Download Functions_Input.R](../../../Course_Modularization/CDC 2022-23/part 2/Functions_Input.R)
+<!-- [Download Functions_Input.R](../../../Course_Modularization/CDC 2022-23/part 2/Functions_Input.R) -->
 
-[Download Function_MicroSim_3state.R](../../../Course_Modularization/CDC 2022-23/part 2/Function_MicroSim_3state.R)
+<!-- [Download Function_MicroSim_3state.R](../../../Course_Modularization/CDC 2022-23/part 2/Function_MicroSim_3state.R) -->
 
-[Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp_solutions.R)
+<!-- [Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp_solutions.R) -->
 
 
 

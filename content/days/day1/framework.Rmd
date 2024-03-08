@@ -9,12 +9,12 @@ menu:
     weight: 2
 ---
 
-## Slides
+<!-- ## Slides -->
 
-[Download DARTH framework - short](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Framework---short-version.html)
+<!-- [Download DARTH framework - short](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Framework---short-version.html) -->
 
-[Download DARTH framework slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Coding framework_SMDM_Poster_56'x36'_v1.pdf)
+<!-- [Download DARTH framework slides](../../../Course_Modularization/Intro, general, packages/dampack-darthpack/Coding framework_SMDM_Poster_56'x36'_v1.pdf) -->
 
-[Full paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6871515/)
+<!-- [Full paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6871515/) -->
 
-[GitHub guide](../../../Course_Modularization/Intro, general, packages/Guide to Using GitHub.pdf)
+<!-- [GitHub guide](../../../Course_Modularization/Intro, general, packages/Guide to Using GitHub.pdf) -->

@@ -9,6 +9,6 @@ menu:
     weight: 3
 ---
 
-[Download slides](../../../Course_Modularization/Intro, general, packages/dampack_Janssen.pptx)
+<!-- [Download slides](../../../Course_Modularization/Intro, general, packages/dampack_Janssen.pptx) -->
 
 

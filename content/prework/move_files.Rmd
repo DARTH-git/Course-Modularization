@@ -9,7 +9,7 @@ linktitle: "Upload"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 5
+    weight: 7
 toc: yes
 type: docs
 ---

@@ -9,7 +9,7 @@ linktitle: "Sample models"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 4.5
+    weight: 5
 toc: yes
 type: docs
 ---

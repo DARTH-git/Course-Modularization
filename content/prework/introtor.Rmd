@@ -9,7 +9,7 @@ linktitle: "Intro to R"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 2
+    weight: 3
 toc: yes
 type: docs
 ---

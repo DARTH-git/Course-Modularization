@@ -2,7 +2,7 @@
 title: Read tutorials
 author: ''
 date: "`r Sys.Date()`"
-slug: tutorials
+slug: tutorials1
 categories: []
 tags: []
 linktitle: "Tutorials"

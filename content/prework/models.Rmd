@@ -2,7 +2,7 @@
 title: Try sample models
 author: ''
 date: "`r Sys.Date()`"
-slug: github
+slug: models
 categories: []
 tags: []
 linktitle: "Sample models"

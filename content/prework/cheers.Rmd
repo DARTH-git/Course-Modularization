@@ -2,7 +2,7 @@
 title: Describe your case
 author: ''
 date: "`r Sys.Date()`"
-slug: tutorials
+slug: cheers
 categories: []
 tags: []
 linktitle: "Describe"

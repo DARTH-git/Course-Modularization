@@ -1,11 +1,11 @@
 ---
-title: Additional R resources
+title: Additional resources
 author: ''
 date: "`r Sys.Date()`"
 slug: tutorials
 categories: []
 tags: []
-linktitle: "Additional R resources"
+linktitle: "Additional resources"
 menu:
   prework:
     parent: "Other resources"
@@ -18,7 +18,7 @@ type: docs
 
 We have published a number of modeling tutorials and methodology papers. A list of them can be found [here](http://darthworkgroup.com/publications/).
 
-# DARTH GitHUB
+# DARTH GitHub
 
 This is our group's [GitHub page](https://github.com/orgs/DARTH-git/dashboard) where we host different repositories for different projects, tutorials and packages like `dampack`, `darthpack`, and `darthtools`. 
 

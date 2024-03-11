@@ -24,5 +24,6 @@ As experienced decision modelers, we strongly encourage using GitHub when using 
 
 We will use GitHub throughout this workshop to demonstrate its powerful functionality that can make decision modeling in `R` easier!.
 
-**In order to get you started with using GitHub, we put together a [instruction sheet](../../../Course_Modularization/Intro, general, packages//Guide to Using GitHub.pdf). Please follow it closely.**
+**In order to get you started with using GitHub, we put together a [instruction sheet](../../../Course_Modularization/Intro, general, packages/Guide to Using GitHub.pdf). Please follow it closely.**
 
+**If you have patient level data that you want to use for your decision model, please do not upload on Github. Instead, please reach out to alexandra.moskalewicz@sickkids.ca for further instructions.**

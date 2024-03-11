@@ -1,7 +1,7 @@
 ---
 title: "Day 2 (Wed, April 3)"
 author: ''
-date: "2024-02-29"
+date: "2024-03-11"
 slug: day2
 categories: []
 tags: []
@@ -17,10 +17,10 @@ type: docs
 |                            |            |
 |---------------|:-----------------------------------------|
 | 9:00 – 10:00  | 1:1 with instructors / work alone, instructors float  |
-| 10:00 – 11:00 | Building your decision model Q & A | 
+| 10:00 – 11:00 | Building your decision model Q&A | 
 | 11:00 – 12:00 | 1:1 with instructors / work alone, instructors float |
 | 12:00 – 13:00  | Lunch | 
-| 13:00 – 15:00 | Calibration Model lecture |
+| 13:00 – 15:00 | Survival analysis lecture |
 | 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |
 
 <!-- ## Live session recording: -->

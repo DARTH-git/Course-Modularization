@@ -1,7 +1,7 @@
 ---
 title: "Day 3 (Thurs, April 4)"
 author: ''
-date: "2024-02-29"
+date: "2024-03-11"
 slug: day3
 categories: []
 tags: []
@@ -16,10 +16,9 @@ type: docs
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 9:00 – 9:30   | Presenting your results through Shiny - a presentation |
-| 9:30 – 10:00  | | 
-| 10:00 – 12:00 | 1:1 with instructors / work alone, instructors float |
+| 9:00 – 10:00  | 1:1 with instructors / work alone, instructors float |
+| 10:00 – 12:00 | Model calibration |
 | 12:00 – 13:00 | Lunch | 
-| 13:00 – 15:00  | 1:1 with instructors / work alone, instructors float| 
+| 13:00 – 15:00  | 1:1 with instructors or independent work / Bayesian calibration (optional break out) | 
 | 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |
 

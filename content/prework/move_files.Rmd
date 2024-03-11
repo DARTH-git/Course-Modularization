@@ -18,5 +18,7 @@ type: docs
 
 If you have successfully completed all previous steps, now is the time to upload all files (`R` scripts, datasets, data dictionary, supporting documents etc.) that you will use at the workshop to your workshop GitHub repository. 
 
-To do so, simply copy and paste your workshop files to your local repo folder and push to your remote repo using GitKraken. Details on how to do this are included in [this section](/prework/github).
+To do so, simply copy and paste your workshop files to your local repo folder and push to your remote repo using GitHub Desktop. Details on how to do this are included in [this section](/prework/github).
+
+**If you have patient level data that you want to use for your decision model, please do not upload on Github. Instead, please reach out to alexandra.moskalewicz@sickkids.ca for further instructions.**
 

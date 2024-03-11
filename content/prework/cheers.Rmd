@@ -1,0 +1,22 @@
+---
+title: Describe your case
+author: ''
+date: "`r Sys.Date()`"
+slug: tutorials
+categories: []
+tags: []
+linktitle: "Describe"
+menu:
+  prework:
+    parent: "Getting Started"
+    weight: 2.5
+toc: yes
+type: docs
+---
+
+Prior to the workshop, we would like to know more about your decision problem/model so that we can assess how we can offer the best help to you and work efficiently together at the workshop. Please download and fill out [this checklist](../../../Course_Modularization/Intro, general, packages/Description of own case template.docx) to the best of your knowledge.
+
+Please email the checklist to **alan.yang@sickkids.ca** after you complete it.
+
+In addition, please make **2-3 PowerPoint slides** that briefly talks about your decision problem and model, the stage you are at and what you would like to get done at the workshop. We would like you to briefly tell us about your model at the beginning of the workshop.
+

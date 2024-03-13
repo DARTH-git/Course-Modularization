@@ -20,7 +20,7 @@ type: docs
 | 12:00 – 13:00  | Lunch | 
 | 13:00 – 15:00 | 1:1 with instructors / work alone, instructors float |
 | 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |
-s
+
 <!-- ## Live session recording: -->
 
 <!-- [Zoom link](https://urldefense.com/v3/__https://umn.zoom.us/rec/share/pUR-16z0rkBocoSObaW2SlV_ZqBc0dcPUTpnLnlM4SjFlKZjrZZOOSjepsZNEJgc.f1ZFoplFMT-Ufkqd__;!!D0zGoin7BXfl!65pB8GkTsosLU0HUnWQCKQU1J2-Rlv7uKmTTInFtNnF71JiTMz_VXl8XPKxFATjfcU7vj-Tvjy3gAQBVjw$) -->

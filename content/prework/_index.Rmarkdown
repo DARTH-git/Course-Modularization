@@ -13,6 +13,6 @@ toc: yes
 type: docs
 ---
 
-This is the website for a four-day hands-on course on advanced decision modeling in R.
+This is the website for a 4-day hands-on course on advanced decision modeling in R.
 
-[The Decision Analysis in R for Technologies in Health (DARTH) workgroup](https://darthworkgroup.com/) is offering a 3-day workshop from April 2-5, 2024. This workshop gives you the unique opportunity to work together with experts in the field of decision modeling in R on a decision problem you bring yourself. As a participant you will bring your own decision problem and inputs, and decision modeling experts will guide you, step-by-step, through the decision model development process. We believe this one-on-one experience provides an excellent opportunity to learn about decision modelling in R while working on a real-world problem!
+[The Decision Analysis in R for Technologies in Health (DARTH) workgroup](https://darthworkgroup.com/) is offering a 4-day course from April 2-5, 2024. This workshop gives you the unique opportunity to work together with experts in the field of decision modeling in R on a decision problem you bring yourself. As a participant you will bring your own decision problem and inputs, and decision modeling experts will guide you, step-by-step, through the decision model development process. We believe this one-on-one experience provides an excellent opportunity to learn about decision modelling in R while working on a real-world problem!

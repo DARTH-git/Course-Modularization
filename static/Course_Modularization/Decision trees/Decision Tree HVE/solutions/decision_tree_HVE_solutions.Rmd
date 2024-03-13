@@ -6,19 +6,19 @@ output:
   pdf_document: default
 keep_tex: yes
 self_contained: no
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib
 ---
 
-Developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup:
-Fernando Alarid-Escudero, PhD  
-Eva A. Enns, MS, PhD 
-M.G. Myriam Hunink, MD, PhD 
-Hawre J. Jalal, MD, PhD 
-Eline Krijkamp, PhD 
-Petros Pechlivanoglou, PhD
-Alan Yang, MSc
+Developed by the Decision Analysis in R for Technologies in Health
+(DARTH) workgroup: Fernando Alarid-Escudero, PhD\
+Eva A. Enns, MS, PhD M.G. Myriam Hunink, MD, PhD Hawre J. Jalal, MD, PhD
+Eline Krijkamp, PhD Petros Pechlivanoglou, PhD Alan Yang, MSc
 
-Please cite relevant publications when using this code, see suggestions below. 
-
+Please cite relevant publications when using this code, see suggestions
+below.
 
 \newpage
 
@@ -33,21 +33,44 @@ rm(list = ls())      # clear memory (removes all the variables from the workspac
 ```
 
 # 00 Case example
-Viral encephalitis can be caused by herpes viruses (HVE) or other viruses (OVE). Herpes viruses cause approximately 52% of cases of viral encephalitis. Without treatment, the risk of complications (death or severe sequelae) for HVE is 71%; for OVE, the risk is only 1%. A drug, vidarabine, decreases the likelihood of complications due to HVE from 71% down to 36%. However, among OVE patients, treatment with vidarabine is associated with severe side effects, increasing the risk of complications from the 1% baseline to 20%. It is possible to obtain a definitive diagnosis of HVE by means of a brain biopsy, but the procedure itself also has a 5% probability of inducing complications.
 
-You are tasked with evaluating the healthcare costs and benefits associated with three possible management strategies (no treatment, vidarabine treatment, or brain biopsy followed by vidarabine treatment for those who are diagnosed with HVE). Benefits will be measured in terms of quality-adjusted life-years (QALYs). 
+Viral encephalitis can be caused by herpes viruses (HVE) or other
+viruses (OVE).[@Salmond2015] Herpes viruses cause approximately 52% of
+cases of viral encephalitis. Without treatment, the risk of
+complications (death or severe sequelae) for HVE is 71%; for OVE, the
+risk is only 1%. A drug, vidarabine, decreases the likelihood of
+complications due to HVE from 71% down to 36%. However, among OVE
+patients, treatment with vidarabine is associated with severe side
+effects, increasing the risk of complications from the 1% baseline to
+20%. It is possible to obtain a definitive diagnosis of HVE by means of
+a brain biopsy, but the procedure itself also has a 5% probability of
+inducing complications.
 
-The healthcare cost of a case of viral encephalitis without complications is \$1,200; however, if complications occur, the cost rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a brain biopsy costs \$25,000 per procedure. 
+You are tasked with evaluating the healthcare costs and benefits
+associated with three possible management strategies (no treatment,
+vidarabine treatment, or brain biopsy followed by vidarabine treatment
+for those who are diagnosed with HVE). Benefits will be measured in
+terms of quality-adjusted life-years (QALYs).
 
-A patient who recovers from viral encephalitis without complications has an average of 20 remaining QALYs; however, a patient who experiences complications has an average of 19 remaining QALYs. Since a brain biopsy is an unpleasant procedure, patients who undergo it also experience a one-time loss of 0.01 QALYs regardless of the outcome of the biopsy. For this exercise we assumed a hypothetical CE threshold of 10000/QALY
+The healthcare cost of a case of viral encephalitis without
+complications is \$1,200; however, if complications occur, the cost
+rises to \$9,000. The cost of vidarabine treatment is \$9,500, while a
+brain biopsy costs \$25,000 per procedure.
 
-Parameters are summarized in Table 1 and the tree structure is shown in the figure below. 
+A patient who recovers from viral encephalitis without complications has
+an average of 20 remaining QALYs; however, a patient who experiences
+complications has an average of 19 remaining QALYs. Since a brain biopsy
+is an unpleasant procedure, patients who undergo it also experience a
+one-time loss of 0.01 QALYs regardless of the outcome of the biopsy. For
+this exercise we assumed a hypothetical CE threshold of 10000/QALY
+
+Parameters are summarized in Table 1 and the tree structure is shown in
+the figure below.
 
 ```{r, echo = F, warning = F, message = F, out.width = '100%', fig.cap = 'Schematic representation of the Sick-Sicker model', fig.align = 'center'}
 if (!require(knitr)) install.packages('knitr')
 include_graphics("../figures/decision_tree_HVE.png")
 ```
-
 
 # 01 Load packages
 
@@ -63,6 +86,7 @@ p_load_gh("DARTH-git/darthtools")
 
 ```{r}
 # all functions are in the darthtools package so no need for additional functions
+
 ```
 
 # 03 Define parameter input values
@@ -95,7 +119,9 @@ q_death_biopsy <- 0      # remaining QALYs for those who died during biopsy
 ```
 
 # 04 Create and run decision tree model
-## 04.1 Create vectors of weights for each strategy 
+
+## 04.1 Create vectors of weights for each strategy
+
 ```{r}
 # Create vector of weights for each strategy 
 v_w_no_tx  <- c(    p_HVE  *      p_HVE_comp     ,  # HVE, complications
@@ -119,10 +145,20 @@ v_w_biopsy <- c(    p_biopsy_death                   ,  # biopsy death
                (1 - p_biopsy_death)   * (1 - p_HVE) * (1 - p_OVE_comp))      
 ```
 
-##04.1.1 Extra code to demonstrate the use of "clones"
-Often in decision trees certain branches either repeat themselves or are shared across multiple strategies, perhaps with some differences in their input parameters. For example, in viral encephalitis, the complications of HVE are shared among all three strategies. To avoid coding the same section of the tree multiple times, we can construct  a function that describes the structure of this section of the tree (called a subtree), and has as input the parameters that are related to that section of the tree. 
-This is comparable, with what is in specialized software like TreeAge or Amua is called a clone. 
-In the code chunk below, we first show how we can develop the clone function. And next how to use the function as part of a tree. Finally, we demonstrate that we get identical results compared to a tree with no clones. 
+##04.1.1 Extra code to demonstrate the use of "clones" Often in decision
+trees certain branches either repeat themselves or are shared across
+multiple strategies, perhaps with some differences in their input
+parameters. For example, in viral encephalitis, the complications of HVE
+are shared among all three strategies. To avoid coding the same section
+of the tree multiple times, we can construct a function that describes
+the structure of this section of the tree (called a subtree), and has as
+input the parameters that are related to that section of the tree. This
+is comparable, with what is in specialized software like TreeAge or Amua
+is called a clone. In the code chunk below, we first show how we can
+develop the clone function. And next how to use the function as part of
+a tree. Finally, we demonstrate that we get identical results compared
+to a tree with no clones.
+
 ```{r}
 # Develop a function to calculate the vector of weights for the _hve_complication section of the decision tree
 calculate_hve_complication <- function(p_HVE, p_HVE_comp, p_OVE_comp){
@@ -150,8 +186,8 @@ all.equal(v_w_tx_clone, v_w_tx)
 all.equal(v_w_biopsy_clone, v_w_biopsy)
 ```
 
+## 0.4.2 Create vectors of effects
 
-## 0.4.2 Create vectors of effects 
 ```{r}
 # Create vector of outcomes being complications for each strategy 
 v_comp_no_tx  <- c(1,          # HVE, complications
@@ -190,9 +226,8 @@ v_qaly_biopsy <-  c(q_death_biopsy - q_loss_biopsy,   # biopsy complications
                     q_VE           - q_loss_biopsy )  # no biopsy comp., OVE, no complications
 ```
 
+## 0.4.3 Create vectors of costs
 
-
-## 0.4.3 Create vectors of costs 
 ```{r}
 # Create vector of costs for each strategy 
 # cost of no treatment 
@@ -232,6 +267,7 @@ v_cost_biopsy <- c(c_death_biopsy   + c_biopsy,   # cost of death (zero)
 ```
 
 ## 0.4.4 Calculate the expected effects (complications, utilities) and costs
+
 ```{r}
 
 # Calculate expected complications for each strategy 
@@ -293,26 +329,37 @@ plot(decision_tree_HVE_cea, effect_units = "QALYs", label = "all")
 
 # Acknowlegdement
 
-For this work we made use of the template developed by the Decision Analysis in R for Technologies in Health (DARTH) workgroup: <http://darthworkgroup.com>.
+For this work we made use of the template developed by the Decision
+Analysis in R for Technologies in Health (DARTH) workgroup:
+<http://darthworkgroup.com>.
 
-The notation of our code is based on the following provided framework and coding convention: Alarid-Escudero, F., Krijkamp, E., Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for Improving Transparency in Decision Modeling. PharmacoEconomics 37, 1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
+The notation of our code is based on the following provided framework
+and coding convention: Alarid-Escudero, F., Krijkamp, E.,
+Pechlivanoglou, P. et al. A Need for Change! A Coding Framework for
+Improving Transparency in Decision Modeling. PharmacoEconomics 37,
+1329–1339 (2019). <https://doi.org/10.1007/s40273-019-00837-x>.
 
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a 
-Cost-Effectiveness Analysis Example. Medical Decision Making, 2023; 43(1).
-(Epub). <https://doi.org/10.1177/0272989X221103163>
+-   Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM
+    Pechlivanoglou P, Jalal H. An Introductory Tutorial on Cohort
+    State-Transition Models in R Using a Cost-Effectiveness Analysis
+    Example. Medical Decision Making, 2023; 43(1). (Epub).
+    <https://doi.org/10.1177/0272989X221103163>
 
-- Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM Pechlivanoglou P,
-Jalal H. A Tutorial on Time-Dependent Cohort State-Transition Models in R using 
-a Cost-Effectiveness Analysis Example. Medical Decision Making, 2023; 43(1). 
-<https://doi.org/10.1177/0272989X221121747>
+-   Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM
+    Pechlivanoglou P, Jalal H. A Tutorial on Time-Dependent Cohort
+    State-Transition Models in R using a Cost-Effectiveness Analysis
+    Example. Medical Decision Making, 2023; 43(1).
+    <https://doi.org/10.1177/0272989X221121747>
 
-
-Other work from DARTH can be found on the website: <http://darthworkgroup.com/publications/>
+Other work from DARTH can be found on the website:
+<http://darthworkgroup.com/publications/>
 
 # Copyright for assignment work
 
-Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS.All rights reserved in Canada, the United States and worldwide. Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR Sick CHILDREN and the collaborating  institutions. These materials may be used, reproduced, modified, distributed and adapted with proper attribution.
-
-
-
+Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING
+INSTITUTIONS.All rights reserved in Canada, the United States and
+worldwide. Copyright, trademarks, trade names and any and all associated
+intellectual property are exclusively owned by THE HOSPITAL FOR Sick
+CHILDREN and the collaborating institutions. These materials may be
+used, reproduced, modified, distributed and adapted with proper
+attribution.

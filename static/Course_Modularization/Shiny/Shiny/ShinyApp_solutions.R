@@ -60,7 +60,7 @@ h3("A Simple Example of R Shiny capabilities"),
                          min     = 2,
                          max     = 10000,
                          value   = 1000 ),
-           numericInput( inputId = "n_t",
+           numericInput( inputId = "n_cycles",
                          label   =  "Number of cycles",
                          min     = 2,
                          max     = 100,
@@ -99,7 +99,7 @@ server <- function(input, output) {
         run_sim <- calculate_ce_out(params)
 
 # generate Markov Trace plot based on a (modified) plot_m_TR
-        plot_m_TR_shiny(run_sim$Trace, params)
+        darthtools:::plot_trace_microsim_shiny(run_sim$Trace, params)
     })
  
 # the second object in the output list is the table of results. We use the function renderTable to grab the results table.

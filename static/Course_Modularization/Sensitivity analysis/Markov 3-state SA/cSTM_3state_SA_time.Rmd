@@ -548,7 +548,7 @@ v_names_params <- names(l_params_all)
 calculate_ce_out(l_params_all) 
 
 # Test function to generate PSA input dataset
-generate_psa_params(10) 
+generate_psa_params(n_sim = 10) 
 
 ## Generate PSA dataset 
 # Number of simulations

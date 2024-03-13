@@ -8,8 +8,8 @@ generate_params <- function(input_list){
  
 # 1) Define all initial parameter input in a list   
 init_params <- list(
-  v_n         = c("healthy", "sick", "dead"),  # vector with state names
-  n_t         = 60,                            # number of cycles
+  v_names_states = c("healthy", "sick", "dead"),  # vector with state names
+  n_cycles         = 60,                            # number of cycles
   n_i         = 10000,                         # number of individuals
   d_e         = 0.03,                        # equal discount of costs and QALYs by 3% 
   d_c         = 0.03,
@@ -36,14 +36,14 @@ init_params <- modifyList(init_params,input_list)
 # 2) process parameter values to generate the final model input
 process_params<- with(init_params,{
   list(
-n_states    = length(v_n),                   # number of states
+n_states    = length(v_names_states),                   # number of states
 # probability to die in sick state by cycle of being sick
-p_SD        = c(p_SD1_5, rep(p_SD6, n_t - 5)) ,
+p_SD        = c(p_SD1_5, rep(p_SD6, n_cycles - 5)) ,
 
 # calculate discount weights for costs for each cycle based on discount rate d_c
-v_dwc       = 1 / (1 + d_c) ^ (0:n_t) ,
+v_dwc       = 1 / (1 + d_c) ^ (0:n_cycles) ,
 # calculate discount weights for effectiveness for each cycle based on discount rate d_e
-v_dwe       = 1 / (1 + d_e) ^ (0:n_t) ,
+v_dwe       = 1 / (1 + d_e) ^ (0:n_cycles) ,
 #### Deterministic analysis ####
 
 # Transition probabilities 

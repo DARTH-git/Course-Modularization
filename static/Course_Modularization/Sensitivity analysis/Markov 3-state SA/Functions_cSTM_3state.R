@@ -16,12 +16,12 @@ calculate_ce_out <- function(l_params_all, n_wtp = 10000 ,verbose= verbose){ # U
     ## Model states
     n_cycles        <- n_time_horizon_yr / cycle_length   # number of cycles
     v_names_cycles  <- paste("cycle", 0:n_cycles)         # cycle names
-    v_names_states  <- c("Healthy", "Sick", "Dead")       # state names
+    v_names_states  <- c("H", "S", "D")       # state names
     n_states        <- length(v_names_states)             # number of health states 
     
     ### Cycle-specific discount weight for costs and effects 
-    v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
-    v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+    v_dwc   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+    v_dwe   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
     
     ### Calculate cycle-specific transition probabilities
     p_HD <- 1 - exp(-(-log(1 - p_HD_yr) * cycle_length)) # probability of dying from Healthy

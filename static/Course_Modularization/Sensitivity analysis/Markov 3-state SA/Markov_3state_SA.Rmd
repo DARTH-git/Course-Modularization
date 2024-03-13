@@ -107,12 +107,12 @@ n_time_horizon_yr <- 60                               # time horizon (in years)
 cycle_length    <- 1                                  # cycle length in years (use 1/12 for monthly)
 n_cycles        <- n_time_horizon_yr / cycle_length   # number of cycles
 v_names_cycles  <- paste("cycle", 0:n_cycles)         # cycle names
-v_names_states  <- c("Healthy", "Sick", "Dead")       # state names
+v_names_states  <- c("H", "S", "D")                   # state names
 n_states        <- length(v_names_states)             # number of health states 
 
 ### Discounting factors 
 d_c <- 0.03 # annual discount rate for costs 
-d_e <- 0.03 # annual discount rate for QALYs
+d_e <- 0.015 # annual discount rate for QALYs
 
 ### Strategies 
 v_names_str     <- c("Standard of Care",         # store the strategy names
@@ -155,8 +155,8 @@ u_D        <- 0     # utility when dead
 ```{r}
 
 ### Cycle-specific discount weight for costs and effects 
-v_dwc   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
-v_dwe   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwc   <- 1 / ((1 + (d_c * cycle_length)) ^ (0:n_cycles))
+v_dwe   <- 1 / ((1 + (d_e * cycle_length)) ^ (0:n_cycles))
 
 ### Calculate cycle-specific transition probabilities
 p_HD <- 1 - exp(-(-log(1 - p_HD_yr) * cycle_length)) # probability of dying from Healthy

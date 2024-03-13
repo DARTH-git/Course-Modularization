@@ -41,6 +41,7 @@ convert_fahrenheit_to_celsius <- function (n_temp_fahrenheit){
 # test the function
 convert_fahrenheit_to_celsius (n_temp_fahrenheit = 100)
 
+n_temp_celsius
 ```
 
 
@@ -49,7 +50,7 @@ You have also been introduce to the concept, that function can have a large numb
 ```
 function_name <- function(argument1, argument2, argument3) {
    ...
-   return(list(output1, output2, output3)
+   return(list(output1, output2, output3))
 }
 ```
 
@@ -126,7 +127,7 @@ calculate_treatment_costs <- function(trt, disease_history, kg, c_blood_tinners 
    return(l_costs) # Return the treatment costs 
 }
 
-calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63)
+c_trt_test <- calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63)
 calculate_treatment_costs(trt = TRUE, disease_history = TRUE, kg = 63, currency = "dollar")
 ```
 

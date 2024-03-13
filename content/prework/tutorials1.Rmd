@@ -9,7 +9,7 @@ linktitle: "Tutorials"
 menu:
   prework:
     parent: "Getting Started"
-    weight: 6
+    weight: 5
 toc: yes
 type: docs
 ---

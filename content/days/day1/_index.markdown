@@ -1,7 +1,7 @@
 ---
 title: "Day 1 (Tues, April 2)"
 author: ''
-date: "2024-03-08"
+date: "2024-03-13"
 slug: day1
 categories: []
 tags: []
@@ -11,8 +11,6 @@ menu:
 toc: yes
 type: docs
 ---
-
-**Schedule (EST):** throughout the day participants work alone while instructors stand by
 
 |                            |            |
 |---------------|:-----------------------------------------|

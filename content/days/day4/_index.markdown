@@ -1,7 +1,7 @@
 ---
 title: "Day 4 (Fri, April 5)"
 author: ''
-date: "2024-03-11"
+date: "2024-03-13"
 slug: day4
 categories: []
 tags: []
@@ -11,8 +11,6 @@ menu:
 toc: yes
 type: docs
 ---
-
-**Schedule (EST):** throughout the day participants work alone while instructors stand by
 
 |                            |            |
 |---------------|:-----------------------------------------|

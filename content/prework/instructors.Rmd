@@ -45,7 +45,7 @@ Petros Pechlivanoglou, PhD, is a Senior Scientist at The Hospital for Sick Child
 #blogdown::shortcode("vimeo", "473576731")
 ```
 
-Hawre Jalal, MD, PhD is an Assistant Professor at the Department of Health Policy and Management and a researcher at the Public Health Dynamic Laboratory at the University of Pittsburgh. His research focuses on using mathematical modeling, cost-effective analyses and econometrics approaches to address health policy and resource allocation questions. His current research involves modeling the opioid-epidemic and evaluating its mitigation strategies, and research in disability and aging. Hawre’s methodological interests involve value of information analysis, Bayesian calibration and communicating uncertainty to decision makers.
+Hawre Jalal, MD, PhD, is an Associate Professor at the University of Ottawa, and Canada Research Chair in Health Economics. Prior to joining uOttawa, he was at the University of Pittsburgh as an Assistant Professor and prior to that he was a postdoc at Stanford University. Hawre's current research interests in R involves building models efficiently through reusing components.  He has recently published the gmod R package that uses the Grammar of Modelling concepts and Decision Twigs that constructs the interface for the gmod syntax.
 
 **Eline Krijkamp, PhD** <a href="https://www.researchgate.net/profile/Eline_Krijkamp2" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/krijkamp" target="_blank"><i class="fab fa-github"></i></a>
 

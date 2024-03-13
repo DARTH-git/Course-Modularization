@@ -19,6 +19,6 @@ Time: 9:00 - 16:00 Eastern Time
 
 ## Location
 
-Location: PGCRL, 686 Bay Street, Toronto, Ontario - M5G 0A4, Canada 
+Location: PGCRL 2nd Floor, 686 Bay Street, Toronto, Ontario - M5G 0A4, Canada (more details to come)
 
 

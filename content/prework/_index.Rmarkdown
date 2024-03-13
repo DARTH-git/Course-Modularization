@@ -13,10 +13,6 @@ toc: yes
 type: docs
 ---
 
-This site is the official home for all information related to the Cost-Effectiveness and Decision Modeling Workshop. This is the place to find all the information you'll need to get the most out of this workshop, including software, R packages, and additional resources. 
+This is the website for a four-day hands-on course on advanced decision modeling in R.
 
-## Orientation
-
-Please use the menus to the left to guide you through all the set-up instructions.
-
-We look forward to meeting you all!
+[The Decision Analysis in R for Technologies in Health (DARTH) workgroup](https://darthworkgroup.com/) is offering a 3-day workshop from April 2-5, 2024. This workshop gives you the unique opportunity to work together with experts in the field of decision modeling in R on a decision problem you bring yourself. As a participant you will bring your own decision problem and inputs, and decision modeling experts will guide you, step-by-step, through the decision model development process. We believe this one-on-one experience provides an excellent opportunity to learn about decision modelling in R while working on a real-world problem!

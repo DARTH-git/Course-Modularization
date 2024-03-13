@@ -24,10 +24,6 @@ This is our group's [GitHub page](https://github.com/orgs/DARTH-git/dashboard) w
 
 # R tutorials:
 
-[R-handbook by DARTH](https://github.com/DARTH-git/R-Handbook)
-
-This comprehensive handbook for using `R` covers a wide range of topics in detail and is publically available on DARTH's GitHub repository.
-
 [R Markdown](https://rmarkdown.rstudio.com/)
 
 This is the official site of R Markdown that has an abundance of resources and references about using R Markdown. 

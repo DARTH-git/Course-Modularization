@@ -1,4 +1,4 @@
-T``################################################################################ 
+################################################################################ 
 # This script calibrates the Sick-Sicker state-transition model (STM) to       #
 # epidemiological targets using a Bayesian approach with the Incremental       #
 # Mixture Importance Samping (IMIS) algorithm                                  #

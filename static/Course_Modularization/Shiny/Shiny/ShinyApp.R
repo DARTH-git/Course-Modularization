@@ -95,8 +95,8 @@ server <- function(input, output) {
 # we run the model using the function we have specified during our Microsimulation day      
         run_sim <- calculate_ce_out(params)
 
-# generate Markov Trace plot based on a (modified) plot_m_TR
-        plot_m_TR_shiny(run_sim$Trace, params)
+# generate Markov Trace plot based on a (modified) `plot_trace_microsim_shiny`
+        darthtools::plot_trace_microsim_shiny(m_M = run_sim$Trace, input_list = params)
         
     })
  

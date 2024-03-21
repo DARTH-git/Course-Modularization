@@ -1,7 +1,7 @@
 ---
 title: "Day 4 (Fri, April 5)"
 author: ''
-date: "2024-03-13"
+date: "2024-03-21"
 slug: day4
 categories: []
 tags: []
@@ -15,8 +15,8 @@ type: docs
 |                            |            |
 |---------------|:-----------------------------------------|
 | 9:00 – 9:30  | 1:1 with instructors / work alone, instructors float  |
-| 9:30 – 10:00 | Presenting your results through Shiny | 
-| 10:00 – 12:00 | 1:1 with instructors / Practical on Shiny (optional break out) |
+| 9:30 – 10:30 | Presenting your results through Shiny | 
+| 10:30 – 12:00 | 1:1 with instructors / Practical on Shiny (optional break out) |
 | 12:00 – 13:00  | Lunch | 
 | 13:00 – 15:00 | 1:1 with instructors / work alone, instructors float |
 | 15:00 – 16:00 | 1:1 with instructors / work alone, instructors float |

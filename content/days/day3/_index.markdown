@@ -1,7 +1,7 @@
 ---
 title: "Day 3 (Thurs, April 4)"
 author: ''
-date: "2024-03-13"
+date: "2024-03-21"
 slug: day3
 categories: []
 tags: []

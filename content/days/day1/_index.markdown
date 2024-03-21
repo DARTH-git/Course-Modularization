@@ -1,7 +1,7 @@
 ---
 title: "Day 1 (Tues, April 2)"
 author: ''
-date: "2024-03-13"
+date: "2024-03-21"
 slug: day1
 categories: []
 tags: []
@@ -16,8 +16,8 @@ type: docs
 |---------------|:-----------------------------------------|
 | 9:00 – 9:15 | Welcome & Intro from DARTH |
 | 9:15 – 11:00 | Icebreaker - participant introduce themselves and their models | 
-| 11:00 – 11:30 | Set up - make sure everything in prep pkg works (GitHub, Slack, etc) |
-| 11:30 – 12:00  | Framework + Dampack presentation | 
+| 11:00 – 11:15 | Set up - make sure everything in prep pkg works (GitHub, Slack, etc) |
+| 11:30 – 12:00  | Building your decision model Q&A | 
 | 12:00 – 13:00 | Lunch |
 | 13:00 – 16:00 | 1:1 with instructors or work alone, instructors float |
 

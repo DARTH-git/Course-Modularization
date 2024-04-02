@@ -1,0 +1,31 @@
+---
+title: Modeling in R
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Modeling in R
+menu:
+  day1:
+    weight: 2
+---
+
+[Download slides](../../../Course_Modularization/advanced course/modeling in R apr 2024.pptx)
+
+<!-- ## Exercise worksheet -->
+
+<!-- [Download exercise worksheet](../../../Course_Modularization/CDC 2022-23/part 2/shiny_exercise.html) -->
+
+<!-- ## Student template and relevant files -->
+
+<!-- [Download exercise template - ShinyApp.R](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp.R) -->
+
+<!-- [Download Functions_Input.R](../../../Course_Modularization/CDC 2022-23/part 2/Functions_Input.R) -->
+
+<!-- [Download Function_MicroSim_3state.R](../../../Course_Modularization/CDC 2022-23/part 2/Function_MicroSim_3state.R) -->
+
+<!-- [Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp_solutions.R) -->
+
+
+
+
+

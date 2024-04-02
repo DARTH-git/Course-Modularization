@@ -6,7 +6,7 @@ type: docs
 linktitle: Survival analysis
 menu: 
   day2:
-    weight: 2
+    weight: 3
 ---
 
 <!-- [Download slides - quick overview of calibration](../../../Course_Modularization/Calibration/Slides/CalibrationQuick.pdf) -->

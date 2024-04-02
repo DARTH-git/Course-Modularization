@@ -1,11 +1,11 @@
 ---
-title: "DARTH decision modeling framework"
+title: "DARTH decision modeling framework & dampack"
 date: "`r Sys.Date()`"
 draft: false
 type: docs
-linktitle: "DARTH framework"
+linktitle: "DARTH framework & dampack"
 menu:
-  day1:
+  day2:
     weight: 2
 ---
 

@@ -9,7 +9,11 @@ menu:
     weight: 3
 ---
 
-[Download files](../../../Course_Modularization/advanced course/Advanced DARTH 2024 Calibration.zip)
+[Download slides](../../../Course_Modularization/advanced course/DARTH2024_Calibration.pptx)
+
+[Download slides (Bayesian calibration)](../../../Course_Modularization/advanced course/DARTH2024_BayesianCalibration.pptx)
+
+[Download coding files](../../../Course_Modularization/advanced course/Darth Advanced 2024 Calibration Materials.zip)
 
 <!-- [Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx) -->
 

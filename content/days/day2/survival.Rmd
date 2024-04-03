@@ -9,6 +9,8 @@ menu:
     weight: 3
 ---
 
+[Download slides](../../../Course_Modularization/advanced course/TORONTO2024_surv.pdf)
+
 <!-- [Download slides - quick overview of calibration](../../../Course_Modularization/Calibration/Slides/CalibrationQuick.pdf) -->
 
 <!-- [Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx) -->

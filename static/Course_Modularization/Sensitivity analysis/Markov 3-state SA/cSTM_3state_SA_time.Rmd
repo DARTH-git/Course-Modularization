@@ -510,6 +510,21 @@ owsa_opt_strat(owsa = owsa_nmb, txtsize = 10)
 owsa_tornado(owsa = owsa_nmb)
 ```
 
+```{r}
+#* Extra material, renaming the x-axis
+
+owsa_nmb <- owsa_nmb %>%
+  mutate(parameter = recode(parameter,
+                            "c_trtA" = "Cost treatment A",
+                            "c_trtB" = "Cost treatment B",
+                            "c_S" = "Cost Sick"))
+
+owsa_nmb$parameter
+
+owsa_tornado(owsa = owsa_nmb)
+
+```
+
 ## 10.3 Two-way sensitivity analysis (TWSA)
 
 ```{r}

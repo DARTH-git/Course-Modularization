@@ -9,15 +9,15 @@ type: docs
 linktitle: Data visualization 
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 6
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473445406")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473445406") -->
+<!-- ``` -->
 
 ## Slides
 
@@ -31,5 +31,5 @@ blogdown::shortcode("vimeo", "473445406")
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/04_plotting_solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/04_plotting_solutions.Rmd) -->
 

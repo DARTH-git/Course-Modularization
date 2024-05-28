@@ -9,7 +9,7 @@ type: docs
 linktitle: R tips and debugging
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 10
 ---
 

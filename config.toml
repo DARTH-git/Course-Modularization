@@ -9,7 +9,7 @@
 baseurl = "https://decision-modeling-for-public-health-ajgh02sd.netlify.app/"
 
 # Title of your site
-title = "Introduction to R Module"
+title = "Introduction to R for Medical Decision Modelers"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -257,7 +257,7 @@ enableGitInfo = false
 #  identifier = "day0"
   
 [[menu.main]]
-  name = "Begin Module"
+  name = "Begin Course"
   # pre = "<i class=\"fas fa-clock\"></i>"
   url = "/days/day1"
   weight = 2

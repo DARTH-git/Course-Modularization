@@ -9,15 +9,15 @@ type: docs
 linktitle: Data manipulation 
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 5
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473042385")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473042385") -->
+<!-- ``` -->
 
 ## Slides
 
@@ -37,5 +37,5 @@ blogdown::shortcode("vimeo", "473042385")
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/03_data_manipulation_solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/03_data_manipulation_solutions.Rmd) -->
 

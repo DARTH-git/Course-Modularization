@@ -1,0 +1,25 @@
+---
+title: "Course Topics"
+date: "`r Sys.Date()`"
+draft: no
+type: docs
+linktitle: Overview
+menu:
+  day1:
+    name: "Topics"
+    weight: 4
+---
+
+This short course covers the following topics:
+
+- Getting ready
+- Introduction to R
+- Data manipulation
+- Data visualization
+- Loops and functions
+- Matrix algebra
+- R tips and debugging
+- R Shiny
+
+We highly recommend attempting the exercises before going through the solutions.
+

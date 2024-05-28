@@ -9,15 +9,15 @@ type: docs
 linktitle: Loops and functions
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 7
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473054054")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473054054") -->
+<!-- ``` -->
 
 ## Slides
 
@@ -31,5 +31,5 @@ blogdown::shortcode("vimeo", "473054054")
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd) -->
 

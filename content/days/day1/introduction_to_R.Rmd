@@ -9,15 +9,15 @@ type: docs
 linktitle: Introduction to R
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 4
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473442290")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473442290") -->
+<!-- ``` -->
 
 ## Slides
 
@@ -31,6 +31,6 @@ blogdown::shortcode("vimeo", "473442290")
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_solutions.Rmd) -->
 
 

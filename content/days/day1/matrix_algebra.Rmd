@@ -9,15 +9,15 @@ type: docs
 linktitle: Matrix algebra
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 9
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "506504682")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "506504682") -->
+<!-- ``` -->
 
 ## Slides
 
@@ -33,7 +33,7 @@ blogdown::shortcode("vimeo", "506504682")
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - solutions.Rmd) -->
 
 ## Matrix algebra handout 
 

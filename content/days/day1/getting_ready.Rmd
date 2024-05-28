@@ -9,15 +9,15 @@ type: docs
 linktitle: Getting ready
 menu:
   day1:
-    parent: "Intro to R"
+    parent: "Topics"
     weight: 3
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "472839769")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "472839769") -->
+<!-- ``` -->
 
 ## Install packages 
 

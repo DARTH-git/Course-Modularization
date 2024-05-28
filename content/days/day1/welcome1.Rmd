@@ -19,7 +19,6 @@ This short course covers the following topics:
 - Loops and functions
 - Matrix algebra
 - R tips and debugging
-- R Shiny
 
 We highly recommend attempting the exercises before going through the solutions.
 

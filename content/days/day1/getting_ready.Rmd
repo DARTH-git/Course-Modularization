@@ -8,8 +8,7 @@ type: docs
 
 linktitle: Getting ready
 menu:
-  day1:
-    parent: "Topics"
+  day2:
     weight: 3
 ---
 

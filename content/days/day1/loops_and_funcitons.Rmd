@@ -10,7 +10,7 @@ linktitle: Loops and functions
 menu:
   day1:
     parent: "Topics"
-    weight: 7
+    weight: 8
 ---
 
 <!-- ## Presentation video -->

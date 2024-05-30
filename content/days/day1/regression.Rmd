@@ -1,0 +1,32 @@
+---
+title: Regression modeling
+date: "`r Sys.Date()`"
+draft: false
+type: docs
+linktitle: Regression modeling
+menu:
+  day1:
+    parent: "Topics"
+    weight: 7
+---
+
+<!-- ## Presentation video -->
+
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473054054") -->
+<!-- ``` -->
+
+## Slides
+
+[Download slides](../../../Course_Modularization/Intro to R/Slides/06_Regression Modelling.pptx)
+
+## Student templates
+
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/06_regression_modelling_template.Rmd)
+
+## Instructor solutions
+
+<!-- Solutions will be provided upon request. -->
+
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/06_regression_modelling_solutions.Rmd) -->
+

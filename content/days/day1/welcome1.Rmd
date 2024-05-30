@@ -16,9 +16,12 @@ This short course covers the following topics:
 - Introduction to R
 - Data manipulation
 - Data visualization
+- Regression Modeling
 - Loops and functions
 - Matrix algebra
 - R tips and debugging
 
 We highly recommend attempting the exercises before going through the solutions.
+
+Please feel free to browse through this [GitHub page](https://github.com/DARTH-git/Intro-to-R) for additional resources.  
 

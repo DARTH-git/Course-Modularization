@@ -12,7 +12,7 @@ menu:
 
 Welcome to the Introduction to R for Medical Decision Modelers! This website contains all the materials we will use for the course.
 
-### Courese Details:
+### Course Details:
 
 - Length: 4 hours
 
@@ -21,6 +21,8 @@ Welcome to the Introduction to R for Medical Decision Modelers! This website con
 - June 04, 2024
 
 - Zoom
+
+- [GitHub Page](https://github.com/DARTH-git/Intro-to-R)
 
 ### Description:
 
@@ -51,6 +53,7 @@ All materials of this short course will be provided to participants after the co
 **Alexandra Moskalewicz** is a Research Analyst at the Hospital for Sick Children, supporting research studies on the long-term health and economic impacts of childhood cancer. She holds a Master of Science in Health Services Research from the University of Toronto.
 
 **Petros Pechlivanoglou**, PhD, is a Senior Scientist at The Hospital for Sick Children’s Research Institute and an Associate Professor at the University of Toronto’s Institute of Health Policy, Management and Evaluation. His research interests include: the use of health decision analysis in economic evaluation; bridging evidence synthesis, administrative data and decision analysis; and the application and extension of predictive models in health economics. Dr. Pechlivanoglou is also a member of DARTH working group, a collaborative that aims to expand the knowledge about R for open-source, transparent decision analytic modelling.
+
 
 
 

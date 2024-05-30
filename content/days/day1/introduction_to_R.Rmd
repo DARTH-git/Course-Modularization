@@ -13,11 +13,11 @@ menu:
     weight: 4
 ---
 
-## Presentation video
+<!-- ## Presentation video -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473442290")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473442290") -->
+<!-- ``` -->
 
 ## Slides
 

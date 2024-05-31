@@ -22,12 +22,43 @@ Throughout the course, we will demonstrate code and leave some empty *code chunk
 Feel free to modify this document with your own comments and clarifications. 
 
 # 1.0 Load data into `R`
-
-Before we begin this session, we need to load our modified Framingham dataset into `R` and load required packages. 
-
+ 
+Before we begin this session, we need to load the Framingham dataset into `R` and load required packages.
+ 
 ```{r, warning=F, message=F}
-data1 <- read.csv('framingham1.csv', header = TRUE)
+data <- read.csv('framingham.csv', header = TRUE)
 # install.packages(c('olsrr', 'pROC', 'ResourceSelection', 'nnet', 'survival', 'survminer'))
+```
+ 
+We will modify some categorical variables so they are encoded as categories rather than numbers. This helps us understand and visualize the results better.
+ 
+```{r, warning = FALSE, message = FALSE}
+library(dplyr)
+data1 <- data %>% 
+             mutate(SEX = ifelse(!is.na(SEX), 
+                                  ifelse(SEX == 1, 
+                                         'male', 'female'), 
+                                          NA)) %>%
+             mutate(PREVSTRK = ifelse(!is.na(PREVSTRK), 
+                                       ifelse(PREVSTRK == 1, 
+                                              'yes', 'no'), 
+                                               NA)) %>%
+             mutate(PREVMI = ifelse(!is.na(PREVMI), 
+                                     ifelse(PREVMI == 1, 
+                                            'yes', 'no'), 
+                                             NA)) %>% 
+             mutate(DIABETES = ifelse(!is.na(DIABETES), 
+                                       ifelse(DIABETES== 1, 
+                                              'yes', 'no'), 
+                                             NA)) %>%
+             mutate(CURSMOKE = ifelse(!is.na(CURSMOKE), 
+                                       ifelse(CURSMOKE== 1, 
+                                              'yes', 'no'), 
+                                             NA)) %>%
+             mutate(BPMEDS = ifelse(!is.na(BPMEDS), 
+                                     ifelse(BPMEDS== 1, 
+                                            'yes', 'no'), 
+                                             NA))
 ```
 
 # 1. Simple linear regression modelling and diagnostics

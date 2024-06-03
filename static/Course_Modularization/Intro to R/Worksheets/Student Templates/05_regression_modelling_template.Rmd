@@ -175,56 +175,6 @@ levels(data1$CURSMOKE)
 
 ```
 
-**EXERCISE 5** Run regression diagnostics on the previous model and comment.
-
-```{r}
-# Your turn
-
-```
-
-**Variable selection**
-
-Looking at the model summary above, age is not statistically significant. One way to test age individually is to have a model with age and a model with the same predictors except age and do a nested model comparison using ANOVA.
-
-```{r}
-model_no_age <- lm(LDLC ~ BMI + HEARTRTE + PREVMI + PREVSTRK
-                   + CURSMOKE, data = data1)
-anova(model_no_age, model2)
-```
-
-The ANOVA F-test shows that age is not statistically significant; it does not help predict the outcome on top of the other predictors.
-
-Sometimes the models we wish to compare are not necessarily nested within each other. In such cases, we can use the folowing variable election methods:
-
-- Stepwise forward regression
-- Stepwise backward regression
-- Stepwise regression
-
-The package `olsrr` is very useful for conducting various variable selection algorithms.
-
-Remember to install the `olsrr` package if you haven't already done so!
-
-The following code runs stepwise forward regression on our model:
-
-```{r, warning=F, message=F}
-library(olsrr)
-ols_step_forward_p(model2)
-```
-
-**EXERCISE 6** Run stepwise backward regression (`ols_step_backward_p()`) and stepwise regression (`ols_step_both_p()`) on our model.
-
-```{r}
-# Your turn
-# Stepwise backgward regression
-
-```
-
-```{r}
-# Your turn
-# Stepwise regression
-
-```
-
 # 3. Generalized linear regression modelling and diagnostics
 
 Linear models are only suitable for continuous response/outcome variables. If we have categorical outcomes, we have to use generalized linear regression models (GLM) --- an extension of linear regression models.
@@ -252,37 +202,6 @@ summary(logit_model1)
 
 Different "families" of glm correspond to different types of outcome variable. The "binomial" family deals with categorical outcome variables.
 
-We can assess our model fit as well the the predictive power of our model by using the following techniques:
-
-- Hosmer-Lemeshow Test
-
-- Receiver operating characteristic (ROC) curve and area under the curve (AUC)
-
-The following code runs the Hosmer-Lemeshow test on our logit model using the `hoslem.test()` function from the `ResourceSelection` package.
-
-```{r, warning = F, message = F}
-library(ResourceSelection)
-hoslem.test(data1$PREVSTRK, fitted(logit_model1), g = 10)
-```
-
-- The `hoslem.test()` function takes the 1st argument as the outcome variable, the 2nd argument as the fitted values from the logit model (can be extracted with the function `fitted()`) and the 3rd argument as the number of subgroups.
-
-- If the test is statistically significant, the model is a poor fit of the data.
-
-We are most concerned with the area under the ROC curve (AUC), the bigger the better. An AUC greater than 0.70 indicates that our model does a good job at discriminating between the two categories that comprise the outcome variable.
-
-The following code uses functions from the `pROC` package to plot the ROC curve and calculate the AUC:
-
-```{r, warning=F, message=F}
-library(pROC)
-# set, outcome variable followed by fitted values from model
-roc1 <- roc(data1$PREVSTRK, logit_model1$fitted.values)  
-# plot the ROC curve
-plot(roc1, col = 'red', legacy.axes = TRUE)
-# calculate the AUC
-auc(roc1)                                              
-```
-
 Here we fit a logit model with `PREVSTRK` as the outcome variable and `AGE`, `BMI`, `CURSMOKE`, `HEARTRTE`, `SYSBP`, and `LDLC` as the predictors. 
 
 ```{r}
@@ -293,70 +212,8 @@ logit_model3 <- glm(PREVSTRK ~ AGE + BMI + CURSMOKE + HEARTRTE
 summary(logit_model3)
 ```
 
-The `step()` function performs forward, backward and both stepwise regression for glms using the AIC:
 
-Before running `step()`, we need to take out observations with missing values.
-
-**EXERCISE 7** Create a dataset with only the variables in our model and take out any observation with missing values in any of the columns. 
-
-```{r, warning=F, message=F}
-# Your turn
-
-```
-
-Now that we have a dataset with only the variables we are going to put in our model with no missing values. We can fit the model again on this new dataset, and use the `step()` on it.
-
-```{r}
-logit_model3 <- glm(PREVSTRK ~ AGE + BMI + CURSMOKE + HEARTRTE + 
-                      SYSBP + LDLC, 
-                    family = "binomial", data = data2)
-step(logit_model3, direction = "backward")
-```
-
-**EXERCISE 8** Perform stepwise forward and backward (both) regression on our model. Are the chosen predictors the same for the two methods?
-
-```{r}
-# Your turn
-
-```
-
-**EXERCISE 9** 
-
-- Fit a logistic regression model on smoking status and use the same predictors as our previous model except smoking status.
-
-- Display model summary and interpret the results.
-
-- Run model diagnostic and comment on the goodness of fit.
-
-- Run stepwise variable selection using the AIC.
-
-```{r}
-# Your turn
-# Changing smoking status to a binary variable
-
-# select only the variables we need and exclude any observation with missing values
-
-# fit model
-
-```
-
-```{r}
-# Your turn
-# assess goodness of fit
-# Hosmer-Lemeshow test
-
-# ROC and AUC
-
-                                      
-```
-
-```{r}
-# Your turn
-# stepwise variable selection 
-
-```
-
-**EXERCISE 10** 
+**EXERCISE 5** 
 
 - Fit a multinomial logistic regression model on systolic blood pressure (SYSBP) and use AGE and BMI as your predictors.
   
@@ -390,34 +247,3 @@ library(nnet)
 
 ```
 
-**EXERCISE 11** 
-
-- Make a Kaplan Meier plot using CVD and TIMECVD 
-- Title your plot "CVD KM Plot"
-
-```{r}
-# prep
-library(survival)
-library(survminer)
-
-# Your turn
-# Make your Kaplan Meier plot 
-
-```
-
-**EXERCISE 12** 
-
-- Fit a cox model using CVD and TIMECVD, adjusting for BMI
-- Plot you cox model
-
-```{r}
-# Your turn
-# Run your regresssion
-
-```
-
-```{r}
-# Your turn
-# Plot your model and view your plot
-
-```

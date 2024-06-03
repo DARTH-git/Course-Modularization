@@ -1,0 +1,25 @@
+---
+title: Using GitHub
+
+date: "`r Sys.Date()`"
+
+draft: false
+type: docs
+
+linktitle: Using GitHub
+menu:
+  day1:
+    parent: "Topics"
+    weight: 11
+---
+
+As experienced decision modelers, we strongly encourage using GitHub when using R for decision modeling. It offers multiple advantages:
+
+- GitHub keeps a record of all previous versions of your code and files. If you make a mistake or accidentally delete your files, you can always retrieve them.
+
+- You can easily share your model files with specific people, whether collaborators or your team. You can either choose to let them directly edit the files or only allow them to view and provide input.
+
+- You can easily share your model files with the general public for different purposes. For example, you can simply add the link to your project repository to your published papers.
+
+To get started with GitHub check out this [instruction sheet](../../../Course_Modularization/Intro, general, packages/Guide to Using GitHub.pdf)
+

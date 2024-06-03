@@ -18,15 +18,15 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Intro to R/Slides/06_Regression Modelling.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/05_Regression Modelling.pptx)
 
 ## Student templates
 
-[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/06_regression_modelling_template.Rmd)
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_regression_modelling_template.Rmd)
 
 ## Instructor solutions
 
 <!-- Solutions will be provided upon request. -->
 
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/06_regression_modelling_solutions.Rmd) -->
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_regression_modelling_solutions.Rmd) -->
 

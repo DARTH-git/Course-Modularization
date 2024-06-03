@@ -8,7 +8,7 @@ type: docs
 
 linktitle: Getting ready
 menu:
-  day2:
+  day1:
     weight: 3
 ---
 

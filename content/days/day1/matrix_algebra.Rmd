@@ -29,7 +29,7 @@ menu:
 
 ## Exercise
 
-[Download exercise template](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - template.Rmd)
+[Download exercise template](../../../Course_Modularization/Intro, general, packages/Matrix algebra in R - template_June2024.Rmd)
 
 <!-- Solutions will be provided upon request. -->
 

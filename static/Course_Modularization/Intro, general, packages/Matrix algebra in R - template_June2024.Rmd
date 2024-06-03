@@ -1,0 +1,145 @@
+---
+title: "Matrix Algebra in R"
+author: "SickKids and DARTH"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+subtitle: Introduction
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+Change `eval` to `TRUE` if you want to knit this document.
+
+This worksheet provides an introduction to matrix algebra in `R`:
+
+Throughout the course, we will demonstrate code and leave some empty *code chunks* for you to fill in. We will also provide solutions after the session.
+
+Feel free to modify this document with your own comments and clarifications. 
+
+
+# Manipulating Matrices in `R`
+
+As we previously discussed an important object is a matrix, which is a set of numbers or characters with a specific shape. For example, the following *code chunk* creates a matrix called `matrixA` that contains the numbers 1 to 9 in a 3 by 3 grid:
+
+```{r}
+# Creating a matrix
+matrixA <- matrix(data = c(1, 2, 3, 4, 5, 6, 7, 8, 9), 
+                  nrow = 3, 
+                  ncol = 3)
+matrixA
+```
+
+
+In `R`, there are three key operations that we can do with matrices, addition (`+`), multiplication (`*`) and matrix multiplication (`%*%`). Each of these operations can only be used if the matrices are compatible.
+
+In this *code chunk*, we can see that the matrix `matrixA` is printed in this R Markdown document above. This is because we added the extra command `matrixA` to our *code chunk*, this allows us to see what the object `matrixA` is.
+
+**EXERCISE 1** Use the following *code chunk* to create a matrix `matrixB` with 2 rows and 4 columns and a matrix `matrixC` with 4 rows and 2 columns:
+
+```{r}
+# Your turn
+
+
+```
+
+**EXERCISE 2** Run the following operations to determine which matrices or vectors are compatible for matrix addition. Note that some of them will give you errors, make a note of these errors and why they occur to help you understand issues in you coding during the course.
+
+```{r}
+# Matrix added to a number
+matrixA + 5
+
+# Matrix addition
+matrixA + matrixA
+```
+
+Notice that when adding matrices, the addition is performed element-wise, so the two matrix entries in the same position are added together. Scalar multiplcation `*` is similar to addition.
+
+**EXERCISE 3** Copying the code above, or writing your own, explore how scalar multiplication works with matrices:
+
+```{r}
+# Your Turn
+
+```
+
+Matrix multiplication `%*%`, on the other hand, follows a different set of rules, outlined in the pre-course material. 
+
+**EXERCISE 4** Run the following code to explore how matrix multiplication works in R:
+```{r}
+# Matrix Multiplication
+matrixA %*% matrixA
+```
+
+Notice that the order of the matrices matters for matrix multiplication as the last two operations give different results. It is also important to remember that matrix multiplication can only be undertaken if the number of columns in the first matrix is equal to the number of rows in the second matrix. The resulting matrix will have the same number of rows as the first matrix and the same number of columns as the second matrix. 
+
+There are some key functions that are very helpful when working with matrices.
+
+- `t()` creates the matrix transpose, i.e., the matrix where the element in the i-th row and j-th column of the original matrix is set to the j-th row and i-th column.
+
+- `diag(n)` creates a matrix of size `n` by `n` with 1s at each diagonal element and 0s everywhere else, i.e., the identity matrix.
+
+**EXERCISE 5** Explore the transpose function 't()' using the code provided below:
+
+```{r}
+matrixD <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3)
+
+# Determine the difference between matrixD and the transpose of matrixD
+matrixD
+t(matrixD)
+
+# Transpose can allow for matrix multiplication when they may not have been 
+# compatible before
+matrixD %*% t(matrixA)
+matrixA %*% matrixD
+t(matrixA) %*% matrixD
+matrixD %*% matrixA 
+
+```
+
+
+
+
+**ADDITIONAL EXERCISES** 
+
+**ADDITIONAL EXERCISE 1** Perform the following operations on `m_A` and `m_B`:
+
+1) Their sum
+
+2) Their element-wise product (the Hadamard product)
+
+3) Their product
+
+4) The product of the first matrix with the transpose of the second matrix
+
+```{r}
+m_A <- matrix(1:9,  nrow = 3, ncol = 3)
+m_B <- matrix(6:14, nrow = 3, ncol = 3)
+```
+
+```{r}
+# Your turn
+
+```
+
+**ADDITIONAL EXERCISE 2** We will create two matrices, `matrix1` and `matrix2` in the code chunk below. Perform the following operations and display the results:
+
+1) Add `matrix1` to `matrix2` and take the transpose of the sum, and matrix-multiply the result with `matrix2`
+
+2) Obtain the transpose of the product of `matrix1` and `matrix2` and element-wise multiply the result with `matrix1`
+
+```{r}
+matrix1 <- matrix(1:9, nrow = 3, ncol = 3)
+matrix2 <- matrix(c(1, 0, 0, 0, 3, 4, 5, 9, 2), nrow = 3, ncol = 3)
+
+# 1.
+# Your turn
+
+# 2.
+# Your turn
+
+```
+
+

@@ -21,15 +21,15 @@ menu:
 
 ## Slides
 
-[Download slides](../../../Course_Modularization/Intro to R/Slides/05_loops_function_slides.pptx)
+[Download slides](../../../Course_Modularization/Intro to R/Slides/06_loops_function_slides.pptx)
 
 ## Student templates
 
-[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/05_loops_and_functions_template.Rmd)
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/06_loops_and_functions_template.Rmd)
 
 ## Instructor solutions
 
 <!-- Solutions will be provided upon request. -->
 
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/05_loops_and_functions_solutions.Rmd) -->
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/06_loops_and_functions_solutions.Rmd) -->
 

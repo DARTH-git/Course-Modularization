@@ -25,7 +25,7 @@ menu:
 
 ## Student template
 
-[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/02_Introduction_template.Rmd)
+[Download student template](../../../Course_Modularization/Intro to R/Worksheets/Student Templates/02_Introduction_template_June2024.Rmd)
 
 ## Instructor solutions
 

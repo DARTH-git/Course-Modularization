@@ -31,6 +31,6 @@ menu:
 
 <!-- Solutions will be provided upon request. -->
 
-<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_solutions.Rmd) -->
+[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/02_Introduction_solutions.Rmd)
 
 

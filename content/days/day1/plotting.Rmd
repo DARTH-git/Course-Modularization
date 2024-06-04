@@ -31,5 +31,5 @@ menu:
 
 <!-- Solutions will be provided upon request. -->
 
-[Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/04_plotting_solutions.Rmd)
+<!-- [Download instructor solutions](../../../Course_Modularization/Intro to R/Worksheets/Solutions/04_plotting_solutions.Rmd) -->
 

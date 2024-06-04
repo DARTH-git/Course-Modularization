@@ -1,0 +1,292 @@
+---
+title: "Intro to R for Decision Modeling"
+author: "SickKids and DARTH"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+subtitle: Regression Modelling
+---
+
+This worksheet provides and introduction to regression modelling using `R`. This session is split into the following sections:
+
+1. Simple linear regression modelling and diagnostics
+
+2. Multiple linear regression modelling and diagnostics
+
+3. Generalized linear regression modelling and diagnostics
+
+Throughout the course, we will demonstrate code and leave some empty *code chunks* for you to fill in. We will also provide solutions after the session.
+
+Feel free to modify this document with your own comments and clarifications. 
+
+# 1.0 Load data into `R`
+ 
+Before we begin this session, we need to load the Framingham dataset into `R` and load required packages.
+ 
+```{r, warning=F, message=F}
+data <- read.csv('framingham.csv', header = TRUE)
+# install.packages(c('olsrr', 'pROC', 'ResourceSelection', 'nnet', 'survival', 'survminer'))
+```
+ 
+We will modify some categorical variables so they are encoded as categories rather than numbers. This helps us understand and visualize the results better.
+ 
+```{r, warning = FALSE, message = FALSE}
+library(dplyr)
+data1 <- data %>% 
+             mutate(SEX = ifelse(!is.na(SEX), 
+                                  ifelse(SEX == 1, 
+                                         'male', 'female'), 
+                                          NA)) %>%
+             mutate(PREVSTRK = ifelse(!is.na(PREVSTRK), 
+                                       ifelse(PREVSTRK == 1, 
+                                              'yes', 'no'), 
+                                               NA)) %>%
+             mutate(PREVMI = ifelse(!is.na(PREVMI), 
+                                     ifelse(PREVMI == 1, 
+                                            'yes', 'no'), 
+                                             NA)) %>% 
+             mutate(DIABETES = ifelse(!is.na(DIABETES), 
+                                       ifelse(DIABETES== 1, 
+                                              'yes', 'no'), 
+                                             NA)) %>%
+             mutate(CURSMOKE = ifelse(!is.na(CURSMOKE), 
+                                       ifelse(CURSMOKE== 1, 
+                                              'yes', 'no'), 
+                                             NA)) %>%
+             mutate(BPMEDS = ifelse(!is.na(BPMEDS), 
+                                     ifelse(BPMEDS== 1, 
+                                            'yes', 'no'), 
+                                             NA))
+```
+
+# 1. Simple linear regression modelling and diagnostics
+
+The `lm()` function in `R` allows us to construct simple and multiple linear regression models.
+
+The general syntax is for a simple linear regression model is
+
+`lm(outcome ~ predictor, data = your data)`
+
+We will try to predict the `outcome` low density lipoprotein cholesterol (`LDLC`) with different predictors. 
+
+**EXERCISE 1**  Construct a simple linear regression model with the *outcome* `LDLC` and the *predictor* `BMI`.
+
+```{r}
+# Your turn
+lm(LDLC ~ BMI, data = data1)
+```
+
+We can use the `summary()` function to display information about the regression. To do this, it is useful to store your regression model as an *object* in `R` so we can reuse the regression fit for different purposes. We can store a regression model as an *object* with the following code:
+
+`model_predictor <- lm(outcome ~ predictor, data = your data)`
+
+**EXERCISE 2** Fit the `LDLC` against other predictors. Predictors that make clinical sense include age (`AGE`), prevalent myocardial infarction (`PREVMI`), prevalent stroke (`PREVSTRK`), current smoker (`CURSMOKE`). Use `summary()` to display the results.
+
+```{r}
+# Your turn
+model_age <- lm(LDLC ~ AGE, data = data1)
+summary(model_age)
+```
+
+In this following section, we will use the model of `LDLC` against `BMI` to test the model assumptions:
+
+```{r}
+model_BMI <- lm(LDLC ~ BMI, data = data1)
+summary(model_BMI)
+```
+
+The following are assumptions of a linear regression model;
+
+- Linearity: The relationship between the outcome and the predictor(s) is linear.
+- Homoscedasticity (equal variance): The variance of residuals are the same across the sample .
+- Independence: Observations are independent of each other.
+- Normality: The residuals of the model are normally distributed.
+
+The plot of residuals versus fitted (predicted) values is useful for checking the assumptions of linearity and equal variance. 
+
+- If the residuals are not too far away from 0, the linearlity assumption is met. 
+- If the residuals do not have a pattern, the homoscedasticity assumption is met (You can also check this with the scale-location plot).
+
+A normal Q-Q plot can be used to assess the normality assumption. A plot of "Cook's distance" can then be used to identify potential outliers. It measures the "influence" of each observation on regression coefficients.
+
+The following code extracts and plots the residuals of our model:
+
+```{r}
+# create a dataset with non-missing LDLC and BMI
+data2 <- data1[!is.na(data1$LDLC) & !is.na(data1$BMI),]
+# create a dataset with observed, fitted and residual values
+table <- data.frame(observed  = data2$LDLC, 
+                    fitted    = model_BMI$fitted.values, 
+                    residuals = data2$LDLC - model_BMI$fitted.values)
+head(table) 
+
+# plot the reesiduals
+plot(model_BMI$residuals)
+```
+
+The following code produces the four types of plots mentioned above:
+
+```{r}
+# Asessing regression fit
+par(mfrow = c(2,2)) # displays 2 graphs on the top and the bottom
+plot(model_BMI, which = 1:4)
+```
+
+- Calling `plot()` on a regression model gives different diagnostic plots; you can investigate these plots and some alternatives by typing `?plot.lm` and accessing the help file for plotting linear models.
+
+# 2. Multiple linear regression and diagnostics
+
+Now we want to add more variables into the model, so we will fit a multiple linear regression model. The following command constructs a multiple linear regression model with LDLC as the outcome and age, BMI, heart rate, prevalent myocardial infarction (`PREVMI`), prevalent stroke status (`PREVSTRK`) and current smoking status (`CURSMOKE`) as the independent variables. 
+
+```{r}
+model2 <- lm(LDLC ~ AGE + BMI + HEARTRTE + PREVMI + PREVSTRK + CURSMOKE, data = data1)
+``` 
+
+All categories of a factor variable are compared against the reference category when interpreting results from a linear model.
+
+Now, we will turn our categorical predictors into factors.
+
+```{r}
+# PREVMI
+# change to a factor variable
+data1$PREVMI <- factor(data1$PREVMI) 
+# check the levels 
+levels(data1$PREVMI) 
+
+# CURSMOKE
+# change to a factor variable
+data1$CURSMOKE <- factor(data1$CURSMOKE) 
+# check the levels
+levels(data1$CURSMOKE) 
+```
+
+**EXERCISE 3** Make `PREVSTRK` a factor variable and check the reference category.
+
+```{r}
+# Your turn
+data1$PREVSTRK <- factor(data1$PREVSTRK)
+levels(data1$PREVSTRK)
+```
+
+**EXERCISE 4** Use the multiple linear regression model with our updated factor variables and display the model summary.
+
+```{r}
+# Your turn
+model2 <- lm(LDLC ~ AGE + BMI + HEARTRTE + PREVMI + PREVSTRK 
+                    + CURSMOKE, data = data1)
+summary(model2)
+```
+
+# 3. Generalized linear regression modelling and diagnostics
+
+Linear models are only suitable for continuous response/outcome variables. If we have categorical outcomes, we have to use generalized linear regression models (GLM) --- an extension of linear regression models.
+
+Logistic (logit) regression models are by far the most widely used and popular GLMs as they are suitable for many types of categorical outcomes. Logit models will be the focus of this section. 
+
+Supppose we are interested in what predicting prevalent stroke status, we can fit a logistic regression model.
+
+We want to make sure that our outcome is binary (0 and 1) first:
+
+```{r}
+data1$PREVSTRK <- as.character(data1$PREVSTRK)
+data1$PREVSTRK[(is.na(data1$PREVSTRK) == FALSE) & (data1$PREVSTRK == 'yes')] <- 1 
+data1$PREVSTRK[(is.na(data1$PREVSTRK) == FALSE) & (data1$PREVSTRK != 1)] <- 0
+data1$PREVSTRK <- as.factor(data1$PREVSTRK)
+```
+
+We then fit a logit model with age being the only predictor:
+
+```{r}
+logit_model1 <- glm(PREVSTRK ~ AGE, family = "binomial", 
+                    data = data1)
+summary(logit_model1)
+```
+
+Different "families" of glm correspond to different types of outcome variable. The "binomial" family deals with categorical outcome variables.
+
+Here we fit a logit model with `PREVSTRK` as the outcome variable and `AGE`, `BMI`, `CURSMOKE`, `HEARTRTE`, `SYSBP`, and `LDLC` as the predictors. 
+
+```{r}
+# Run and view model summary
+logit_model3 <- glm(PREVSTRK ~ AGE + BMI + CURSMOKE + HEARTRTE 
+                    + SYSBP + LDLC, 
+                    family = "binomial", data = data1)
+summary(logit_model3)
+```
+
+
+**EXERCISE 5** 
+
+- Fit a multinomial logistic regression model on systolic blood pressure (SYSBP) and use AGE and BMI as your predictors.
+  
+  1) Make SYSBP a categorical variable called SYSBP_CAT using the following categories:
+     Normal    < 120
+     Elevated  120-130
+     High      >130
+     
+  2) Make SYSBP_CAT a factor and make "Normal" your reference category.
+  
+  3) Run your regression.
+  
+```{r}
+# prep
+library(nnet)
+
+# Your turn
+# Make SYSBP a categorical variable
+data1$SYSBP_CAT <- ifelse(data1$SYSBP > 130, "High", 
+                   ifelse(data1$SYSBP >= 120 & data1$SYSBP <= 130, "Elevated", "Normal"))
+```
+
+```{r}
+# Your turn
+# Make SYSBP a factor with "Normal" as the reference category
+data1$SYSBP_CAT <- as.factor(data1$SYSBP_CAT)
+data1$SYSBP_CAT <- relevel(data1$SYSBP_CAT, ref = "Normal")
+```
+
+```{r}
+# Your turn
+# Run your regresssion
+multinom(SYSBP_CAT ~ AGE + BMI, data = data1)
+```
+
+**EXERCISE 6** 
+
+- Make a Kaplan Meier plot using CVD and TIMECVD 
+- Title your plot "CVD KM Plot"
+
+```{r}
+# prep
+library(survival)
+library(survminer)
+
+# Your turn
+# Make your Kaplan Meier plot 
+fit_km   <- survfit(Surv(TIMECVD , CVD) ~ 1, data = data1)
+plot_km  <- ggsurvplot(fit_km, data = data1, risk.table = TRUE,
+                       title = "CVD KM Plot")
+plot_km
+```
+
+**EXERCISE 7** 
+
+- Fit a cox model using CVD and TIMECVD, adjusting for BMI
+- Plot your cox model
+
+```{r}
+# Your turn
+# Run your regresssion
+fit_cox  <- coxph(Surv(TIMECVD , CVD) ~ BMI, data = data1)
+```
+
+```{r}
+# Your turn
+# Plot your model and view your plot
+plot_cox <- ggadjustedcurves(fit_cox, data = data1,
+                             title = "Cox PH Curve Adjusted for BMI")
+plot_cox
+```
+

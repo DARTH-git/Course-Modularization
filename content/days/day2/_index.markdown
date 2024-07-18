@@ -1,7 +1,7 @@
 ---
 title: "Day 1"
 author: ''
-date: "2023-08-22"
+date: "2024-07-18"
 slug: day2
 categories: []
 tags: []
@@ -14,9 +14,9 @@ type: docs
 
 ## Decision Trees and Basic Cohort State-Transition Models in R
 
-Wednesday, August 23, 2023
+Tuesday, August 27, 2024
 
-[Zoom link](https://utoronto.zoom.us/j/85107198719) [Meeting ID: 851 0719 8719; Passcode: 140426]
+<!-- [Zoom link](https://utoronto.zoom.us/j/85107198719) [Meeting ID: 851 0719 8719; Passcode: 140426] -->
 
 **Video lectures**
 
@@ -53,7 +53,7 @@ Cohort State-Transition Models:
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 11:00am – 11:15am  | Workshop orientation  |
+| 10:00am – 11:15am  | Workshop orientation  |
 | 11:15am – 11:45am | Structuring your R code / Decision trees in R | 
 | 11:45am – 12:45pm | Code walk-through: Cohort state-transition models (cSTM) |
 | 12:45pm – 1:15pm  | Lunch break | 

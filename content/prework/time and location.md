@@ -13,9 +13,9 @@ type: docs
 
 ## Dates
 
-Dates: Wednesday, August 23, 2023 - Friday, August 25th, 2023
+Dates: Tues, August 27 - Thurs, August 29th, 2024
 
-Time: 11:00AM - 03:00PM Eastern Time
+Time: 10:00AM - 03:00PM Eastern Time
 
 ## Location
 

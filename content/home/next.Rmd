@@ -6,19 +6,21 @@ title: Next steps
 weight: 1
 ---
 
-### Important Dates
+### Workshop Preparation
 
-- August 15-24: Complete “Intro to R for Decision Modeling” modules on your own.
+Participants will be expected to have some experience with decision modeling and/or basic concepts of economic evaluation. A self-paced module introducing R concepts specifically for decision modeling will be provided as part of your workshop registration.
 
-- August 21: Intro to R office hours (11:00am - 1:00pm Eastern Time)
+- August 23rd, 2024: Complete “Intro to R for Decision Modeling” modules on your own.
+
+- August 22nd, 2024: Intro to R office hours (11:00am - 1:00pm Eastern Time)
 
 ### Workshop Schedule
 
-- August 23: Decision trees and Markov models
+- August 27: Decision trees and Markov models
 
-- August 24: Microsimulation modeling
+- August 28: Microsimulation modeling
 
-- August 25: Sensitivity analysis
+- August 29: Sensitivity analysis
 
 ### Workshop Details
 
@@ -28,7 +30,7 @@ weight: 1
 
 - Asynchronous completion of homework assignments (1-2 hours)
 
-*Approximately 4 hours of lectures and assignments with approximately 4 hours of self-paced modules daily*
+*Approximately 5 hours of lectures and assignments with approximately 4 hours of self-paced modules daily*
 
 ### Zoom Link
 

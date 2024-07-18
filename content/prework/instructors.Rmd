@@ -11,13 +11,13 @@ title: "Instructors"
 type: docs
 ---
 
-**Eva Enns, PhD** <a href="https://directory.sph.umn.edu/bio/sph-a-z/eva-enns" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/evaenns" target="_blank"><i class="fab fa-github"></i></a> 
+<!-- **Eva Enns, PhD** <a href="https://directory.sph.umn.edu/bio/sph-a-z/eva-enns" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/evaenns" target="_blank"><i class="fab fa-github"></i></a>  -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "472448727")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "472448727") -->
+<!-- ``` -->
 
-Eva Enns, PhD, is an Associate Professor at the University of Minnesota’s School of Public Health, in the division of Health Policy and Management. She has a bachelor’s degree in electrical engineering from the Massachusetts Institute of Technology, and holds both a Master’s and a PhD in electrical engineering from Stanford University. She develops mathematical models of the spread of infectious diseases that help evaluate strategies aimed at mitigating disease impact through prevention and/or treatment. Her aim is to inform better infectious disease prevention, management, and control policies as well as to develop new methodologies or tools to better address issues surrounding infectious disease outbreaks.
+<!-- Eva Enns, PhD, is an Associate Professor at the University of Minnesota’s School of Public Health, in the division of Health Policy and Management. She has a bachelor’s degree in electrical engineering from the Massachusetts Institute of Technology, and holds both a Master’s and a PhD in electrical engineering from Stanford University. She develops mathematical models of the spread of infectious diseases that help evaluate strategies aimed at mitigating disease impact through prevention and/or treatment. Her aim is to inform better infectious disease prevention, management, and control policies as well as to develop new methodologies or tools to better address issues surrounding infectious disease outbreaks. -->
 
 **Fernando Alarid-Escudero, PhD** <a href="https://profiles.stanford.edu/fernando-alarid-escudero" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/feralaes" target="_blank"><i class="fab fa-github"></i></a> 
 
@@ -47,13 +47,13 @@ blogdown::shortcode("vimeo", "473576731")
 
 Hawre Jalal, MD, PhD is an Assistant Professor at the Department of Health Policy and Management and a researcher at the Public Health Dynamic Laboratory at the University of Pittsburgh. His research focuses on using mathematical modeling, cost-effective analyses and econometrics approaches to address health policy and resource allocation questions. His current research involves modeling the opioid-epidemic and evaluating its mitigation strategies, and research in disability and aging. Hawre’s methodological interests involve value of information analysis, Bayesian calibration and communicating uncertainty to decision makers.
 
-**Eline Krijkamp, PhD** <a href="https://www.researchgate.net/profile/Eline_Krijkamp2" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/krijkamp" target="_blank"><i class="fab fa-github"></i></a>
+<!-- **Eline Krijkamp, PhD** <a href="https://www.researchgate.net/profile/Eline_Krijkamp2" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/krijkamp" target="_blank"><i class="fab fa-github"></i></a> -->
 
-```{r, echo=F}
-blogdown::shortcode("vimeo", "473041510")
-```
+<!-- ```{r, echo=F} -->
+<!-- blogdown::shortcode("vimeo", "473041510") -->
+<!-- ``` -->
 
-Eline Krijkamp, PhD, is a post-doctoral researcher at the Erasmus School of Health Policy and Management at the Erasmus University in Rotterdam, the Netherlands. In her research she uses decision modeling methods for applied health economic research questions with a little touch on developing new methods. She is also part of an external review group for The National institute for health and care excellence (NICE) in the UK and teaches decision modeling to master and graduate students. She holds a bachelor’s degree in health and biomedical Sciences from the VU University in Amsterdam and two master’s degrees: one in Health Economics from the Erasmus University in Rotterdam and one in Epidemiology from the Netherlands Institute of Health Sciences (NIHES), Rotterdam. After she worked in the educational innovation team for NIHES she pursued her career with a PhD in medical decision making focusing on open-source modeling and resource prioritization in healthcare. Her career goal is to solve health(care) issues using data-driven methods. Simplicity and clear communication are also important to her. She believes that many health issues can be prevented or solved by improved communication and sees communicating our complex research in a simple way as an important challenge. Although Eline loves her professional career, she likes to prioritize sports, good food and enough sleep to stay energized. 
+<!-- Eline Krijkamp, PhD, is a post-doctoral researcher at the Erasmus School of Health Policy and Management at the Erasmus University in Rotterdam, the Netherlands. In her research she uses decision modeling methods for applied health economic research questions with a little touch on developing new methods. She is also part of an external review group for The National institute for health and care excellence (NICE) in the UK and teaches decision modeling to master and graduate students. She holds a bachelor’s degree in health and biomedical Sciences from the VU University in Amsterdam and two master’s degrees: one in Health Economics from the Erasmus University in Rotterdam and one in Epidemiology from the Netherlands Institute of Health Sciences (NIHES), Rotterdam. After she worked in the educational innovation team for NIHES she pursued her career with a PhD in medical decision making focusing on open-source modeling and resource prioritization in healthcare. Her career goal is to solve health(care) issues using data-driven methods. Simplicity and clear communication are also important to her. She believes that many health issues can be prevented or solved by improved communication and sees communicating our complex research in a simple way as an important challenge. Although Eline loves her professional career, she likes to prioritize sports, good food and enough sleep to stay energized.  -->
 
 <!-- **Alan Yang, MSc** <a href="https://www.linkedin.com/in/alan-yang-287b8080/" target="_blank"><i class="fas fa-link"></i></a> <a href="https://github.com/alanyang0924" target="_blank"><i class="fab fa-github"></i></a> -->
 

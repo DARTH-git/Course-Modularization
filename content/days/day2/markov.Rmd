@@ -25,5 +25,5 @@ menu:
 
 [Download Markov Sick-Sicker exercise](../../../Course_Modularization/Markov models/Markov Sick-Sicker/Markov Sick-Sicker.zip)
 
-[Download Markov Sick-Sicker exercise - SOLUTIONS](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_time_solutions.Rmd)
+<!-- [Download Markov Sick-Sicker exercise - SOLUTIONS](../../../Course_Modularization/Markov models/Markov Sick-Sicker/solutions/markov_sick-sicker_time_solutions.Rmd) -->
 

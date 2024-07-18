@@ -1,7 +1,7 @@
 ---
 title: "Day 2"
 author: ''
-date: "2023-08-22"
+date: "2024-07-18"
 slug: day4
 categories: []
 tags: []
@@ -14,9 +14,8 @@ type: docs
 
 ## Microsimulation Modeling in R
 
-Thursday, August 24, 2023
+Wednesday, August 28, 2024
 
-[Zoom link](https://utoronto.zoom.us/j/89369317139) [Meeting ID: 893 6931 7139; Passcode: 114279]
 
 **Video lectures**
 
@@ -39,7 +38,7 @@ Thursday, August 24, 2023
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 11:00am – 11:15am  | cSTM to microsimulation - review of day 1  |
+| 10:00am – 11:15am  | cSTM to microsimulation - review of day 1  |
 | 11:15am – 11:45am | Making your model a function: How and why | 
 | 11:45am – 12:45pm | Code walk through: Microsimulation  |
 | 12:45pm – 1:15pm  | Lunch break | 

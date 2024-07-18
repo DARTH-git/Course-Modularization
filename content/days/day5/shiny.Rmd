@@ -23,7 +23,7 @@ menu:
 
 [Download Function_MicroSim_3state.R](../../../Course_Modularization/CDC 2022-23/part 2/Function_MicroSim_3state.R)
 
-[Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp_solutions.R)
+<!-- [Download instructor solutions - 3-state Microsim Shiny App](../../../Course_Modularization/CDC 2022-23/part 2/ShinyApp_solutions.R) -->
 
 
 

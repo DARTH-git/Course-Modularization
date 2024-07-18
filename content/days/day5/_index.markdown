@@ -1,7 +1,7 @@
 ---
 title: "Day 3"
 author: ''
-date: "2023-08-22"
+date: "2024-07-18"
 slug: day5
 categories: []
 tags: []
@@ -14,9 +14,9 @@ type: docs
 
 ## Sensitivity Analysis in R
 
-Friday, August 25, 2023
+Thursday, August 29, 2024
 
-[Zoom link](https://utoronto.zoom.us/j/82912400050) [Meeting ID: 829 1240 0050; Passcode: 001689]
+<!-- [Zoom link](https://utoronto.zoom.us/j/82912400050) [Meeting ID: 829 1240 0050; Passcode: 001689] -->
 
 **Video lectures**
 
@@ -40,7 +40,7 @@ Friday, August 25, 2023
 
 |                            |            |
 |---------------|:-----------------------------------------|
-| 11:00am – 11:15am | Review of day 2 |
+| 10:00am – 11:15am | Review of day 2 |
 | 11:15am – 11:30am | Breakout rooms:  from a model to a function | 
 | 11:30am – 12:00pm | Code walk-through: Deterministic sensitivity analysis |
 | 12:00pm – 12:30pm  | Code walk-through: Probabilistic sensitivity analysis | 

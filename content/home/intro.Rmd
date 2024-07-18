@@ -7,7 +7,7 @@ weight: 15
 widget: custom
 ---
 
-The Decision Analysis in R for Technologies in Health (DARTH) workgroup is offering a workshop on cost-effectiveness and decision modeling using R from August 23 – 25, 2023 (11:00 AM - 3:00PM Eastern Time daily) as a hybrid, hands-on seminar. Instructors Petros Pechlivanoglou, Eva Enns, Hawre Jalal, Fernando Alarid-Escudero, and Eline Krijkamp will cover the principles of cost-effectiveness analysis and decision analytic modeling and will guide participants in implementing decision trees, Markov models, and microsimulation models and their implementations in R. The workshop will also cover more advanced topics, such as probabilistic sensitivity analysis, model calibration and value of information analysis in R.
+The Decision Analysis in R for Technologies in Health (DARTH) workgroup is offering a workshop on cost-effectiveness and decision modeling using R from August 27 - 29, 2024 (10:00 AM - 3:00PM Eastern Time daily) as a hybrid, hands-on seminar. Instructors Petros Pechlivanoglou, Hawre Jalal and Fernando Alarid-Escudero will cover the principles of cost-effectiveness analysis and decision analytic modeling and will guide participants in implementing decision trees, Markov models, and microsimulation models and their implementations in R. The workshop will also cover deterministic and probabilistic sensitivity analysis in R.
 
 Visit the [DARTH website](https://darthworkgroup.com/) for more information.
 

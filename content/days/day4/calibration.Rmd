@@ -13,32 +13,32 @@ menu:
 
 <!-- [Download slides - model calibration](../../../Course_Modularization/Calibration/Slides/Calibration_CDC.pptx) -->
 
-<!-- ## R code demo & walkthrough - Model calibartion -->
+## R code demo & walkthrough - Model calibartion
 
-<!-- [Download model function](../../../Course_Modularization/Calibration/Calibration CRS/CRS_MarkovModel_Function.R) -->
+[Download model function](../../../Course_Modularization/Calibration/Calibration CRS/CRS_MarkovModel_Function.R)
 
-<!-- [Download calibration targets data](../../../Course_Modularization/Calibration/Calibration CRS/CRS_CalibTargets.RData) -->
+[Download calibration targets data](../../../Course_Modularization/Calibration/Calibration CRS/CRS_CalibTargets.RData)
 
-<!-- [Download random search code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_RandomSearch.Rmd) -->
+[Download random search code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_RandomSearch.Rmd)
 
-<!-- [Download Nelder Mead code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_NelderMead.Rmd) -->
+[Download Nelder Mead code](../../../Course_Modularization/Calibration/Calibration CRS/CRS_Calib_NelderMead.Rmd)
 
-<!-- ## Exercise - Calibrating the Markov Sick-Sicker model -->
+## Exercise - Calibrating the Markov Sick-Sicker model
 
-<!-- [Download exercise worksheet](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/exercise worksheets/SickSicker-CalibrationExercise.html) -->
+[Download exercise worksheet](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/exercise worksheets/SickSicker-CalibrationExercise.html)
 
-<!-- [Download exercise template](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/templates/SickSicker_CalibTemplate.Rmd) -->
+[Download exercise template](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/templates/SickSicker_CalibTemplate.Rmd)
 
-<!-- [Download calibration targets data](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/data/SickSicker_CalibTargets.RData) -->
+[Download calibration targets data](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/data/SickSicker_CalibTargets.RData)
 
-<!-- [Download model function](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/functions/SickSicker_MarkovModel_Function.R) -->
+[Download model function](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/functions/SickSicker_MarkovModel_Function.R)
 
-<!-- ## Instructor solutions -->
+## Instructor solutions
 
-<!-- Instructor solutions will be uploaded later. -->
+Instructor solutions will be uploaded later.
 
-<!-- [Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd) -->
+[Download instructor solutions - random search](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_RandomSearch.Rmd)
 
-<!-- [Download instructor solutions - Nelder Mead](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_NelderMead.Rmd) -->
+[Download instructor solutions - Nelder Mead](../../../Course_Modularization/Calibration/Calibration Sick-Sicker/solutions/Solutions_SickSicker_Calib_NelderMead.Rmd)
 
 

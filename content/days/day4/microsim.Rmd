@@ -41,6 +41,6 @@ menu:
 
 [Download Microsim Sick-Sicker exercise](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/Microsim Sick-Sicker.zip)
 
-<!-- [Download Microsim Sick-Sicker exercise - SOLUTIONS](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/microsim_Sick-Sicker_time_solutions.Rmd) -->
+[Download Microsim Sick-Sicker exercise - SOLUTIONS](../../../Course_Modularization/Microsimulation/Microsim Sick-Sicker/solutions/microsim_Sick-Sicker_time_solutions.Rmd)
 
 
